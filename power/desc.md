@@ -180,9 +180,9 @@ Disables USB selective suspend, idle power management, and related LP features.
 
 I added some comments to `QueryUsbflagsValuesForDevice.c`, since they renamed the values.
 
-> https://github.com/5Noxi/win-config/blob/main/power/desc.md#disable-usb-battery-saver
-> https://github.com/5Noxi/win-config/blob/main/power/desc.md#usb-flags
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/pci.txt
+> https://github.com/5Noxi/win-config/blob/main/power/desc.md#disable-usb-battery-saver  
+> https://github.com/5Noxi/win-config/blob/main/power/desc.md#usb-flags  
+> https://github.com/5Noxi/wpr-reg-records/blob/main/records/pci.txt  
 > https://github.com/5Noxi/wpr-reg-records/blob/main/records/Enum-USB.txt
 
 `pci.inf`:
