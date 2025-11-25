@@ -116,20 +116,7 @@ It get's changed via the "Wallpaper" policy:
 
 # Explorer Options
 
-It changes every setting, which is shown in the `Folder Options` window. Some are personal preference.
-
-Enable compact mode:
-```bat
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v UseCompactMode /t REG_DWORD /d 1
-```
-Set it to `0` to get the default mode back.
-
-Show hidden & protected files/folders:
-```bat
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v Hidden /t REG_DWORD /d 1 /f
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v ShowSuperHidden /t REG_DWORD /d 1 /f
-```
-Set `Hidden` to `2` and `ShowSuperHidden` to `0` to disable it.
+It changes every setting, which is shown in the `Folder Options` window. Some are personal preference, see suboptions bellow for customization.
 
 ![](https://github.com/5Noxi/win-config/blob/main/visibility/images/explorer.png?raw=true)
 
@@ -181,7 +168,7 @@ reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent" /v Acce
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent" /v StartColorMenu /t REG_DWORD /d 4282793274 /f
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent" /v AccentColorMenu /t REG_DWORD /d 4283582532 /f
 ```
-This would apply dark nord color scheme.
+This would apply dark nord color scheme (suboption).
 > https://www.nordtheme.com/
 
 ![](https://github.com/5Noxi/win-config/blob/main/visibility/images/darktheme1.png?raw=true)

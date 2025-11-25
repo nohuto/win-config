@@ -1597,7 +1597,7 @@ Enabling the options includes setting `AutoReboot` to `0` ("The option specifies
 
 # Display Scaling
 
-Changes the size of text, apps, and other items. You can set a custom scaling size via `System > Display > Custom scaling`:
+Changes the size of text, apps, and other items. Note that on laptops the default display scaling might not be `100%`. You can set a custom scaling size via `System > Display > Custom scaling`:
 
 ![](https://github.com/5Noxi/win-config/blob/main/system/images/displayscaling.png?raw=true)
 
