@@ -1819,6 +1819,26 @@ HKLM\Software\Microsoft\Windows\CurrentVersion\Run
 
 # Enable FSO
 
+### FSE (Fullscreen Exclusive)
+
+Game takes exclusive control of the display.
+- App sets display mode directly
+- No desktop compositor in the path (DWM)
+- Bad for Alt-Tab, overlays, and multi monitor
+
+### FSO (Fullscreen Optimizations)
+
+Windows feature that makes borderless/windowed behave like fullscreen.
+- Runs as a flip-model, borderless window through DWM
+- Still allows overlays, Game Bar, better Alt-Tab
+- Tries to give fullscreen-like latency and performance without true exclusive control
+
+DX12 games don't support FSE.
+
+![](https://github.com/5Noxi/win-config/blob/main/nvidia/images/swapchain.jpg?raw=true)
+
+---
+
 Caution: Disabling this option won't revert the changes like all other ones do, it'll disable FSO.
 
 All values I found that are `GameDVR` related in `ResourcePolicyServer.dll`:
@@ -1855,6 +1875,10 @@ HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers\C:\Progr
 // Machine
 HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers\C:\Program Files (x86)\Steam\steamapps\common\Battlefield 6\bf6.exe	Type: REG_SZ, Length: 66, Data: ~ DISABLEDXMAXIMIZEDWINDOWEDMODE
 ```
+
+> https://devblogs.microsoft.com/directx/demystifying-full-screen-optimizations/
+> https://wiki.special-k.info/en/SwapChain
+> https://wiki.special-k.info/Presentation_Model
 
 ---
 

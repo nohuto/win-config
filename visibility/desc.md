@@ -1,6 +1,6 @@
 # Desktop Wallpaper
 
-This is a collection of a few wallapapers I collected. This was added for people who may never have spent time changing their background, or for anyone else.
+This is a collection of some wallpapers that I've found over time. Added for people who may never have spent time changing their background, or for anyone else. Head over to [visibility/desc.md#desktop-wallpaper](https://github.com/5Noxi/win-config/blob/main/visibility/desc.md#desktop-wallpaper), if you want to see the wallpapers in a seperate window.
 
 `Asia`:
 
@@ -124,8 +124,6 @@ It changes every setting, which is shown in the `Folder Options` window. Some ar
 
 Miscellaneous notes:
 ```powershell
-"TaskbarDa": { "Type": "REG_DWORD", "Data": 0 } # Access denied
-
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer" /v ShellState /t REG_BINARY /d 24,00,00,00,3e,20,00,00,00,00,00,00,00,00,00,00,00,00,00,00,01,00,00,00,13,00,00,00,00,00,00,00,42,00,00,00 /f
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState" /v Settings /t REG_BINARY /d 0c,00,02,00,0a,01,00,00,60,00,00,00 /f
 ```
@@ -394,20 +392,45 @@ RegSetValue	HKCU\Software\Microsoft\CTF\LangBar\Label	Type: REG_DWORD, Length: 4
 
 # Taskbar Settings
 
-Removes the search box, moves the taskbar to the left, removes badges, disables the orange flashes on the app icons, removes the "Task View" button. (`Personalization > Taskbar`)
-
-Remove the `End Task` option to the taskbar right click menu with:
-```bat
-reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings" /v TaskbarEndTask /f
-```
-Enabling it via `System > For developers`:
-```powershell
-SystemSettings.exe	RegSetValue	HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings\TaskbarEndTask	Type: REG_DWORD, Length: 4, Data: 1
-```
+Removes the search box, moves the taskbar to the left, removes badges, disables the flashes on the app icons, removes the "Task View" button. (`Personalization > Taskbar`)
 
 `TaskbarSd` adds/removes the block in the right corner, which shows the desktop (picture).
 
 ![](https://github.com/5Noxi/win-config/blob/main/visibility/images/taskbar.png?raw=true)
+
+```json
+{
+  "File": "StartMenu.admx",
+  "CategoryName": "StartMenu",
+  "PolicyName": "HidePeopleBar",
+  "NameSpace": "Microsoft.Policies.StartMenu",
+  "Supported": "Windows_10_0_RS2 - At least Windows Server 2016, Windows 10 Version 1703",
+  "DisplayName": "Remove the People Bar from the taskbar",
+  "ExplainText": "This policy allows you to remove the People Bar from the taskbar and disables the My People experience. If you enable this policy the people icon will be removed from the taskbar, the corresponding settings toggle is removed from the taskbar settings page, and users will not be able to pin people to the taskbar.",
+  "KeyPath": [
+    "HKCU\\Software\\Policies\\Microsoft\\Windows\\Explorer"
+  ],
+  "ValueName": "HidePeopleBar",
+  "Elements": []
+},
+{
+  "File": "NewsAndInterests.admx",
+  "CategoryName": "NewsAndInterests",
+  "PolicyName": "AllowNewsAndInterests",
+  "NameSpace": "Microsoft.Policies.NewsAndInterests",
+  "Supported": "Windows_10_0_NOSERVER - At least Windows 10",
+  "DisplayName": "Allow widgets",
+  "ExplainText": "This policy specifies whether the widgets feature is allowed on the device. Widgets will be turned on by default unless you change this in your settings. If you turned this feature on before, it will stay on automatically unless you turn it off.",
+  "KeyPath": [
+    "HKLM\\SOFTWARE\\Policies\\Microsoft\\Dsh"
+  ],
+  "ValueName": "AllowNewsAndInterests",
+  "Elements": [
+    { "Type": "EnabledValue", "Data": "1" },
+    { "Type": "DisabledValue", "Data": "0" }
+  ]
+},
+```
 
 # Optimize Visual Effects
 
@@ -1125,9 +1148,9 @@ else
 }
 ```
 
-Type: `String`  
+Type: `String` (`REG_SZ`) - it uses `StrToIntW` to read the value (converts a string that represents a decimal value to an integer)
 Min: `0`  
-Max: `65534`? - It uses `StrToIntW` to read the value  
+Max: `65534`?
 Fallback: Depends on `GetDoubleClickTime()` (`Control Panel > Mouse > Double-click speed`), which would change the `DoubleClickSpeed` value (has a default of `500`, which is why the default of `MenuShowDelay` is `400`)  
 Default: `400`
 

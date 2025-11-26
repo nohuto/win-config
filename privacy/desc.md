@@ -1834,18 +1834,7 @@ Disallows the use of a camera on your system, by denying access via `LetAppsAcce
 
 # Disable Suggestions/Tips/Tricks
 
-Disables all kind of suggestions: in start, text suggestions (multilingual...), in the timeline, content... It sets all `SubscribedContent-xxxxxEnabled` to `0` & removes the subkeys of `ID\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager`. It's recommended to do a backup before running it.
-
-Disable edge related suggestions with (search suggestions in address bar):
-```bat
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v SearchSuggestEnabled /t REG_DWORD /d 0 /f
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v LocalProvidersEnabled /t REG_DWORD /d 0 /f
-reg add "HKLM\Software\Policies\Microsoft\MicrosoftEdge\SearchScopes" /v ShowSearchSuggestionsGlobal /t REG_DWORD /d 0 /f
-```
-Disable phone link suggestions:
-```bat
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Mobility" /v OptedIn /t REG_DWORD /d 0 /f
-```
+Disables all kind of suggestions: in start, text suggestions (multilingual...), in the timeline, content. `SubscribedContent-338389Enabled` = "Get tips and suggestions when using Windows". This is the only value named `SubscribedContent-{number}Enabled` that exists by default.
 
 ```json
 {
@@ -1948,7 +1937,19 @@ reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Mobility" /v OptedIn /t 
 
 ---
 
-Miscellaneous notes:
+### Miscellaneous Notes
+
+Disable edge related suggestions with (search suggestions in address bar):
+```bat
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v SearchSuggestEnabled /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v LocalProvidersEnabled /t REG_DWORD /d 0 /f
+reg add "HKLM\Software\Policies\Microsoft\MicrosoftEdge\SearchScopes" /v ShowSearchSuggestionsGlobal /t REG_DWORD /d 0 /f
+```
+Disable phone link suggestions:
+```bat
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Mobility" /v OptedIn /t REG_DWORD /d 0 /f
+```
+
 ```powershell
 for /f "skip=2 tokens=1" %%N in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" 2^>nul') do (
     echo %%N | findstr /R "SubscribedContent-[0-9]*Enabled" >nul && (
@@ -2179,8 +2180,28 @@ UploadUserActivities = 0 (Disabled), 1 (Enabled)
 
 # Disable Cross-Device Experiences
 
-Disables Cross-Device experiences (allows you to use `Share Across Devices`/`Nearby Sharing` functionalities) & share accross devices. With `Share across devices`, you can continue app experiences on other devices connected to your account.
-> https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-admx-grouppolicy#enablecdp
+Disables Cross-Device experiences (allows you to use `Share Across Devices`/`Nearby Sharing` functionalities) & share accross devices. With `Share across devices`, you can continue app experiences on other devices connected to your account (set to `My device only` by default).
+
+---
+
+Changing "Share across devices" option via `SystemSettings`:
+```c
+// Off
+HKCU\Software\Microsoft\Windows\CurrentVersion\CDP\RomeSdkChannelUserAuthzPolicy	Type: REG_DWORD, Length: 4, Data: 0
+HKCU\Software\Microsoft\Windows\CurrentVersion\CDP\CdpSessionUserAuthzPolicy	Type: REG_DWORD, Length: 4, Data: 0
+
+// My device only
+HKCU\Software\Microsoft\Windows\CurrentVersion\CDP\RomeSdkChannelUserAuthzPolicy	Type: REG_DWORD, Length: 4, Data: 1
+HKCU\Software\Microsoft\Windows\CurrentVersion\CDP\SettingsPage\RomeSdkChannelUserAuthzPolicy	Type: REG_DWORD, Length: 4, Data: 1
+HKCU\Software\Microsoft\Windows\CurrentVersion\CDP\CdpSessionUserAuthzPolicy	Type: REG_DWORD, Length: 4, Data: 1
+
+// Everyone nearby
+HKCU\Software\Microsoft\Windows\CurrentVersion\CDP\RomeSdkChannelUserAuthzPolicy	Type: REG_DWORD, Length: 4, Data: 2
+HKCU\Software\Microsoft\Windows\CurrentVersion\CDP\SettingsPage\RomeSdkChannelUserAuthzPolicy	Type: REG_DWORD, Length: 4, Data: 2
+HKCU\Software\Microsoft\Windows\CurrentVersion\CDP\CdpSessionUserAuthzPolicy	Type: REG_DWORD, Length: 4, Data: 2
+```
+
+`RomeSdkChannelUserAuthzPolicy` (`CDP\SettingsPage`) is only used for "My device only"/"Everyone nearby" (it's still getting changed to `0` in this option).
 
 ```c
 L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CDP\\SettingsPage",
@@ -2216,7 +2237,17 @@ L"WifiLastDisabledNearShare",
 
 "This policy allows IT admins to turn off the ability to Link a Phone with a PC to continue reading, emailing and other tasks that requires linking between Phone and PC.If you enable this policy setting, the Windows device will be able to enroll in Phone-PC linking functionality and participate in Continue on PC experiences.If you disable this policy setting, the Windows device is not allowed to be linked to Phones, will remove itself from the device list of any linked Phones, and cannot participate in Continue on PC experiences.If you do not configure this policy setting, the default behavior depends on the Windows edition. Changes to this policy take effect on reboot."
 
-> https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-connectivity#allowphonepclinking
+This option will also disable resume ("Start something on one device and continue on this PC") - `System Settings > Apps > Resume`.
+
+```c
+// Off
+HKCU\Software\Microsoft\Windows\CurrentVersion\CrossDeviceResume\Configuration\IsResumeAllowed	Type: REG_DWORD, Length: 4, Data: 0
+
+// On
+HKCU\Software\Microsoft\Windows\CurrentVersion\CrossDeviceResume\Configuration\IsResumeAllowed	Type: REG_DWORD, Length: 4, Data: 1
+```
+
+By default resume is enabled, OneDrive is the only app which exists under the "Control which apps can use Resume" on a stock 25H2 installation and can be toggled via `IsOneDriveResumeAllowed` (same key as `IsResumeAllowed`). Disabling resume will disallow all apps to use Resume (doesn't set `IsXResumeAllowed` to `0`).
 
 ```json
 {
