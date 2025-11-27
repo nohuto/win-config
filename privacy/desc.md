@@ -250,6 +250,14 @@ Miscellaneous notes:
 
 Disables automatic network traffic on the settings page and prevents automatic downloading or updating of map data, limiting location-related data updates.
 
+`AllowOfflineMapsDownloadOverMeteredConnection` & `EnableOfflineMapsAutoUpdate`:
+
+| Value |	Description |
+| ---- | ---- |
+| `0`	Disabled | Force disable auto-update over metered connection. |
+| `1`	Enabled | Force enable auto-update over metered connection. |
+| `65535` (Default)	Not configured | User's choice. |
+
 ```c
 v8 = 1; // Default
 LOBYTE(a3) = 1;
@@ -286,7 +294,8 @@ return v5;
 
 `AutoDownloadAndUpdateMapData` & `AllowUntriggeredNetworkTrafficOnSettingsPage`:
 > https://gpsearch.azurewebsites.net/#13439  
-> https://gpsearch.azurewebsites.net/#13350
+> https://gpsearch.azurewebsites.net/#13350  
+> https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-maps
 
 # Disable Website Access to Language List
 

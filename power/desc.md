@@ -549,6 +549,10 @@ Not needed, if you disable energy estimation:
 
 ![](https://github.com/5Noxi/win-config/blob/main/power/images/energyesti.png?raw=true)
 
+---
+
+`Disable Battery Capacity Section` = Disables the battery capacity section on the battery saver page of the system settings app.
+
 # Powerplan
 
 Use the commands below, to import power plans by double-clicking them. Modify the powerplan via `PowerSettingsExplorer.exe`.

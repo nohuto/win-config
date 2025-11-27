@@ -1266,7 +1266,7 @@ All `NOC_GLOBAL_SETTING_*` I found in `NotificationController.dll`:
   'NOC_GLOBAL_SETTING_ALLOW_CONTROL_CENTER_ABOVE_LOCK';
   'NOC_GLOBAL_SETTING_ALLOW_NOTIFICATION_SOUND'; // Allow notification to play sounds
 ```
-The options I've commented on are included in the options under `System > Notifications`/right click menu of notification center. 
+The options I've commented on are included in the options under `System > Notifications`/right click menu of notification center.
 
 ---
 
@@ -1351,6 +1351,75 @@ The options I've commented on are included in the options under `System > Notifi
     "HKLM\\Software\\Policies\\Microsoft\\Windows\\Explorer"
   ],
   "ValueName": "NoUseStoreOpenWith",
+  "Elements": [
+    { "Type": "EnabledValue", "Data": "1" },
+    { "Type": "DisabledValue", "Data": "0" }
+  ]
+},
+{
+  "File": "WPN.admx",
+  "CategoryName": "NotificationsCategory",
+  "PolicyName": "NoTileNotification",
+  "NameSpace": "Microsoft.Policies.Notifications",
+  "Supported": "Windows8 - At least Windows Server 2012, Windows 8 or Windows RT",
+  "DisplayName": "Turn off tile notifications",
+  "ExplainText": "This policy setting turns off tile notifications. If you enable this policy setting, applications and system features will not be able to update their tiles and tile badges in the Start screen. If you disable or do not configure this policy setting, tile and badge notifications are enabled and can be turned off by the administrator or user. No reboots or service restarts are required for this policy setting to take effect.",
+  "KeyPath": [
+    "HKCU\\SOFTWARE\\Policies\\Microsoft\\Windows\\CurrentVersion\\PushNotifications"
+  ],
+  "ValueName": "NoTileApplicationNotification",
+  "Elements": [
+    { "Type": "EnabledValue", "Data": "1" },
+    { "Type": "DisabledValue", "Data": "0" }
+  ]
+},
+{
+  "File": "WPN.admx",
+  "CategoryName": "NotificationsCategory",
+  "PolicyName": "NoNotificationMirroring",
+  "NameSpace": "Microsoft.Policies.Notifications",
+  "Supported": "Windows_10_0 - At least Windows Server 2016, Windows 10",
+  "DisplayName": "Turn off notification mirroring",
+  "ExplainText": "This policy setting turns off notification mirroring. If you enable this policy setting, notifications from applications and system will not be mirrored to your other devices. If you disable or do not configure this policy setting, notifications will be mirrored, and can be turned off by the administrator or user. No reboots or service restarts are required for this policy setting to take effect.",
+  "KeyPath": [
+    "HKCU\\SOFTWARE\\Policies\\Microsoft\\Windows\\CurrentVersion\\PushNotifications"
+  ],
+  "ValueName": "DisallowNotificationMirroring",
+  "Elements": [
+    { "Type": "EnabledValue", "Data": "1" },
+    { "Type": "DisabledValue", "Data": "0" }
+  ]
+},
+{
+  "File": "WPN.admx",
+  "CategoryName": "NotificationsCategory",
+  "PolicyName": "NoToastNotification",
+  "NameSpace": "Microsoft.Policies.Notifications",
+  "Supported": "Windows8 - At least Windows Server 2012, Windows 8 or Windows RT",
+  "DisplayName": "Turn off toast notifications",
+  "ExplainText": "This policy setting turns off toast notifications for applications. If you enable this policy setting, applications will not be able to raise toast notifications. Note that this policy does not affect taskbar notification balloons. Note that Windows system features are not affected by this policy. You must enable/disable system features individually to stop their ability to raise toast notifications. If you disable or do not configure this policy setting, toast notifications are enabled and can be turned off by the administrator or user. No reboots or service restarts are required for this policy setting to take effect.",
+  "KeyPath": [
+    "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\CurrentVersion\\PushNotifications",
+    "HKCU\\SOFTWARE\\Policies\\Microsoft\\Windows\\CurrentVersion\\PushNotifications"
+  ],
+  "ValueName": "NoToastApplicationNotification",
+  "Elements": [
+    { "Type": "EnabledValue", "Data": "1" },
+    { "Type": "DisabledValue", "Data": "0" }
+  ]
+},
+{
+  "File": "WPN.admx",
+  "CategoryName": "NotificationsCategory",
+  "PolicyName": "NoLockScreenToastNotification",
+  "NameSpace": "Microsoft.Policies.Notifications",
+  "Supported": "Windows8 - At least Windows Server 2012, Windows 8 or Windows RT",
+  "DisplayName": "Turn off toast notifications on the lock screen",
+  "ExplainText": "This policy setting turns off toast notifications on the lock screen. If you enable this policy setting, applications will not be able to raise toast notifications on the lock screen. If you disable or do not configure this policy setting, toast notifications on the lock screen are enabled and can be turned off by the administrator or user. No reboots or service restarts are required for this policy setting to take effect.",
+  "KeyPath": [
+    "HKCU\\SOFTWARE\\Policies\\Microsoft\\Windows\\CurrentVersion\\PushNotifications"
+  ],
+  "ValueName": "NoToastApplicationNotificationOnLockScreen",
   "Elements": [
     { "Type": "EnabledValue", "Data": "1" },
     { "Type": "DisabledValue", "Data": "0" }
