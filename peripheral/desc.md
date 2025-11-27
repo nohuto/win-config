@@ -1,12 +1,5 @@
 # Mouse Values
 
-```bat
-reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v MouseWheelRouting /t REG_DWORD /d 0 /f
-```
-Disables the scroll functionality in inactive windows. 
-`0` - Off
-`2` - On
-
 `RawMouseThrottleDuration` controls the throttle interval (in ms) for delivering raw mouse input to background windows. "We set out to reduce the amount of processing time it took to handle input requests by throttling and coalescing background raw mouse listeners and capping their message rate." 
 
 Validate the changes with [MouseTester](https://github.com/valleyofdoom/MouseTester), move `MouseTester.exe` to the background after starting it by opening a different window.
@@ -99,8 +92,10 @@ Spatial audio positions sounds in 3D space around you, surround sound mainly anc
 ---
 
 Miscellaneous notes:
-```powershell
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Audio" /v DisableSpatialOnLowLatency /t REG_DWORD /d 1 /f
+```json
+"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Audio": {
+  "DisableSpatialOnLowLatency": { "Type": "REG_DWORD", "Data": 1 }
+}
 ```
 
 # Disable System Sounds

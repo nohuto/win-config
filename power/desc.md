@@ -530,10 +530,12 @@ You can see processes, which use power throttling by enabling the column (`Detai
 # Disable Energy Estimation
 
 Not needed, if you disable energy estimation:
-```bat
-reg add "HKLM\SYSTEM\CurrentControlSet\Control\Power\EnergyEstimation\TaggedEnergy" /v DisableTaggedEnergyLogging /t REG_DWORD /d 1 /f
-reg add "HKLM\SYSTEM\CurrentControlSet\Control\Power\EnergyEstimation\TaggedEnergy" /v TelemetryMaxApplication /t REG_DWORD /d 0 /f
-reg add "HKLM\SYSTEM\CurrentControlSet\Control\Power\EnergyEstimation\TaggedEnergy" /v TelemetryMaxTagPerApplication /t REG_DWORD /d 0 /f
+```json
+"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\EnergyEstimation\\TaggedEnergy": {
+  "DisableTaggedEnergyLogging": { "Type": "REG_DWORD", "Data": 1 },
+  "TelemetryMaxApplication": { "Type": "REG_DWORD", "Data": 0 },
+  "TelemetryMaxTagPerApplication": { "Type": "REG_DWORD", "Data": 0 }
+}
 ```
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power";
@@ -552,13 +554,19 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Control\Power\EnergyEstimation\TaggedEner
 Use the commands below, to import power plans by double-clicking them. Modify the powerplan via `PowerSettingsExplorer.exe`.
 > http://www.mediafire.com/file/wt37sbsejk7iepm/PowerSettingsExplorer.zip
 
-```powershell
-reg add "HKCR\.pow" /ve /t REG_SZ /d "Power Plan" /f
-reg add "HKCR\.pow" /v FriendlyTypeName /t REG_SZ /d "Power Plan" /f
-reg add "HKCR\.pow\DefaultIcon" /ve /t REG_EXPAND_SZ /d "%%SystemRoot%%\System32\powercfg.cpl,-202" /f
-reg add "HKCR\.pow\shell\Import" /f
-reg add "HKCR\.pow\shell\Import\command" /ve /t REG_SZ /d "powercfg /import \"%%1\"" /f
+```json
+"HKCR\\.pow": {
+  "": { "Type": "REG_SZ", "Data": "Power Plan" },
+  "FriendlyTypeName": { "Type": "REG_SZ", "Data": "Power Plan" }
+},
+"HKCR\\.pow\\DefaultIcon": {
+  "": { "Type": "REG_EXPAND_SZ", "Data": "%%SystemRoot%%\\System32\\powercfg.cpl,-202" }
+},
+"HKCR\\.pow\\shell\\Import\\command": {
+  "": { "Type": "REG_SZ", "Data": "powercfg /import \"%%1\"" }
+}
 ```
+
 Remove default powerplans with:
 ```bat
 powercfg -delete 381b4222-f694-41f0-9685-ff5bb260df2e
@@ -577,7 +585,7 @@ Shows the current available sleep states on your system.
 
 # Disable HDD Parking
 
-Disables HIPM, DIPM, and HDD Parking, preventing storage devices from entering low-power states.
+`EnableHDDParking` is set to `1` by default, `EnableDIPM`/`EnableHIPM` are set to `0` by default.
 
 ---
 
@@ -586,7 +594,6 @@ Miscellaneous information:
 HIPM = Host Initiated Link Power Management
 DIPM = Device Initiated Link Power Management
 ```
-`EnableDIPM` is set to `0` by default.
 ```c
 Dst[37] = L"EnableHIPM";
 LODWORD(Dst[11]) = 4;
@@ -620,8 +627,12 @@ dword_4C140 = -1;
 
 ---
 
-```
-reg add "HKLM\SYSTEM\CurrentControlSet\Services\stornvme\Parameters\Device" /v IdlePowerMode /t REG_DWORD /d 0 /f
+Miscellaneous notes:
+
+```json
+"HKLM\\SYSTEM\\CurrentControlSet\\Services\\stornvme\\Parameters\\Device": {
+  "IdlePowerMode": { "Type": "REG_DWORD", "Data": 0 }
+}
 ```
 
 > https://github.com/5Noxi/wpr-reg-records#wpr--procmon-registry-activity-records  
@@ -709,8 +720,10 @@ v20[12..15] ≤ 0x7FFFFFF5 // ^
 v20[16..19] = 0
 ```
 `Coalescing-Timer-Interval.bat` would currently use the upper bound (`ToleranceDelay`?)
-```powershell
-reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Windows" /v TimerCoalescing /t REG_BINARY /d 00000000000000000000000000000000F5FFFF7FF5FFFF7FF5FFFF7FF5FFFF7F00000000000000000000000000000000F5FFFF7FF5FFFF7FF5FFFF7FF5FFFF7F00000000000000000000000000000000 /f
+```json
+"HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows": {
+  "TimerCoalescing": { "Type": "REG_BINARY", "Data": "00000000000000000000000000000000F5FFFF7FF5FFFF7FF5FFFF7FF5FFFF7F00000000000000000000000000000000F5FFFF7FF5FFFF7FF5FFFF7FF5FFFF7F00000000000000000000000000000000" }
+}
 ```
 I removed it, since it causes a BSOD on my testing VMs.
 
@@ -729,14 +742,7 @@ Stop USB devices when my screen is off to help battery.
 ```
 `Bluetooth & devices` > `USB` > `USB battery saver`
 
-> [power/assets | usbbattery-OpenQueryAttemptRecoveryFromUsbPowerDrainValue](https://github.com/5Noxi/win-config/blob/main/power/assets/usbbattery-OpenQueryAttemptRecoveryFromUsbPowerDrainValue)  
-
----
-
-Miscellaneous notes:
-```powershell
-for /f "delims=" %%k in ('reg query "HKLM\SYSTEM\CurrentControlSet\Control\USB" /s /f "AttemptRecoveryFromUsbPowerDrain" ^| findstr "HKEY"') do reg add "%%k" /v AttemptRecoveryFromUsbPowerDrain /t REG_DWORD /d 0 /f
-```
+> [power/assets | usbbattery-OpenQueryAttemptRecoveryFromUsbPowerDrainValue.c](https://github.com/5Noxi/win-config/blob/main/power/assets/usbbattery-OpenQueryAttemptRecoveryFromUsbPowerDrainValue.c)
 
 # USB Flags
 

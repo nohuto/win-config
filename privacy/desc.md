@@ -11,20 +11,17 @@ Seems to be a fallback if `AllowTelemetry` isn't set.
 
 Miscellaneous notes:  
 
-Telemetry for DCE usage?
-```bat
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows" /v DCEInUseTelemetryDisabled /t REG_DWORD /d 1 /f
+```json
+"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Windows": {
+  "DCEInUseTelemetryDisabled": { "Type": "REG_DWORD", "Data": 1 }
+},
+"HKLM\\SOFTWARE\\Microsoft\\wbem\\Tracing": {
+  "enableWinmgmtTelemetry": { "Type": "REG_DWORD", "Data": 0 }
+}
 ```
+
 > https://github.com/5Noxi/wpr-reg-records/blob/main/records/Winows-NT.txt
 
-Kills the device and configuration data collection tool and telemetry collector and sender tasks.
-```bat
-reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\CompatTelRunner.exe" /v Debugger /t REG_SZ /d "%windir%\System32\taskkill.exe" /f
-reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\DeviceCensus.exe" /v Debugger /t REG_SZ /d "%windir%\System32\taskkill.exe" /f
-```
-```powershell
-reg add "HKLM\SOFTWARE\Microsoft\wbem\Tracing" /v enableWinmgmtTelemetry /t REG_DWORD /d 0 /f
-```
 
 ```json
 {
@@ -330,11 +327,17 @@ Get-ScheduledTask | ? {$_.Settings.MaintenanceSettings}
 ---
 
 Miscellaneous notes:
-```powershell
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModel\StateRepository" /v MaintenanceInterval /t REG_DWORD /d 0 /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\Repository" /v MaintenanceInterval /t REG_DWORD /d 0 /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\Maintenance" /v Random Delay /t REG_DWORD /d 0 /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\Maintenance" /v Randomized /t REG_DWORD /d 0 /f
+```json
+"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\AppModel\\StateRepository": {
+  "MaintenanceInterval": { "Type": "REG_DWORD", "Data": 0 }
+},
+"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\Repository": {
+  "MaintenanceInterval": { "Type": "REG_DWORD", "Data": 0 }
+},
+"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\Maintenance": {
+  "Random Delay": { "Type": "REG_DWORD", "Data": 0 },
+  "Randomized": { "Type": "REG_DWORD", "Data": 0 }
+}
 ```
 
 # Disable WMPlayer Telemetry
@@ -977,10 +980,14 @@ Disables remote desktop, remote assistance, RPC traffic, and device redirection.
 
 ---
 
-Miscellaneous notes:`
-```powershell
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" /v fEncryptRPCTraffic /t REG_DWORD /d 1 /f
-reg add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /v fLogonDisabled /t REG_DWORD /d 1 /f
+Miscellaneous notes:
+```json
+"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\Terminal Services": {
+  "fEncryptRPCTraffic": { "Type": "REG_DWORD", "Data": 1 }
+},
+"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Terminal Server\\WinStations\\RDP-Tcp": {
+  "fLogonDisabled": { "Type": "REG_DWORD", "Data": 1 }
+}
 ```
 ```powershell
 \Registry\Machine\SYSTEM\ControlSet001\Control\Terminal Server\WinStations : DWMFRAMEINTERVAL
@@ -1698,8 +1705,10 @@ ValueW = RegGetValueW(
 v16 = L"FailedToGetReason"; // if value is missing
 ```
 
-```powershell
-reg add "HKCU\SOFTWARE\Microsoft\Windows\Shell\Copilot" /v CopilotDisabledReason /t REG_SZ /d "" /f
+```json
+"HKCU\\SOFTWARE\\Microsoft\\Windows\\Shell\\Copilot": {
+  "CopilotDisabledReason": { "Type": "REG_SZ", "Data": "" }
+}
 ```
 ```json
 {
@@ -1743,15 +1752,6 @@ reg add "HKCU\SOFTWARE\Microsoft\Windows\Shell\Copilot" /v CopilotDisabledReason
     { "Type": "DisabledValue", "Data": "0" }
   ]
 },
-```
-
----
-
-Disables generative fill, cocreator & image creator in paint:
-```powershell
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Paint" /v DisableGenerativeFill /t REG_DWORD /d 1 /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Paint" /v DisableCocreator /t REG_DWORD /d 1 /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Paint" /v DisableImageCreator /t REG_DWORD /d 1 /f
 ```
 
 # Disable Camera
@@ -1930,24 +1930,14 @@ Disables all kind of suggestions: in start, text suggestions (multilingual...), 
 ### Miscellaneous Notes
 
 Disable edge related suggestions with (search suggestions in address bar):
-```bat
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v SearchSuggestEnabled /t REG_DWORD /d 0 /f
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v LocalProvidersEnabled /t REG_DWORD /d 0 /f
-reg add "HKLM\Software\Policies\Microsoft\MicrosoftEdge\SearchScopes" /v ShowSearchSuggestionsGlobal /t REG_DWORD /d 0 /f
-```
-Disable phone link suggestions:
-```bat
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Mobility" /v OptedIn /t REG_DWORD /d 0 /f
-```
-
-```powershell
-for /f "skip=2 tokens=1" %%N in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" 2^>nul') do (
-    echo %%N | findstr /R "SubscribedContent-[0-9]*Enabled" >nul && (
-        reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v "%%~nxN" /t REG_DWORD /d 0 /f
-    )
-)
-
-powershell -command "Remove-Item -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\*' -Recurse"
+```json
+"HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge": {
+  "SearchSuggestEnabled": { "Type": "REG_DWORD", "Data": 0 },
+  "LocalProvidersEnabled": { "Type": "REG_DWORD", "Data": 0 }
+},
+"HKLM\\Software\\Policies\\Microsoft\\MicrosoftEdge\\SearchScopes": {
+  "ShowSearchSuggestionsGlobal": { "Type": "REG_DWORD", "Data": 0 }
+}
 ```
 
 # Disable Synchronization
@@ -3021,16 +3011,27 @@ Miscellaenous notes:
 ```
 
 > https://learn.microsoft.com/en-us/previous-versions/windows/desktop/Policy/developing-an-rsop-management-tool  
-> [privacy/assets | rsop-IsDesktopHeapLoggingOn.c](https://github.com/5Noxi/win-config/blob/main/privacy/assets/rsop-IsDesktopHeapLoggingOn.c)
 
----
+# Disable Desktop Heap Logging
 
-Another logging feature - `DesktopHeapLogging`. "It is meant to log information about desktop heap usage. This can be helpful when diagnosing issues where system resources for desktop objects might be strained." ([*](https://answers.microsoft.com/en-us/windows/forum/all/question-about-some-dwm-registry-settings/341cac5c-d85a-43e5-89d3-d9734f84da4e))
+"It is meant to log information about desktop heap usage. This can be helpful when diagnosing issues where system resources for desktop objects might be strained." 
 
-```bat
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows" /v DesktopHeapLogging /t REG_DWORD /d 0 /f
+```c
+__int64 IsDesktopHeapLoggingOn(void)
+{
+  int v1 = 0; // default state
+  int v4 = *(_DWORD *)(W32GetUserSessionState() + 62792);
+
+  if ( v4 )
+    v1 = 0; // fallback to the default when registry access fails
+  return v1 != 0;
+}
 ```
 
+`DesktopHeapLogging` seems to have a fallback of `0`, but the value exists by default and is set to `1`. Means deleting it/setting it to `0` should do the same.
+
+> [privacy/assets | rsop-IsDesktopHeapLoggingOn.c](https://github.com/5Noxi/win-config/blob/main/privacy/assets/rsop-IsDesktopHeapLoggingOn.c)  
+> https://answers.microsoft.com/en-us/windows/forum/all/question-about-some-dwm-registry-settings/341cac5c-d85a-43e5-89d3-d9734f84da4e  
 > https://github.com/5Noxi/wpr-reg-records/blob/main/records/Winows-NT.txt
 
 # Disable Message Sync

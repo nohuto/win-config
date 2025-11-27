@@ -201,9 +201,13 @@ You've to edit the `Rotation` value to change the orientation, `DefaultSettings.
 `4` = Portrait (flipped)
 
 `Landscape`:
-```bat
-reg add "HKLM\System\CurrentControlSet\Control\UnitedVideo\CONTROL\VIDEO\{0096AEE5-861E-11F0-896E-806E6F6E6963}\0000" /v DefaultSettings.Orientation /t REG_DWORD /d 0 /f
-reg add "HKLM\System\CurrentControlSet\Control\GraphicsDrivers\Configuration\MSI3CB01222_2E_07E4_FF^28BF11A4ED9F56277B96046CA0884335\00\00" /v Rotation /t REG_DWORD /d 1 /f
+```json
+"HKLM\\System\\CurrentControlSet\\Control\\UnitedVideo\\CONTROL\\VIDEO\\{0096AEE5-861E-11F0-896E-806E6F6E6963}\\0000": {
+  "DefaultSettings.Orientation": { "Type": "REG_DWORD", "Data": 0 }
+},
+"HKLM\\System\\CurrentControlSet\\Control\\GraphicsDrivers\\Configuration\\MSI3CB01222_2E_07E4_FF^28BF11A4ED9F56277B96046CA0884335\\00\\00": {
+  "Rotation": { "Type": "REG_DWORD", "Data": 1 }
+}
 ```
 
 ## Display > Adjust desktop size and position
@@ -241,11 +245,6 @@ NVDisplay.Container.exe    RegSetValue    HKLM\System\CurrentControlSet\Control\
 ```
 `Restrict access to the GPU performance counters to admin users only` = `1`
 `Allow access to the GPU performance counters to all users` = `0`
-```bat
-reg add "HKLM\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\XXXX" /v RmProfilingAdminOnly /t REG_DWORD /d X /f
-reg add "HKLM\SYSTEM\CurrentControlSet\Services\nvlddmkm\Global\NVTweak" /v RmProfilingAdminOnly /t REG_DWORD /d X /f
-```
-Change `XXXX` to the correct key and `X` to `1`/`0`.
 
 > https://www.nvidia.com/content/Control-Panel-Help/vLatest/en-us/index.htm#t=mergedProjects%2FDeveloper%2FManage_Performance_Counters_-_Reference.htm&rhsearch=counters  
 > https://github.com/5Noxi/bitmask-calc
@@ -262,8 +261,10 @@ NVDisplay.Container.exe    RegSetValue    HKLM\System\CurrentControlSet\Control\
 ![](https://github.com/5Noxi/win-config/blob/main/nvidia/images/nvcpl6.png?raw=true)  
 
 ## Video > Adjust video image settings
-```powershell
-reg add "HKLM\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000" /v _User_Global_VAL_SuperResolution /t REG_DWORD /d 0 /f
+```json
+"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4d36e968-e325-11ce-bfc1-08002be10318}\\0000": {
+  "_User_Global_VAL_SuperResolution": { "Type": "REG_DWORD", "Data": 0 }
+}
 ```
 
 `On` & `Auto`:
@@ -450,19 +451,29 @@ Other ECC related features can be found using [`bitmask-calc`](https://github.co
 ```
 > https://forums.developer.nvidia.com/t/hide-nvidia-tray-icon/162739
 
-Other values I found:
+---
 
-?
-```bat
-reg add "HKLM\SYSTEM\CurrentControlSet\Services\nvlddmkm\Global\NVTweak" /v HideManufacturerFromMonitorName /t REG_DWORD /d 1 /f
+Other miscellaneous values I found:
+
+```json
+"HKLM\\SYSTEM\\CurrentControlSet\\Services\\nvlddmkm\\Global\\NVTweak": {
+  "HideManufacturerFromMonitorName": { "Type": "REG_DWORD", "Data": 1 }
+}
 ```
 
-Hides the icon from the context menu (2nd one is probably related to optimus):
-```bat
-reg add "HKCU\Software\NVIDIA Corporation\Global\NvCplApi\Policies" /v ContextUIPolicy /t REG_DWORD /d 0 /f
-reg add "HKCU\SOFTWARE\NVIDIA Corporation\Global\RunOpenGLOn" /v ShowContextMenu /t REG_DWORD /d 0 /f
-reg add "HKCU\SOFTWARE\NVIDIA Corporation\Global\CoProcManager" /v ShowContextMenu /t REG_DWORD /d 0 /f
+Hides the icon from the context menu (2nd one is probably related to optimus, first controls NVCPL):
+```json
+"HKCU\\Software\\NVIDIA Corporation\\Global\\NvCplApi\\Policies": {
+  "ContextUIPolicy": { "Type": "REG_DWORD", "Data": 0 }
+},
+"HKCU\\SOFTWARE\\NVIDIA Corporation\\Global\\RunOpenGLOn": {
+  "ShowContextMenu": { "Type": "REG_DWORD", "Data": 0 }
+},
+"HKCU\\SOFTWARE\\NVIDIA Corporation\\Global\\CoProcManager": {
+  "ShowContextMenu": { "Type": "REG_DWORD", "Data": 0 }
+}
 ```
+Only the first value gets used.
 
 > [nvidia/assets | HideManufacturer.c](https://github.com/5Noxi/win-config/blob/main/nvidia/assets/trayicon-HideManufacturer.c)  
 > [nvidia/assets | notes.cpp](https://github.com/5Noxi/win-config/blob/main/nvidia/assets/trayicon-notes.cpp)  
@@ -470,14 +481,8 @@ reg add "HKCU\SOFTWARE\NVIDIA Corporation\Global\CoProcManager" /v ShowContextMe
 
 # Disable DLSS Indicator
 
-Disable:
-```bat
-reg add "HKEY_LOCAL_MACHINE\SOFTWARE\NVIDIA Corporation\Global\NGXCore" /v ShowDlssIndicator /t REG_DWORD /d 0 /f
-```
-Enable:
-```bat
-reg add "HKEY_LOCAL_MACHINE\SOFTWARE\NVIDIA Corporation\Global\NGXCore" /v ShowDlssIndicator /t REG_DWORD /d 1024 /f
-```
+Enabled = `1024`  
+Disabled = `0`
 
 ---
 
@@ -1574,11 +1579,7 @@ NVDisplay.Container.exe    RegSetValue    HKLM\System\CurrentControlSet\Control\
 ```
 `Restrict access to the GPU performance counters to admin users only` = `1`
 `Allow access to the GPU performance counters to all users` = `0`
-```bat
-reg add "HKLM\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\XXXX" /v RmProfilingAdminOnly /t REG_DWORD /d X /f
-reg add "HKLM\SYSTEM\CurrentControlSet\Services\nvlddmkm\Global\NVTweak" /v RmProfilingAdminOnly /t REG_DWORD /d X /f
-```
-Change `XXXX` to the correct key and `X` to `1`/`0`.
+
 > https://www.nvidia.com/content/Control-Panel-Help/vLatest/en-us/index.htm#t=mergedProjects%2FDeveloper%2FManage_Performance_Counters_-_Reference.htm&rhsearch=counters  
 > https://github.com/5Noxi/bitmask-calc
 

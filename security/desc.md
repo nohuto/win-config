@@ -163,39 +163,31 @@ PauseFeatureUpdatesEndTime
 PauseQualityUpdatesEndTime
 PauseUpdatesExpiryTime
 ```
-`String Value`, e.g.: `2030-01-01T00:00:00Z`
-
-Example (pause till `2050`):
-```bat
-reg add "HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings" /v PauseFeatureUpdatesEndTime /t REG_SZ /d "2050-01-01T00:00:00Z" /f
-reg add "HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings" /v PauseQualityUpdatesEndTime /t REG_SZ /d "2050-01-01T00:00:00Z" /f
-reg add "HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings" /v PauseUpdatesExpiryTime /t REG_SZ /d "2050-01-01T00:00:00Z" /f
-reg add "HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings" /v PauseFeatureUpdatesStartTime /t REG_SZ /d "2000-01-01T00:00:00Z" /f
-reg add "HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings" /v PauseQualityUpdatesStartTime /t REG_SZ /d "2000-01-01T00:00:00Z" /f
-reg add "HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings" /v PauseUpdatesStartTime /t REG_SZ /d "2000-01-01T00:00:00Z" /f
-reg add "HKLM\SOFTWARE\Microsoft\WindowsUpdate\UpdatePolicy\PolicyState" /v PauseFeatureUpdatesEndTime /t REG_SZ /d "2050-01-01T00:00:00Z" /f
-reg add "HKLM\SOFTWARE\Microsoft\WindowsUpdate\UpdatePolicy\PolicyState" /v PauseQualityUpdatesEndTime /t REG_SZ /d "2000-01-01T00:00:00Z" /f
-reg add "HKLM\SOFTWARE\Microsoft\WindowsUpdate\UpdatePolicy\PolicyState" /v PauseFeatureUpdatesStartTime /t REG_SZ /d "2050-01-01T00:00:00Z" /f
-reg add "HKLM\SOFTWARE\Microsoft\WindowsUpdate\UpdatePolicy\PolicyState" /v PauseQualityUpdatesStartTime /t REG_SZ /d "2000-01-01T00:00:00Z" /f
-```
+`String Value`, e.g.: `2030-01-01T00:00:00Z`.
 
 ---
 
 Miscellaneous notes:
-```powershell
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /v WUServer /t REG_SZ /d " " /f
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /v WUStatusServer /t REG_SZ /d " " /f
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /v UpdateServiceUrlAlternate /t REG_SZ /d " " /f
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /v DisableWindowsUpdateAccess /t REG_DWORD /d 1 /f
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /v DisableOSUpgrade /t REG_DWORD /d 1 /f
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /v SetDisableUXWUAccess /t REG_DWORD /d 1 /f
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /v DoNotConnectToWindowsUpdateInternetLocations /t REG_DWORD /d 1 /f
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v NoAutoUpdate /t REG_DWORD /d 1 /f
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v NoAutoRebootWithLoggedOnUsers /t REG_DWORD /d 1 /f
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v UseWUServer /t REG_DWORD /d 1 /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /v AUOptions /t REG_DWORD /d 1 /f
-reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /v SetupWizardLaunchTime /f
-reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /v AcceleratedInstallRequired /f
+```json
+"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate": {
+  "WUServer": { "Type": "REG_SZ", "Data": " " },
+  "WUStatusServer": { "Type": "REG_SZ", "Data": " " },
+  "UpdateServiceUrlAlternate": { "Type": "REG_SZ", "Data": " " },
+  "DisableWindowsUpdateAccess": { "Type": "REG_DWORD", "Data": 1 },
+  "DisableOSUpgrade": { "Type": "REG_DWORD", "Data": 1 },
+  "SetDisableUXWUAccess": { "Type": "REG_DWORD", "Data": 1 },
+  "DoNotConnectToWindowsUpdateInternetLocations": { "Type": "REG_DWORD", "Data": 1 }
+},
+"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU": {
+  "NoAutoUpdate": { "Type": "REG_DWORD", "Data": 1 },
+  "NoAutoRebootWithLoggedOnUsers": { "Type": "REG_DWORD", "Data": 1 },
+  "UseWUServer": { "Type": "REG_DWORD", "Data": 1 }
+},
+"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsUpdate\\Auto Update": {
+  "AUOptions": { "Type": "REG_DWORD", "Data": 1 },
+  "SetupWizardLaunchTime": { "Action": "deletevalue" },
+  "AcceleratedInstallRequired": { "Action": "deletevalue" }
+}
 ```
 
 # Disable System Mitigations
@@ -204,8 +196,8 @@ Security features that protect against memory based attacks like buffer overflow
 
 It currently applies all valid values **system wide** using `Set-ProcessMitigation -System`:
 ```powershell
-powershell.exe	RegSetValue	HKLM\System\CurrentControlSet\Control\Session Manager\kernel\MitigationOptions	Type: REG_BINARY, Length: 24, Data: 00 22 22 20 22 20 22 22 22 20 22 22 22 22 22 22
-powershell.exe	RegSetValue	HKLM\System\CurrentControlSet\Control\Session Manager\kernel\MitigationAuditOptions	Type: REG_BINARY, Length: 24, Data: 02 22 22 02 02 02 20 22 22 22 22 22 22 22 22 22
+HKLM\System\CurrentControlSet\Control\Session Manager\kernel\MitigationOptions	Type: REG_BINARY, Length: 24, Data: 00 22 22 20 22 20 22 22 22 20 22 22 22 22 22 22
+HKLM\System\CurrentControlSet\Control\Session Manager\kernel\MitigationAuditOptions	Type: REG_BINARY, Length: 24, Data: 02 22 22 02 02 02 20 22 22 22 22 22 22 22 22 22
 ```
 
 Disable specific mitigation:
@@ -314,9 +306,7 @@ dq offset dword_140FC41E0
 
 dword_140FC41E0 dd 1 // default - 0 = disabled
 ```
-```bat
-reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" /v MoveImages /t REG_DWORD /d 0 /f 
-```
+
 > https://en.wikipedia.org/wiki/Address_space_layout_randomization
 
 # Disable WU Driver Updates
@@ -422,25 +412,12 @@ reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Mem
 
 # Disable Windows Defender
 
-You may have to boot into `safeboot` to apply the changes:
+You'll have to boot into `safeboot` to apply some of the changes:
 ```bat
 bcdedit /set safeboot minimal
 ::bcdedit /deletevalue safeboot
 ```
-Disable windows firewall with (breaks microsoft store, netsh advfirewall, winget, sandbox, docker, WSL ([*](https://privacylearn.com/windows/privacy-over-security/disable-defender/disable-defender-firewall/disable-defender-firewall-services-and-drivers))):
-```bat
-reg add "HKLM\SYSTEM\CurrentControlSet\Services\mpssvc" /v Start /t REG_DWORD /d 4 /f
-reg add "HKLM\SYSTEM\CurrentControlSet\Services\mpsdrv" /v Start /t REG_DWORD /d 4 /f
-reg add "HKLM\SYSTEM\CurrentControlSet\Services\BFE" /v Start /t REG_DWORD /d 4 /f
-netsh advfirewall set allprofiles state off
-```
-You'll need [powerrun](https://www.sordum.org/downloads/?power-run) to apply the edits.
 
-If the `netsh` command doesn't work:
-```powershell
-$paths = @('HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall','HKLM:\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy')
-'StandardProfile','PublicProfile','PrivateProfile','DomainProfile' | % {foreach ($p in $paths) {sp -Path "$p\$_" -Name EnableFirewall -Type DWord -Value 0 -Force}}
-```
 Remove defender from a mounted image with the code below. Obviously, you need to change the `mount` path before running it. You can remove task leftovers after installation or in the `oobeSystem` phase with:
 ```bat
 powershell -command "Get-ScheduledTask -TaskPath '\Microsoft\Windows\Windows Defender\' | Unregister-ScheduledTask -Confirm:$false"
@@ -621,23 +598,9 @@ WPBT allows hardware manufacturers to run programs during Windows startup that m
 > https://persistence-info.github.io/Data/wpbbin.html  
 > https://github.com/Jamesits/dropWPBT
 
-Disable WPBT within a image (`sources\install.wim`):
-```powershell
-dism /get-imageinfo /imagefile:"<wimpath>"
-dism /mount-image /imagefile:"<wimpath>" /index:<index> /mountdir:"<tempmountdir>" /optimize /checkintegrity
-reg load "HKLM\image" "<tempmountdir>\windows\system32\config\system"
-reg add "HKLM\image\ControlSet001\Control\Session Manager" /v DisableWpbtExecution /t REG_DWORD /d 1 /f
-reg unload "HKLM\image"
-dism /unmount-image /mountdir:"<tempmountdir>" /commit /checkintegrity
-```
-
 # Block MRT via WU
 
-MRT takes a lot of time - there are better tools. It blocks 
-```powershell
-reg add "HKLM\SOFTWARE\Policies\Microsoft\MRT" /v DontReportInfectionInformation /t REG_DWORD /d 1 /f
-```
-Blocks infection reporting, if using MRT.
+MRT takes a lot of time, there are better tools (e.g. MalwareBytes).
 
 ![](https://github.com/5Noxi/win-config/blob/main/security/images/mrt.png?raw=true)
 
@@ -925,10 +888,7 @@ DTLS 1.2 & TLS 1.3:
 # Enable USB Write Protection
 Restricts write access to USB devices (read only). You can also change it with `diskpart`, by selecting the disk with `select disk` and chaning it to read only with `attributes disk set readonly` (revert it with `attributes disk clear readonly`).
 
-Disable USB connection errors (for whatever reason):
-```bat
-reg add "HKCU\Software\Microsoft\Shell\USB" /v NotifyOnUsbErrors /t REG_DWORD /d 0 /f
-```
+Rather leave USB connection error notifications enabled, unless there's a specific reason for it.
 
 # Increase TDR
 

@@ -41,8 +41,10 @@ Dism.exe /online /Cleanup-Image /StartComponentCleanup /ResetBase
 > https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/clean-up-the-winsxs-folder?view=windows-11
 
 Permanently remove outdated update files from `C:\Windows\WinSxS` to free space. Once applied, previous updates cannot be uninstalled:
-```bat
-reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\SideBySide\Configuration" /v DisableResetbase /t REG_DWORD /d 0 /f
+```json
+"HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\SideBySide\\Configuration": {
+  "DisableResetbase": { "Type": "REG_DWORD", "Data": 0 }
+}
 ```
 The value doesn't exist on more recent versions.
 

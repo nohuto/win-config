@@ -123,9 +123,13 @@ It changes every setting, which is shown in the `Folder Options` window. Some ar
 ---
 
 Miscellaneous notes:
-```powershell
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer" /v ShellState /t REG_BINARY /d 24,00,00,00,3e,20,00,00,00,00,00,00,00,00,00,00,00,00,00,00,01,00,00,00,13,00,00,00,00,00,00,00,42,00,00,00 /f
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState" /v Settings /t REG_BINARY /d 0c,00,02,00,0a,01,00,00,60,00,00,00 /f
+```json
+"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer": {
+  "ShellState": { "Type": "REG_BINARY", "Data": "240000003e20000000000000000000000001000000130000000000000042000000" }
+},
+"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\CabinetState": {
+  "Settings": { "Type": "REG_BINARY", "Data": "0c0002000a01000060000000" }
+}
 ```
 
 ```json
@@ -159,19 +163,23 @@ reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState" /
 The pictures below show: `Dark Theme`, `Light Theme`.
 
 Change accent color via registry (ARGB):
-```bat
-reg add "HKCU\Software\Microsoft\Windows\DWM" /v ColorizationColor /t REG_DWORD /d 3292809298 /f
-reg add "HKCU\Software\Microsoft\Windows\DWM" /v ColorizationAfterglow /t REG_DWORD /d 3292809298 /f
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent" /v AccentPalette /t REG_BINARY /d 646a79ff575c68ff4d525dff444852ff3a3d46ff30333bff23252aff88179800 /f
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent" /v StartColorMenu /t REG_DWORD /d 4282793274 /f
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent" /v AccentColorMenu /t REG_DWORD /d 4283582532 /f
+```json
+"HKCU\\Software\\Microsoft\\Windows\\DWM": {
+  "ColorizationColor": { "Type": "REG_DWORD", "Data": 3292809298 },
+  "ColorizationAfterglow": { "Type": "REG_DWORD", "Data": 3292809298 }
+},
+"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Accent": {
+  "AccentPalette": { "Type": "REG_BINARY", "Data": "646a79ff575c68ff4d525dff444852ff3a3d46ff30333bff23252aff88179800" },
+  "StartColorMenu": { "Type": "REG_DWORD", "Data": 4282793274 },
+  "AccentColorMenu": { "Type": "REG_DWORD", "Data": 4283582532 }
+}
 ```
+
 This would apply dark nord color scheme (suboption).
 > https://www.nordtheme.com/
 
 ![](https://github.com/5Noxi/win-config/blob/main/visibility/images/darktheme1.png?raw=true)
 ![](https://github.com/5Noxi/win-config/blob/main/visibility/images/darktheme2.png?raw=true)
-
 
 # Disable Transparency
 
@@ -217,14 +225,18 @@ Hide preview pane:
 ---
 
 Miscellaneous comments:
-```bat
-:: LaunchTo:
-:: 1 = This PC
-:: 2 = Home (default)
-:: 3 = Downloads
-:: 4 = OneDrive
-reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v LaunchTo /t REG_DWORD /d 1 /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" /v HubMode /t REG_DWORD /d 1 /f
+```json
+// LaunchTo:
+// 1 = This PC
+// 2 = Home (default)
+// 3 = Downloads
+// 4 = OneDrive
+"HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced": {
+  "LaunchTo": { "Type": "REG_DWORD", "Data": 1 }
+},
+"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer": {
+  "HubMode": { "Type": "REG_DWORD", "Data": 1 }
+}
 ```
 
 # Classic Context Menu
@@ -248,11 +260,8 @@ Disable logon animations, which would remove the animation (picture), instead sh
 ```
 This policy controls whether users see the first sign-in animation when signing in for the first time, including both the initial setup user and those added later. It also determines if Microsoft account users receive the opt-in prompt for services. If enabled, Microsoft account users see the opt-in prompt and other users see the animation. If disabled, neither the animation nor the opt-in prompt appears. If not configured, the first user sees the animation during setup; later users won't see it if setup was already completed. This policy has no effect on Server editions.
 ```
-```bat
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v EnableFirstLogonAnimation /t REG_DWORD /d 0 /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v EnableFirstLogonAnimation /t REG_DWORD /d 0 /f
-```
-First one is the value, which gets used by windows (`Computer Configuration > Administrative Templates > System > Logon : Show first sign-in animation`, the second one does exist:
+
+Second one is used by Windows (`Computer Configuration > Administrative Templates > System > Logon : Show first sign-in animation`:
 ```c
 CMachine::RegQueryDWORD(
   v62,
@@ -475,19 +484,6 @@ After:
 
 Instead of creating a `.txt` file, then renaming it to e.g. `.bat` / `.ps1`, you can add these options to the 'new' context menu. This may also change the `Type` shown in the explorer (only `.bat` is affected of the three).
 
-Edit the text, by editing `Default` (value empty) and `FriendlyTypeName`:
-```bat
-:: PowerShell
-reg add "HKCR\ps1legacy" /ve /d "pwsh" /f
-reg add "HKCR\ps1legacy" /v FriendlyTypeName /t REG_SZ /d "pwsh" /f
-:: Text
-reg add "HKCR\txtlegacy" /ve /d "txt" /f
-reg add "HKCR\txtlegacy" /v FriendlyTypeName /t REG_SZ /d "txt" /f
-:: Batch
-reg add "HKCR\batfile" /ve /d "bat" /f
-reg add "HKCR\batfile" /v FriendlyTypeName /t REG_SZ /d "bat" /f
-```
-
 `Remove 'Add to Favorites' Option`, `Remove 'Share' Option`, `Remove 'Send to' Option`, `Remove 'bmp'/'zip' Options` don't have a revert yet.
 
 ![](https://github.com/5Noxi/win-config/blob/main/visibility/images/newcontext1.png?raw=true)
@@ -507,14 +503,6 @@ Default: `75px` (`-1125`)
 Min: `32px` (`-480`)
 Max: `182px` (`-2730`)
 
-Personal preference - `100px` horizontal, `75px` vertical:
-
-```bat
-reg add "HKCU\Control Panel\Desktop\WindowMetrics" /v IconSpacing /t REG_SZ /d -1500 /f
-reg add "HKCU\Control Panel\Desktop\WindowMetrics" /v IconVerticalSpacing /t REG_SZ /d -1125 /f
-reg add "HKCU\Control Panel\Desktop\WindowMetrics" /v IconTitleWrap /t REG_SZ /d 0 /f
-```
-
 Value gets calculated with:
 ```c
 -15*px
@@ -523,12 +511,6 @@ Value gets calculated with:
 ```
 I created a small tool for fun, since it's a lot easier to quickly change and test the different icon spacing. You've to log out after applying, otherwise it won't update instantly. (the images show vertical `75px` & `100px` difference)
 
-Set the icon view size to `Small` with:
-```bat
-reg add "HKCU\SOFTWARE\Microsoft\Windows\Shell\Bags\1\Desktop" /v IconSize /t REG_DWORD /d 32 /f
-reg add "HKCU\SOFTWARE\Microsoft\Windows\Shell\Bags\1\Desktop" /v Mode /t REG_DWORD /d 1 /f
-reg add "HKCU\SOFTWARE\Microsoft\Windows\Shell\Bags\1\Desktop" /v LogicalViewMode /t REG_DWORD /d 3 /f
-```
 `75px`:
 
 ![](https://github.com/5Noxi/win-config/blob/main/visibility/images/iconspacing75.png?raw=true)
@@ -536,6 +518,14 @@ reg add "HKCU\SOFTWARE\Microsoft\Windows\Shell\Bags\1\Desktop" /v LogicalViewMod
 `100px`:
 
 ![](https://github.com/5Noxi/win-config/blob/main/visibility/images/iconspacing100.png?raw=true)
+
+---
+
+Desktop icon size notes:
+```c
+"HKCU\\Software\\Microsoft\\Windows\\Shell\\Bags\\1\\Desktop";
+  "IconSize"; = 32 // 32 = Small, 48 = Medium, 96 = Large
+```
 
 # Detailed File Transfer
 
@@ -549,7 +539,7 @@ When you copy, move, or delete a file or folder, a progress dialog appears. You 
 
 ![](https://github.com/5Noxi/win-config/blob/main/visibility/images/filetransfer1.png?raw=true)
 
-# Alt-Tab Tabs
+# Alt-Tab App Tabs
 
 Select the amount of recent tabs from apps in the alt+tab menu.
 
@@ -614,64 +604,77 @@ Removes the `Quick access` in the File Explorer & sets `Open File Exporer to` to
 
 ![](https://github.com/5Noxi/win-config/blob/main/visibility/images/quickaccess.png?raw=true)
 
-# System Fonts / Text Size
+# System Fonts
 
 W11 uses `Segoe UI` by default. You can change it via registry edits, the selected font will be used for desktop interfaces, explorer, some apps (`StartAllBack` will use it), but won't get applied for e.g., `SystemSettings.exe` and app fonts in general. Some fonts will cause issues - `Yu Gothic UI Light` uses `¥` instead of `\` (picture).
 
 Either select a installed font with the command shown below or install new fonts via e.g.:
 > https://www.nerdfonts.com/font-downloads
 
-Apply the selected font replacing the data (`Replace` in the example below):
-```powershell
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI (TrueType)" /t REG_SZ /d "" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Black (TrueType)" /t REG_SZ /d "" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Black Italic (TrueType)" /t REG_SZ /d "" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Bold (TrueType)" /t REG_SZ /d "" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Bold Italic (TrueType)" /t REG_SZ /d "" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Historic (TrueType)" /t REG_SZ /d "" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Italic (TrueType)" /t REG_SZ /d "" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Light (TrueType)" /t REG_SZ /d "" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Light Italic (TrueType)" /t REG_SZ /d "" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Semibold (TrueType)" /t REG_SZ /d "" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Semibold Italic (TrueType)" /t REG_SZ /d "" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Semilight (TrueType)" /t REG_SZ /d "" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Semilight Italic (TrueType)" /t REG_SZ /d "" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Symbol (TrueType)" /t REG_SZ /d "" /f
 
-:: Replace "Yu Gothic UI Light"
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\FontSubstitutes" /v "Segoe UI" /t REG_SZ /d "Yu Gothic UI Light" /f
-
-::shutdown -l
-```
 Applying a new font needs a restart or logout, reverting doesn't.
 ```powershell
 shutdown -l # logout
 ```
+
 List all available font families on your system with the `Open` option, or via `Personalization > Fonts`:
 ```powershell
 Add-Type -AssemblyName System.Drawing;[System.Drawing.FontFamily]::Families | % {$_.Name}
 ```
-Revert the changes using:
-```powershell
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI (TrueType)" /t REG_SZ /d "segoeui.ttf" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Black (TrueType)" /t REG_SZ /d "seguibl.ttf" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Black Italic (TrueType)" /t REG_SZ /d "seguibli.ttf" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Bold (TrueType)" /t REG_SZ /d "segoeuib.ttf" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Bold Italic (TrueType)" /t REG_SZ /d "segoeuiz.ttf" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Historic (TrueType)" /t REG_SZ /d "seguihis.ttf" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Italic (TrueType)" /t REG_SZ /d "segoeuii.ttf" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Light (TrueType)" /t REG_SZ /d "segoeuil.ttf" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Light Italic (TrueType)" /t REG_SZ /d "seguili.ttf" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Semibold (TrueType)" /t REG_SZ /d "seguisb.ttf" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Semibold Italic (TrueType)" /t REG_SZ /d "seguisbi.ttf" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Semilight (TrueType)" /t REG_SZ /d "segoeuisl.ttf" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Semilight Italic (TrueType)" /t REG_SZ /d "seguisli.ttf" /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" /v "Segoe UI Symbol (TrueType)" /t REG_SZ /d "seguisym.ttf" /f
-reg delete "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\FontSubstitutes" /v "Segoe UI" /f
-```
 
 ![](https://github.com/5Noxi/win-config/blob/main/visibility/images/font1.png?raw=true)
 ![](https://github.com/5Noxi/win-config/blob/main/visibility/images/font2.png?raw=true)
+
+---
+
+The option lists the default fonts, add your own custom font via:
+```json
+"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts": {
+  "Segoe UI (TrueType)": { "Type": "REG_SZ", "Data": "" },
+  "Segoe UI Black (TrueType)": { "Type": "REG_SZ", "Data": "" },
+  "Segoe UI Black Italic (TrueType)": { "Type": "REG_SZ", "Data": "" },
+  "Segoe UI Bold (TrueType)": { "Type": "REG_SZ", "Data": "" },
+  "Segoe UI Bold Italic (TrueType)": { "Type": "REG_SZ", "Data": "" },
+  "Segoe UI Historic (TrueType)": { "Type": "REG_SZ", "Data": "" },
+  "Segoe UI Italic (TrueType)": { "Type": "REG_SZ", "Data": "" },
+  "Segoe UI Light (TrueType)": { "Type": "REG_SZ", "Data": "" },
+  "Segoe UI Light Italic (TrueType)": { "Type": "REG_SZ", "Data": "" },
+  "Segoe UI Semibold (TrueType)": { "Type": "REG_SZ", "Data": "" },
+  "Segoe UI Semibold Italic (TrueType)": { "Type": "REG_SZ", "Data": "" },
+  "Segoe UI Semilight (TrueType)": { "Type": "REG_SZ", "Data": "" },
+  "Segoe UI Semilight Italic (TrueType)": { "Type": "REG_SZ", "Data": "" },
+  "Segoe UI Symbol (TrueType)": { "Type": "REG_SZ", "Data": "" }
+}
+// "Font Name" = Replace with the font name
+"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\FontSubstitutes": {
+  "Segoe UI": { "Type": "REG_SZ", "Data": "Font Name" }
+}
+```
+
+Revert the changes:
+```json
+"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts": {
+  "Segoe UI (TrueType)": { "Type": "REG_SZ", "Data": "segoeui.ttf" },
+  "Segoe UI Black (TrueType)": { "Type": "REG_SZ", "Data": "seguibl.ttf" },
+  "Segoe UI Black Italic (TrueType)": { "Type": "REG_SZ", "Data": "seguibli.ttf" },
+  "Segoe UI Bold (TrueType)": { "Type": "REG_SZ", "Data": "segoeuib.ttf" },
+  "Segoe UI Bold Italic (TrueType)": { "Type": "REG_SZ", "Data": "segoeuiz.ttf" },
+  "Segoe UI Historic (TrueType)": { "Type": "REG_SZ", "Data": "seguihis.ttf" },
+  "Segoe UI Italic (TrueType)": { "Type": "REG_SZ", "Data": "segoeuii.ttf" },
+  "Segoe UI Light (TrueType)": { "Type": "REG_SZ", "Data": "segoeuil.ttf" },
+  "Segoe UI Light Italic (TrueType)": { "Type": "REG_SZ", "Data": "seguili.ttf" },
+  "Segoe UI Semibold (TrueType)": { "Type": "REG_SZ", "Data": "seguisb.ttf" },
+  "Segoe UI Semibold Italic (TrueType)": { "Type": "REG_SZ", "Data": "seguisbi.ttf" },
+  "Segoe UI Semilight (TrueType)": { "Type": "REG_SZ", "Data": "segoeuisl.ttf" },
+  "Segoe UI Semilight Italic (TrueType)": { "Type": "REG_SZ", "Data": "seguisli.ttf" },
+  "Segoe UI Symbol (TrueType)": { "Type": "REG_SZ", "Data": "seguisym.ttf" }
+},
+"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\FontSubstitutes": {
+  "Segoe UI": { "Action": "deletevalue" }
+}
+```
+
+## Notes on System Text Size
 
 Edit text sizes via `TextScaleFactor`, valid ranges are `100-225` (DWORD).
 > https://learn.microsoft.com/en-us/uwp/api/windows.ui.viewmanagement.uisettings.textscalefactor?view=winrt-26100#windows-ui-viewmanagement-uisettings-textscalefactor
@@ -1194,9 +1197,6 @@ del "C:\ProgramData\Microsoft\User Account Pictures\user.png" /f /q
 del "C:\ProgramData\Microsoft\User Account Pictures\user.bmp" /f /q
 copy "C:\Path\user.png" "C:\ProgramData\Microsoft\User Account Pictures\"
 copy "C:\Path\user.bmp" "C:\ProgramData\Microsoft\User Account Pictures\"
-
-:: Desktop Wallpaper
-reg add "HKCU\Control Panel\Desktop" /v Wallpaper /t REG_SZ /d ""C:\Path\Wallpaper.png"" /f
 ```
 
 ```json
@@ -1328,29 +1328,38 @@ Set your own support information in `System > About` (or `Control Panel > System
 ```
 HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\OEMInformation
 ```
-You used to change the logo with:
-```powershell
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\OEMInformation" /v Logo /t REG_SZ /d "path\OEM.bmp" /f
+You used to change the logo via:
+```json
+"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\OEMInformation": {
+  "Logo": { "Type": "REG_SZ", "Data": "path\\OEM.bmp" }
+}
 ```
 But it seems deprecated (doesn't work for me). Limitation were `120x120` pixels, `.bmp` file & `32-bit` color depth.
 
-Edit registered owner/orga (visible in `winver`) with:
-```powershell
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v RegisteredOwner /t REG_SZ /d Nohuxi /f
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v RegisteredOrganization /t REG_SZ /d Noverse /f
+Edit registered owner/orga (visible in `winver`) via:
+```json
+"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion": {
+  "RegisteredOwner": { "Type": "REG_SZ", "Data": "Nohuxi" },
+  "RegisteredOrganization": { "Type": "REG_SZ", "Data": "Noverse" }
+}
 ```
+
 Edit miscellaneous things in `winver.exe` using (`basebrd.dll`/`basebrd.dll.mui`):
+
 > https://www.angusj.com/resourcehacker/
 
 ---
 
 Example:
-```powershell
-reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\OEMInformation" /v "Manufacturer" /t REG_SZ /d "Noverse" /f
-reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\OEMInformation" /v "Model" /t REG_SZ /d "Windows 11" /f
-reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\OEMInformation" /v "SupportHours" /t REG_SZ /d "24 Hours" /f
-reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\OEMInformation" /v "SupportPhone" /t REG_SZ /d "noverse@gmail.com" /f
-reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\OEMInformation" /v "SupportURL" /t REG_SZ /d "https://discord.gg/noverse" /f
+
+```json
+"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\OEMInformation": {
+  "Manufacturer": { "Type": "REG_SZ", "Data": "Noverse" },
+  "Model": { "Type": "REG_SZ", "Data": "Windows 11" },
+  "SupportHours": { "Type": "REG_SZ", "Data": "24H" },
+  "SupportPhone": { "Type": "REG_SZ", "Data": "noverse@gmail.com" },
+  "SupportURL": { "Type": "REG_SZ", "Data": "https://discord.gg/noverse" }
+}
 ```
 
 ![](https://github.com/5Noxi/win-config/blob/main/visibility/images/oem.png?raw=true)

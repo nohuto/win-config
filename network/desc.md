@@ -459,7 +459,19 @@ netsh int tcp set supplemental Template=InternetCustom CongestionProvider=NewRen
 
 # Disable Wi-Fi
 
-Self explaining.
+Disables Wi-Fi services/drivers, scheduled tasks.
+
+| Service/Driver | Description |
+| `WlanSvc` | The WLANSVC service provides the logic required to configure, discover, connect to, and disconnect from a wireless local area network (WLAN) as defined by IEEE 802.11 standards. It also contains the logic to turn your computer into a software access point so that other devices or computers can connect to your computer wirelessly using a WLAN adapter that can support this. Stopping or disabling the WLANSVC service will make all WLAN adapters on your computer inaccessible from the Windows networking UI. It is strongly recommended that you have the WLANSVC service running if your computer has a WLAN adapter. |
+| `vwififlt` | Virtual WiFi Filter Driver |
+| `WwanSvc` | This service manages mobile broadband (GSM & CDMA) data card/embedded module adapters and connections by auto-configuring the networks. It is strongly recommended that this service be kept running for best user experience of mobile broadband devices. |
+
+---
+
+```c
+"\\Microsoft\\Windows\\WCM\\WiFiTask" // %SystemRoot%\System32\WiFiTask.exe
+"\\Microsoft\\Windows\\WwanSvc\\NotificationTask" // %SystemRoot%\System32\WiFiTask.exe wwan
+```
 
 # Disable Active Probing
 
@@ -487,10 +499,14 @@ See links below for a detailed documentation.
 ---
 
 Miscellaneous notes:
-```powershell
-reg add "HKLM\System\CurrentControlSet\services\NlaSvc\Parameters\Internet" /v EnableUserActiveProbing /t REG_DWORD /d 0 /f
-reg add "HKLM\System\CurrentControlSet\services\NlaSvc\Parameters\Internet" /v MaxActiveProbes /t REG_DWORD /d 1 /f
 
+```json
+"HKLM\\System\\CurrentControlSet\\services\\NlaSvc\\Parameters\\Internet": {
+  "EnableUserActiveProbing": { "Type": "REG_DWORD", "Data": 0 },
+  "MaxActiveProbes": { "Type": "REG_DWORD", "Data": 1 }
+}
+```
+```c
 \Registry\Machine\SYSTEM\ControlSet001\Services\NlaSvc\Parameters\Internet : ActiveDnsProbeContent
 \Registry\Machine\SYSTEM\ControlSet001\Services\NlaSvc\Parameters\Internet : ActiveDnsProbeContentV6
 \Registry\Machine\SYSTEM\ControlSet001\Services\NlaSvc\Parameters\Internet : ActiveDnsProbeHost
@@ -574,10 +590,7 @@ or `WIN + I` > Network & Internet > VPN > Remove
 > https://learn.microsoft.com/en-us/powershell/module/vpnclient/remove-vpnconnection?view=windowsserver2025-ps  
 > https://learn.microsoft.com/en-us/powershell/module/vpnclient/?view=windowsserver2025-ps
 
-Disable `Allow VPN over metered networks` (`0` = On, `1` = Off):
-```powershell
-reg add "HKLM\SYSTEM\CurrentControlSet\Services\RasMan\Parameters\Config\VpnCostedNetworkSettings" /v NoCostedNetwork /d 1 /f
-```
+`Allow VPN over metered networks`:
 ```c
 OSDATA__SYSTEM__CurrentControlSet__Services__RasMan__Parameters_1 = 
     L"SYSTEM\\CurrentControlSet\\Services\\RasMan\\Parameters\\Config\\VpnCostedNetworkSettings",
@@ -592,10 +605,7 @@ VpnRegQueryDWord(
 if ( !v17[0] )
     g_donotUseCosted = 0, // default
 ```
-Disable `Allow VPN while Roaming` (`0` = On, `1` = Off):
-```powershell
-reg add "HKLM\SYSTEM\CurrentControlSet\Services\RasMan\Parameters\Config\VpnCostedNetworkSettings" /v NoRoamingNetwork /d 1 /f
-```
+`Allow VPN while Roaming`:
 ```c
 OSDATA__SYSTEM__CurrentControlSet__Services__RasMan__Parameters = 
     L"SYSTEM\\CurrentControlSet\\Services\\RasMan\\Parameters\\Config\\VpnCostedNetworkSettings",

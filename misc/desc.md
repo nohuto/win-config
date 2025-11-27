@@ -245,14 +245,7 @@ Installation:
 ```powershell
 winget install SergeyFilippov.RegistryFinder
 ```
-You can replace it the same way as `System Informer` (edit the path if needed):
-```powershell
-reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\regedit.exe" /v Debugger /t REG_SZ /d "\"C:\Program Files\Registry Finder\RegistryFinder.exe\" -z" /f
-```
-Revert it by deleting the value or via `RegistryFinder --regedit`:
-```powershell
-reg delete "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\taskmgr.exe" /v Debugger /f
-```
+
 > https://registry-finder.com
 
 # 7-Zip Settings
@@ -348,17 +341,27 @@ for %%g in (
 ---
 
 Miscellaneous notes:
-```
-reg add "HKLM\SOFTWARE\Policies\Microsoft\VisualStudio\Feedback" /v DisableEmailInput /t REG_DWORD /d 1 /f
-reg add "HKLM\SOFTWARE\Policies\Microsoft\VisualStudio\Feedback" /v DisableFeedbackDialog /t REG_DWORD /d 1 /f
-reg add "HKLM\SOFTWARE\Policies\Microsoft\VisualStudio\Feedback" /v DisableScreenshotCapture /t REG_DWORD /d 1 /f
-```
-```powershell
-reg add "HKLM\SOFTWARE\Microsoft\VSCommon\14.0\SQM" /v OptIn /t REG_DWORD /d 0 /f
-reg add "HKLM\SOFTWARE\Microsoft\VSCommon\15.0\SQM" /v OptIn /t REG_DWORD /d 0 /f
-reg add "HKLM\SOFTWARE\Microsoft\VSCommon\16.0\SQM" /v OptIn /t REG_DWORD /d 0 /f
-reg add "HKLM\SOFTWARE\Microsoft\VSCommon\17.0\SQM" /v OptIn /t REG_DWORD /d 0 /f
-reg add "HKLM\SYSTEM\CurrentControlSet\Services\VSStandardCollectorService150" /v Start /t REG_DWORD /d 4 /f
+```json
+"HKLM\\SOFTWARE\\Policies\\Microsoft\\VisualStudio\\Feedback": {
+  "DisableEmailInput": { "Type": "REG_DWORD", "Data": 1 },
+  "DisableFeedbackDialog": { "Type": "REG_DWORD", "Data": 1 },
+  "DisableScreenshotCapture": { "Type": "REG_DWORD", "Data": 1 }
+},
+"HKLM\\SOFTWARE\\Microsoft\\VSCommon\\14.0\\SQM": {
+  "OptIn": { "Type": "REG_DWORD", "Data": 0 }
+},
+"HKLM\\SOFTWARE\\Microsoft\\VSCommon\\15.0\\SQM": {
+  "OptIn": { "Type": "REG_DWORD", "Data": 0 }
+},
+"HKLM\\SOFTWARE\\Microsoft\\VSCommon\\16.0\\SQM": {
+  "OptIn": { "Type": "REG_DWORD", "Data": 0 }
+},
+"HKLM\\SOFTWARE\\Microsoft\\VSCommon\\17.0\\SQM": {
+  "OptIn": { "Type": "REG_DWORD", "Data": 0 }
+},
+"HKLM\\SYSTEM\\CurrentControlSet\\Services\\VSStandardCollectorService150": {
+  "Start": { "Type": "REG_DWORD", "Data": 4 }
+}
 ```
 
 # Disable MS Office Telemetry

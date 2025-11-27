@@ -83,10 +83,7 @@ CiSystemResponsiveness = 10 * (value / 10);
 == 100 -> 100  (STATUS_SERVER_DISABLED)
 > 100  -> 20   (fallback)
 ```
-Lowest effective value:
-```powershell
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" /v SystemResponsiveness /t REG_DWORD /d 10 /f
-```
+
 > https://github.com/5Noxi/wpr-reg-records/blob/main/records/MultiMedia.txt  
 > [system/assets | sysresp-CiConfigInitialize.c](https://github.com/5Noxi/win-config/blob/main/system/assets/sysresp-CiConfigInitialize.c)  
 
@@ -132,9 +129,11 @@ return v1;
 ---
 
 Miscellaneous notes:
-```bat
-:: "If the total physical memory is above the threshold, it enables Svchost service splitting"
-reg add HKLM\SYSTEM\CurrentControlSet\Control /t REG_DWORD /v SvcHostSplitThresholdInKB /d 4294967295 /f
+```json
+// "If the total physical memory is above the threshold, it enables Svchost service splitting"
+"HKLM\\SYSTEM\\CurrentControlSet\\Control": {
+  "SvcHostSplitThresholdInKB": { "Type": "REG_DWORD", "Data": 4294967295 }
+}
 ```
 
 # Kernel Values
@@ -960,16 +959,6 @@ Game Mode should: "Prevents Windows Update from performing driver installations 
 
 It might set CPU affinites (`AffinitizeToExclusiveCpus`, `CpuExclusivityMaskHig`, `CpuExclusivityMaskLow`) for the game process and the maximum amount of cores the game uses (`MaxCpuCount`). The percentage of GPU memory (`PercentGpuMemoryAllocatedToGame`), GPU time (`PercentGpuTimeAllocatedToGame`) & system compositor (`PercentGpuMemoryAllocatedToSystemCompositor`) that will be dedicated to the game. It may also create a list of processes (`RelatedProcessNames`) that are gaming related, which means that they won't be affected from the game mode. These are just assumptions, I haven't looked into it in detail yet (`GamingHandlers.c`).
 
-Disable game mode:
-```bat
-reg add "HKCU\Software\Microsoft\GameBar" /v AllowAutoGameMode /t REG_DWORD /d 0 /f
-reg add "HKCU\Software\Microsoft\GameBar" /v AutoGameModeEnabled /t REG_DWORD /d 0 /f
-```
-Enable game mode (switch on/off):
-```bat
-reg add "HKCU\Software\Microsoft\GameBar" /v AllowAutoGameMode /t REG_DWORD /d 1 /f
-reg add "HKCU\Software\Microsoft\GameBar" /v AutoGameModeEnabled /t REG_DWORD /d 1 /f
-```
 Enabling/disabling it via the system settings only switches `AutoGameModeEnabled`:
 ```powershell
 SystemSettings.exe  HKCU\Software\Microsoft\GameBar\AutoGameModeEnabled	Type: REG_DWORD, Length: 4, Data: 1
@@ -1121,11 +1110,6 @@ Used for preventing legacy or unstable applications from crashing, read through 
 
 Disables multiple accessibility features such as `Sticky Keys`, `Toggle Keys`, `Mouse Keys`, `Sound Sentry`, `High Contrast` and more (read trough the file for more).
 
-Disable accessibility insights telemetry with:
-```bat
-reg add "HKLM\SOFTWARE\Policies\Accessibility Insights for Windows" /v DisableTelemetry /t REG_DWORD /d 1 /f
-powershell -NoProfile -Command "$f='$env:LOCALAPPDATA\AccessibilityInsights\V1\Configurations\Configuration.json';if(Test-Path $f){$j=if((gc $f -Raw) -eq ''){@{}}else{gc $f -Raw|ConvertFrom-Json};$j.EnableTelemetry=$false;$j|ConvertTo-Json|sc $f -Encoding UTF8;Write-Host 'EnableTelemetry set to false in' $f}else{Write-Host 'JSON file not found.'}"
-```
 > https://github.com/microsoft/accessibility-insights-windows/blob/main/docs/TelemetryOverview.md#control-of-telemery
 
 # Detailed Verbose Messages
@@ -1195,12 +1179,6 @@ else
         v54 = 100.0f;
 ```
 Default value is `85` -> `85%` (gets used if value isn't present), clamp range is `60-100`, if set above `100` it gets clamped to `100`, if set below `60`, it gets clamped to `60`.
-
-
-Change your wallpaper via cmd:
-```
-reg add "HKCU\Control Panel\Desktop" /v Wallpaper /t REG_SZ /d ""C:\Path\Picture.png"" /f
-```
 
 > [system/assets | jpeg-TranscodeImage.c](https://github.com/5Noxi/win-config/blob/main/system/assets/jpeg-TranscodeImage.c)
 
@@ -1291,11 +1269,6 @@ All `NOC_GLOBAL_SETTING_*` I found in `NotificationController.dll`:
 The options I've commented on are included in the options under `System > Notifications`/right click menu of notification center. 
 
 ---
-
-Miscellaneous notes:
-```powershell
-reg add "HKLM\Software\Policies\Microsoft\Windows\CurrentVersion\PushNotifications" /v WnsEndpoint /t REG_SZ /d client.wns.windows.com /f
-```
 
 ```json
 {
@@ -1512,10 +1485,7 @@ Additional value, which get's read:
 ```
 \Registry\Machine\SOFTWARE\Microsoft\Clipboard : IsCloudAndHistoryFeatureAvailable
 ```
-To only disable the history, use:
-```bat
-reg add "HKCU\Software\Microsoft\Clipboard" /v EnableClipboardHistory /t REG_DWORD /d 0 /f
-```
+
 ```json
 {
   "File": "TerminalServer.admx",
@@ -1607,18 +1577,6 @@ reg add "HKCU\Software\Microsoft\Clipboard" /v EnableClipboardHistory /t REG_DWO
   "Elements": []
 },
 ```
-
-> https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-admx-grouppolicy#disablebackgroundpolicy
-
----
-
-Miscellaneous notes:
-```bat
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v DenyUsersFromMachGP /t REG_DWORD /d 1 /f
-```
-Users aren't able to invoke a refresh of computer policy. Computer policy will still be applied at startup or when an official policy refresh occurs.
-
-> https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-admx-grouppolicy#disableusersfrommachgp
 
 # Disable Memory Compression
 
