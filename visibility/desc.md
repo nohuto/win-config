@@ -549,9 +549,55 @@ When you copy, move, or delete a file or folder, a progress dialog appears. You 
 
 ![](https://github.com/5Noxi/win-config/blob/main/visibility/images/filetransfer1.png?raw=true)
 
-# Classic Task Switcher
+# Alt-Tab Tabs
 
-It won't work on 24H2.
+Select the amount of recent tabs from apps in the alt+tab menu.
+
+`Don't show tabs`:
+
+![](https://github.com/5Noxi/win-config/blob/main/visibility/images/0tabs.png?raw=true)
+
+`3 Tabs`:
+
+![](https://github.com/5Noxi/win-config/blob/main/visibility/images/3tabs.png?raw=true)
+
+`5 Tabs`:
+
+![](https://github.com/5Noxi/win-config/blob/main/visibility/images/5tabs.png?raw=true)
+
+`20 Tabs`:
+
+![](https://github.com/5Noxi/win-config/blob/main/visibility/images/20tabs.png?raw=true)
+
+```json
+{
+  "File": "Multitasking.admx",
+  "CategoryName": "MULTITASKING",
+  "PolicyName": "BrowserAltTabBlowout",
+  "NameSpace": "Microsoft.Policies.Multitasking",
+  "Supported": "Windows_10_0_RS7 - At least Windows Server 2016, Windows 10 Version 1909",
+  "DisplayName": "Configure the inclusion of app tabs into Alt-Tab",
+  "ExplainText": "This setting controls the inclusion of app tabs into Alt+Tab. This can be set to show the most recent 3, 5 or 20 tabs, or no tabs from apps. If this is set to show \"Open windows only\", the whole feature will be disabled.",
+  "KeyPath": [
+    "HKCU\\Software\\Policies\\Microsoft\\Windows\\Explorer"
+  ],
+  "Elements": [
+    { "Type": "Enum", "ValueName": "MultiTaskingAltTabFilter", "Items": [
+        { "DisplayName": "Open windows and 20 most recent tabs in apps", "Data": "1" },
+        { "DisplayName": "Open windows and 5 most recent tabs in apps", "Data": "2" },
+        { "DisplayName": "Open windows and 3 most recent tabs in apps", "Data": "3" },
+        { "DisplayName": "Open windows only", "Data": "4" }
+      ]
+    }
+  ]
+},
+```
+
+The option changes it via `HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced`.
+
+---
+
+`Classic Task Switcher` won't work on 24H2.
 
 New (delete `AltTabSettings`):
 
@@ -785,10 +831,87 @@ By adding them, you'll have to click `OK` every time you boot/log in:
 },
 ```
 
+`Accounts > Sign-in options` - `Automatically save my restartable apps and restart them when I sign back in`:
+```c
+// Off
+HKCU\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\RestartApps    Type: REG_DWORD, Length: 4, Data: 0
+
+// On
+HKCU\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\RestartApps    Type: REG_DWORD, Length: 4, Data: 1
+```
+
 `Accounts > Sign-in options` - `Show account details such as my email address on the sign-in screen`:
 ```c
+// On
 HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\SystemProtectedUserData\S-{ID}\AnyoneRead\Logon\ShowEmail	Type: REG_DWORD, Length: 4, Data: 1
+
+// Off
 HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\SystemProtectedUserData\S-{ID}\AnyoneRead\Logon\ShowEmail	Type: REG_DWORD, Length: 4, Data: 0
+```
+
+---
+
+Miscellaneous notes:
+
+`Personalization > Lock screen` - `Personalize your lock screen`:
+```c
+// Windows spotlight
+HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\RotatingLockScreenEnabled	Type: REG_DWORD, Length: 4, Data: 1
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\Creative\S-{ID}\RotatingLockScreenEnabled	Type: REG_DWORD, Length: 4, Data: 1
+HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\Subscriptions\338387\SubscriptionContext	Type: REG_SZ, Length: 20, Data: sc-mode=0
+HKCU\Software\Microsoft\Windows\CurrentVersion\Lock Screen\SlideshowEnabled	Type: REG_DWORD, Length: 4, Data: 0
+HKCU\Control Panel\Desktop\LockScreenAutoLockActive	Type: REG_SZ, Length: 4, Data: 0
+
+// Picture
+HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\RotatingLockScreenEnabled	Type: REG_DWORD, Length: 4, Data: 0
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\Creative\S-{ID}\RotatingLockScreenEnabled	Type: REG_DWORD, Length: 4, Data: 0
+HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\Subscriptions\338387\SubscriptionContext	Type: REG_SZ, Length: 20, Data: sc-mode=1
+HKCU\Software\Microsoft\Windows\CurrentVersion\Lock Screen\SlideshowEnabled	Type: REG_DWORD, Length: 4, Data: 0
+HKCU\Control Panel\Desktop\LockScreenAutoLockActive	Type: REG_SZ, Length: 4, Data: 0
+HKCU\Control Panel\Desktop\DelayLockInterval // deletevalue
+
+// Slideshow
+HKCU\Control Panel\Desktop\SCRNSAVE.EXE	// deletevalue
+HKCU\Control Panel\Desktop\LockScreenAutoLockActive	Type: REG_SZ, Length: 4, Data: 1
+HKCU\Control Panel\Desktop\DelayLockInterval	Type: REG_DWORD, Length: 4, Data: 0
+HKCU\Software\Microsoft\Windows\CurrentVersion\Lock Screen\SlideshowEnabled	Type: REG_DWORD, Length: 4, Data: 1
+// Include camera roll folders from this PC and OneDrive (Slideshow only)
+// Enabled
+HKCU\Software\Microsoft\Windows\CurrentVersion\Lock Screen\SlideshowIncludeCameraRoll	Type: REG_DWORD, Length: 4, Data: 1
+// Disabled
+HKCU\Software\Microsoft\Windows\CurrentVersion\Lock Screen\SlideshowIncludeCameraRoll	Type: REG_DWORD, Length: 4, Data: 0
+// Only use pictures that fit my screen
+// Enabled
+HKCU\Software\Microsoft\Windows\CurrentVersion\Lock Screen\SlideshowOptimizePhotoSelection	Type: REG_DWORD, Length: 4, Data: 1
+// Disabled
+HKCU\Software\Microsoft\Windows\CurrentVersion\Lock Screen\SlideshowOptimizePhotoSelection	Type: REG_DWORD, Length: 4, Data: 0
+// When my PC is inactive, show the lock screen instead of turning off the screen
+// Enabled
+HKCU\Software\Microsoft\Windows\CurrentVersion\Lock Screen\SlideshowAutoLock	Type: REG_DWORD, Length: 4, Data: 1
+HKCU\Control Panel\Desktop\LockScreenAutoLockActive	Type: REG_SZ, Length: 4, Data: 1
+// Disabled
+HKCU\Software\Microsoft\Windows\CurrentVersion\Lock Screen\SlideshowAutoLock	Type: REG_DWORD, Length: 4, Data: 0
+HKCU\Control Panel\Desktop\LockScreenAutoLockActive	Type: REG_SZ, Length: 4, Data: 0
+// Turn off the screen after the slidshow has played for
+// Don't turn off
+HKCU\Software\Microsoft\Windows\CurrentVersion\Lock Screen\SlideshowDuration	Type: REG_DWORD, Length: 4, Data: 0
+// 3H
+HKCU\Software\Microsoft\Windows\CurrentVersion\Lock Screen\SlideshowDuration	Type: REG_DWORD, Length: 4, Data: 10800000
+// 1H
+HKCU\Software\Microsoft\Windows\CurrentVersion\Lock Screen\SlideshowDuration	Type: REG_DWORD, Length: 4, Data: 3600000
+// 30min
+HKCU\Software\Microsoft\Windows\CurrentVersion\Lock Screen\SlideshowDuration	Type: REG_DWORD, Length: 4, Data: 1800000
+
+// Get fun facts, tips, tricks, and more on your lock screen (for Picture/Slideshow)
+// Enabled
+HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\RotatingLockScreenOverlayEnabled	Type: REG_DWORD, Length: 4, Data: 0
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\Creative\S-{ID}\RotatingLockScreenOverlayEnabled	Type: REG_DWORD, Length: 4, Data: 0
+HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\SubscribedContent-338387Enabled	Type: REG_DWORD, Length: 4, Data: 0
+// Disabled
+HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\RotatingLockScreenOverlayEnabled	Type: REG_DWORD, Length: 4, Data: 1
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\Creative\S-{ID}\RotatingLockScreenOverlayEnabled	Type: REG_DWORD, Length: 4, Data: 1
+HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\SubscribedContent-338387Enabled	Type: REG_DWORD, Length: 4, Data: 1
+HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\Subscriptions\338387\SubscriptionContext	Type: REG_SZ, Length: 20, Data: sc-mode=1
 ```
 
 # Hide Most Used Apps
