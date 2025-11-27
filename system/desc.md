@@ -1191,11 +1191,33 @@ Disables lock screen, desktop, feature advertisement balloon notifications, noti
 `Turn off access to the Store`:  
 This policy setting specifies whether to use the Store service for finding an application to open a file with an unhandled file type or protocol association. When a user opens a file type or protocol that is not associated with any applications on the computer, the user is given the choice to select a local application or use the Store service to find an application. If you enable this policy setting, the "Look for an app in the Store" item in the Open With dialog is removed. If you disable or do not configure this policy setting, the user is allowed to use the Store service and the Store item is available in the Open With dialog.
 
+All `NOC_GLOBAL_SETTING_*` I found in `NotificationController.dll`:
+```c
+"HKLM\\SOFTWARE\\Microsoft\\WINDOWS\\CurrentVersion\\Notifications\\Settings" // speculation
+  'NOC_GLOBAL_SETTING_SUPRESS_TOASTS_WHILE_DUPLICATING';
+  'NOC_GLOBAL_SETTING_ALLOW_TOASTS_ABOVE_LOCK';
+  'NOC_GLOBAL_SETTING_ALLOW_CRITICAL_TOASTS_ABOVE_LOCK';
+  'NOC_GLOBAL_SETTING_CORTANA_MANAGED_NOTIFICATIONS';
+  'NOC_GLOBAL_SETTING_ALLOW_ACTION_CENTER_ABOVE_LOCK';
+  'NOC_GLOBAL_SETTING_HIDE_NOTIFICATION_CONTENT';
+  'NOC_GLOBAL_SETTING_TOASTS_ENABLED';
+  'NOC_GLOBAL_SETTING_BADGE_ENABLED';
+  'NOC_GLOBAL_SETTING_GLEAM_ENABLED';
+  'NOC_GLOBAL_SETTING_ALLOW_HMD_NOTIFICATIONS';
+  'NOC_GLOBAL_SETTING_ALLOW_CONTROL_CENTER_ABOVE_LOCK';
+  'NOC_GLOBAL_SETTING_ALLOW_NOTIFICATION_SOUND';
+```
+
+The only `NOC_GLOBAL_SETTING_ALLOW_*` value which got read on a trace I did some time ago:
+```
+\Registry\Machine\SOFTWARE\Microsoft\WINDOWS\CurrentVersion\Notifications\Settings : NOC_GLOBAL_SETTING_ALLOW_NOTIFICATION_SOUND
+\Registry\User\S-ID\SOFTWARE\Microsoft\WINDOWS\CurrentVersion\Notifications\Settings : NOC_GLOBAL_SETTING_ALLOW_NOTIFICATION_SOUND
+```
+
 ---
 
 Miscellaneous notes:
 ```powershell
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings" /v NOC_GLOBAL_SETTING_ALLOW_NOTIFICATION_SOUND /t REG_DWORD /d 0 /f
 reg add "HKLM\Software\Policies\Microsoft\Windows\CurrentVersion\PushNotifications" /v WnsEndpoint /t REG_SZ /d client.wns.windows.com /f
 ```
 
@@ -1891,4 +1913,39 @@ GameDVR_GameGUID
 Win32_AutoGameModeDefaultProfile
 Win32_GameModeRelatedProcesses
 Win32_GameModeUserRelatedProcesses
+```
+
+# App Archive
+
+"Automatically archive your infrequently used apps to save storage and internet bandwidth. Your files and data will still be saved, and the app's full version will be restored on your next use if it's still available."
+
+If enabled, the system will periodically check for such infrequently used apps. By default app archiving is turned on.
+
+Toggling the option via `Apps > Advanced app settings`:
+```c
+// On
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\InstallService\Stubification\S-{ID}\EnableAppOffloading    Type: REG_DWORD, Length: 4, Data: 1
+
+// Off
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\InstallService\Stubification\S-{ID}\EnableAppOffloading    Type: REG_DWORD, Length: 4, Data: 0
+```
+
+```json
+{
+  "File": "AppxPackageManager.admx",
+  "CategoryName": "AppxDeployment",
+  "PolicyName": "AllowAutomaticAppArchiving",
+  "NameSpace": "Microsoft.Policies.Appx",
+  "Supported": "Windows_10_0 - At least Windows Server 2016, Windows 10",
+  "DisplayName": "Archive infrequently used apps",
+  "ExplainText": "This policy setting controls whether the system can archive infrequently used apps. If you enable this policy setting, then the system will periodically check for and archive infrequently used apps. If you disable this policy setting, then the system will not archive any apps. If you do not configure this policy setting (default), then the system will follow default behavior, which is to periodically check for and archive infrequently used apps, and the user will be able to configure this setting themselves.",
+  "KeyPath": [
+    "HKLM\\Software\\Policies\\Microsoft\\Windows\\Appx"
+  ],
+  "ValueName": "AllowAutomaticAppArchiving",
+  "Elements": [
+    { "Type": "EnabledValue", "Data": "1" },
+    { "Type": "DisabledValue", "Data": "0" }
+  ]
+},
 ```

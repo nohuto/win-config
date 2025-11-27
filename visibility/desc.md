@@ -668,7 +668,7 @@ IconFont    Type: REG_BINARY, Length: 92, Data: E5 FF FF FF 00 00 00 00 00 00 00
 
 # Hide Lock Screen
 
-Disables the lock screen (skips the lock screen and go directly to the login screen). Revert it by removing the value (2nd command).
+Disables the lock screen (skips the lock screen and go directly to the login screen). See content below for details on the suboptions.
 
 Add a custom text to the sign in screen via:
 ```c
@@ -783,6 +783,12 @@ By adding them, you'll have to click `OK` every time you boot/log in:
   "ValueName": "NoLockScreenCamera",
   "Elements": []
 },
+```
+
+`Accounts > Sign-in options` - `Show account details such as my email address on the sign-in screen`:
+```c
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\SystemProtectedUserData\S-{ID}\AnyoneRead\Logon\ShowEmail	Type: REG_DWORD, Length: 4, Data: 1
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\SystemProtectedUserData\S-{ID}\AnyoneRead\Logon\ShowEmail	Type: REG_DWORD, Length: 4, Data: 0
 ```
 
 # Hide Most Used Apps
