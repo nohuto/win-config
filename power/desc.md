@@ -27,7 +27,7 @@ Everything listed below is based on personal research. Mistakes may exist, but I
     "CheckPowerSourceAfterRtcWakeTime"; = 30; // PopCheckPowerSourceAfterRtcWakeTime (0x1E) 
     "Class1InitialUnparkCount"; = 64; // PpmParkInitialClass1UnParkCount (0x40) 
     "CoalescingFlushInterval"; = 60; // PopCoalescingFlushInterval (0x0000003C) 
-    "CoalescingTimerInterval"; = 1500; // PopCoalescingTimerInterval (0x000005DC) 
+    "CoalescingTimerInterval"; = 1500; // PopCoalescingTimerInterval (0x000005DC) - Units: seconds (multiplies value by -10,000,000, one second in 100 ns units, so the default corresponds to a 25min cadence)
     "DeepIoCoalescingEnabled"; = 0; // PopDeepIoCoalescingEnabled 
     "DirectedDripsAction"; = 3; // PopDirectedDripsAction 
     "DirectedDripsDebounceInterval"; = 120; // PopDirectedDripsDebounceInterval (0x78) 
@@ -689,9 +689,43 @@ It sets `NoLazyMode` to `0`, don't set it to `1`. This is currently more likely 
 
 "CoalesecingTimerinterval is a computer system energy-saving technique that reduces CPU power consumption by reducing the precision of software timers to allow the synchronization of process wake-ups, minimizing the number of times the CPU is forced to perform the relatively power-costly operation of entering and exiting idle states"
 
+`TimerCoalescing` is a binary value (`v18 == 3`) with a size of 80 bytes (`v19 == 80`).
+
+```c
+if (v18 == 3 && v19 == 80 && !v20[0]) // type REG_BINARY, length 80 bytes, leading dword zero
+{
+  for (i = 0; i < 3; ++i)
+    if (v20[i + 1]) return ZwClose(KeyHandle); // v20[1..3] must be zero
+
+  for (j = 0; j < 4; ++j)
+    if (v20[j + 8]) return ZwClose(KeyHandle); // v20[8..11] must be zero
+
+  for (k = 0; k < 4; ++k)
+    if (v20[k + 16]) return ZwClose(KeyHandle); // v20[16..19] must be zero
+
+  for (m = 0; (unsigned int)m < 4; ++m)
+    if (v20[m + 4] > 0x7FFFFFF5) return ZwClose(KeyHandle); // clamp tolerance index 0 entries
+
+  while (v0 < 4)
+  {
+    if (v20[v0 + 12] > 0x7FFFFFF5) return ZwClose(KeyHandle); // clamp tolerance index 3 entries
+    ++v0;
+  }
+}
+```
+
+As the pseudocode shows eight values have data, all other ones are forced to `0` (four dwords of zeros, four dwords for tolerance index 0, four more zeros, four dwords for tolerance index 3, and zeros).
+
+```json
+"HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows": {
+  "TimerCoalescing": { "Type": "REG_BINARY", "Data": "00000000000000000000000000000000F5FFFF7FF5FFFF7FF5FFFF7FF5FFFF7F00000000000000000000000000000000F5FFFF7FF5FFFF7FF5FFFF7FF5FFFF7F00000000000000000000000000000000" }
+}
+```
+Using the highest clamp as shown above will end up with a BSoD (same goes for `0x7FFFFFF4`/`0` and probably any other data).
+
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power";
-    "CoalescingTimerInterval"; = 1500; // PopCoalescingTimerInterval (0x000005DC) 
+    "CoalescingTimerInterval"; = 1500; // PopCoalescingTimerInterval (0x000005DC) - Units: seconds (multiplies value by -10,000,000, one second in 100 ns units, so the default corresponds to a 25min cadence)
     "DeepIoCoalescingEnabled"; = 0; // PopDeepIoCoalescingEnabled 
 ```
 > https://github.com/5Noxi/wpr-reg-records?tab=readme-ov-file#power-values
@@ -705,38 +739,13 @@ void InitTimerPowerSaving(void)
   FastGetProfileDword(0LL, 2LL, L"RITdemonTimerPowerSaveCoalescing", 43200000LL, v1 + 62696); // 12H?
 }
 ```
-```c
-lkd> dd PopCoalescingTimerInterval l1
-fffff806`d300b1b8  000005dc
 
-lkd> dd PopDeepIoCoalescingEnabled l1
-fffff806`d31c3278  00000000
-```
-
-The `CoalescingTimerInterval` value exist (takes a default of `1500` dec, `DeepIo...` one is set to `0` by default - both are located in `ntoskrnl.exe`), but doesn't get read on 24H2, the `RIT...` & `TimerCoalescing` ones get read.
-
-`TimerCoalescing` is a binary value (`v18 == 3`) with a size of 80 bytes (`v19 == 80`). `InitTimerCoalescing.c` includes detail about it and some comments I added.
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/Winows-NT.txt
-```c
-v20[0..3] = 0
-v20[4..7] ≤ 0x7FFFFFF5 // 0 = default timer coalescing?
-v20[8..11] = 0
-v20[12..15] ≤ 0x7FFFFFF5 // ^
-v20[16..19] = 0
-```
-`Coalescing-Timer-Interval.bat` would currently use the upper bound (`ToleranceDelay`?)
-```json
-"HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows": {
-  "TimerCoalescing": { "Type": "REG_BINARY", "Data": "00000000000000000000000000000000F5FFFF7FF5FFFF7FF5FFFF7FF5FFFF7F00000000000000000000000000000000F5FFFF7FF5FFFF7FF5FFFF7FF5FFFF7F00000000000000000000000000000000" }
-}
-```
-I removed it, since it causes a BSOD on my testing VMs.
+The `CoalescingTimerInterval` value exist (takes a default of `1500` dec, `DeepIoCoalescingEnabled` one is set to `0` by default - both are located in `ntoskrnl.exe`), but doesn't get read on 24H2, the `RITdemonTimerPowerSave...` & `TimerCoalescing` ones get read.
 
 > [power/assets | coalesc-InitTimerCoalescing.c](https://github.com/5Noxi/win-config/blob/main/power/assets/coalesc-InitTimerCoalescing.c)  
-> https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setcoalescabletimer ?
+> https://github.com/5Noxi/wpr-reg-records/blob/main/records/Winows-NT.txt
 
-![](https://github.com/5Noxi/win-config/blob/main/power/images/coalesc1.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/power/images/coalesc2.png?raw=true)
+![](https://github.com/5Noxi/win-config/blob/main/power/images/coalesc.png?raw=true)
 
 # Disable USB Battery Saver 
 
