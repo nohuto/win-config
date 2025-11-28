@@ -1428,6 +1428,16 @@ The options I've commented on are included in the options under `System > Notifi
 },
 ```
 
+---
+
+```c
+"HKCU\\Control Panel\\Accessibility";
+  // Dismiss notifications after this amount of time
+  "MessageDuration" = 5; // REG_DWORD, range 5-300(s)
+```
+
+According to pseudocode, it has a range from `0` to `0xFFFFFFFF`. Fallback of `5`, SystemSettings supports ranges from `5` (5 seconds) to `300` (5 minutes). Anything above/below will likely be limited (haven't tested it yet).
+
 # Export Explorer/Taskbar Pins
 
 Can be useful when creating your own image and trying to automate the installation and configuration part.
@@ -1466,7 +1476,7 @@ Disables the interval at which reliability events are timestamped (will not log 
 
 ```c
 if ( !RegQueryValueExW(hKey[0], "TimeStampEnabled", 0LL, 0LL, (LPBYTE)&Data, &cbData) )
-if ( !RegQueryValueExW(hKey[0], "TimeStampInterva", 0LL, 0LL, (LPBYTE)&v4, &cbData) && v4 <= 0x15180 ) // 86400 seconds = 24h?
+if ( !RegQueryValueExW(hKey[0], "TimeStampInterval", 0LL, 0LL, (LPBYTE)&v4, &cbData) && v4 <= 0x15180 ) // 86400 seconds = 24h?
 ```
 `TimeStampInterval` has a max value of `86400` dec = 24h, `TimeStampEnabled` can probably be set to `0`/`1`.
 

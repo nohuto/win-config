@@ -1833,7 +1833,20 @@ Disallows the use of a camera on your system, by denying access via `LetAppsAcce
 
 # Disable Suggestions/Tips/Tricks
 
-Disables all kind of suggestions: in start, text suggestions (multilingual...), in the timeline, content. `SubscribedContent-338389Enabled` = "Get tips and suggestions when using Windows". This is the only value named `SubscribedContent-{number}Enabled` that exists by default.
+Disables all kind of suggestions: in start, text suggestions (multilingual...), in the timeline, content. `338389` is the only value named `SubscribedContent-{number}Enabled` that exists by default.
+
+```c
+// System > Notifications > Additional settings - Get tips and suggestions when using Windows
+"SubscribedContent-338389Enabled": { "Type": "REG_DWORD", "Data": 0 },
+
+// System > Notifications > Additional settings - Show the Windows welcome experience after updates and when signed in to show what's new and suggested
+"SubscribedContent-310093Enabled": { "Type": "REG_DWORD", "Data": 0 },
+
+// Used in Privacy & security > Recommendations & offers - Recommendatins and offers in Settings
+"SubscribedContent-338393Enabled": { "Type": "REG_DWORD", "Data": 0 },
+"SubscribedContent-353694Enabled": { "Type": "REG_DWORD", "Data": 0 },
+"SubscribedContent-353696Enabled": { "Type": "REG_DWORD", "Data": 0 }
+```
 
 ```json
 {

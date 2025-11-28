@@ -114,6 +114,39 @@ It get's changed via the "Wallpaper" policy:
 },
 ```
 
+# Account Picture
+
+Changes the user account picture via:
+```
+C:\ProgramData\Microsoft\Default Account Pictures
+```
+
+---
+
+`Global Account Picture`:  
+"This policy setting allows an administrator to standardize the account pictures for all users on a system to the default account picture."
+
+
+```json
+{
+  "File": "Cpls.admx",
+  "CategoryName": "Users",
+  "PolicyName": "UseDefaultTile",
+  "NameSpace": "Microsoft.Policies.ControlPanel2",
+  "Supported": "WindowsVista",
+  "DisplayName": "Apply the default account picture to all users",
+  "ExplainText": "This policy setting allows an administrator to standardize the account pictures for all users on a system to the default account picture. One application for this policy setting is to standardize the account pictures to a company logo. Note: The default account picture is stored at %PROGRAMDATA%\\Microsoft\\User Account Pictures\\user.jpg. The default guest picture is stored at %PROGRAMDATA%\\Microsoft\\User Account Pictures\\guest.jpg. If the default pictures do not exist, an empty frame is displayed. If you enable this policy setting, the default user account picture will display for all users on the system with no customization allowed. If you disable or do not configure this policy setting, users will be able to customize their account pictures.",
+  "KeyPath": [
+    "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer"
+  ],
+  "ValueName": "UseDefaultTile",
+  "Elements": [
+    { "Type": "EnabledValue", "Data": "1" },
+    { "Type": "DisabledValue", "Data": "0" }
+  ]
+},
+```
+
 # Explorer Options
 
 It changes every setting, which is shown in the `Folder Options` window. Some are personal preference, see suboptions bellow for customization.
@@ -1184,39 +1217,6 @@ rundll32.exe	RegSetValue	HKCU\Software\Microsoft\Multimedia\Audio\DeviceCpl\Show
 // Hide disabled/diconnected devices
 rundll32.exe	RegSetValue	HKCU\Software\Microsoft\Multimedia\Audio\DeviceCpl\ShowHiddenDevices	Type: REG_DWORD, Length: 4, Data: 0
 rundll32.exe	RegSetValue	HKCU\Software\Microsoft\Multimedia\Audio\DeviceCpl\ShowDisconnectedDevices	Type: REG_DWORD, Length: 4, Data: 0
-```
-
-# Global Account Picture
-
-"This policy setting allows an administrator to standardize the account pictures for all users on a system to the default account picture."
-
-Edit account picture/desktop wallpaper via (edit `C:\Path`/`Wallpaper.png`):
-```bat
-:: Account Picture
-del "C:\ProgramData\Microsoft\User Account Pictures\user.png" /f /q
-del "C:\ProgramData\Microsoft\User Account Pictures\user.bmp" /f /q
-copy "C:\Path\user.png" "C:\ProgramData\Microsoft\User Account Pictures\"
-copy "C:\Path\user.bmp" "C:\ProgramData\Microsoft\User Account Pictures\"
-```
-
-```json
-{
-  "File": "Cpls.admx",
-  "CategoryName": "Users",
-  "PolicyName": "UseDefaultTile",
-  "NameSpace": "Microsoft.Policies.ControlPanel2",
-  "Supported": "WindowsVista",
-  "DisplayName": "Apply the default account picture to all users",
-  "ExplainText": "This policy setting allows an administrator to standardize the account pictures for all users on a system to the default account picture. One application for this policy setting is to standardize the account pictures to a company logo. Note: The default account picture is stored at %PROGRAMDATA%\\Microsoft\\User Account Pictures\\user.jpg. The default guest picture is stored at %PROGRAMDATA%\\Microsoft\\User Account Pictures\\guest.jpg. If the default pictures do not exist, an empty frame is displayed. If you enable this policy setting, the default user account picture will display for all users on the system with no customization allowed. If you disable or do not configure this policy setting, users will be able to customize their account pictures.",
-  "KeyPath": [
-    "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer"
-  ],
-  "ValueName": "UseDefaultTile",
-  "Elements": [
-    { "Type": "EnabledValue", "Data": "1" },
-    { "Type": "DisabledValue", "Data": "0" }
-  ]
-},
 ```
 
 # Force Classic Control Panel

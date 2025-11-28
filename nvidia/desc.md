@@ -1617,31 +1617,3 @@ if (!(unsigned int)GetPersistedRegistryValueW(
 > https://wiki.special-k.info/en/SwapChain  
 > https://wiki.special-k.info/Presentation_Model  
 > https://github.com/5Noxi/wpr-reg-records/blob/main/records/Windows-Dwm.txt
-
----
-
-Other value, which I found while looking through `dwmcore.dll`:
-```
-\Registry\Machine\SOFTWARE\Microsoft\Windows\Dwm : OverlayMinFPS
-```
-Takes a default value of `15`:
-```c
-  v2 = 0;
-  result = GetPersistedRegistryValueW(
-             L"DWMSwitches",
-             L"Software\\Microsoft\\Windows\\Dwm",
-             L"OverlayMinFPS",
-             16,
-             0,
-             &v2,
-             4,
-             0);
-  v1 = 15; // will be used if not overrided via registry
-  if ( !(_DWORD)result )
-    v1 = v2;
-  dword_180419950 = v1;
-  return result;
-}
-```
-
-> [nvidia/assets | mpo-minfps.c](https://github.com/5Noxi/win-config/blob/main/nvidia/assets/mpo-minfps.c)
