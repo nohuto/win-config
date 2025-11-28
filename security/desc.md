@@ -313,7 +313,7 @@ dword_140FC41E0 dd 1 // default - 0 = disabled
 
 "Do not include drivers with Windows Updates", "Prevent device metadata retrieval from the Internet":
 
-```powershell
+```json
 {
 	"File":  "WindowsUpdate.admx",
 	"NameSpace":  "Microsoft.Policies.WindowsUpdate",
@@ -408,6 +408,78 @@ dword_140FC41E0 dd 1 // default - 0 = disabled
 						}
 					]
 },
+```
+```xml
+<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      language="neutral"
+      name="Microsoft-Windows-Update-MuseUxDocked"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      />
+  <migration
+      replacementSettingsVersionRange="0"
+      replacementVersionRange="10.0.18267-10.0.18362"
+      settingsVersion="1"
+      >
+    <migXml xmlns="">
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings [UxOption]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings [ExcludeWUDriversInQualityUpdate]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings [ActiveHoursStart]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings [ActiveHoursEnd]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings [SmartActiveHoursState]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings [SmartActiveHoursSuggestionState]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings [SmartActiveHoursStart]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings [SmartActiveHoursEnd]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings [UserChoiceActiveHoursStart]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings [UserChoiceActiveHoursEnd]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings [LastToastAction]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings [RestartNotificationsAllowed2]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings [FlightCommitted]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings [AllowAutoWindowsUpdateDownloadOverMeteredNetwork]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings [IsExpedited]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings [RestartNoisyNotificationsAllowed]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\StateVariables [*]</pattern>
+          </objectSet>
+        </include>
+        <exclude>
+          <objectSet>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings [RestartNotificationsAllowed]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings [BranchReadinessLevel]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings [DeferUpgrade]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\StateVariables [RebootRequired]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\StateVariables [ScheduledRebootTime]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\StateVariables [RebootScheduledByUser]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\StateVariables [RebootConfirmedByUser]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\StateVariables [RebootScheduledBySmartScheduler]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\StateVariables [AutoAcceptShownToUser]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\StateVariables [AutoScheduledRebootFailed]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\StateVariables [ScheduledRebootFailed]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\StateVariables [LastAttemptedRebootTime]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\StateVariables [FairWarningLastDismissTime]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\StateVariables [ForcedReminderDisplayed]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\StateVariables [ForceRebootReminderNeeded]</pattern>
+          </objectSet>
+        </exclude>
+        <!-- Migrate RestartNotificationsAllowed to RestartNotificationsAllowed2 if it exists-->
+        <locationModify script="MigXmlHelper.ExactMove(&apos;HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings [RestartNotificationsAllowed2]&apos;)">
+          <objectSet>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings [RestartNotificationsAllowed]</pattern>
+          </objectSet>
+        </locationModify>
+      </rules>
+    </migXml>
+  </migration>
+</assembly>
 ```
 
 # Disable Windows Defender
@@ -1048,3 +1120,42 @@ Miscellaneous notes:
   ]
 },
 ```
+
+# Sudo
+
+[Sudo](https://github.com/microsoft/sudo) is a new way for users to run elevated commands (as an administrator) directly from an unelevated console session on Windows.
+
+Note that sudo uses administrator previledges and doesn't include `TrustedInstaller`/`SYSTEM` previledges.
+
+| Mode | Description |
+| ---- | ---- |
+| `forceNewWindow` | Runs the command elevated in a new console window. |
+| `disableInput` | Runs elevated in the same window but blocks keyboard input while it runs. |
+| `normal` | Runs elevated in the same window with normal input and output behavior. |
+
+```json
+{
+  "File": "Sudo.admx",
+  "CategoryName": "System",
+  "PolicyName": "EnableSudo",
+  "NameSpace": "Microsoft.Policies.DeveloperTools",
+  "Supported": "Windows_11_0_NOSERVER - At least Windows 11",
+  "DisplayName": "Configure the behavior of the sudo command",
+  "ExplainText": "This policy setting controls use of the sudo.exe command line tool. If you enable this policy setting, then you may set a maximum allowed mode to run sudo in. This restricts the ways in which users may interact with command-line applications run with sudo. You may pick one of the following modes to allow sudo to run in: \"Disabled\": sudo is entirely disabled on this machine. When the user tries to run sudo, sudo will print an error message and exit. \"Force new window\": When sudo launches a command line application, it will launch that app in a new console window. \"Disable input\": When sudo launches a command line application, it will launch the app in the current console window, but the user will not be able to type input to the command line app. The user may also choose to run sudo in \"Force new window\" mode. \"Normal\": When sudo launches a command line application, it will launch the app in the current console window. The user may also choose to run sudo in \"Force new window\" or \"Disable input\" mode. If you disable this policy or do not configure it, the user will be able to run sudo.exe normally (after enabling the setting in the Settings app).",
+  "KeyPath": [
+    "HKLM\\Software\\Policies\\Microsoft\\Windows\\Sudo"
+  ],
+  "Elements": [
+    { "Type": "Enum", "ValueName": "Enabled", "Items": [
+        { "DisplayName": "Disabled", "Data": "0" },
+        { "DisplayName": "Force new window", "Data": "1" },
+        { "DisplayName": "Disable input", "Data": "2" },
+        { "DisplayName": "Normal", "Data": "3" }
+      ]
+    }
+  ]
+}
+```
+
+> https://learn.microsoft.com/en-us/windows/advanced-settings/sudo/  
+> https://devblogs.microsoft.com/commandline/introducing-sudo-for-windows/

@@ -891,11 +891,18 @@ Excludes (deprecated, chimney too):
   "*TCPChecksumOffloadIPv6" = 3; // range 0-3
   "*UDPChecksumOffloadIPv4" = 3; // range 0-3
   "*UDPChecksumOffloadIPv6" = 3; // range 0-3
+
+  "LSOSize" = 64000; // range 1024-64000 - The maximum number of bytes that the TCP/IP stack can pass to an adapter in a single packet.
+  "LSOMinSegment" = 2; // range 2-32 - The minimum number of segments that a large TCP packet must be divisible by, before the transport can offload it to a NIC for segmentation.
+  "LSOTcpOptions" = 1; // range 0-1 - Enables that the miniport driver to segment a large TCP packet whose TCP header contains TCP options.
+  "LSOIpOptions" = 1; // range 0-1 - Enables its NIC to segment a large TCP packet whose IP header contains IP options.
+
 ```
 
 > https://github.com/5Noxi/wpr-reg-records#intel-nic-values  
 > https://learn.microsoft.com/en-us/windows-server/networking/technologies/network-subsystem/net-sub-performance-top
-> https://www.intel.com/content/www/us/en/support/articles/000005593/ethernet-products.html
+> https://www.intel.com/content/www/us/en/support/articles/000005593/ethernet-products.html  
+> https://docs.nvidia.com/networking/display/winof2v320/configuring+the+driver+registry+keys#src-111583782_ConfiguringtheDriverRegistryKeys-OffloadRegistryKeys
 
 ```inf
 , *TCPChecksumOffloadIPv4
@@ -1149,6 +1156,15 @@ HKR, Ndi\Params\*InterruptModeration,                   type,                   
 \Registry\Machine\SYSTEM\ControlSet001\Control\Class\{4d36e972-e325-11ce-bfc1-08002be10318}\00XX : ITR
 \Registry\Machine\SYSTEM\ControlSet001\Control\Class\{4d36e972-e325-11ce-bfc1-08002be10318}\00XX : *InterruptModeration
 ```
+
+---
+
+Miscellaneous notes:
+```c
+"RecvIntModCount" = ?; // found it in the "Mellanox ConnectX based IPoIB Adapter (NDIS 6.4)" driver
+"RecvIntModTime" = ?; // ^
+"SendIntModCount" = ?; // ^
+"SendIntModTime" = ?; // ^
 
 # Enable RSS
 
@@ -1470,6 +1486,8 @@ It depends on your adapter/driver if VMQ is enabled/disabled by default:
     "*VMQLookaheadSplit" = 0; // range 0-1
     "*VMQVlanFiltering" = 1; // range 0-1
     "VMQSupported" = 0; // range 0-1
+
+    "MaxNumVmqs"; = ?; // found it in the "Mellanox ConnectX based IPoIB Adapter (NDIS 6.4)" driver
 ```
 
 > https://github.com/5Noxi/wpr-reg-records#intel-nic-values

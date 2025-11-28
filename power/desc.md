@@ -541,7 +541,8 @@ Not needed, if you disable energy estimation:
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power";
     "UserBatteryDischargeEstimator"; = 0; // PopDisableBatteryDischargeEstimator 
     "UserBatteryChargeEstimator"; = 0; // PopUserBatteryChargingEstimator 
-    "EnergyEstimationEnabled"; = 1; // PopEnergyEstimationEnabled 
+    "EnergyEstimationEnabled"; = 1; // PopEnergyEstimationEnabled
+                                    // If following HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\PolicyManager\default\knobs\Power/Controls/EnergyEstimationEnabled, it should have a range of 0-4294967295
 ```
 
 > https://github.com/5Noxi/wpr-reg-records#power-values  
