@@ -731,6 +731,8 @@ The main option doesn't apply all suboptions. For further custumization use [ser
 The suboptions probably overlap the documentation. If so, you can open the markdown file on my GitHub instead:
 > https://github.com/5Noxi/win-config/blob/main/system/desc.md#disable-servicesdrivers
 
+Note: Disabling `AppXSvc` (`Microsoft Store Services` option) breaks CmdPal and other store applications.
+
 See [services](https://github.com/5Noxi/win-config/blob/main/system/assets/services.txt)/[drivers](https://github.com/5Noxi/win-config/blob/main/system/assets/drivers.txt) for reference, these files were generated on a stock `W11 IoT Enterprise LTSC` installation via [serviwin](https://www.nirsoft.net/utils/serviwin.html).
 
 | Option Name | Service/Driver | Description |
@@ -809,6 +811,7 @@ See [services](https://github.com/5Noxi/win-config/blob/main/system/assets/servi
 | Office | `ClickToRunSvc` | - |
 | Telephony | `PhoneSvc` | Manages the telephony state on the device |
 |  | `TapiSrv` | Provides Telephony API (TAPI) support for programs that control telephony devices on the local computer and, through the LAN, on servers that are also running the service. |
+| Radio Management | `RmSvc` | Radio Management and Airplane Mode Service. |
 | Parental Control | `WpcMonSvc` | Enforces parental controls for child accounts in Windows. If this service is stopped or disabled, parental controls may not be enforced. |
 | Printer | `McpManagementService` | Universal Print Management Service |
 |  | `PrintDeviceConfigurationService` | The Print Device Configuration Service manages the installation of IPP and UP printers. If this service is stopped, any printer installations that are in-progress may be canceled. |
