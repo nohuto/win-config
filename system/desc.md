@@ -1,92 +1,3 @@
-# Win32PrioritySeparation
-
-"The value of this entry determines, in part, how much processor time the threads of a process receive each time they are scheduled, and how much the allotted time can vary. It also affects the relative priority of the threads of foreground and background processes. The value of this entry is a 6-bit bitmask consisting of three sets of two bits (AABBCC). Each set of two bits determines a different characteristic of the optimizing strategy.
-- The highest two bits (AABBCC) determine whether each processor interval is relatively long or short.
-- The middle two bits (AABBCC) determine whether the length of the interval varies or is fixed.
-- The lowest two bits (AABBCC) determine whether the threads of foreground processes get more processor time than the threads of background processes each time they run."
-
-Read trough the `.pdf` file, if you want to get more information about the bitmask. Calculate it yourself with [`bitmask-calc`](https://github.com/5Noxi/bitmask-calc).
-
-`0x00000018` = Long, Fixed, no boost. (`24,0x18,Longer,Fixed,36,36`)
-`0x00000024` = Short, Variable, no boost. (`36,0x24,Short,Variable,6,6`)
-
-Using a boost (bit `1-2`) would set the threads of foreground processes `2-3` times higher than from background processes, which can cause issues. `26` decimal would use a boost of `3x`. The options currently uses `36` decimal.
-
-As you can see in this [table](https://github.com/djdallmann/GamingPCSetup/blob/d865b755a9b6af65a470b8840af54729c75a6ae7/CONTENT/RESEARCH/FINDINGS/win32prisep0to271.csv), the values repeat. Using a extremely high number therefore won't do anything else. `Win32PrioritySeparation.ps1` can be used to get the info, increase `for ($i=0; $i -le 271; $i++) {` (`271`), if you want to see more. It's a lighter version of [win32prisepcalc](https://github.com/djdallmann/GamingPCSetup/blob/master/CONTENT/SCRIPTS/win32prisepcalc.ps1).
-
-Paste it into a terminal to see a table with all values:
-```powershell
-for ($i=0; $i -le 271; $i++) {
-    $bin = [Convert]::ToString($i,2).PadLeft(6,'0')[-6..-1]
-    $interval = if (('00','10','11' -contains ($bin[0,1] -join''))) {'Short'} else {'Long'}
-    $time = if (('00','01','11' -contains ($bin[2,3] -join''))) {'Variable'} else {'Fixed'}
-    $boost = switch ($bin[4,5] -join'') {'00' {'Equal and Fixed'} '01' {'2:1'} default {'3:1'}}
-    if ($time -eq 'Fixed') {$qrvforeground = $qrvbackground = if ($interval -eq 'Long') {36} else {18}} else {
-        $values = @{ 
-            'Short' = @{ '3:1' = @(18,6); '2:1' = @(12,6); 'Equal and Fixed' = @(6,6) }
-            'Long'  = @{ '3:1' = @(36,12); '2:1' = @(24,12); 'Equal and Fixed' = @(12,12) }
-        }
-        if ($values[$interval].ContainsKey($boost)) {$qrvforeground, $qrvbackground = $values[$interval][$boost]} else {$qrvforeground, $qrvbackground = $values[$interval]['Equal and Fixed']}
-    }
-	Write-Output "$i,0x$($i.ToString('X')),$interval,$time,$qrvforeground,$qrvbackground"
-}
-```
-
-![](https://github.com/5Noxi/win-config/blob/main/system/images/w32ps.png?raw=true)
-
-> [system/assets | Win32PrioritySeparation.pdf](https://github.com/5Noxi/win-config/blob/main/system/assets/Win32PrioritySeparation.pdf)
-
-# System Responsiveness
-
-*"Determines the percentage of CPU resources that should be guaranteed to low-priority tasks. For example, if this value is 20, then 20% of CPU resources are reserved for low-priority tasks. Note that values that are not evenly divisible by 10 are rounded down to the nearest multiple of 10. Values below 10 and above 100 are clamped to 20. A value of 100 disables MMCSS (driver returns `STATUS_SERVER_DISABLED`).*" (`mmcss.sys`)
-
-> https://github.com/MicrosoftDocs/win32/blob/docs/desktop-src/ProcThread/multimedia-class-scheduler-service.md#registry-settings
-
-```c
-DWORD = CiConfigReadDWORD(KeyHandle, 0x1C0011090LL, 100LL);
-
-if ( DWORD - 10 > 0x5A )          // if DWORD < 10 or DWORD > 100
-    v2 = 20LL;                    // fallback
-else
-    v2 = 10 * (DWORD / 0xA);      // round down to nearest multiple of 10
-
-CiSystemResponsiveness = v2;
-
-if ( CiSystemResponsiveness == 100 ) {
-    WPP_SF_(WPP_GLOBAL_Control->AttachedDevice, 19LL, &WPP_350503daac883abe7be9cf63f89038d9_Traceguids);
-    v0 = -1073741696;             // STATUS_SERVER_DISABLED
-}
-```
-```c
-// -1073741696 = 0xC0000080
-0xC0000080 // STATUS_SERVER_DISABLED
-
-The GUID allocation server is disabled at the moment.
-```
-> https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-erref/596a1078-e883-4972-9bbc-49e60bebca55
-
-Calculation:
-```c
-CiSystemResponsiveness = 10 * (value / 10);
-
-// Examples
-< 10   -> 20   (fallback)
-10-19  -> 10
-20-29  -> 20
-30-39  -> 30
-40-49  -> 40
-50-59  -> 50
-60-69  -> 60
-70-79  -> 70
-80-89  -> 80
-90-99  -> 90
-== 100 -> 100  (STATUS_SERVER_DISABLED)
-> 100  -> 20   (fallback)
-```
-
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/MultiMedia.txt  
-> [system/assets | sysresp-CiConfigInitialize.c](https://github.com/5Noxi/win-config/blob/main/system/assets/sysresp-CiConfigInitialize.c)  
-
 # Disable Service Splitting
 
 Prevents services running under `svchost.exe` from being split into separate processes, keeping all grouped services within the same instance. This simplifies process management but increases the risk of system instability and reduces service isolation.
@@ -641,6 +552,95 @@ Everything listed below is based on personal research. Mistakes may exist, but I
 ```
 
 > https://github.com/5Noxi/wpr-reg-records#dwm-values
+
+# Win32PrioritySeparation
+
+"The value of this entry determines, in part, how much processor time the threads of a process receive each time they are scheduled, and how much the allotted time can vary. It also affects the relative priority of the threads of foreground and background processes. The value of this entry is a 6-bit bitmask consisting of three sets of two bits (AABBCC). Each set of two bits determines a different characteristic of the optimizing strategy.
+- The highest two bits (AABBCC) determine whether each processor interval is relatively long or short.
+- The middle two bits (AABBCC) determine whether the length of the interval varies or is fixed.
+- The lowest two bits (AABBCC) determine whether the threads of foreground processes get more processor time than the threads of background processes each time they run."
+
+Read trough the `.pdf` file, if you want to get more information about the bitmask. Calculate it yourself with [`bitmask-calc`](https://github.com/5Noxi/bitmask-calc).
+
+`0x00000018` = Long, Fixed, no boost. (`24,0x18,Longer,Fixed,36,36`)
+`0x00000024` = Short, Variable, no boost. (`36,0x24,Short,Variable,6,6`)
+
+Using a boost (bit `1-2`) would set the threads of foreground processes `2-3` times higher than from background processes, which can cause issues. `26` decimal would use a boost of `3x`. The options currently uses `36` decimal.
+
+As you can see in this [table](https://github.com/djdallmann/GamingPCSetup/blob/d865b755a9b6af65a470b8840af54729c75a6ae7/CONTENT/RESEARCH/FINDINGS/win32prisep0to271.csv), the values repeat. Using a extremely high number therefore won't do anything else. `Win32PrioritySeparation.ps1` can be used to get the info, increase `for ($i=0; $i -le 271; $i++) {` (`271`), if you want to see more. It's a lighter version of [win32prisepcalc](https://github.com/djdallmann/GamingPCSetup/blob/master/CONTENT/SCRIPTS/win32prisepcalc.ps1).
+
+Paste it into a terminal to see a table with all values:
+```powershell
+for ($i=0; $i -le 271; $i++) {
+    $bin = [Convert]::ToString($i,2).PadLeft(6,'0')[-6..-1]
+    $interval = if (('00','10','11' -contains ($bin[0,1] -join''))) {'Short'} else {'Long'}
+    $time = if (('00','01','11' -contains ($bin[2,3] -join''))) {'Variable'} else {'Fixed'}
+    $boost = switch ($bin[4,5] -join'') {'00' {'Equal and Fixed'} '01' {'2:1'} default {'3:1'}}
+    if ($time -eq 'Fixed') {$qrvforeground = $qrvbackground = if ($interval -eq 'Long') {36} else {18}} else {
+        $values = @{ 
+            'Short' = @{ '3:1' = @(18,6); '2:1' = @(12,6); 'Equal and Fixed' = @(6,6) }
+            'Long'  = @{ '3:1' = @(36,12); '2:1' = @(24,12); 'Equal and Fixed' = @(12,12) }
+        }
+        if ($values[$interval].ContainsKey($boost)) {$qrvforeground, $qrvbackground = $values[$interval][$boost]} else {$qrvforeground, $qrvbackground = $values[$interval]['Equal and Fixed']}
+    }
+	Write-Output "$i,0x$($i.ToString('X')),$interval,$time,$qrvforeground,$qrvbackground"
+}
+```
+
+![](https://github.com/5Noxi/win-config/blob/main/system/images/w32ps.png?raw=true)
+
+> [system/assets | Win32PrioritySeparation.pdf](https://github.com/5Noxi/win-config/blob/main/system/assets/Win32PrioritySeparation.pdf)
+
+# System Responsiveness
+
+*"Determines the percentage of CPU resources that should be guaranteed to low-priority tasks. For example, if this value is 20, then 20% of CPU resources are reserved for low-priority tasks. Note that values that are not evenly divisible by 10 are rounded down to the nearest multiple of 10. Values below 10 and above 100 are clamped to 20. A value of 100 disables MMCSS (driver returns `STATUS_SERVER_DISABLED`).*" (`mmcss.sys`)
+
+> https://github.com/MicrosoftDocs/win32/blob/docs/desktop-src/ProcThread/multimedia-class-scheduler-service.md#registry-settings
+
+```c
+DWORD = CiConfigReadDWORD(KeyHandle, 0x1C0011090LL, 100LL);
+
+if ( DWORD - 10 > 0x5A )          // if DWORD < 10 or DWORD > 100
+    v2 = 20LL;                    // fallback
+else
+    v2 = 10 * (DWORD / 0xA);      // round down to nearest multiple of 10
+
+CiSystemResponsiveness = v2;
+
+if ( CiSystemResponsiveness == 100 ) {
+    WPP_SF_(WPP_GLOBAL_Control->AttachedDevice, 19LL, &WPP_350503daac883abe7be9cf63f89038d9_Traceguids);
+    v0 = -1073741696;             // STATUS_SERVER_DISABLED
+}
+```
+```c
+// -1073741696 = 0xC0000080
+0xC0000080 // STATUS_SERVER_DISABLED
+
+The GUID allocation server is disabled at the moment.
+```
+> https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-erref/596a1078-e883-4972-9bbc-49e60bebca55
+
+Calculation:
+```c
+CiSystemResponsiveness = 10 * (value / 10);
+
+// Examples
+< 10   -> 20   (fallback)
+10-19  -> 10
+20-29  -> 20
+30-39  -> 30
+40-49  -> 40
+50-59  -> 50
+60-69  -> 60
+70-79  -> 70
+80-89  -> 80
+90-99  -> 90
+== 100 -> 100  (STATUS_SERVER_DISABLED)
+> 100  -> 20   (fallback)
+```
+
+> https://github.com/5Noxi/wpr-reg-records/blob/main/records/MultiMedia.txt  
+> [system/assets | sysresp-CiConfigInitialize.c](https://github.com/5Noxi/win-config/blob/main/system/assets/sysresp-CiConfigInitialize.c)
 
 # Disable Scheduled Tasks
 
@@ -2072,3 +2072,32 @@ HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\InstallService\Stubification\S-{I
   ]
 },
 ```
+
+# Page File
+
+Several notes I took while reading trough `Windows Internals Part 1, Edition 7`, everything written below is based on it.
+
+**You should calculate it while daily workload, or your peak value won't be accurate.**
+
+Paging files are configured via `System > Advanced system settings > Performance > Advanced > Virtual memory`, but they are only one component of virtual memory. Even with no paging file, every process still uses virtual address space managed by the memory manager. Private pages must always live somewhere. RAM holds them while they are in use, and paging files act as disk backed storage so the memory manager can reclaim physical pages when demand grows.
+
+Windows tracks private committed memory as the "commit charge" and enforces a "commit limit" equal to available RAM plus the total size of all paging files. This ensures Windows never promises more pageable storage than it can keep either in memory or in paging files. When commit charge climbs toward the limit, the modified page writer (`MiModifiedPageWriter`) flushes dirty pages to paging files so their physical frames can be reused. If the limit is reached and paging files can't grow, further private allocations fail until memory is freed. Task manager's performance tab/process explorer's system information window/system informers system information display current commit, the commit limit, and the peak value so you can see how much paging file space recent workloads required.
+
+Size calculation if leaving it system managed and RAM as base would be if RAM <= 1 GB, then size = 1 GB. If RAM > 1 GB, then add 1/8 GB for every extra gigabyte of RAM, up to a maximum of 32 GB.
+
+## How the option calculates it
+
+If peak commit is below physical memory, no paging file would have been necessary (the option won't set it to 0, if you do there's literally nowhere to place additional committed pages, so allocations fail and you can even hit a bugcheck). If it exceeds RAM, the difference is the minimum disk backed capacity needed so the commit limit (RAM + paging files) stays above demand. Reads `\Process(_Total)\Page File Bytes Peak`, computes the Smss RAM baseline (`1 GB + 1/8 GB per extra GB of RAM`, capped at 32 GB), and checks whether `peak – RAM` is positive. If the workload never exceeded RAM, it keeps the Smss baseline. Otherwise, it uses the excess value.
+
+## Clearing Page File on Shutdown
+
+Windows Internals: Paging files can contain fragments of process or kernel data. Enabling the option mitigates offline data exposure at the cost of longer shutdowns.
+
+Local Security Policy:
+"This security setting determines whether the virtual memory pagefile is cleared when the system is shut down.
+
+Virtual memory support uses a system pagefile to swap pages of memory to disk when they are not used. On a running system, this pagefile is opened exclusively by the operating system, and it is well protected. However, systems that are configured to allow booting to other operating systems might have to make sure that the system pagefile is wiped clean when this system shuts down. This ensures that sensitive information from process memory that might go into the pagefile is not available to an unauthorized user who manages to directly access the pagefile.
+
+When this policy is enabled, it causes the system pagefile to be cleared upon clean shutdown. If you enable this security option, the hibernation file (hiberfil.sys) is also zeroed out when hibernation is disabled."
+
+> https://github.com/5Noxi/windows-books/releases
