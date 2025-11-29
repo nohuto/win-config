@@ -441,6 +441,17 @@ Removes the search box, moves the taskbar to the left, removes badges, disables 
 ![](https://github.com/5Noxi/win-config/blob/main/visibility/images/taskbar.png?raw=true)
 
 ```json
+    "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced": {
+      "TaskbarDa": { "Type": "REG_DWORD", "Data": 0, "Elevated": true },
+```
+I removed the value since you can't apply it even with `TrustedInstaller`/`SYSTEM` previledges. Note that the value is still actively used by `SystemSettings`:
+```c
+// Personalization > Taskbar - Widgets
+SystemSettings.exe	HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDa	Type: REG_DWORD, Length: 4, Data: 0
+```
+Disallowing it via the `AllowNewsAndInterests` policy won't set `TaskbarDa` to 0, but it grays out & disables the option.
+
+```json
 {
   "File": "StartMenu.admx",
   "CategoryName": "StartMenu",

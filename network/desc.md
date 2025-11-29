@@ -393,19 +393,8 @@ RegistryKey<unsigned char>::Initialize(
 
 # Congestion Provider
 
-BBRv2 only works on W11 - can cause issues with applications (e.g. steelseries), can work fine. Fix:
-```bat
-netsh int ipv6 set gl loopbacklargemtu=disable
-netsh int ipv4 set gl loopbacklargemtu=disable
-```
-Revert:
-```bat
-netsh int ipv6 set gl loopbacklargemtu=enable
-netsh int ipv4 set gl loopbacklargemtu=enable
-```
-> https://dev.moe/en/3021
+Placeholder.
 
-Info, which was used:
 > https://www3.cs.stonybrook.edu/~anshul/comsnets24_bbrbbrv2.pdf  
 > https://github.com/google/bbr  
 > https://www.rfc-editor.org/rfc/rfc6582  
@@ -421,41 +410,6 @@ Get-NetTCPSetting | Select SettingName, CongestionProvider
 
 ![](https://github.com/5Noxi/win-config/blob/main/network/images/congnet.png?raw=true)
 ![](https://github.com/5Noxi/win-config/blob/main/network/images/congnet2.png?raw=true)
-
-BBR2 (used):
-```powershell
-netsh int ipv6 set gl loopbacklargemtu=disable
-netsh int ipv4 set gl loopbacklargemtu=disable
-netsh int tcp set supplemental Template=Internet CongestionProvider=bbr2
-netsh int tcp set supplemental Template=Datacenter CongestionProvider=bbr2
-netsh int tcp set supplemental Template=Compat CongestionProvider=bbr2
-netsh int tcp set supplemental Template=DatacenterCustom CongestionProvider=bbr2
-netsh int tcp set supplemental Template=InternetCustom CongestionProvider=bbr2
-```
-CTCP:
-```powershell
-netsh int tcp set supplemental template=internet congestionprovider=CTCP
-netsh int tcp set supplemental template=internetcustom congestionprovider=CTCP
-netsh int tcp set supplemental Template=Compat CongestionProvider=CTCP
-netsh int tcp set supplemental template=Datacenter congestionprovider=CTCP
-netsh int tcp set supplemental template=Datacentercustom congestionprovider=CTCP
-```
-CUBIC:
-```powershell
-netsh int tcp set supplemental template=internet congestionprovider=CUBIC
-netsh int tcp set supplemental template=internetcustom congestionprovider=CUBIC
-netsh int tcp set supplemental Template=Compat CongestionProvider=CUBIC
-netsh int tcp set supplemental template=Datacenter congestionprovider=CUBIC
-netsh int tcp set supplemental template=Datacentercustom congestionprovider=CUBIC
-```
-NewReno:
-```powershell
-netsh int tcp set supplemental Template=Internet CongestionProvider=NewReno
-netsh int tcp set supplemental Template=Datacenter CongestionProvider=NewReno
-netsh int tcp set supplemental Template=Compat CongestionProvider=NewReno
-netsh int tcp set supplemental Template=DatacenterCustom CongestionProvider=NewReno
-netsh int tcp set supplemental Template=InternetCustom CongestionProvider=NewReno
-```
 
 # Disable Wi-Fi
 
