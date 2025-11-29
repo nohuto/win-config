@@ -1639,6 +1639,12 @@ This feature allows packet burst handling, while avoiding packet drops that may 
 
 "A threaded DPC is a DPC that the system executes at `IRQL = PASSIVE_LEVEL`. An ordinary DPC preempts the execution of all threads, and cannot be preempted by a thread or by another DPC. If the system has a large number of ordinary DPCs queued, or if one of those DPCs runs for a long period time, every thread will remain paused for an arbitrarily long period of time. Thus, each ordinary DPC increases the system latency, which can damage the performance of time-sensitive applications, such as audio or video playback. Conversely, a threaded DPC can be preempted by an ordinary DPC, but not by other threads. Therefore, the user should use threaded DPCs rather than ordinary DPCs, unless a particular DPC must not be preempted, even by another DPC."
 
+```c
+"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Kernel";
+    "ThreadDpcEnable"; = 1; // KeThreadDpcEnable
+```
+
+> https://github.com/5Noxi/wpr-reg-records?tab=readme-ov-file#session-manager-values  
 > https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/introduction-to-threaded-dpcs
 
 | Data | Meaning |

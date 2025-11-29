@@ -264,6 +264,8 @@ Everything listed below is based on personal research. Mistakes may exist, but I
     "RNGAuxiliarySeed"; = ; // ExpRNGAuxiliarySeed = 742978275?
 ```
 
+> https://github.com/5Noxi/wpr-reg-records?tab=readme-ov-file#session-manager-values
+
 ![](https://github.com/5Noxi/win-config/blob/main/system/images/kernel0.png?raw=true)
 ![](https://github.com/5Noxi/win-config/blob/main/system/images/kernel1.png?raw=true)
 ![](https://github.com/5Noxi/win-config/blob/main/system/images/kernel2.png?raw=true)
