@@ -38,7 +38,3 @@ More miscellaneous uploads:
 ```powershell
 pip install PySide6 mistune requests
 ```
-
-## Contribution
-
-If you've something useful that isn't available in the tool yet, you're welcome to create a pull request. Note the JSON structure and provide appropriate documentation for the option - see [contribution.md](https://github.com/5Noxi/win-config/blob/main/contribution.md) for JSON structure details.
