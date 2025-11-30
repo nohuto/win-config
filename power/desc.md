@@ -176,14 +176,53 @@ Everything listed below is based on personal research. Mistakes may exist, but I
 
 Disables USB selective suspend, idle power management, and related LP features.
 
-`Device-Powersavings.ps1` includes some comments, which can be tested - if not, leave them.
-
-I added some comments to `QueryUsbflagsValuesForDevice.c`, since they renamed the values.
+I added some comments to `QueryUsbflagsValuesForDevice.c`, since it renamed the values.
 
 > https://github.com/5Noxi/win-config/blob/main/power/desc.md#disable-usb-battery-saver  
 > https://github.com/5Noxi/win-config/blob/main/power/desc.md#usb-flags  
 > https://github.com/5Noxi/wpr-reg-records/blob/main/records/pci.txt  
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/Enum-USB.txt
+> https://github.com/5Noxi/wpr-reg-records/blob/main/records/Enum-USB.txt  
+> [power/assets | devicepower-HidpFdoConfigureIdleSettings.c](https://github.com/5Noxi/win-config/blob/main/power/assets/devicepower-HidpFdoConfigureIdleSettings.c)  
+> [power/assets | devicepower-UsbhGetD3Policy.c](https://github.com/5Noxi/win-config/blob/main/power/assets/devicepower-UsbhGetD3Policy.c)  
+> [power/assets | devicepower-QueryUsbflagsValuesForDevice.c](https://github.com/5Noxi/win-config/blob/main/power/assets/devicepower-QueryUsbflagsValuesForDevice.c)
+
+---
+
+Miscellaneous notes:
+```c
+// Not used in the option
+"HKLM\\SYSTEM\\CurrentControlSet\\Services\\usbhub\\hubg": {
+  "DisableSelectiveSuspendUI": { "Type": "REG_DWORD", "Data": 1 },
+  "DisableUxdSupport": { "Type": "REG_DWORD", "Data": 1 }
+}
+// HcDisableAllSelectiveSuspend
+// WinUsbPowerPolicyOwnershipDisabled
+// UsbDebugModeEnable
+"UsbDeviceParameters": {
+  "Action": "registry_pattern",
+  "Pattern": "HKLM\\SYSTEM\\CurrentControlSet\\Enum\\USB\\**\\Device Parameters",
+  "Operations": [
+    { "Value": "D3ColdReconnectTimeout", "Type": "REG_DWORD", "Data": 0 }
+    { "Value": "DefaultIdleState", "Type": "REG_DWORD", "Data": 0 },
+    { "Value": "EnableSelectiveSuspend", "Type": "REG_DWORD", "Data": 0 },
+    { "Value": "FullPowerDownOnTransientDx", "Type": "REG_DWORD", "Data": 0 },
+    { "Value": "SuppressInputInCS", "Type": "REG_DWORD", "Data": 0 },
+    { "Value": "SystemInputSuppressionEnabled", "Type": "REG_DWORD", "Data": 0 },
+    { "Value": "WriteReportExSupported", "Type": "REG_DWORD", "Data": 0 },
+    //{ "Value": "SelSuspCancelBehavior", "Type": "REG_DWORD", "Data": },
+  ]
+},
+"UsbDevSub": {
+  "Action": "registry_pattern",
+  "Pattern": "HKLM\\SYSTEM\\CurrentControlSet\\Enum\\USB\\**\\Device Parameters\\*",
+  "Exclude": [ "wdf" ],
+  "Operations": [
+    { "Value": "DeviceD0DelayTime", "Type": "REG_DWORD", "Data": 0 },
+    { "Value": "DevicePowerResetDelayTime", "Type": "REG_DWORD", "Data": 0 }
+  ]
+}
+// DisableSelectiveSuspend might be a legacy value
+```
 
 `pci.inf`:
 ```c
@@ -196,38 +235,6 @@ AddReg=PciD3ColdSupported.RegHW
 
 [PciD3ColdSupported.RegHW]
 HKR,e5b3b5ac-9725-4f78-963f-03dfb1d828c7,D3ColdSupported,0x10001,1
-```
-
-> [power/assets | devicepower-HidpFdoConfigureIdleSettings.c](https://github.com/5Noxi/win-config/blob/main/power/assets/devicepower-HidpFdoConfigureIdleSettings.c)  
-> [power/assets | devicepower-UsbhGetD3Policy.c](https://github.com/5Noxi/win-config/blob/main/power/assets/devicepower-UsbhGetD3Policy.c)  
-> [power/assets | devicepower-QueryUsbflagsValuesForDevice.c](https://github.com/5Noxi/win-config/blob/main/power/assets/devicepower-QueryUsbflagsValuesForDevice.c)
-
----
-
-Miscellaneous comments:
-```powershell
-Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\usbhub\hubg' -Name 'DisableSelectiveSuspendUI' -Value 1
-Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\usbhub\hubg' -Name 'DisableUxdSupport' -Value 1
-Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\usbhub\hubg' -Name 'WakeOnConnectUI' -Value 0
-HcDisableAllSelectiveSuspend
-WinUsbPowerPolicyOwnershipDisabled
-
-$dev = @(
-    'DefaultIdleState'
-    'EnableSelectiveSuspend'
-    'FullPowerDownOnTransientDx'
-    'SelSuspCancelBehavior'
-    'SuppressInputInCS'
-    'SystemInputSuppressionEnabled'
-    'SystemWakeEnabled'
-    'WaitWakeEnabled'
-    'WakeScreenOnInputSupport'
-    'WriteReportExSupported'
-)
-$devsub = @(
-    'DeviceD0DelayTime'
-    'DevicePowerResetDelayTime'
-)
 ```
 ```c
 // Opt-out of ASPM.
@@ -252,6 +259,13 @@ HKR,e5b3b5ac-9725-4f78-963f-03dfb1d828c7,ASPMOptIn,0x10001,1
 ```
 
 > [power/assets | devicepower-OptInOptOutPolicy.c](https://github.com/5Noxi/win-config/blob/main/power/assets/devicepower-OptInOptOutPolicy.c)
+
+---
+
+```c
+// probably located in \Registry\Machine\SYSTEM\ControlSet001\Enum\USB\ROOT_HUB30\{ID}\Device Parameters
+ForcePortPower
+```
 
 # Disable Hibernation
 
@@ -765,14 +779,52 @@ In `USBXHCI.SYS`. Disables S0 idle on the host controller - remains in the worki
 \Registry\Machine\SYSTEM\ControlSet001\Control\usbflags : Allow64KLowOrFullSpeedControlTransfers
 \Registry\Machine\SYSTEM\ControlSet001\Control\usbflags : DisableHCS0Idle
 ```
+
 I didn't do proper research for them, either test them or leave it:
-```powershell
-Get-ChildItem 'HKLM:\SYSTEM\CurrentControlSet\Control\usbflags' -ErrorAction SilentlyContinue | ForEach-Object {
-    Set-ItemProperty -Path $_.PSPath -Name 'DisableOnSoftRemove' -Value 1
-    Set-ItemProperty -Path $_.PSPath -Name 'DisableRecoveryFromPowerDrain' -Value 0
-    Set-ItemProperty -Path $_.PSPath -Name 'DisableLPM' -Value 1
+```c
+"COMMANDS": {
+  "usbflags": {
+    "Action": "registry_pattern",
+    "Pattern": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\usbflags\\*",
+    "Operations": [
+      { "Value": "DisableOnSoftRemove", "Type": "REG_DWORD", "Data": 1 },
+      { "Value": "DisableRecoveryFromPowerDrain", "Type": "REG_DWORD", "Data": 0 },
+      { "Value": "DisableLPM", "Type": "REG_DWORD", "Data": 1 },
+      { "Value": "EnableExtendedValidation", "Type": "REG_DWORD", "Data": 0 },
+      { "Value": "EnableDiagnosticMode", "Type": "REG_DWORD", "Data": 0 }
+    ]
+  }
 }
+
+// EnableExtendedValidation - used in usbflagsdevicekey and
+// \Registry\Machine\SYSTEM\ControlSet001\Services\usbhub\hubg : EnableExtendedValidation
+
+// EnableDiagnosticMode - used in usbflagsdevicekey and
+// \Registry\Machine\SYSTEM\ControlSet001\Services\usbhub\hubg : EnableDiagnosticMode
 ```
+```c
+v25 = 0;
+if ( v26 )
+{
+  UsbflagsDeviceKey = (*(__int64 (__fastcall **)(PWDF_DRIVER_GLOBALS, __int64, const wchar_t *, __int64, int *, _QWORD, _QWORD))(WdfFunctions_01015 + 1880))(
+                        WdfDriverGlobals,
+                        v26,
+                        L"02", // g_EnableExtendedValidation ; "02"
+                        4LL,
+                        &v25,
+                        0LL,
+                        0LL);
+v25 = 0;
+UsbflagsDeviceKey = (*(__int64 (__fastcall **)(PWDF_DRIVER_GLOBALS, __int64, const wchar_t *, __int64, int *, _QWORD, _QWORD))(WdfFunctions_01015 + 1880))(
+                      WdfDriverGlobals,
+                      v28,
+                      L"(*", // g_EnableDiagnosticMode ; "(*"
+                      4LL,
+                      &v25,
+                      0LL,
+                      0LL);
+```
+> [power/assets | devicepower-QueryUsbflagsValuesForDevice.c](https://github.com/5Noxi/win-config/blob/main/power/assets/devicepower-QueryUsbflagsValuesForDevice.c)  
 > https://github.com/5Noxi/wpr-reg-records/blob/main/records/USB-Flags.txt
 
 | Power state | ACPI state | Description | 

@@ -478,6 +478,27 @@ UnDimOnInputDeviceTypes = -1  // 0xFFFFFFFF
 > https://github.com/5Noxi/wpr-reg-records/blob/main/records/Input.txt  
 > [peripheral/assets | wakedev-WakeOnInputDeviceTypes.c](https://github.com/5Noxi/win-config/blob/main/peripheral/assets/wakedev-WakeOnInputDeviceTypes.c)
 
+\Registry\Machine\SYSTEM\ControlSet001\Services\usbhub\hubg : WakeOnConnectUI
+
+---
+
+```c
+.rdata:00000001C00606B8 g_WakeOnConnectUI db  1Eh               ; DATA XREF: HUBREG_QueryGlobalHubValues+2DC↓o
+.rdata:00000001C00606C0                 dq offset aWakeonconnectu ; "WakeOnConnectUI"
+
+int *, _QWORD, _QWORD))(WdfFunctions_01015 + 1880))(
+             WdfDriverGlobals, // 
+             v7,
+             &g_WakeOnConnectUI,
+             4LL,
+             &v6,
+             0LL,
+             0LL);
+  if ( (int)result < 0 )
+```
+
+> [peripheral/assets | wakedev-HUBREG_QueryGlobalHubValues.c](https://github.com/5Noxi/win-config/blob/main/peripheral/assets/wakedev-HUBREG_QueryGlobalHubValues.c)
+
 --- 
 
 All available flags (`powercfg /devicequery query_flag`):

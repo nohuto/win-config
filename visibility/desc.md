@@ -189,26 +189,39 @@ Miscellaneous notes:
 
 # Enable Dark Theme
 
+`Show Accent Color on Start and Taskbar` only works if using dark theme.
+
 `darktheme-GetThemeFromUnattendSetup.c` for information about the comments, otherwise ignore them.
 
 > [visibility/assets | darktheme-GetThemeFromUnattendSetup.c](https://github.com/5Noxi/win-config/blob/main/visibility/assets/darktheme-GetThemeFromUnattendSetup.c)
 
 The pictures below show: `Dark Theme`, `Light Theme`.
 
-Change accent color via registry (ARGB):
-```json
-"HKCU\\Software\\Microsoft\\Windows\\DWM": {
-  "ColorizationColor": { "Type": "REG_DWORD", "Data": 3292809298 },
-  "ColorizationAfterglow": { "Type": "REG_DWORD", "Data": 3292809298 }
-},
-"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Accent": {
-  "AccentPalette": { "Type": "REG_BINARY", "Data": "646a79ff575c68ff4d525dff444852ff3a3d46ff30333bff23252aff88179800" },
-  "StartColorMenu": { "Type": "REG_DWORD", "Data": 4282793274 },
-  "AccentColorMenu": { "Type": "REG_DWORD", "Data": 4283582532 }
-}
+Changing the color via `Personalization > Colors` sets:
+```c
+// Nord Theme (#2e3440)
+HKCU\Software\Microsoft\Windows\DWM\ColorizationColor	Type: REG_DWORD, Length: 4, Data: 3291823178
+HKCU\Software\Microsoft\Windows\DWM\ColorizationAfterglow	Type: REG_DWORD, Length: 4, Data: 3291823178
+HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent\AccentPalette	Type: REG_BINARY, Length: 32, Data: 59 65 7C FF 4A 54 68 FF 3F 48 59 FF 35 3C 4A FF
+HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent\StartColorMenu	Type: REG_DWORD, Length: 4, Data: 4282069034
+HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent\AccentColorMenu	Type: REG_DWORD, Length: 4, Data: 4283055157
+HKCU\Software\Microsoft\Windows\DWM\AccentColor	Type: REG_DWORD, Length: 4, Data: 4283055157
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\SystemProtectedUserData\S-1-5-21-1713887642-2553820887-3827158055-1000\AnyoneRead\Colors\StartColor	Type: REG_DWORD, Length: 4, Data: 4282069034
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\SystemProtectedUserData\S-1-5-21-1713887642-2553820887-3827158055-1000\AnyoneRead\Colors\AccentColor	Type: REG_DWORD, Length: 4, Data: 4283055157
+
+// Default Blue
+HKCU\Software\Microsoft\Windows\DWM\ColorizationColor	Type: REG_DWORD, Length: 4, Data: 3288365268
+HKCU\Software\Microsoft\Windows\DWM\ColorizationAfterglow	Type: REG_DWORD, Length: 4, Data: 3288365268
+HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent\AccentPalette	Type: REG_BINARY, Length: 32, Data: 99 EB FF 00 4C C2 FF 00 00 91 F8 00 00 78 D4 00
+HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent\StartColorMenu	Type: REG_DWORD, Length: 4, Data: 4290799360
+HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent\AccentColorMenu	Type: REG_DWORD, Length: 4, Data: 4292114432
+HKCU\Software\Microsoft\Windows\DWM\AccentColor	Type: REG_DWORD, Length: 4, Data: 4292114432
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\SystemProtectedUserData\S-1-5-21-1713887642-2553820887-3827158055-1000\AnyoneRead\Colors\StartColor	Type: REG_DWORD, Length: 4, Data: 4290799360
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\SystemProtectedUserData\S-1-5-21-1713887642-2553820887-3827158055-1000\AnyoneRead\Colors\AccentColor	Type: REG_DWORD, Length: 4, Data: 4292114432
 ```
 
-This would apply dark nord color scheme (suboption).
+The suboption would use the 'Polar Night' `#2e3440` color.
+
 > https://www.nordtheme.com/
 
 ![](https://github.com/5Noxi/win-config/blob/main/visibility/images/darktheme1.png?raw=true)
@@ -220,6 +233,14 @@ The pictures below show: `Transparency On`, `Transparency Off`.
 
 ![](https://github.com/5Noxi/win-config/blob/main/visibility/images/transpa1.png?raw=true)
 ![](https://github.com/5Noxi/win-config/blob/main/visibility/images/transpa2.png?raw=true)
+
+
+---
+
+Miscellaneous notes:
+```c
+\Registry\Machine\SOFTWARE\Microsoft\WINDOWS\CurrentVersion\SystemProtectedUserData\{userid}\AnyoneRead\Accessibility : Transparency
+```
 
 # Disable Audio / Video Preview
 
