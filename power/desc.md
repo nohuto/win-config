@@ -218,24 +218,15 @@ Miscellaneous notes:
   "Exclude": [ "wdf" ],
   "Operations": [
     { "Value": "DeviceD0DelayTime", "Type": "REG_DWORD", "Data": 0 },
-    { "Value": "DevicePowerResetDelayTime", "Type": "REG_DWORD", "Data": 0 }
+    { "Value": "DevicePowerResetDelayTime", "Type": "REG_DWORD", "Data": 0 },
+    { "Value": "ASPMOptOut", "Type": "REG_DWORD", "Data": 1 },
+    { "Value": "ASPMOptIn", "Type": "REG_DWORD", "Data": 0 }
+    
   ]
 }
 // DisableSelectiveSuspend might be a legacy value
 ```
 
-`pci.inf`:
-```c
-// D3 cold supported.
-[PciD3ColdSupported]
-Needs=PciD3ColdSupported.HW
-
-[PciD3ColdSupported.HW]
-AddReg=PciD3ColdSupported.RegHW
-
-[PciD3ColdSupported.RegHW]
-HKR,e5b3b5ac-9725-4f78-963f-03dfb1d828c7,D3ColdSupported,0x10001,1
-```
 ```c
 // Opt-out of ASPM.
 [PciASPMOptOut]

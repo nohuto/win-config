@@ -3247,6 +3247,10 @@ If you disable or don't configure this policy setting, KMS client activation dat
 
 > https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-licensing#disallowkmsclientonlineavsvalidation
 
+`Disable Auto Activation` (MAK and KMS host but not KMS client) prevents windows from whether it's actived or not.
+
+> https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-r2-and-2012/dn502532(v=ws.11)
+
 ```json
 {
   "File": "AVSValidationGP.admx",
@@ -3415,6 +3419,23 @@ Currently includes all existing tasks in `\\Microsoft\\Windows\\Application Expe
   ]
 },
 {
+  "File": "pca.admx",
+  "CategoryName": "PcaScenarioCategory",
+  "PolicyName": "DisablePcaUIPolicy",
+  "NameSpace": "Microsoft.Policies.ApplicationDiagnostics",
+  "Supported": "Windows8 - At least Windows Server 2012, Windows 8 or Windows RT",
+  "DisplayName": "Detect compatibility issues for applications and drivers",
+  "ExplainText": "This policy setting configures the Program Compatibility Assistant (PCA) to diagnose failures with application and driver compatibility. If you enable this policy setting, the PCA is configured to detect failures during application installation, failures during application runtime, and drivers blocked due to compatibility issues. When failures are detected, the PCA will provide options to run the application in a compatibility mode or get help online through a Microsoft website. If you disable this policy setting, the PCA does not detect compatibility issues for applications and drivers. If you do not configure this policy setting, the PCA is configured to detect failures during application installation, failures during application runtime, and drivers blocked due to compatibility issues. Note: This policy setting has no effect if the \"Turn off Program Compatibility Assistant\" policy setting is enabled. The Diagnostic Policy Service (DPS) and Program Compatibility Assistant Service must be running for the PCA to run. These services can be configured by using the Services snap-in to the Microsoft Management Console.",
+  "KeyPath": [
+    "HKLM\\Software\\Policies\\Microsoft\\Windows\\AppCompat"
+  ],
+  "ValueName": "DisablePcaUI",
+  "Elements": [
+    { "Type": "EnabledValue", "Data": "1" },
+    { "Type": "DisabledValue", "Data": "0" }
+  ]
+},
+{
   "File": "AppDeviceInventory.admx",
   "CategoryName": "AppDeviceInventory",
   "PolicyName": "TurnOffWin32AppBackup",
@@ -3511,4 +3532,13 @@ If enabled = "Windows will periodically attempt to connect with the OneSettings 
     { "Type": "DisabledValue", "Data": "0" }
   ]
 },
+```
+
+# Disable F1 Help Key
+
+Works via renaming `HelpPane.exe` (Help and Support Windows desktop application) which was the help component in `W8`/`W8.1`. The executeable still exists but calls to it will either start the `Get Started` application (if user is offline), or opens a browser instance and redirects the browser to an online topic. Note that `HelpPane` still handles the `F1` shortcut.
+
+If the option is disabled, pressing `F1` on your desktop will take you to a search query like:
+```
+https://www.bing.com/search?q=how+to+get+help+in+windows+11
 ```

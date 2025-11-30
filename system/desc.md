@@ -2101,3 +2101,29 @@ Virtual memory support uses a system pagefile to swap pages of memory to disk wh
 When this policy is enabled, it causes the system pagefile to be cleared upon clean shutdown. If you enable this security option, the hibernation file (hiberfil.sys) is also zeroed out when hibernation is disabled."
 
 > https://github.com/5Noxi/windows-books/releases
+
+# Disable Mobility Center
+
+Note that this is a laptop only feature. The "Mobility Center" is a feature that includes controls for screen brightness, power options, volume, battery status, wireless network status, external display settings, and more.
+
+![](https://github.com/5Noxi/win-config/blob/main/system/images/mobility-center.png?raw=true)
+
+```json
+{
+  "File": "MobilePCMobilityCenter.admx",
+  "CategoryName": "MobilityCenterCat",
+  "PolicyName": "MobilityCenterEnable_2",
+  "NameSpace": "Microsoft.Policies.MobilePCMobilityCenter",
+  "Supported": "WindowsVista - At least Windows Vista",
+  "DisplayName": "Turn off Windows Mobility Center",
+  "ExplainText": "This policy setting turns off Windows Mobility Center. If you enable this policy setting, the user is unable to invoke Windows Mobility Center. The Windows Mobility Center UI is removed from all shell entry points and the .exe file does not launch it. If you disable this policy setting, the user is able to invoke Windows Mobility Center and the .exe file launches it. If you do not configure this policy setting, Windows Mobility Center is on by default.",
+  "KeyPath": [
+    "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\MobilityCenter"
+  ],
+  "ValueName": "NoMobilityCenter",
+  "Elements": [
+    { "Type": "EnabledValue", "Data": "1" },
+    { "Type": "DisabledValue", "Data": "0" }
+  ]
+},
+```
