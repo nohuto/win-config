@@ -6,8 +6,7 @@ Prevents sending info about your computer to microsoft, disables the diagnostic 
 \Registry\Machine\SOFTWARE\Policies\Microsoft\WINDOWS\DataCollection : AllowTelemetry_PolicyManager
 ```
 Seems to be a fallback if `AllowTelemetry` isn't set.
-> https://github.com/TechTech512/Win11Src/blob/840a61919419c94ed24a9b079ee1029f482d29f2/NT/onecore/base/telemetry/permission/product/telemetrypermission.cpp#L106
-
+> https://github.com/TechTech512/Win11Src/blob/840a61919419c94ed24a9b079ee1029f482d29f2/NT/onecore/base/telemetry/permission/product/telemetrypermission.cpp#L106  
 
 Miscellaneous notes:  
 
@@ -243,6 +242,32 @@ Miscellaneous notes:
     { "Type": "EnabledValue", "Data": "1" },
     { "Type": "DisabledValue", "Data": "0" }
   ]
+},
+{
+  "File": "AppCompat.admx",
+  "CategoryName": "AppCompat",
+  "PolicyName": "AppCompatRemoveProgramCompatPropPage",
+  "NameSpace": "Microsoft.Policies.ApplicationCompatibility",
+  "Supported": "WindowsNET - At least Windows Server 2003",
+  "DisplayName": "Remove Program Compatibility Property Page",
+  "ExplainText": "This policy controls the visibility of the Program Compatibility property page shell extension. This shell extension is visible on the property context-menu of any program shortcut or executable file. The compatibility property page displays a list of options that can be selected and applied to the application to resolve the most common issues affecting legacy applications. Enabling this policy setting removes the property page from the context-menus, but does not affect previous compatibility settings applied to application using this interface.",
+  "KeyPath": [
+    "HKLM\\Software\\Policies\\Microsoft\\Windows\\AppCompat"
+  ],
+  "ValueName": "DisablePropPage",
+  "Elements": []
+},
+```
+
+---
+
+These [policies](https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-system) are deprecated and will only work on Windows 10 version 1809. Setting this policy will have no effect for other supported versions of Windows.
+```json
+"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection": {
+  "AllowCommercialDataPipeline": { "Type": "REG_DWORD", "Data": 0 },
+  "AllowDesktopAnalyticsProcessing": { "Type": "REG_DWORD", "Data": 0 },
+  "AllowUpdateComplianceProcessing": { "Type": "REG_DWORD", "Data": 0 },
+  "AllowWUfBCloudProcessing": { "Type": "REG_DWORD", "Data": 0 }
 },
 ```
 
@@ -2422,7 +2447,10 @@ Voluntary program that collects usage data to help improve the quality and perfo
 
 "Cortana was a virtual assistant developed by Microsoft that used the Bing search engine to perform tasks such as setting reminders and answering questions for users."
 
-> https://en.wikipedia.org/wiki/Cortana_(virtual_assistant)
+> https://en.wikipedia.org/wiki/Cortana_(virtual_assistant)  
+> https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-search  
+> https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-abovelock  
+> https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-experience#allowcortana
 
 # Hide Last Logged-In User
 

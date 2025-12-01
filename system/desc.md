@@ -593,7 +593,7 @@ for ($i=0; $i -le 271; $i++) {
 
 # System Responsiveness
 
-*"Determines the percentage of CPU resources that should be guaranteed to low-priority tasks. For example, if this value is 20, then 20% of CPU resources are reserved for low-priority tasks. Note that values that are not evenly divisible by 10 are rounded down to the nearest multiple of 10. Values below 10 and above 100 are clamped to 20. A value of 100 disables MMCSS (driver returns `STATUS_SERVER_DISABLED`).*" (`mmcss.sys`)
+"Determines the percentage of CPU resources that should be guaranteed to low-priority tasks. For example, if this value is 20, then 20% of CPU resources are reserved for low-priority tasks. Note that values that are not evenly divisible by 10 are rounded down to the nearest multiple of 10. Values below 10 and above 100 are clamped to 20. A value of 100 disables MMCSS (driver returns `STATUS_SERVER_DISABLED`)." (`mmcss.sys`)
 
 > https://github.com/MicrosoftDocs/win32/blob/docs/desktop-src/ProcThread/multimedia-class-scheduler-service.md#registry-settings
 
@@ -743,6 +743,7 @@ See [services](https://github.com/5Noxi/win-config/blob/main/system/assets/servi
 | Beep | `Beep` | - |
 | Biometrics | `WbioSrvc` | The Windows biometric service gives client applications the ability to capture, compare, manipulate, and store biometric data without gaining direct access to any biometric hardware or samples. The service is hosted in a privileged SVCHOST process. |
 | Bluetooth | `BTAGService` | Service supporting the audio gateway role of the Bluetooth Handsfree Profile. |
+|  | `BluetoothUserService_*` | The Bluetooth user service supports proper functionality of Bluetooth features relevant to each user session. |
 |  | `BthA2dp` | Microsoft Bluetooth A2dp driver |
 |  | `BthAvctpSvc` | This is Audio Video Control Transport Protocol service |
 |  | `BthEnum` | Bluetooth Enumerator Service |
@@ -755,6 +756,8 @@ See [services](https://github.com/5Noxi/win-config/blob/main/system/assets/servi
 |  | `BTHUSB` | Bluetooth Radio USB Driver |
 |  | `DeviceAssociationBrokerSvc` | Enables apps to pair devices |
 |  | `DeviceAssociationService` | Enables pairing between the system and wired or wireless devices. |
+|  | `Microsoft_Bluetooth_AvrcpTransport` | Microsoft Bluetooth Avrcp Transport Driver |
+|  | `RFCOMM` | Bluetooth Device (RFCOMM Protocol TDI) |
 | Broadcasts | `BcastDVRUserService` | This user service is used for Game Recordings and Live Broadcasts |
 | Camera | `FrameServer` | Enables multiple clients to access video frames from camera devices. |
 |  | `FrameServerMonitor` | Monitors the health and state for the Windows Camera Frame Server service. |
