@@ -517,37 +517,6 @@ All available flags (`powercfg /devicequery query_flag`):
 | `wake_armed`             | Lists devices currently configured to wake the system from any sleep state.      |
 | `all_devices`            | Returns all devices present in the system.                                       |
 
-# Enable MSI Mode
-
-Enables MSI for USB, video, network, and IDE PCI devices & sets them to undefined. Setting the priority to high can be beneficial, but needs benchmarking. Removes `MessageNumberLimit`, so device uses the maximum MN itself.
-
-> https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/enabling-message-signaled-interrupts-in-the-registry  
-> https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/introduction-to-message-signaled-interrupts  
-> https://github.com/5Noxi/Windows-Books/releases/download/7th-Edition/Windows-Internals-E7-P2.pdf
-
-"Interrupt affinity defines which logical processors handle a device's interrupts, using the `KAFFINITY` bitmask in the `AssignmentSetOverride` registry value (bit 0 = CPU 0, bit 1 = CPU 1, etc.). To apply it, `DevicePolicy` must be set to `4` (`IrqPolicySpecifiedProcessors`). Interrupt priority controls the urgency of handling and is set in KMDF drivers via `WdfInterruptSetPolicy`, using values like `WdfIrqPriorityHigh`. Both affinity and priority are stored in the `u.Interrupt` resource descriptor and apply to line-based and MSI/MSI-X interrupts. These settings optimize performance by balancing load and improving locality on multi-core systems."
-> https://github.com/MicrosoftDocs/windows-driver-docs/blob/staging/windows-driver-docs-pr/kernel/interrupt-affinity-and-priority.md
-
-Example:
-```bat
-delete "\Affinity Policy" /v DevicePriority /f
-:: IrqPolicySpecifiedProcessors
-add "\Affinity Policy" /v DevicePolicy /t REG_DWORD /d 4 /f
-:: CPU 5
-add "\Affinity Policy" /v AssignmentSetOverride /t REG_BINARY /d 2000000000000000 /f
-add "\MessageSignaledInterruptProperties" /v MSISupported /t REG_DWORD /d 1 /f
-delete "\MessageSignaledInterruptProperties" /v MessageNumberLimit /f
-```
-`AssignmentSetOverride` calculation:
-```powershell
-$cpus = @(5)
-$mask = 0
-$cpus | % { $mask = $mask -bor (1 -shl $_) }
-'{0:X16}' -f $mask
-```
-> https://github.com/BoringBoredom/Windows-MultiTool  
-> [peripheral/assets | MSI-Paper.pdf](https://github.com/5Noxi/win-config/blob/main/peripheral/assets/MSI-Paper.pdf)
-
 # Disable Dynamic Lighting
 
 "Dynamic Lighting is a feature that allows you to control LED-powered devices such as keyboards, mice, and other illuminated accessories. This feature enables you to coordinate the colors of LEDs, creating a unified lighting experience both within Windows and across all your devices."
