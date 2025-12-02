@@ -961,7 +961,8 @@ This policy setting specifies that power management is disabled when the machine
 You can get a lot of information about data ranges and more from `.inf` files, see examples below.
 
 > https://github.com/5Noxi/wpr-reg-records/blob/main/records/NIC-Intel.txt  
-> https://github.com/5Noxi/windows-driver-docs/blob/staging/windows-driver-docs-pr/network/standardized-inf-keywords-for-power-management.md
+> https://github.com/5Noxi/windows-driver-docs/blob/staging/windows-driver-docs-pr/network/standardized-inf-keywords-for-power-management.md  
+> https://github.com/5Noxi/windows-driver-docs/blob/staging/windows-driver-docs-pr/network/standardized-inf-keywords-for-ndis-selective-suspend.md
 
 See [intelnet6x.c](https://github.com/5Noxi/win-config/blob/main/power/assets/intelnet6x.c) for reference.
 
@@ -991,6 +992,20 @@ Everything listed below is based on personal research. Mistakes may exist, but I
     "ULPMode" = 1; // range 0-1
 ```
 
+| SubkeyName | ParamDesc | Default | Minimum | Maximum |
+| --- | --- | --- | --- | --- |
+| `*WakeOnPattern` | A value that describes whether the device should be enabled to wake the computer when a network packet matches a specified pattern. | 1 | 0 | 1 |
+| `*WakeOnMagicPacket` | A value that describes whether the device should be enabled to wake the computer when the device receives a magic packet. A magic packet is a packet that contains 16 contiguous copies of the receiving network adapter's ethernet address. | 1 | 0 | 1 |
+| `*EEE` | A value that describes whether the device should enable IEEE 802.3az energy-efficient ethernet. | 1 | 0 | 1 |
+| `*IdleRestriction` | If a network device has both idle power down and wake on packet filter capabilities, this setting allows the user to decide when the device idle power down can happen. `1` = Only idle when user isn't present, `0` = No restriction | 0 | 0 | 1 |
+| `*ModernStandbyWoLMagicPacket` | A value that describes whether the device should be enabled to wake the computer when the device receives a magic packet and the system is in the S0ix power state. This doesn't apply when the system is in the S4 power state. | 0 | 0 | 1 |
+| `*DeviceSleepOnDisconnect` | A value that describes whether the device should be enabled to put the device into a low-power state (sleep state) when media is disconnected and return to a full-power state (wake state) when media is connected again. | 1 | 0 | 1 |
+| `*SelectiveSuspend` | Selective suspend (0 disabled, 1 enabled) | 1 | 0 | 1 |
+| `*SSIdleTimeout` | This keyword specifies the idle time-out period in units of seconds. If NDIS does not detect any activity on the network adapter for a period that exceeds the *SSIdleTimeout value, NDIS starts a selective suspend operation by calling the miniport driver's MiniportIdleNotification handler function. | 5 | 1 | 60 |
+| `*SSIdleTimeoutScreenOff` | This keyword specifies the idle time-out period in units of seconds and is only applicable when the screen is off. If NDIS does not detect any activity on the network adapter for a period that exceeds the *SSIdleTimeoutScreenOff value after the screen is off, NDIS starts a selective suspend operation by calling the miniport driver's MiniportIdleNotification handler function. | 3 | 1 | 60 |
+
+For more detail on each value, see GitHub links above.
+
 > https://github.com/5Noxi/wpr-reg-records#intel-nic-values
 
 ```inf
@@ -1015,7 +1030,7 @@ HKR,Ndi\params\*SelectiveSuspend\enum,   "1",        0, "Enabled"
 HKR,Ndi\Params\*SSIdleTimeout,      ParamDesc,  0, "SSIdleTimeout"
 HKR,Ndi\Params\*SSIdleTimeout,      Type,       0, "int"
 HKR,Ndi\Params\*SSIdleTimeout,      Default,    0, "60"
-HKR,Ndi\Params\*SSIdleTimeout,      Min,        0, "1" ; might also be at 5, which is why I set it to 5
+HKR,Ndi\Params\*SSIdleTimeout,      Min,        0, "1" ; might also be at 5
 HKR,Ndi\Params\*SSIdleTimeout,      Max,        0, "60"
 HKR,Ndi\Params\*SSIdleTimeout,      Step,       0, "1"
 HKR,Ndi\Params\*SSIdleTimeout,      Base,       0, "10"
@@ -1086,28 +1101,28 @@ Reminder: Each adapter uses it's own default values, means that the `default`/`m
 Miscellaneous notes:
 
 ```c
-"DynamicLTR" = : { "Type": "REG_SZ", "Data": 0 },
-"EnableAdvancedDynamicITR" = : { "Type": "REG_SZ", "Data": 0 },
-"S3S4WolPowerSaving" = : { "Type": "REG_SZ", "Data": 0 },
-"AutoLinkDownPcieMacOff" = : { "Type": "REG_SZ", "Data": 0 }, // "Auto Disable PCIe"
-"BatteryModeLinkSpeed" = : { "Type": "REG_SZ", "Data": 2 },  // Similar to WolShutdownLinkSpeed?
+"DynamicLTR": { "Type": "REG_SZ", "Data": 0 },
+"EnableAdvancedDynamicITR": { "Type": "REG_SZ", "Data": 0 },
+"S3S4WolPowerSaving": { "Type": "REG_SZ", "Data": 0 },
+"AutoLinkDownPcieMacOff": { "Type": "REG_SZ", "Data": 0 }, // "Auto Disable PCIe"
+"BatteryModeLinkSpeed": { "Type": "REG_SZ", "Data": 2 },  // Similar to WolShutdownLinkSpeed?
 // 10MbFirst                      = "10 Mbps First"
 // 100MbFirst                     = "100 Mbps First"
 // NotSpeedDown                   = "Not Speed Down"
 // AdaptiveLinkSpeed              = "Adaptive Link Speed"
 // BatteryModeLinkSpeed           = "Battery Mode Link Speed"
-"CLKREQ" = : { "Type": "REG_SZ", "Data": 0 },
+"CLKREQ": { "Type": "REG_SZ", "Data": 0 },
 "EnableCoalesce": { "Type": "REG_SZ", "Data": 0 },
 "DMACoalescing": { "Type": "REG_SZ", "Data": 0 },
 "CoalesceBufferSize": { "Type": "REG_SZ", "Data": 0 },
 "*PacketCoalescing": { "Type": "REG_SZ", "Data": 0 },
 
-"SVOFFMode" = 1 // SV = Save?
-"SVOFFModeHWM" = 0
-"SVOFFModeTimer" = 0
+"SVOFFMode": { "Type": "REG_SZ", "Data": 1 },  // SV: Save?
+"SVOFFModeHWM": { "Type": "REG_SZ", "Data": 0 },
+"SVOFFModeTimer": { "Type": "REG_SZ", "Data": 0 }
 
-"EnabledDatapathCycleCounters" = ?
-"EnabledDatapathEventCounters" = ?
+"EnabledDatapathCycleCounters":  { "Type": "REG_SZ", "Data": ? }
+"EnabledDatapathEventCounters": { "Type": "REG_SZ", "Data": ? }
 ```
 
 # Disable Audio Execution Power Requests
