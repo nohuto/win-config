@@ -55,7 +55,7 @@ Installs [ExplorerBlurMica](https://github.com/Maplespe/ExplorerBlurMica), which
 
 ## Configuration
 
-Open `%APPDATA%\Noverse\ExplorerBlur\Release` - `config.ini`:
+Open `%LOCALAPPDATA%\Noverse\ExplorerBlur\Release` - `config.ini`:
 
 ```ini
 [config]

@@ -25,6 +25,25 @@ Validate the changes with [MouseTester](https://github.com/valleyofdoom/MouseTes
 
 ![](https://github.com/5Noxi/win-config/blob/main/peripheral/images/mousevalues.png?raw=true)
 
+---
+
+Enabling/disabling `Enhance pointer precision` sets:
+```c
+// Enabled
+HKCU\Control Panel\Mouse\MouseTrails	Type: REG_SZ, Length: 4, Data: 0
+HKCU\Control Panel\Mouse\MouseThreshold1	Type: REG_SZ, Length: 4, Data: 6
+HKCU\Control Panel\Mouse\MouseThreshold2	Type: REG_SZ, Length: 6, Data: 10
+HKCU\Control Panel\Mouse\MouseSpeed	Type: REG_SZ, Length: 4, Data: 1
+HKCU\Control Panel\Mouse\MouseSensitivity	Type: REG_SZ, Length: 6, Data: 10
+
+// Disabled
+HKCU\Control Panel\Mouse\MouseTrails	Type: REG_SZ, Length: 4, Data: 0
+HKCU\Control Panel\Mouse\MouseThreshold1	Type: REG_SZ, Length: 4, Data: 0
+HKCU\Control Panel\Mouse\MouseThreshold2	Type: REG_SZ, Length: 4, Data: 0
+HKCU\Control Panel\Mouse\MouseSpeed	Type: REG_SZ, Length: 4, Data: 0
+HKCU\Control Panel\Mouse\MouseSensitivity	Type: REG_SZ, Length: 6, Data: 10
+```
+
 # Keyboard Values
 
 | **Setting**           | **Description**                                                                                          | **Default** | **Changed To** |
