@@ -10,7 +10,7 @@ This option currently works via a external python file, I'll probably implement 
 | `--all` | Iterate through every xHCI controller and apply the same IMOD changes to each |
 | `--interrupter ID` / `-i ID` | Restrict the operation to specific interrupter IDs, repeat the flag for multiple IDs (defaults to all) |
 | `--no-write` | Only read and print IMOD registers (skip the write for information only) |
-| `--startup` | Adds a per user startup entry that runs the current command (excluding `--startup`) at each logon (note that it uses the current .py path) |
+| `--startup` | Adds a per user startup entry that runs the current command at each logon (note that it uses the current .py path) |
 | `--verbose` | Output all `rw.exe` commands/results |
 
 ## xHCI Interrupt Moderation Notes
