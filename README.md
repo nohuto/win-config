@@ -30,11 +30,3 @@ You can find all of my other projects here:
 
 More miscellaneous uploads:
 > https://discord.gg/E2ybG4j9jU
-
-## Requirements
-
-> https://www.python.org/downloads/release/python-3130/?featured_on=pythonbytes
-
-```powershell
-pip install PySide6 mistune requests
-```

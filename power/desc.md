@@ -1,4 +1,4 @@
-# Disable xHCI Interrupt Moderation
+# Disable xHCI IMOD
 
 This option currently works via a external python file, I'll probably implement it into the GUI soon.
 
