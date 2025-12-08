@@ -51,7 +51,7 @@ Valid colors: `Black`, `Blue`, `Cyan`, `DarkBlue`, `DarkCyan`, `DarkGray`, `Dark
 
 Installs [ExplorerBlurMica](https://github.com/Maplespe/ExplorerBlurMica), which adds a background blur/acrylic/mica effect effect to the explorer:
 
-![](https://github.com/5Noxi/win-config/blob/main/system/images/explorerblur.png?raw=true)
+![](https://github.com/5Noxi/win-config/blob/main/misc/images/explorerblur.png?raw=true)
 
 ## Configuration
 
