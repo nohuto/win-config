@@ -4,13 +4,14 @@ This option currently works via a external python file, I'll probably implement 
 
 | Flag | Description |
 | --- | --- |
-| `--rw-path PATH` | Override the default `C:\Program Files (x86)\RW-Everything\Rw.exe` location |
+| `--rw-path PATH` | Override the default `%LOCALAPPDATA%\Noverse\IMOD\RwPortable\Win64\Portable\Rw.exe` location |
 | `--bdf BB:DD.F` | Use a specific controller by Bus:Device.Function (hex). Mutually exclusive with `--xhci-index`/`--all` |
 | `--xhci-index N` | Use the Nth xHCI controller reported by `FPciClass` (defaults to 0 when `--bdf/--all` absent) |
 | `--all` | Iterate through every xHCI controller and apply the same IMOD changes to each |
 | `--interrupter ID` / `-i ID` | Restrict the operation to specific interrupter IDs, repeat the flag for multiple IDs (defaults to all) |
+| `--interval VALUE` | Set a custom IMOD interval (0–0xFFFF, in 250 ns ticks). Use for example `0xC800` (~48 Hz) to see if chaning the interval works |
 | `--no-write` | Only read and print IMOD registers (skip the write for information only) |
-| `--startup` | Adds a per user startup entry that runs the current command at each logon (note that it uses the current .py path) |
+| `--startup` | Copy the py to `%LOCALAPPDATA%\Noverse\IMOD\` and creates a scheduled task that runs the command at each logon |
 | `--verbose` | Output all `rw.exe` commands/results |
 
 ## xHCI Interrupt Moderation Notes
