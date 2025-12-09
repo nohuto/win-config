@@ -252,13 +252,26 @@ winget install SergeyFilippov.RegistryFinder
 
 7-Zip minimal context menu settings:
 
-![](https://github.com/5Noxi/win-config/blob/main/misc/images/7zip.png?raw=true)
+![](https://github.com/5Noxi/win-config/blob/main/misc/images/7z-folder.png?raw=true)
+![](https://github.com/5Noxi/win-config/blob/main/misc/images/7z-archive.png?raw=true)
 
-A good replacement would be NanaZip:
+All *context menu items* are getting handled via `ContextMenu` (`HKCU\Software\7-Zip\Options`).
+
+```c
+// Eliminate doblication of root folders, 1 = enabled, 0 = disabled
+7zFM.exe	RegSetValue	HKCU\Software\7-Zip\Options\ElimDupExtract	Type: REG_DWORD, Length: 4, Data: 1
+
+// Icons in context menu, 1 = enabled, 0 = disabled
+7zFM.exe	RegSetValue	HKCU\Software\7-Zip\Options\MenuIcons	Type: REG_DWORD, Length: 4, Data: 1
+
+// Propagate Zone.Id stream, delete = * No, 1 = Yes, 2 = For Office files
+7zFM.exe	RegSetValue	HKCU\Software\7-Zip\Options\WriteZoneIdExtract	Type: REG_DWORD, Length: 4, Data: 1
+```
+
+A decent replacement would be NanaZip:
 ```powershell
 winget install M2Team.NanaZip
 ```
-New features etc. can be found here:
 > https://github.com/M2Team/NanaZip
 
 # Disable VSC Telemetry

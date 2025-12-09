@@ -266,7 +266,7 @@ def get_all_bdfs(rw: ExecRw) -> List[Bdf]:
 
 def powershell_json(script: str) -> Any:
     try:
-        completed = subprocess.run(["powershell.exe", "-NoLogo", "-NoProfile", "-Command", script], capture_output=True, text=True, check=False)
+        completed = subprocess.run(["powershell.exe", "-c", script], capture_output=True, text=True, check=False)
     except FileNotFoundError as exc:
         raise RwError("powershell.exe is missing?") from exc
 
@@ -359,7 +359,7 @@ def print_attached_devices(bdf: Bdf) -> list[str]:
     ]
 
     if not devices:
-        print("  (No attached USB devices reported via Win32_USBControllerDevice)")
+        print("      (No attached USB devices reported via Win32_USBControllerDevice)")
         return []
 
     print("      Attached devices:")
