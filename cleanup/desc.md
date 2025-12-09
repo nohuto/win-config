@@ -174,3 +174,7 @@ Placeholder.
 # Downloaded Program Files
 
 Placeholder.
+
+# System Logs
+
+Placeholder.

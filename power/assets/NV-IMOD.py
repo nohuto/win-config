@@ -336,19 +336,19 @@ def print_attached_devices(bdf: Bdf) -> list[str]:
     try:
         controller = get_controller_instance(bdf)
     except RwError as exc:
-        print(f"Unable to enumerate attached devices: {exc}")
+        print(f"    Unable to enumerate attached devices: {exc}")
         return []
 
     if not controller:
-        print("No matching Windows USB controller metadata found for this device")
+        print("    No matching Windows USB controller metadata found for this device")
         return []
 
-    print(f"Windows controller: {controller.get('Name')} ({controller.get('PNPDeviceID')})")
+    print(f"    Windows controller: {controller.get('Name')} ({controller.get('PNPDeviceID')})")
 
     try:
         devices = list_attached_devices(controller["PNPDeviceID"])
     except RwError as exc:
-        print(f"Unable to enumerate attached devices: {exc}")
+        print(f"    Unable to enumerate attached devices: {exc}")
         return []
 
     controller_device_id = (controller.get("PNPDeviceID") or "").upper()
@@ -362,13 +362,13 @@ def print_attached_devices(bdf: Bdf) -> list[str]:
         print("  (No attached USB devices reported via Win32_USBControllerDevice)")
         return []
 
-    print("  Attached devices:")
+    print("      Attached devices:")
     attached_names: list[str] = []
     for device in sorted(devices, key=lambda d: d.get("Name") or ""):
         name = device.get("Name") or "(unknown USB device)"
         device_id = device.get("DeviceID") or "(no device id)"
         status = device.get("Status") or "Unknown"
-        print(f"    {name} [{device_id}] status={status}")
+        print(f"        {name} [{device_id}] status={status}")
         attached_names.append(name)
     return attached_names
 
