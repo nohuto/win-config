@@ -22,16 +22,16 @@ nvidia-smi -q
 | **Motherboard** | `Win32_BaseBoard` | `Product` - Motherboard product, `Manufacturer` - Manufacturer of the motherboard |
 | **CPU** | `Win32_Processor` | `Name` - Processor name, `SocketDesignation` - Socket type, `MaxClockSpeed` - Maximum clock speed in MHz |
 | **GPU** | If `nvidia-smi` is present: `gc nvidia-smi` | `Name` - GPU name, `Core Clock` - GPU core clock speed, `Memory Clock` - GPU memory clock speed, `VRAM` - VRAM size, `BPP` - Bits per pixel, `Performance State` - State (e.g., P0 to P12) |
-|                 | If `nvidia-smi` isn't present (AMD): `Win32_VideoController` | `Name` - GPU name, `Caption` - GPU caption, `CurrentBitsPerPixel` - Bits per pixel, `qwMemorySize` - VRAM size |
+| | If `nvidia-smi` isn't present (AMD): `Win32_VideoController` | `Name` - GPU name, `Caption` - GPU caption, `CurrentBitsPerPixel` - Bits per pixel, `qwMemorySize` - VRAM size |
 | **RAM** | `Win32_PhysicalMemory` | `Capacity` - Total memory size, `ConfiguredClockSpeed` - Memory clock speed, `Manufacturer` - RAM manufacturer |
 | **Drive** | `Win32_DiskDrive`, `Win32_LogicalDisk` | For `drive0` & `C:\`: `Size` - Total size, `FreeSpace` - Free space, `FileSystem` - Type of file system (e.g., NTFS, FAT32) |
 | **Network** | `Win32_NetworkAdapterConfiguration` | `Description` - Network adapter description, `IPAddress` - IP address, `DHCPEnabled` - Whether DHCP is enabled |
 | **HWIDs** | UUID | `Win32_ComputerSystemProduct` - `UUID` - Unique system identifier (UUID) |
-|                 | Motherboard SN | `Win32_BaseBoard` - `SerialNumber` - Motherboard serial number |
-|                 | CPU ID | `Win32_Processor` - `ProcessorId` - Processor ID |
-|                 | RAM SNs | `Win32_PhysicalMemory` - `SerialNumber` - RAM serial number |
-|                 | Drive0 SN | `Win32_DiskDrive`/`Win32_PhysicalMedia` - `SerialNumber` - Drive serial number |
-|                 | GPU UUID | `nvidia-smi` - `--query-gpu=uuid` - GPU UUID if `nvidia-smi` is available |
+| | Motherboard SN | `Win32_BaseBoard` - `SerialNumber` - Motherboard serial number |
+| | CPU ID | `Win32_Processor` - `ProcessorId` - Processor ID |
+| | RAM SNs | `Win32_PhysicalMemory` - `SerialNumber` - RAM serial number |
+| | Drive0 SN | `Win32_DiskDrive`/`Win32_PhysicalMedia` - `SerialNumber` - Drive serial number |
+| | GPU UUID | `nvidia-smi` - `--query-gpu=uuid` - GPU UUID if `nvidia-smi` is available |
 
 A valid argument is the color name, default is `Blue`. It changes the color of the ASCII logo. Change it by simply adding a valid color name:
 ```powershell
@@ -258,7 +258,10 @@ winget install SergeyFilippov.RegistryFinder
 All *context menu items* are getting handled via `ContextMenu` (`HKCU\Software\7-Zip\Options`).
 
 ```c
-// Eliminate doblication of root folders, 1 = enabled, 0 = disabled
+// Cascaded context menu, 1 = enabled, 0 = disabled
+7zFM.exe	RegSetValue	HKCU\Software\7-Zip\Options\CascadedMenu	Type: REG_DWORD, Length: 4, Data: 1
+
+// Eliminate dublication of root folders, 1 = enabled, 0 = disabled
 7zFM.exe	RegSetValue	HKCU\Software\7-Zip\Options\ElimDupExtract	Type: REG_DWORD, Length: 4, Data: 1
 
 // Icons in context menu, 1 = enabled, 0 = disabled
