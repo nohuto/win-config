@@ -2,15 +2,15 @@
 
 Used to be my personal `neofetch`/`fastfetch` replacement with more details. Some arguments will probably also get added like `ids`, so it doesn't display the serial numbers and miscellaneous HWIDs by default.
 
-![](https://github.com/5Noxi/win-config/blob/main/misc/images/nvfetch.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/misc/images/nvfetch.png?raw=true)
 
-> https://github.com/5Noxi/nvfetch
+> https://github.com/nohuto/nvfetch
 
 It currently gets most of the information using the [`Get-CimInstance`](https://learn.microsoft.com/en-us/powershell/module/cimcmdlets/get-ciminstance?view=powershell-7.5) cmdlet and `nvidia-smi` for NVIDIA GPUs.
 ```powershell
 nvidia-smi -q
 ```
-[`nvfetch-win32cimv2.txt`]((https://github.com/5Noxi/win-config/blob/main/misc/assets)) shows class names in the `root\CIMV2` namespace, filtered with `Win32*`.
+[`nvfetch-win32cimv2.txt`]((https://github.com/nohuto/win-config/blob/main/misc/assets)) shows class names in the `root\CIMV2` namespace, filtered with `Win32*`.
 
 | **Category** | **Query** | **Fields/Description** |
 | ---- | ---- | ---- |
@@ -51,7 +51,7 @@ Valid colors: `Black`, `Blue`, `Cyan`, `DarkBlue`, `DarkCyan`, `DarkGray`, `Dark
 
 Installs [ExplorerBlurMica](https://github.com/Maplespe/ExplorerBlurMica), which adds a background blur/acrylic/mica effect effect to the explorer:
 
-![](https://github.com/5Noxi/win-config/blob/main/misc/images/explorerblur.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/misc/images/explorerblur.png?raw=true)
 
 ## Configuration
 
@@ -111,11 +111,11 @@ Installation:
 winget install StartIsBack.StartAllBack --scope machine
 ```
 
-Disable Windows search via [`System > Disable Windows Search`](https://github.com/5Noxi/win-config/blob/main/system/desc.md#disable-windows-search)
+Disable Windows search via [`System > Disable Windows Search`](https://github.com/nohuto/win-config/blob/main/system/desc.md#disable-windows-search)
 
 All `StartAllBackCfg.exe` settings, which I currently use:
 
-![](https://github.com/5Noxi/win-config/blob/main/system/images/startallback.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/startallback.png?raw=true)
 
 All values `StartAllBack` reads that are located in `HKCU\Software\StartIsBack` (after clicking on `Properties`):
 ```powershell
@@ -252,8 +252,8 @@ winget install SergeyFilippov.RegistryFinder
 
 7-Zip minimal context menu settings:
 
-![](https://github.com/5Noxi/win-config/blob/main/misc/images/7z-folder.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/misc/images/7z-archive.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/misc/images/7z-folder.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/misc/images/7z-archive.png?raw=true)
 
 All *context menu items* are getting handled via `ContextMenu` (`HKCU\Software\7-Zip\Options`).
 

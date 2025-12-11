@@ -1,7 +1,7 @@
 # Interrupt Handling and Affinity Policies
 
 Note that everything written below is based on:
-> [affinities/assets | E7-P2.pdf](https://github.com/5Noxi/win-config/blob/main/affinities/assets/E7-P2.pdf)  
+> [affinities/assets | E7-P2.pdf](https://github.com/nohuto/win-config/blob/main/affinities/assets/E7-P2.pdf)  
 > [drivers/kernel | introduction-to-interrupt-service-routines](https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/introduction-to-interrupt-service-routines)  
 > [drivers/kernel | interrupt-affinity-and-priority](https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/interrupt-affinity-and-priority)  
 > [drivers/kernel | introduction-to-message-signaled-interrupts](https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/introduction-to-message-signaled-interrupts)

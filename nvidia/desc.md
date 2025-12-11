@@ -1,7 +1,7 @@
 # Debloated Driver
 
 Complete NVIDIA driver preparation tool.
-> https://github.com/5Noxi/win-config/blob/main/nvidia/assets/NVIDIA-Tool.ps1
+> https://github.com/nohuto/win-config/blob/main/nvidia/assets/NVIDIA-Tool.ps1
 
 **Main menu:**  
 `1` - Debloat driver (includes optional DDU clean uninstall)  
@@ -14,7 +14,7 @@ Complete NVIDIA driver preparation tool.
 - Miscellaenous theme configurations
 
 **Optional DDU cleanup:**  
-- Downloads [`NV-DDU.zip`](https://github.com/5Noxi/files/releases/download/driver) and [`NV-DDU.ps1`](https://github.com/5Noxi/files/releases/download/driver), enables Safe Boot, and reboots
+- Downloads [`NV-DDU.zip`](https://github.com/nohuto/files/releases/download/driver) and [`NV-DDU.ps1`](https://github.com/nohuto/files/releases/download/driver), enables Safe Boot, and reboots
 
 **Driver installation:**  
 - Runs `setup.exe`
@@ -24,35 +24,35 @@ Complete NVIDIA driver preparation tool.
 The following includes details of how the panel sets the changes and more, a lot of it is for informational purposes only.
 
 - 3D Settings
-  - [Adjust image settings with preview](https://github.com/5Noxi/win-config/blob/main/nvidia/desc.md#3d-settings--adjust-image-settings-with-preview)
-  - [Manage 3D settings](https://github.com/5Noxi/win-config/blob/main/nvidia/desc.md#3d-settings--manage-3D-settings)
-  - [Configure Surround, PhysX](https://github.com/5Noxi/win-config/blob/main/nvidia/desc.md#3d-settings--configure-surround-physx)
+  - [Adjust image settings with preview](https://github.com/nohuto/win-config/blob/main/nvidia/desc.md#3d-settings--adjust-image-settings-with-preview)
+  - [Manage 3D settings](https://github.com/nohuto/win-config/blob/main/nvidia/desc.md#3d-settings--manage-3D-settings)
+  - [Configure Surround, PhysX](https://github.com/nohuto/win-config/blob/main/nvidia/desc.md#3d-settings--configure-surround-physx)
 - Display
   - Change resolution
-  - [Adjust desktop color settings](https://github.com/5Noxi/win-config/blob/main/nvidia/desc.md#display--adjust-desktop-color-settings)
-  - [Rotate display](https://github.com/5Noxi/win-config/blob/main/nvidia/desc.md#display--rotate-display)
+  - [Adjust desktop color settings](https://github.com/nohuto/win-config/blob/main/nvidia/desc.md#display--adjust-desktop-color-settings)
+  - [Rotate display](https://github.com/nohuto/win-config/blob/main/nvidia/desc.md#display--rotate-display)
   - View HDCP status
   - Set up digital audio
-  - [Adjust desktop size and position](https://github.com/5Noxi/win-config/blob/main/nvidia/desc.md#display--adjust-desktop-size-and-position)
+  - [Adjust desktop size and position](https://github.com/nohuto/win-config/blob/main/nvidia/desc.md#display--adjust-desktop-size-and-position)
   - Set up multiple displays
 - Developer
-  - [Manage GPU Performance Counters](https://github.com/5Noxi/win-config/blob/main/nvidia/desc.md#developer--manage-gpu-performance-counters)
+  - [Manage GPU Performance Counters](https://github.com/nohuto/win-config/blob/main/nvidia/desc.md#developer--manage-gpu-performance-counters)
 - Video
-  - [Adjust video color settings](https://github.com/5Noxi/win-config/blob/main/nvidia/desc.md#video--adjust-video-color-settings)
-  - [Adjust video image settings](https://github.com/5Noxi/win-config/blob/main/nvidia/desc.md#video--adjust-video-image-settings)
+  - [Adjust video color settings](https://github.com/nohuto/win-config/blob/main/nvidia/desc.md#video--adjust-video-color-settings)
+  - [Adjust video image settings](https://github.com/nohuto/win-config/blob/main/nvidia/desc.md#video--adjust-video-image-settings)
 
 ## 3D Settings > Adjust image settings with preview
 
-![](https://github.com/5Noxi/win-config/blob/main/nvidia/images/nvcpl1.png?raw=true)  
+![](https://github.com/nohuto/win-config/blob/main/nvidia/images/nvcpl1.png?raw=true)  
 
 ## 3D Settings > Manage 3D settings
 
 More information - [discord notes](https://discord.com/channels/836870260715028511/1375059420970487838/1412446705869394071)  
 > [NVIDIA Profile Inspector](https://github.com/Orbmu2k/nvidiaProfileInspector)  
 > [NVIDIA Profile Inspector](https://github.com/Ixeoz/nvidiaProfileInspector-UNLOCKED)  
-> [Profile ReBar OFF](https://github.com/5Noxi/Files/releases/download/Fortnite/NV-ROFF.nip)  
-> [Profile ReBar ON](https://github.com/5Noxi/Files/releases/download/Fortnite/NV-RON.nip)  
-> [`d3dreg` Output](https://github.com/5Noxi/win-config/blob/main/nvidia/assets/d3doutput.txt) - [List](https://github.com/5Noxi/win-config/blob/main/nvidia/assets/d3dlist.cpp))
+> [Profile ReBar OFF](https://github.com/nohuto/Files/releases/download/Fortnite/NV-ROFF.nip)  
+> [Profile ReBar ON](https://github.com/nohuto/Files/releases/download/Fortnite/NV-RON.nip)  
+> [`d3dreg` Output](https://github.com/nohuto/win-config/blob/main/nvidia/assets/d3doutput.txt) - [List](https://github.com/nohuto/win-config/blob/main/nvidia/assets/d3dlist.cpp))
 
 ## 3D Settings > Configure Surround, PhysX
 
@@ -76,9 +76,9 @@ NVDisplay.Container.exe    RegSetValue    HKLM\System\CurrentControlSet\Services
 NVDisplay.Container.exe    RegSetValue    HKLM\System\CurrentControlSet\Services\nvlddmkm\Global\NVTweak\NvCplPhysxAuto    Type: REG_DWORD, Length: 4, Data: 0
 NVDisplay.Container.exe    RegSetValue    HKLM\System\CurrentControlSet\Services\nvlddmkm\NVAPI\physxGpuId    Type: REG_BINARY, Length: 4, Data: 00 00 00 00
 ```
-> [nvidia/assets | physx-nvapi.h](https://github.com/5Noxi/win-config/blob/main/nvidia/assets/physx-nvapi.h)
+> [nvidia/assets | physx-nvapi.h](https://github.com/nohuto/win-config/blob/main/nvidia/assets/physx-nvapi.h)
 
-![](https://github.com/5Noxi/win-config/blob/main/nvidia/images/nvcpl2.png?raw=true)  
+![](https://github.com/nohuto/win-config/blob/main/nvidia/images/nvcpl2.png?raw=true)  
 
 ## Display > Adjust desktop color settings 
 
@@ -102,12 +102,12 @@ HKCU\Software\NVIDIA Corporation\Global\NVTweak\Devices\1364265386-0\Color
 ```
 Controls the `Digital vibrance`, decimal value = percentage. `MONITOR` depends on your monitor.
 
-![](https://github.com/5Noxi/win-config/blob/main/nvidia/images/saturation.jpg?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/nvidia/images/saturation.jpg?raw=true)
 
 ```powershell
 \Registry\Machine\SYSTEM\ControlSet001\Services\nvlddmkm\State\DisplayDatabase\MONITOR : HueRegistryKey
 ```
-`HueRegistryKey` controls the `Hue` options, it is a `REG_BINARY` type ([`displayDB.cpp`](https://github.com/5Noxi/win-config/blob/main/nvidia/desc.md/blob/main/files/displayDB.cpp)):
+`HueRegistryKey` controls the `Hue` options, it is a `REG_BINARY` type ([`displayDB.cpp`](https://github.com/nohuto/win-config/blob/main/nvidia/desc.md/blob/main/files/displayDB.cpp)):
 ```c
 // 0°
 HKLM\System\CurrentControlSet\Services\nvlddmkm\State\DisplayDatabase\MSI3CB01222_2E_07E4_FF\HueRegistryKey    Type: REG_BINARY, Length: 20, Data: DB 01 00 00 14 00 00 00 10 27 00 00 00 00 00 00
@@ -125,9 +125,9 @@ sin(0) = 0  = 0x00000000 hex
 ```
 
 > https://github.com/pbatard/nvBrightness/blob/8f4a183532f1048375608fc70ad03c38652fc140/src/nvDisplay.cpp#L293  
-> https://github.com/5Noxi/win-config/blob/main/nvidia/assets/color-displayDB.cpp  
-> https://github.com/5Noxi/win-config/blob/main/nvidia/assets/color-DesktopColors.cpp  
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/nvlddmkm.txt
+> https://github.com/nohuto/win-config/blob/main/nvidia/assets/color-displayDB.cpp  
+> https://github.com/nohuto/win-config/blob/main/nvidia/assets/color-DesktopColors.cpp  
+> https://github.com/nohuto/wpr-reg-records/blob/main/records/nvlddmkm.txt
 
 ```powershell
 \Registry\Machine\SYSTEM\ControlSet001\Services\nvlddmkm\State\DisplayDatabase\ADAPTER_10DE_2482_00000007_00000000 : StereoPreferredTargetIdRegistryKey
@@ -178,7 +178,7 @@ sin(0) = 0  = 0x00000000 hex
 \Registry\Machine\SYSTEM\ControlSet001\Services\nvlddmkm\State\DisplayDatabase\MONITORXXXXX_XX_XXXX_XX : ScalingConfig
 ```
 
-![](https://github.com/5Noxi/win-config/blob/main/nvidia/images/nvcpl3.png?raw=true)  
+![](https://github.com/nohuto/win-config/blob/main/nvidia/images/nvcpl3.png?raw=true)  
 
 ## Display > Rotate display
 
@@ -217,7 +217,7 @@ You've to edit the `Rotation` value to change the orientation, `DefaultSettings.
 ```
 `ScalingConfig` = `Scaling Mode`, `Perform Scaling on`, `Override the scaling mode...` (includes all settings?)
 
-![](https://github.com/5Noxi/win-config/blob/main/nvidia/images/nvcpl4.png?raw=true)  
+![](https://github.com/nohuto/win-config/blob/main/nvidia/images/nvcpl4.png?raw=true)  
 
 ## Developer > Manage GPU Performance Counters
 
@@ -247,9 +247,9 @@ NVDisplay.Container.exe    RegSetValue    HKLM\System\CurrentControlSet\Control\
 `Allow access to the GPU performance counters to all users` = `0`
 
 > https://www.nvidia.com/content/Control-Panel-Help/vLatest/en-us/index.htm#t=mergedProjects%2FDeveloper%2FManage_Performance_Counters_-_Reference.htm&rhsearch=counters  
-> https://github.com/5Noxi/bitmask-calc
+> https://github.com/nohuto/bitmask-calc
 
-![](https://github.com/5Noxi/win-config/blob/main/nvidia/images/nvcpl5.png?raw=true)  
+![](https://github.com/nohuto/win-config/blob/main/nvidia/images/nvcpl5.png?raw=true)  
 
 ## Video > Adjust video color settings
 
@@ -258,7 +258,7 @@ Personal preference.
 NVDisplay.Container.exe    RegSetValue    HKLM\System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000\_User_SUB0_DFP1_XALG_Color_Range    Type: REG_BINARY, Length: 8, Data: 00 00 00 00 00 00 00 00
 NVDisplay.Container.exe    RegSetValue    HKLM\System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000\_User_SUB0_DFP1_XEN_Color_Range    Type: REG_DWORD, Length: 4, Data: 2147483649
 ```
-![](https://github.com/5Noxi/win-config/blob/main/nvidia/images/nvcpl6.png?raw=true)  
+![](https://github.com/nohuto/win-config/blob/main/nvidia/images/nvcpl6.png?raw=true)  
 
 ## Video > Adjust video image settings
 ```json
@@ -308,7 +308,7 @@ _User_SUB0_DFP1_XEN_Cadence    Type: REG_DWORD, Length: 4, Data: 2147483649
 ```
 `_User_SUB0_DFP1_VAL_Noise_Reduce` controls the percentage, e.g. `5%` = `5 Dec` until `49%`. Nvcpl skips `50%`, which means that everything above `50` is `X - 1`, range `0-99`.
 
-![](https://github.com/5Noxi/win-config/blob/main/nvidia/images/nvcpl7.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/nvidia/images/nvcpl7.png?raw=true)
 
 ---
 
@@ -336,7 +336,7 @@ NVDisplay.Container.exe    RegSetValue    HKLM\System\CurrentControlSet\Control\
 
 # Temporary NVCPL
 
-`NVDisplay.Container.exe` is required for nvcpl to start. [`nvcpl.ps1`](https://github.com/5Noxi/win-config/blob/main/nvidia/assets/nvcpl.ps1) starts them, waits till you close the program, and then terminates them.
+`NVDisplay.Container.exe` is required for nvcpl to start. [`nvcpl.ps1`](https://github.com/nohuto/win-config/blob/main/nvidia/assets/nvcpl.ps1) starts them, waits till you close the program, and then terminates them.
 
 Download location:
 ```powershell
@@ -439,9 +439,9 @@ nvidia-smi -q -d ecc
 
 > https://www.nvidia.com/content/Control-Panel-Help/vLatest/en-us/mergedProjects/3D%20Settings/Change_ECC_State.htm
 
-Other ECC related features can be found using [`bitmask-calc`](https://github.com/5Noxi/bitmask-calc) - e.g. `RMNoECCFuseCheck`.
+Other ECC related features can be found using [`bitmask-calc`](https://github.com/nohuto/bitmask-calc) - e.g. `RMNoECCFuseCheck`.
 
-![](https://github.com/5Noxi/win-config/blob/main/nvidia/images/ecc.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/nvidia/images/ecc.png?raw=true)
 
 # Hide Tray Icon
 
@@ -475,9 +475,9 @@ Hides the icon from the context menu (2nd one is probably related to optimus, fi
 ```
 Only the first value gets used.
 
-> [nvidia/assets | HideManufacturer.c](https://github.com/5Noxi/win-config/blob/main/nvidia/assets/trayicon-HideManufacturer.c)  
-> [nvidia/assets | notes.cpp](https://github.com/5Noxi/win-config/blob/main/nvidia/assets/trayicon-notes.cpp)  
-> [nvidia/assets | nvcpl.c](https://github.com/5Noxi/win-config/blob/main/nvidia/assets/trayicon-nvcpl.c)
+> [nvidia/assets | HideManufacturer.c](https://github.com/nohuto/win-config/blob/main/nvidia/assets/trayicon-HideManufacturer.c)  
+> [nvidia/assets | notes.cpp](https://github.com/nohuto/win-config/blob/main/nvidia/assets/trayicon-notes.cpp)  
+> [nvidia/assets | nvcpl.c](https://github.com/nohuto/win-config/blob/main/nvidia/assets/trayicon-nvcpl.c)
 
 # Disable DLSS Indicator
 
@@ -504,8 +504,8 @@ Disabled = `0`
 "ShowDlssIndicator"=dword:00000002
 ```
 
-> [nvidia/assets | dlss.c](https://github.com/5Noxi/win-config/blob/main/nvidia/assets/dlss.c)  
-> [nvidia/assets | dlss-NGXCubinGeneric.cpp](https://github.com/5Noxi/win-config/blob/main/nvidia/assets/dlss-NGXCubinGeneric.cpp)
+> [nvidia/assets | dlss.c](https://github.com/nohuto/win-config/blob/main/nvidia/assets/dlss.c)  
+> [nvidia/assets | dlss-NGXCubinGeneric.cpp](https://github.com/nohuto/win-config/blob/main/nvidia/assets/dlss-NGXCubinGeneric.cpp)
 
 # Disable Display Power Savings
 
@@ -516,8 +516,8 @@ Disabled = `0`
 
 You can find it in `nvsvc64.dll`.
 
-> [nvidia/assets | disppower-nvsvc64.c](https://github.com/5Noxi/win-config/blob/main/nvidia/assets/disppower-nvsvc64.c)  
-> [nvidia/assets | disppower-nvsvc64gv.c](https://github.com/5Noxi/win-config/blob/main/nvidia/assets/disppower-nvsvc64gv.c)
+> [nvidia/assets | disppower-nvsvc64.c](https://github.com/nohuto/win-config/blob/main/nvidia/assets/disppower-nvsvc64.c)  
+> [nvidia/assets | disppower-nvsvc64gv.c](https://github.com/nohuto/win-config/blob/main/nvidia/assets/disppower-nvsvc64gv.c)
 
 # Disable Logging
 
@@ -1191,7 +1191,7 @@ Test
 
 # Disable Power Savings
 
-Sets `RmDisableACPI`, `RMDisableGpuASPMFlags`, `RMFspg`, `RMBlcg`, `RMElcg`, `RmElpg`, `RMSlcg`, `RMOPSB`, `RMLpwrArch`. I won't add the bit fields in here, as they're too big. See [`bitmask-calc`](https://github.com/5Noxi/bitmask-calc) for more details of what the data does.
+Sets `RmDisableACPI`, `RMDisableGpuASPMFlags`, `RMFspg`, `RMBlcg`, `RMElcg`, `RmElpg`, `RMSlcg`, `RMOPSB`, `RMLpwrArch`. I won't add the bit fields in here, as they're too big. See [`bitmask-calc`](https://github.com/nohuto/bitmask-calc) for more details of what the data does.
 
 ```json
 "Name":  "RmDisableACPI",
@@ -1337,7 +1337,7 @@ Removes several files & preventing the system from sending telemetry data.
   "EnableRID66610": { "Type": "REG_DWORD", "Data": 0 }
 },
 ```
-These three values are often applied in reference to "NVIDIA Telemetry", but since these seem to be outdated (they don't exist - test it yourself via [strings2-tui](https://github.com/5Noxi/strings2-tui)) they won't get applied. The only "telemetry" related FTS parameters I found are:
+These three values are often applied in reference to "NVIDIA Telemetry", but since these seem to be outdated (they don't exist - test it yourself via [strings2-tui](https://github.com/nohuto/strings2-tui)) they won't get applied. The only "telemetry" related FTS parameters I found are:
 ```cfg
 Parameter NVCFG_GLOBAL_FEATURE_RID67822_NVCPLTELEMETRYPHASE2_DYNAMIC
 {
@@ -1533,8 +1533,8 @@ Rather leave this option untouched, preemption isn't disabled by default.
 > https://therealmjp.github.io/posts/breaking-down-barriers-part-4-gpu-preemption/  
 > https://learn.microsoft.com/en-us/windows-hardware/drivers/display/gpu-preemption  
 > https://en-academic.com/dic.nsf/enwiki/1050761  
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/nvlddmkm.txt  
-> [nvidia/assets | preemption-dxgmms1.c](https://github.com/5Noxi/win-config/blob/main/nvidia/assets/preemption-dxgmms1.c)
+> https://github.com/nohuto/wpr-reg-records/blob/main/records/nvlddmkm.txt  
+> [nvidia/assets | preemption-dxgmms1.c](https://github.com/nohuto/win-config/blob/main/nvidia/assets/preemption-dxgmms1.c)
 
 # Enable Developer Settings
 
@@ -1546,13 +1546,13 @@ Enables `Enable Developer Settings` in the NVIDIA control panel.
 #define NV_REG_CPL_DEVTOOLS_VISIBLE       "NvDevToolsVisible"
 ```
 
-![](https://github.com/5Noxi/win-config/blob/main/nvidia/images/nvcploptions.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/nvidia/images/nvcploptions.png?raw=true)
 
 # Remove Context Menu Entry
 
 Disables `Add Desktop Context Menu` in the NVIDIA control panel.
 
-![](https://github.com/5Noxi/win-config/blob/main/nvidia/images/nvcploptions.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/nvidia/images/nvcploptions.png?raw=true)
 
 # GPU Performance Counters
 "GPU performance counters are used by NVIDIA GPU profiling tools such as NVIDIA Nsight. These tools enable developers debug, profile and develop software for NVIDIA GPUs."
@@ -1581,7 +1581,7 @@ NVDisplay.Container.exe    RegSetValue    HKLM\System\CurrentControlSet\Control\
 `Allow access to the GPU performance counters to all users` = `0`
 
 > https://www.nvidia.com/content/Control-Panel-Help/vLatest/en-us/index.htm#t=mergedProjects%2FDeveloper%2FManage_Performance_Counters_-_Reference.htm&rhsearch=counters  
-> https://github.com/5Noxi/bitmask-calc
+> https://github.com/nohuto/bitmask-calc
 
 # Disable MPO
 
@@ -1591,7 +1591,7 @@ Shouldn't be disabled, same goes for FSO. Leave it enabled or you may end up usi
 
 Use [PresentMon](https://github.com/GameTechDev/PresentMon/releases) and record your game to see which presentation mode you currently use.
 
-![](https://github.com/5Noxi/win-config/blob/main/nvidia/images/swapchain.jpg?raw=true)  
+![](https://github.com/nohuto/win-config/blob/main/nvidia/images/swapchain.jpg?raw=true)  
 
 ```
 \Registry\Machine\SOFTWARE\Microsoft\Windows\Dwm : OverlayTestMode
@@ -1613,7 +1613,7 @@ if (!(unsigned int)GetPersistedRegistryValueW(
 }
 ```
 
-> [nvidia/assets | mpo-bDwmOverlayTestMode.c](https://github.com/5Noxi/win-config/blob/main/nvidia/assets/mpo-bDwmOverlayTestMode.c)  
+> [nvidia/assets | mpo-bDwmOverlayTestMode.c](https://github.com/nohuto/win-config/blob/main/nvidia/assets/mpo-bDwmOverlayTestMode.c)  
 > https://wiki.special-k.info/en/SwapChain  
 > https://wiki.special-k.info/Presentation_Model  
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/Windows-Dwm.txt
+> https://github.com/nohuto/wpr-reg-records/blob/main/records/Windows-Dwm.txt

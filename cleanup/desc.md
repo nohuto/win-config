@@ -77,7 +77,7 @@ Clears the DirectX caches and any vendor caches (NVIDIA `DXCache`/`GLCache`/`NV_
 
 Remember to temporarily set `Shader Cache Size` to `Disabled`, use the option, then return it to `Unlimited` so the driver use the files.
 
-![](https://github.com/5Noxi/win-config/blob/main/nvidia/images/shadercache.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/nvidia/images/shadercache.png?raw=true)
 
 # Recycle Bin
 
@@ -123,7 +123,7 @@ Per user temporary files are saved in `%TEMP%`, global files under `%WINDIR%\Tem
 
 # Clipboard History
 
-Currently clears the in memory buffer via `echo. | clip`. [`clip`](https://github.com/5noxi/windowsserverdocs/blob/main/WindowsServerDocs/administration/windows-commands/clip.md) saves thatever it gets into the clipboard, and [`echo.`](https://github.com/5noxi/windowsserverdocs/blob/main/WindowsServerDocs/administration/windows-commands/echo.md#examples) = blank line.
+Currently clears the in memory buffer via `echo. | clip`. [`clip`](https://github.com/nohuto/windowsserverdocs/blob/main/WindowsServerDocs/administration/windows-commands/clip.md) saves thatever it gets into the clipboard, and [`echo.`](https://github.com/nohuto/windowsserverdocs/blob/main/WindowsServerDocs/administration/windows-commands/echo.md#examples) = blank line.
 
 See your current clipboard content via:
 ```powershell

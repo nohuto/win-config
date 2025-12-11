@@ -19,7 +19,7 @@ Miscellaneous notes:
 }
 ```
 
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/Winows-NT.txt
+> https://github.com/nohuto/wpr-reg-records/blob/main/records/Winows-NT.txt
 
 
 ```json
@@ -314,7 +314,7 @@ return (unsigned int)ZTraceReportPropagation(
 return v5;
 ```
 > https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-maps  
-> [privacy/assets | maps.c](https://github.com/5Noxi/win-config/blob/main/privacy/assets/maps.c)
+> [privacy/assets | maps.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/maps.c)
 
 
 `AutoDownloadAndUpdateMapData` & `AllowUntriggeredNetworkTrafficOnSettingsPage`:
@@ -378,7 +378,7 @@ Miscellaneous notes:
 
 WMPlayer (Windows Media Player) sends player usage data by default, if using the "Recommended ". This option turns off the `Diagnistics and Feedback` option, use the suboptions for further configuration.
 
-![](https://github.com/5Noxi/win-config/blob/main/privacy/images/wmplayer.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/privacy/images/wmplayer.png?raw=true)
 
 Note: I gathered all registry values via the legacy WMPlayer.
 
@@ -548,7 +548,7 @@ Miscellaneous notes:
 
 It is a deprecated feature, as the banner shows:
 
-![](https://github.com/5Noxi/win-config/blob/main/privacy/images/psr.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/privacy/images/psr.png?raw=true)
 
 `PSR` = Problem Steps Recorder
 
@@ -661,7 +661,7 @@ Disables app access to your location, locating your system will be disabled, geo
 },
 ```
 
-> [privacy/assets | locationaccess-LocationApi.c](https://github.com/5Noxi/win-config/blob/main/privacy/assets/locationaccess-LocationApi.c)
+> [privacy/assets | locationaccess-LocationApi.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/locationaccess-LocationApi.c)
 
 # Disable Sensors
 
@@ -675,7 +675,7 @@ Blocks apps/system from using hardware sensors such as ambient light, orientatio
 | `SensrSvc` | Monitors various sensors in order to expose data and adapt to system and user state. If this service is stopped or disabled, the display brightness will not adapt to lighting conditions. Stopping this service may affect other system functionality and features as well. |
 | `SensorService` | A service for sensors that manages different sensors' functionality. Manages Simple Device Orientation (SDO) and History for sensors. Loads the SDO sensor that reports device orientation changes. If this service is stopped or disabled, the SDO sensor will not be loaded and so auto-rotation will not occur. History collection from Sensors will also be stopped. |
 
-No other [services](https://github.com/5Noxi/win-config/blob/main/system/assets/services.txt)/[drivers](https://github.com/5Noxi/win-config/blob/main/system/assets/drivers.txt) depend on these three services.
+No other [services](https://github.com/nohuto/win-config/blob/main/system/assets/services.txt)/[drivers](https://github.com/nohuto/win-config/blob/main/system/assets/drivers.txt) depend on these three services.
 
 ---
 
@@ -1080,7 +1080,7 @@ svchost.exe	RegSetValue	HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Capabilit
 svchost.exe	RegSetValue	HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\picturesLibrary\Value	Type: REG_SZ, Length: 10, Data: Deny
 ```
 
-![](https://github.com/5Noxi/win-config/blob/main/privacy/images/appaccess.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/privacy/images/appaccess.png?raw=true)
 
 ```json
 {
@@ -1650,7 +1650,7 @@ Used for better suggestions by creating a custom dictionary using your typing hi
 \Registry\User\S-ID\SOFTWARE\Microsoft\INPUT\TIPC : Enabled
 ```
 
-![](https://github.com/5Noxi/win-config/blob/main/privacy/images/inking.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/privacy/images/inking.png?raw=true)
 
 ```json
 {
@@ -1713,7 +1713,7 @@ Used for better suggestions by creating a custom dictionary using your typing hi
 
 `HasAccepted` disables online speech recognition, voice input to apps like Cortana, and data upload to Microsoft. `AllowSpeechModelUpdate` blocks automatic updates of speech recognition and synthesis models. I found`DisableSpeechInput` randomly while looking for `HasAccepted`, related to mixed reality environments.
 > https://learn.microsoft.com/en-us/windows/privacy/manage-connections-from-windows-operating-system-components-to-microsoft-services#bkmk-priv-speech  
-> [privacy/assets | locationaccess-LocationApi.c](https://github.com/5Noxi/win-config/blob/main/privacy/assets/locationaccess-LocationApi.c)
+> [privacy/assets | locationaccess-LocationApi.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/locationaccess-LocationApi.c)
 
 # Disable Microsoft Copilot
 
@@ -2280,7 +2280,7 @@ L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CDP\\SettingsPage",
 L"WifiLastDisabledNearShare",
 ```
 
-> [privacy/assets | crossdev-SharedExperiencesSingleton.c](https://github.com/5Noxi/win-config/blob/main/privacy/assets/crossdev-SharedExperiencesSingleton.c)
+> [privacy/assets | crossdev-SharedExperiencesSingleton.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/crossdev-SharedExperiencesSingleton.c)
 
 ```json
 {
@@ -2634,7 +2634,7 @@ WER (Windows Error Reporting) sends error logs to Microsoft, disabling it keeps 
 > https://learn.microsoft.com/en-us/troubleshoot/windows-client/system-management-components/windows-error-reporting-diagnostics-enablement-guidance#configure-network-endpoints-to-be-allowed  
 > https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-errorreporting  
 > https://learn.microsoft.com/en-us/windows/win32/wer/wer-settings  
-> [privacy/assets | wer-PciGetSystemWideHackFlagsFromRegistry.c](https://github.com/5Noxi/win-config/blob/main/privacy/assets/wer-PciGetSystemWideHackFlagsFromRegistry.c)
+> [privacy/assets | wer-PciGetSystemWideHackFlagsFromRegistry.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/wer-PciGetSystemWideHackFlagsFromRegistry.c)
 
 `Disable DHA Report`:  
 "This group policy enables Device Health Attestation reporting (DHA-report) on supported devices. It enables supported devices to send Device Health Attestation related information (device boot logs, PCR values, TPM certificate, etc.) to Device Health Attestation Service (DHA-Service) every time a device starts. Device Health Attestation Service validates the security state and health of the devices, and makes the findings accessible to enterprise administrators via a cloud based reporting portal. This policy is independent of DHA reports that are initiated by device manageability solutions (like MDM or SCCM), and will not interfere with their workflows."
@@ -3029,9 +3029,9 @@ CrashDumpEnabled REG_DWORD 0x1 and FilterPages REG_DWORD 0x1 = Active memory dum
 
 > https://learn.microsoft.com/en-us/troubleshoot/windows-server/performance/memory-dump-file-options#registry-values-for-startup-and-recovery  
 > https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/automatic-memory-dump  
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/CrashControl.txt  
-> [privacy/assets | crashdmp.c](https://github.com/5Noxi/win-config/blob/main/privacy/assets/crashdmp.c)  
-> [privacy/assets | crashdmp-SecureDump_PrepareForInit.c](https://github.com/5Noxi/win-config/blob/main/privacy/assets/crashdmp-SecureDump_PrepareForInit.c)
+> https://github.com/nohuto/wpr-reg-records/blob/main/records/CrashControl.txt  
+> [privacy/assets | crashdmp.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/crashdmp.c)  
+> [privacy/assets | crashdmp-SecureDump_PrepareForInit.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/crashdmp-SecureDump_PrepareForInit.c)
 
 ---
 
@@ -3050,8 +3050,8 @@ wevtutil sl Microsoft-Windows-UserModePowerService/Diagnostic /e:false
 svchost.exe	RegSetValue	HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-UserModePowerService/Diagnostic\Enabled	Type: REG_DWORD, Length: 4, Data: 0
 ```
 
-> [privacy/assets | sleepstudy-FxLibraryGlobalsQueryRegistrySettings.c](https://github.com/5Noxi/win-config/blob/main/privacy/assets/sleepstudy-FxLibraryGlobalsQueryRegistrySettings.c)  
-> [privacy/assets | sleepstudy-PoFxInitPowerManagement.c](https://github.com/5Noxi/win-config/blob/main/privacy/assets/sleepstudy-PoFxInitPowerManagement.c)
+> [privacy/assets | sleepstudy-FxLibraryGlobalsQueryRegistrySettings.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/sleepstudy-FxLibraryGlobalsQueryRegistrySettings.c)  
+> [privacy/assets | sleepstudy-PoFxInitPowerManagement.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/sleepstudy-PoFxInitPowerManagement.c)
 
 ---
 
@@ -3067,7 +3067,7 @@ Miscellaenous notes:
     "SleepStudyDeviceAccountingLevel"; = 4; // PopSleepStudyDeviceAccountingLevel 
     "SleepStudyDisabled"; = 0; // PopSleepStudyDisabled 
 ```
-> https://github.com/5Noxi/wpr-reg-records#power-values
+> https://github.com/nohuto/wpr-reg-records#power-values
 ```
 \Registry\Machine\SYSTEM\ControlSet001\Enum\ACPI\AMDI0010\3\Device Parameters\Wdf : SleepstudyState
 \Registry\Machine\SYSTEM\ControlSet001\Enum\ACPI\AMDI0030\0\Device Parameters\Wdf : SleepstudyState
@@ -3137,9 +3137,9 @@ __int64 IsDesktopHeapLoggingOn(void)
 
 `DesktopHeapLogging` seems to have a fallback of `0`, but the value exists by default and is set to `1`. Means deleting it/setting it to `0` should do the same.
 
-> [privacy/assets | rsop-IsDesktopHeapLoggingOn.c](https://github.com/5Noxi/win-config/blob/main/privacy/assets/rsop-IsDesktopHeapLoggingOn.c)  
+> [privacy/assets | rsop-IsDesktopHeapLoggingOn.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/rsop-IsDesktopHeapLoggingOn.c)  
 > https://answers.microsoft.com/en-us/windows/forum/all/question-about-some-dwm-registry-settings/341cac5c-d85a-43e5-89d3-d9734f84da4e  
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/Winows-NT.txt
+> https://github.com/nohuto/wpr-reg-records/blob/main/records/Winows-NT.txt
 
 # Disable Message Sync
 
@@ -3295,7 +3295,7 @@ Disable Offline Files (CSC) via policy and services. Sets NetCache policy keys, 
 
 "Cloud Content Search lets Windows Search include results from your signed-in cloud accounts personal Microsoft account (OneDrive, Outlook, Bing) and/or work/school (OneDrive for Business, SharePoint, Outlook) alongside local files. Turn it on per account to get those items and Bing-personalized suggestions, turn it off to keep search limited to local content (and non-personalized web)."
 
-![](https://github.com/5Noxi/win-config/blob/main/privacy/images/cloudsearch.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/privacy/images/cloudsearch.png?raw=true)
 
 # Disable Microsoft Accounts
 

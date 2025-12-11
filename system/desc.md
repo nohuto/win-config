@@ -29,13 +29,13 @@ if ( !RegistryValueWithFallbackW && Type == 4 )
 return v1;
 ```
 
-> [system/assets | servicesplitting-ScReadSCMConfiguration.c](https://github.com/5Noxi/win-config/blob/main/system/assets/servicesplitting-ScReadSCMConfiguration.c)  
-> https://github.com/5Noxi/Windows-Books/releases/download/7th-Edition/Windows-Internals-E7-P2.pdf (page `467`f)  
+> [system/assets | servicesplitting-ScReadSCMConfiguration.c](https://github.com/nohuto/win-config/blob/main/system/assets/servicesplitting-ScReadSCMConfiguration.c)  
+> https://github.com/nohuto/Windows-Books/releases/download/7th-Edition/Windows-Internals-E7-P2.pdf (page `467`f)  
 > https://learn.microsoft.com/en-us/windows/application-management/svchost-service-refactoring  
 > https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-globalmemorystatusex
 
-![](https://github.com/5Noxi/win-config/blob/main/system/images/servicesplitting1.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/system/images/servicesplitting2.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/servicesplitting1.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/servicesplitting2.png?raw=true)
 
 ---
 
@@ -51,14 +51,14 @@ Miscellaneous notes:
 
 Since many people don't yet know which values exist and what default value they have, here's a list. I used IDA, WinDbg, WinObjEx, Windows Internals E7 P1 to create it. Many applied values are defaults, some not. See documentation below for details. The applied data is sometimes pure speculation.
 
-> https://github.com/5Noxi/windows-books/releases  
+> https://github.com/nohuto/windows-books/releases  
 > https://github.com/hfiref0x/WinObjEx64  
-> https://github.com/5Noxi/sym-mem-dump  
-> https://github.com/5Noxi/wpr-reg-records#kernel-values  
+> https://github.com/nohuto/sym-mem-dump  
+> https://github.com/nohuto/wpr-reg-records#kernel-values  
 
 ---
 
-See [session-manager-symbols](https://github.com/5Noxi/wpr-reg-records/blob/main/session-manager-values.txt) for reference.
+See [session-manager-symbols](https://github.com/nohuto/wpr-reg-records/blob/main/session-manager-values.txt) for reference.
 
 Everything listed below is based on personal research. Mistakes may exist, but I don't think I've made any.
 
@@ -175,17 +175,17 @@ Everything listed below is based on personal research. Mistakes may exist, but I
     "RNGAuxiliarySeed"; = ; // ExpRNGAuxiliarySeed = 742978275?
 ```
 
-> https://github.com/5Noxi/wpr-reg-records?tab=readme-ov-file#session-manager-values
+> https://github.com/nohuto/wpr-reg-records?tab=readme-ov-file#session-manager-values
 
-![](https://github.com/5Noxi/win-config/blob/main/system/images/kernel0.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/system/images/kernel1.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/system/images/kernel2.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/kernel0.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/kernel1.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/kernel2.png?raw=true)
 
 # DXG Kernel Values
 
 `dxgkrnl.sys` is Windows DirectX/WDDM graphics kernel driver that mediates between apps and the GPU to schedule work, manage graphics memory, present frames, and handle TDR hang recovery.
 
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/Graphics-Drivers.txt
+> https://github.com/nohuto/wpr-reg-records/blob/main/records/Graphics-Drivers.txt
 
 Many applied values are defaults, some not. See documentation below for details. The applied data is sometimes pure speculation.
 
@@ -193,8 +193,8 @@ Many applied values are defaults, some not. See documentation below for details.
 
 These are default values I found in `dxgkrnl.sys`, see link below for pseudocode snippets I used / link above for all values that get read on boot.
 
-> https://github.com/5Noxi/wpr-reg-records/blob/main/dxgkrnl.c  
-> https://github.com/5Noxi/wpr-reg-records#kernel--dxg-kernel-values
+> https://github.com/nohuto/wpr-reg-records/blob/main/dxgkrnl.c  
+> https://github.com/nohuto/wpr-reg-records#kernel--dxg-kernel-values
 
 Everything listed below is based on personal research. Mistakes may exist, but I don't think I've made any.
 
@@ -443,7 +443,7 @@ This option currently includes some speculations and default values. I haven't h
 
 ---
 
-See [dwm.c](https://github.com/5Noxi/wpr-reg-records/blob/main/assets/dwm.c) for used snippets (taken from `dwmcore.dll`, `win32full.sys`, `dwm.exe`, `dwminit.dll`, `uDWM.dll`).
+See [dwm.c](https://github.com/nohuto/wpr-reg-records/blob/main/assets/dwm.c) for used snippets (taken from `dwmcore.dll`, `win32full.sys`, `dwm.exe`, `dwminit.dll`, `uDWM.dll`).
 
 Everything listed below is based on personal research. Mistakes may exist, but I don't think I've made any.
 
@@ -555,7 +555,7 @@ Everything listed below is based on personal research. Mistakes may exist, but I
     "RefreshRatePercentage"; = 10;
 ```
 
-> https://github.com/5Noxi/wpr-reg-records#dwm-values
+> https://github.com/nohuto/wpr-reg-records#dwm-values
 
 # Win32PrioritySeparation
 
@@ -564,7 +564,7 @@ Everything listed below is based on personal research. Mistakes may exist, but I
 - The middle two bits (AABBCC) determine whether the length of the interval varies or is fixed.
 - The lowest two bits (AABBCC) determine whether the threads of foreground processes get more processor time than the threads of background processes each time they run."
 
-Read trough the `.pdf` file, if you want to get more information about the bitmask. Calculate it yourself with [`bitmask-calc`](https://github.com/5Noxi/bitmask-calc).
+Read trough the `.pdf` file, if you want to get more information about the bitmask. Calculate it yourself with [`bitmask-calc`](https://github.com/nohuto/bitmask-calc).
 
 `0x00000018` = Long, Fixed, no boost. (`24,0x18,Longer,Fixed,36,36`)
 `0x00000024` = Short, Variable, no boost. (`36,0x24,Short,Variable,6,6`)
@@ -591,9 +591,9 @@ for ($i=0; $i -le 271; $i++) {
 }
 ```
 
-![](https://github.com/5Noxi/win-config/blob/main/system/images/w32ps.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/w32ps.png?raw=true)
 
-> [system/assets | Win32PrioritySeparation.pdf](https://github.com/5Noxi/win-config/blob/main/system/assets/Win32PrioritySeparation.pdf)
+> [system/assets | Win32PrioritySeparation.pdf](https://github.com/nohuto/win-config/blob/main/system/assets/Win32PrioritySeparation.pdf)
 
 # System Responsiveness
 
@@ -643,8 +643,8 @@ CiSystemResponsiveness = 10 * (value / 10);
 > 100  -> 20   (fallback)
 ```
 
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/MultiMedia.txt  
-> [system/assets | sysresp-CiConfigInitialize.c](https://github.com/5Noxi/win-config/blob/main/system/assets/sysresp-CiConfigInitialize.c)
+> https://github.com/nohuto/wpr-reg-records/blob/main/records/MultiMedia.txt  
+> [system/assets | sysresp-CiConfigInitialize.c](https://github.com/nohuto/win-config/blob/main/system/assets/sysresp-CiConfigInitialize.c)
 
 # Disable Scheduled Tasks
 
@@ -733,11 +733,11 @@ powershell -Command "Get-ScheduledTask -TaskPath '\' | Where-Object { $_.TaskNam
 The main option doesn't apply all suboptions. For further custumization use [serviwin](https://www.nirsoft.net/utils/serviwin.html).
 
 The suboptions probably overlap the documentation. If so, you can open the markdown file on my GitHub instead:
-> https://github.com/5Noxi/win-config/blob/main/system/desc.md#disable-servicesdrivers
+> https://github.com/nohuto/win-config/blob/main/system/desc.md#disable-servicesdrivers
 
 Note: Disabling `AppXSvc` (`Microsoft Store Services` option) breaks CmdPal and other store applications.
 
-See [services](https://github.com/5Noxi/win-config/blob/main/system/assets/services.txt)/[drivers](https://github.com/5Noxi/win-config/blob/main/system/assets/drivers.txt) for reference, these files were generated on a stock `W11 IoT Enterprise LTSC` installation via [serviwin](https://www.nirsoft.net/utils/serviwin.html).
+See [services](https://github.com/nohuto/win-config/blob/main/system/assets/services.txt)/[drivers](https://github.com/nohuto/win-config/blob/main/system/assets/drivers.txt) for reference, these files were generated on a stock `W11 IoT Enterprise LTSC` installation via [serviwin](https://www.nirsoft.net/utils/serviwin.html).
 
 | Option Name | Service/Driver | Description |
 | --- | --- | --- |
@@ -977,7 +977,7 @@ SystemSettings.exe  HKCU\Software\Microsoft\GameBar\AutoGameModeEnabled	Type: RE
 ```
 The value doesn't exist by default (not existing = `1`). Ignore `GameBar.txt`, it shows read values.
 
-> [system/assets | gamemode-GamingHandlers.c](https://github.com/5Noxi/win-config/blob/main/system/assets/gamemode-GamingHandlers.c)  
+> [system/assets | gamemode-GamingHandlers.c](https://github.com/nohuto/win-config/blob/main/system/assets/gamemode-GamingHandlers.c)  
 > https://support.xbox.com/en-US/help/games-apps/game-setup-and-play/use-game-mode-gaming-on-pc  
 > https://learn.microsoft.com/en-us/uwp/api/windows.gaming.preview.gamesenumeration?view=winrt-26100
 
@@ -1015,7 +1015,7 @@ Search indexing builds a database of file names, properties, and contents to spe
 > https://learn.microsoft.com/en-us/windows/win32/search/-search-indexing-process-overview  
 > https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-search
 
-![](https://github.com/5Noxi/win-config/blob/main/system/images/searchindex.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/searchindex.png?raw=true)
 
 Instead of using the explorer to search for a file or folder, use [`Everything`](https://www.voidtools.com/downloads/), it's a lot faster.
 
@@ -1091,8 +1091,8 @@ SystemSettingsAdminFlows.exe	RegSetValue	HKLM\System\CurrentControlSet\Control\G
 
 Storage Sense deletes temporary files automatically - revert it by changing it back to `1`.
 
-![](https://github.com/5Noxi/win-config/blob/main/system/images/storagesen1.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/system/images/storagesen2.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/storagesen1.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/storagesen2.png?raw=true)
 
 ```json
 {
@@ -1148,17 +1148,17 @@ Forces hung apps and services to terminate faster.
 
 More timeout related values located in `HKCU\Control Panel\Desktop`: `CriticalAppShutdownCleanupTimeout`, `CriticalAppShutdownTimeout`, `QuickResolverTimeout`, `ActiveWndTrkTimeout`, `CaretTimeout`, `ForegroundLockTimeout`, `LowLevelHooksTimeout`. I may add information about some of them soon.
 
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/ControlPanel-Desktop.txt
+> https://github.com/nohuto/wpr-reg-records/blob/main/records/ControlPanel-Desktop.txt
 
 # Disable FTH
 
 Used for preventing legacy or unstable applications from crashing, read through the picture below for more detailed information (`Windows Internals 7th Edition, Part 1, Page 347`).
 
-> https://github.com/5Noxi/Windows-Books/releases/download/7th-Edition/Windows-Internals-E7-P1.pdf  
+> https://github.com/nohuto/Windows-Books/releases/download/7th-Edition/Windows-Internals-E7-P1.pdf  
 > https://learn.microsoft.com/en-us/windows/win32/win7appqual/fault-tolerant-heap  
 > https://www.youtube.com/watch?v=4SvNNXAwoqE
 
-![](https://github.com/5Noxi/win-config/blob/main/system/images/fth.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/fth.png?raw=true)
 
 # Disable Accessibility Features
 
@@ -1234,15 +1234,15 @@ else
 ```
 Default value is `85` -> `85%` (gets used if value isn't present), clamp range is `60-100`, if set above `100` it gets clamped to `100`, if set below `60`, it gets clamped to `60`.
 
-> [system/assets | jpeg-TranscodeImage.c](https://github.com/5Noxi/win-config/blob/main/system/assets/jpeg-TranscodeImage.c)
+> [system/assets | jpeg-TranscodeImage.c](https://github.com/nohuto/win-config/blob/main/system/assets/jpeg-TranscodeImage.c)
 
 # Disable Low Disk Space Checks
 
 Disables the `Low Disk Space` notification.
 
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/CV-Explorer.txt
+> https://github.com/nohuto/wpr-reg-records/blob/main/records/CV-Explorer.txt
 
-![](https://github.com/5Noxi/win-config/blob/main/system/images/lowdiskspace.jpg?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/lowdiskspace.jpg?raw=true)
 
 # Enable Segment Heap
 
@@ -1265,8 +1265,8 @@ Allows modern apps to use a more efficient memory allocator.
                     // if the value exists but is stored as REG_NONE (type==0):
                     //    RtlpLowFragHeapGlobalFlags |= 0x8;   // global disable/override
 ```
-> https://github.com/5Noxi/wpr-reg-records#session-manager-values  
-> [system/assets | segment-RtlpHpApplySegmentHeapConfigurations.c](https://github.com/5Noxi/win-config/blob/main/system/assets/segment-RtlpHpApplySegmentHeapConfigurations.c)
+> https://github.com/nohuto/wpr-reg-records#session-manager-values  
+> [system/assets | segment-RtlpHpApplySegmentHeapConfigurations.c](https://github.com/nohuto/win-config/blob/main/system/assets/segment-RtlpHpApplySegmentHeapConfigurations.c)
 
 For a specific executeable:
 ```
@@ -1287,13 +1287,13 @@ Enabling segment heap globally forces the system to use the newer segmented allo
 
 > https://blog.s-schoener.com/2024-11-05-segment-heap/  
 > https://www.blackhat.com/docs/us-16/materials/us-16-Yason-Windows-10-Segment-Heap-Internals-wp.pdf  
-> https://github.com/5Noxi/Windows-Books/releases/download/7th-Edition/Windows-Internals-E7-P1.pdf (Page `334`f.)  
+> https://github.com/nohuto/Windows-Books/releases/download/7th-Edition/Windows-Internals-E7-P1.pdf (Page `334`f.)  
 
-![](https://github.com/5Noxi/win-config/blob/main/system/images/segment1.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/system/images/segment2.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/system/images/segment3.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/system/images/segment4.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/system/images/segment5.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/segment1.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/segment2.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/segment3.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/segment4.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/segment5.png?raw=true)
 
 # Disable Notifications
 
@@ -1538,7 +1538,7 @@ if ( !RegQueryValueExW(hKey[0], "TimeStampInterval", 0LL, 0LL, (LPBYTE)&v4, &cbD
 ```
 Only this path gets read, `TimeStampEnabled` doesn't get read?
 
-> [system/assets | timestamp-OsEventsTimestampInterval.c](https://github.com/5Noxi/win-config/blob/main/system/assets/timestamp-OsEventsTimestampInterval.c)
+> [system/assets | timestamp-OsEventsTimestampInterval.c](https://github.com/nohuto/win-config/blob/main/system/assets/timestamp-OsEventsTimestampInterval.c)
 
 # Disable Prefetch & Superfetch
 
@@ -1565,12 +1565,12 @@ The same applies to superfetch.
 > https://learn.microsoft.com/en-us/powershell/module/mmagent/disable-mmagent?view=windowsserver2025-ps
 
 More detailed information about prefetch and superfetch on page `413`f & `472`f.
-> https://github.com/5Noxi/Windows-Books/releases/download/7th-Edition/Windows-Internals-E7-P1.pdf
+> https://github.com/nohuto/Windows-Books/releases/download/7th-Edition/Windows-Internals-E7-P1.pdf
 
-![](https://github.com/5Noxi/win-config/blob/main/system/images/prefetch1.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/system/images/prefetch2.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/system/images/prefetch3.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/system/images/prefetch4.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/prefetch1.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/prefetch2.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/prefetch3.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/prefetch4.png?raw=true)
 
 # Optimize File System
 
@@ -1606,9 +1606,9 @@ Symlink: `C:\Users\YourName\Desktop\logo.png`
 > https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/fsutil-8dot3name  
 > https://github.com/MicrosoftDocs/windows-driver-docs/blob/5e03e46194f2a977da34fdf453f2703262370a23/windows-driver-docs-pr/ifs/offloaded-data-transfers.md?plain=1#L104  
 > https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry  
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/FileSystem.txt
+> https://github.com/nohuto/wpr-reg-records/blob/main/records/FileSystem.txt
 
-> [system/assets | filesystem-NtfsUpdateDynamicRegistrySettings.c](https://github.com/5Noxi/win-config/blob/main/system/assets/filesystem-NtfsUpdateDynamicRegistrySettings.c)
+> [system/assets | filesystem-NtfsUpdateDynamicRegistrySettings.c](https://github.com/nohuto/win-config/blob/main/system/assets/filesystem-NtfsUpdateDynamicRegistrySettings.c)
 
 # Disable Clipboard
 
@@ -1735,11 +1735,11 @@ PageCombining                : True
 PSComputerName               :
 ```
 
-![](https://github.com/5Noxi/win-config/blob/main/system/images/memcompress1.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/system/images/memcompress2.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/system/images/memcompress3.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/memcompress1.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/memcompress2.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/memcompress3.png?raw=true)
 
-> https://github.com/5Noxi/windows-books/releases/download/7th-Edition/Windows-Internals-E7-P1.pdf (P. 449)  
+> https://github.com/nohuto/windows-books/releases/download/7th-Edition/Windows-Internals-E7-P1.pdf (P. 449)  
 > https://learn.microsoft.com/en-us/powershell/module/mmagent/disable-mmagent?view=windowsserver2025-ps
 
 # Disable Page Combining
@@ -1760,12 +1760,12 @@ PageCombining                : True # Enabled
 PSComputerName               :
 ```
 
-![](https://github.com/5Noxi/win-config/blob/main/system/images/pagecomb1.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/system/images/pagecomb2.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/system/images/pagecomb3.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/system/images/pagecomb4.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/pagecomb1.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/pagecomb2.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/pagecomb3.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/pagecomb4.png?raw=true)
 
-> https://github.com/5Noxi/windows-books/releases/download/7th-Edition/Windows-Internals-E7-P1.pdf (P. 459)  
+> https://github.com/nohuto/windows-books/releases/download/7th-Edition/Windows-Internals-E7-P1.pdf (P. 459)  
 > https://learn.microsoft.com/en-us/powershell/module/mmagent/disable-mmagent?view=windowsserver2025-ps
 
 # Enable Detailed BSoD
@@ -1788,7 +1788,7 @@ Enabling the options includes setting `AutoReboot` to `0` ("The option specifies
 
 Changes the size of text, apps, and other items. Note that on laptops the default display scaling might not be `100%`. You can set a custom scaling size via `System > Display > Custom scaling`:
 
-![](https://github.com/5Noxi/win-config/blob/main/system/images/displayscaling.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/displayscaling.png?raw=true)
 
 ```c
 // 100%
@@ -1841,7 +1841,7 @@ Decrease timeout of dual-boot selection window (default of `10`).
 ---
 
 Personal notes on several features, used pseudocode:
-> [system/assets | bcdedit-HalpMiscGetParameters.c](https://github.com/5Noxi/win-config/blob/main/system/assets/bcdedit-HalpMiscGetParameters.c)
+> [system/assets | bcdedit-HalpMiscGetParameters.c](https://github.com/nohuto/win-config/blob/main/system/assets/bcdedit-HalpMiscGetParameters.c)
 
 ```c
 lkd> db HalpInterruptX2ApicPolicy l1
@@ -2028,7 +2028,7 @@ Windows feature that makes borderless/windowed behave like fullscreen.
 
 DX12 games don't support FSE.
 
-![](https://github.com/5Noxi/win-config/blob/main/nvidia/images/swapchain.jpg?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/nvidia/images/swapchain.jpg?raw=true)
 
 ---
 
@@ -2148,13 +2148,13 @@ Virtual memory support uses a system pagefile to swap pages of memory to disk wh
 
 When this policy is enabled, it causes the system pagefile to be cleared upon clean shutdown. If you enable this security option, the hibernation file (hiberfil.sys) is also zeroed out when hibernation is disabled."
 
-> https://github.com/5Noxi/windows-books/releases
+> https://github.com/nohuto/windows-books/releases
 
 # Disable Mobility Center
 
 Note that this is a laptop only feature. The "Mobility Center" is a feature that includes controls for screen brightness, power options, volume, battery status, wireless network status, external display settings, and more.
 
-![](https://github.com/5Noxi/win-config/blob/main/system/images/mobility-center.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/mobility-center.png?raw=true)
 
 ```json
 {

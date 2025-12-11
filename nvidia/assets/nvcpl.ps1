@@ -7,8 +7,8 @@ spsv -Name 'NvTelemetryContainer' -Force
 $nvroam = "$env:appdata\Noverse"
 $desktop = [Environment]::GetFolderPath('Desktop')
 if (-not (Test-Path $nvroam)) {New-Item -ItemType Directory -Path $nvroam | Out-Null}
-iwr -Uri "https://github.com/5Noxi/Files/releases/download/driver/nvcplui.exe" -OutFile "$nvroam\nvcplui.exe" | Out-Null
-iwr -Uri "https://github.com/5Noxi/Files/releases/download/driver/Nvcpl.ico" -OutFile "$nvroam\Nvcpl.ico" | Out-Null
+iwr -Uri "https://github.com/nohuto/Files/releases/download/driver/nvcplui.exe" -OutFile "$nvroam\nvcplui.exe" | Out-Null
+iwr -Uri "https://github.com/nohuto/Files/releases/download/driver/Nvcpl.ico" -OutFile "$nvroam\Nvcpl.ico" | Out-Null
 $nvpsnvcpl = "$nvroam\NV-nvcpl.ps1"
 $nvcplcon = @"
 `$ErrorActionPreference = "silentlycontinue"

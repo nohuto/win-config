@@ -15,7 +15,7 @@
 $nv = "Authored by Noxi-Hu - (C) 2025 Noverse"
 $ErrorActionPreference = "SilentlyContinue"
 $ProgressPreference = "SilentlyContinue"
-iwr 'https://github.com/5Noxi/5Noxi/releases/download/Logo/nvbanner.ps1' -o "$env:temp\nvbanner.ps1";. $env:temp\nvbanner.ps1
+iwr 'https://github.com/nohuto/nohuto/releases/download/Logo/nvbanner.ps1' -o "$env:temp\nvbanner.ps1";. $env:temp\nvbanner.ps1
 [console]::Title = "Noverse NVIDIA Tool"
 [console]::BackgroundColor = "Black"
 clear
@@ -139,14 +139,14 @@ function nvdriver {
     log "[+]" "Replacing pictures" -HighlightColor Green
     $picdown = "$env:USERPROFILE\Desktop\NV-Driver\NVI2"
     $files = @(
-        @{ Url = "https://github.com/5Noxi/Files/releases/download/driver/install_bg.png"; FileName = "install_bg.png" },
-        @{ Url = "https://github.com/5Noxi/Files/releases/download/driver/install_bg_rtl.png"; FileName = "install_bg_rtl.png" },
-        @{ Url = "https://github.com/5Noxi/Files/releases/download/driver/splash.png"; FileName = "splash.png" },
-        @{ Url = "https://github.com/5Noxi/Files/releases/download/driver/splash_rtl.png"; FileName = "splash_rtl.png" },
-        @{ Url = "https://github.com/5Noxi/Files/releases/download/driver/uninstall_bg.png"; FileName = "uninstall_bg.png" },
-        @{ Url = "https://github.com/5Noxi/Files/releases/download/driver/uninstall_bg_rtl.png"; FileName = "uninstall_bg_rtl.png" }
-        @{ Url = "https://github.com/5Noxi/Files/releases/download/driver/presentations_bg.png"; FileName = "presentations_bg.png" },
-        @{ Url = "https://github.com/5Noxi/Files/releases/download/driver/presentations_bg_rtl.png"; FileName = "presentations_bg_rtl.png" })
+        @{ Url = "https://github.com/nohuto/Files/releases/download/driver/install_bg.png"; FileName = "install_bg.png" },
+        @{ Url = "https://github.com/nohuto/Files/releases/download/driver/install_bg_rtl.png"; FileName = "install_bg_rtl.png" },
+        @{ Url = "https://github.com/nohuto/Files/releases/download/driver/splash.png"; FileName = "splash.png" },
+        @{ Url = "https://github.com/nohuto/Files/releases/download/driver/splash_rtl.png"; FileName = "splash_rtl.png" },
+        @{ Url = "https://github.com/nohuto/Files/releases/download/driver/uninstall_bg.png"; FileName = "uninstall_bg.png" },
+        @{ Url = "https://github.com/nohuto/Files/releases/download/driver/uninstall_bg_rtl.png"; FileName = "uninstall_bg_rtl.png" }
+        @{ Url = "https://github.com/nohuto/Files/releases/download/driver/presentations_bg.png"; FileName = "presentations_bg.png" },
+        @{ Url = "https://github.com/nohuto/Files/releases/download/driver/presentations_bg_rtl.png"; FileName = "presentations_bg_rtl.png" })
     foreach ($file in $files) {
         $picpath = Join-Path -Path $picdown -ChildPath $file.FileName
         Invoke-WebRequest -Uri $file.Url -OutFile $picpath -UseBasicParsing -ErrorAction Stop}
@@ -163,10 +163,10 @@ function nvdriver {
     if ($choice -match "y") {
         bannercyan
         log "[+]" "Installing DDU & adding settings"
-        Invoke-WebRequest -Uri "https://github.com/5Noxi/Files/releases/download/driver/NV-DDU.zip" -OutFile "$env:USERPROFILE\Desktop\NV-DDU.zip" -UseBasicParsing
+        Invoke-WebRequest -Uri "https://github.com/nohuto/Files/releases/download/driver/NV-DDU.zip" -OutFile "$env:USERPROFILE\Desktop\NV-DDU.zip" -UseBasicParsing
         Expand-Archive -Path "$env:USERPROFILE\Desktop\NV-DDU.zip" -DestinationPath "$env:USERPROFILE\Desktop\NV-DDU" -Force
         log "[+]" "Downloading NV-DDU.ps1" -HighlightColor Green
-        Invoke-WebRequest -Uri "https://github.com/5Noxi/Files/releases/download/driver/NV-DDU.ps1" -OutFile "$env:USERPROFILE\Desktop\NV-DDU.ps1" -UseBasicParsing
+        Invoke-WebRequest -Uri "https://github.com/nohuto/Files/releases/download/driver/NV-DDU.ps1" -OutFile "$env:USERPROFILE\Desktop\NV-DDU.ps1" -UseBasicParsing
         bcdedit /set safeboot minimal | Out-Null
         sleep 3
         echo ""

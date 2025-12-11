@@ -101,7 +101,7 @@ Value: `EnableVirtualization`
 > https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-gpsb/12867da0-2e4e-4a4f-9dc4-84a7f354c8d9  
 > https://learn.microsoft.com/en-us/windows/security/application-security/application-control/user-account-control/settings-and-configuration?tabs=reg
 
-![](https://github.com/5Noxi/win-config/blob/main/system/images/uac.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/uac.png?raw=true)
 
 # PS Unrestricted Policy
 
@@ -207,7 +207,7 @@ Set-ProcessMitigation -Name process.exe -Disable Value
 
 Editing process mitigations via LGPE (`Administrative Templates\System\Mitigation Options\Process Mitigation Options`):
 
-![](https://github.com/5Noxi/win-config/blob/main/security/images/processmiti.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/security/images/processmiti.png?raw=true)
 
 | Flag | Bit | Setting                                                                         | Details                                                                                                                                                                                                                                                                               |
 | ---- | ------------ | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -530,7 +530,7 @@ MinSudo -NoL -P -TI cmd /c del /f /q "%mount%\Windows\System32\smartscreenps.dll
 endlocal
 ```
 
-> [security/assets | Windows-Defender.txt](https://github.com/5Noxi/win-config/blob/main/security/assets/Windows-Defender.txt)
+> [security/assets | Windows-Defender.txt](https://github.com/nohuto/win-config/blob/main/security/assets/Windows-Defender.txt)
 
 # Disable Windows Firewall
 
@@ -669,7 +669,7 @@ HKLM\System\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\Pu
 
 "To ensure compatibility with Kernel DMA Protection and DMAGuard Policy, PCIe device drivers can opt into Direct Memory Access (DMA) remapping. DMA remapping for device drivers protects against memory corruption and malicious DMA attacks, and provides a higher level of compatibility for devices. Also, devices with DMA remapping-compatible drivers can start and perform DMA regardless of lock screen status. On Kernel DMA Protection enabled systems, DMAGuard Policy might block devices, with DMA remapping-incompatible drivers, connected to external/exposed PCIe ports (for example, M.2, Thunderbolt), depending on the policy value set by the system administrator. DMA remapping isn't supported for graphics device drivers. `DmaRemappingCompatible` key is ignored if `RemappingSupported` is set."
 
-"Only use this per-driver method for Windows versions up to Windows 11 23H2. Use the [per-device method](https://github.com/5Noxi/windows-driver-docs/blob/staging/windows-driver-docs-pr/pci/enabling-dma-remapping-for-device-drivers.md#per-device-opt-in-mechanism)."
+"Only use this per-driver method for Windows versions up to Windows 11 23H2. Use the [per-device method](https://github.com/nohuto/windows-driver-docs/blob/staging/windows-driver-docs-pr/pci/enabling-dma-remapping-for-device-drivers.md#per-device-opt-in-mechanism)."
 
 `per-device` - recommended and preferred mechanism (`DmaRemappingCompatible`)
 `per-driver` - legacy mechanism (`RemappingSupported`)
@@ -700,7 +700,7 @@ HKLM\System\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\Pu
 | 1 | Opt-in, indicates the device and driver are fully compatible with DMA remapping. |
 | No registry key | Let the system determine the policy. |
 
-> https://github.com/5Noxi/windows-driver-docs/blob/staging/windows-driver-docs-pr/pci/enabling-dma-remapping-for-device-drivers.md
+> https://github.com/nohuto/windows-driver-docs/blob/staging/windows-driver-docs-pr/pci/enabling-dma-remapping-for-device-drivers.md
 
 Example paths:
 ```powershell
@@ -721,7 +721,7 @@ Since `EnableNVMeInterface` is included in the function, I'll add it here. Defau
 
 DisableNativeNVMeStack db 0 // default
 ```
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/StorPort.txt
+> https://github.com/nohuto/wpr-reg-records/blob/main/records/StorPort.txt
 
 # Disable System Restore
 
@@ -791,7 +791,7 @@ dir C:\Path\*Files* | Unblock-File -> Multiple files
 },
 ```
 
-![](https://github.com/5Noxi/win-config/blob/main/security/images/downblocking.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/security/images/downblocking.png?raw=true)
 
 # Disable WPBT
 
@@ -807,7 +807,7 @@ WPBT allows hardware manufacturers to run programs during Windows startup that m
 
 MRT takes a lot of time, there are better tools (e.g. MalwareBytes).
 
-![](https://github.com/5Noxi/win-config/blob/main/security/images/mrt.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/security/images/mrt.png?raw=true)
 
 # Disable Bitlocker & EFS
 
@@ -1041,7 +1041,7 @@ Level `5` gets applied.
 > https://dirteam.com/sander/2019/07/30/howto-disable-weak-protocols-cipher-suites-and-hashing-algorithms-on-web-application-proxies-ad-fs-servers-and-windows-servers-running-azure-ad-connect/  
 > https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/security-policy-settings/network-security-lan-manager-authentication-level
 
-![](https://github.com/5Noxi/win-config/blob/main/security/images/insecureconn.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/security/images/insecureconn.png?raw=true)
 
 DTLS 1.2 & TLS 1.3:
 ```json
@@ -1113,7 +1113,7 @@ Rather leave USB connection error notifications enabled, unless there's a specif
 | TdrDodPresentDelay | `TdrDodPresentDelay` | `2` seconds (min 1, max 900) | Extra time for display-only drivers to report an async present before a TDR is triggered.                 |
 | TdrDodVSyncDelay   | `TdrDodVSyncDelay`   | `2` seconds (min 1, max 900) | Time the VSync watchdog waits for VSync from a display-only driver before triggering TDR.                 |
 
-> https://github.com/5Noxi/windows-driver-docs/blob/staging/windows-driver-docs-pr/display/tdr-registry-keys.md  
+> https://github.com/nohuto/windows-driver-docs/blob/staging/windows-driver-docs-pr/display/tdr-registry-keys.md  
 > https://docs.nvidia.com/gameworks/content/developertools/desktop/timeout_detection_recovery.htm
 
 Default values:  
@@ -1158,8 +1158,8 @@ if (dword_1C015B874 != v15) {
     WdLogGlobalForLineNumber = 2387;
 }
 ```
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/Graphics-Drivers.txt  
-> [security/assets | TdrInit.c](https://github.com/5Noxi/win-config/blob/main/security/assets/TdrInit.c)
+> https://github.com/nohuto/wpr-reg-records/blob/main/records/Graphics-Drivers.txt  
+> [security/assets | TdrInit.c](https://github.com/nohuto/win-config/blob/main/security/assets/TdrInit.c)
 
 # Password Age
 
@@ -1177,7 +1177,7 @@ NET ACCOUNTS
 
 Congigure the policy yourself via `Computer Configuration > Windows Settings > Security Settings > Account Policies > Password Policy`:
 
-![](https://github.com/5Noxi/win-config/blob/main/security/images/passwordage.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/security/images/passwordage.png?raw=true)
 
 # Trusted Path Credential Prompting
 

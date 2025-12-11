@@ -1,6 +1,6 @@
 # Windows Policies
 
-This section is based on my [admx-parser](https://github.com/5Noxi/admx-parser) project. You can get the whole parsed ADMX content via:
+This section is based on my [admx-parser](https://github.com/nohuto/admx-parser) project. You can get the whole parsed ADMX content via:
 
 ```powershell
 python admx-parser.py [FLAGS]

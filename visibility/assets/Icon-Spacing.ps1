@@ -1,6 +1,6 @@
 Add-Type -AssemblyName System.Windows.Forms, System.Drawing
 Add-Type -TypeDefinition 'using System;using System.Runtime.InteropServices;public class WinAPI{[DllImport("user32.dll")]public static extern bool ShowWindow(IntPtr hWnd,int nCmdShow);}'
-if (!(Test-Path "$env:temp\Noverse.ico")) {iwr -uri "https://github.com/5Noxi/5Noxi/releases/download/Logo/Noverse.ico" -out "$env:temp\Noverse.ico"}
+if (!(Test-Path "$env:temp\Noverse.ico")) {iwr -uri "https://github.com/nohuto/nohuto/releases/download/Logo/Noverse.ico" -out "$env:temp\Noverse.ico"}
 $gray = [Drawing.Color]::FromArgb(28, 28, 28)
 $white = [Drawing.Color]::White
 

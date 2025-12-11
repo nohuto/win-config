@@ -1,6 +1,6 @@
 # (C) 2025 Noverse. All Rights Reserved.
 # This PY is used for WinConfig
-# https://github.com/5Noxi
+# https://github.com/nohuto
 # https://discord.gg/E2ybG4j9jU
 
 from __future__ import annotations

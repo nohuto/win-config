@@ -1,90 +1,90 @@
 # Desktop Wallpaper
 
-This is a collection of some wallpapers that I've found over time. Added for people who may never have spent time changing their background, or for anyone else. Head over to [visibility/desc.md#desktop-wallpaper](https://github.com/5Noxi/win-config/blob/main/visibility/desc.md#desktop-wallpaper), if you want to see the wallpapers in a seperate window.
+This is a collection of some wallpapers that I've found over time. Added for people who may never have spent time changing their background, or for anyone else. Head over to [visibility/desc.md#desktop-wallpaper](https://github.com/nohuto/win-config/blob/main/visibility/desc.md#desktop-wallpaper), if you want to see the wallpapers in a seperate window.
 
 `Asia`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/wallpaper/Asia.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Asia.png?raw=true)
 
 `Austria`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/wallpaper/Austria.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Austria.png?raw=true)
 
 `Beach`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/wallpaper/Beach.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Beach.png?raw=true)
 
 `Blue Flowers`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/wallpaper/Blue-Flowers.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Blue-Flowers.png?raw=true)
 
 `Castle`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/wallpaper/Castle.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Castle.png?raw=true)
 
 `Cat`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/wallpaper/Cat.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Cat.png?raw=true)
 
 `Flowers`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/wallpaper/Flowers.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Flowers.png?raw=true)
 
 `Heaven`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/wallpaper/Heaven.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Heaven.png?raw=true)
 
 `Lake`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/wallpaper/Lake.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Lake.png?raw=true)
 
 `Mac`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/wallpaper/Mac.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Mac.png?raw=true)
 
 `Moon`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/wallpaper/Moon.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Moon.png?raw=true)
 
 `Moon Castle`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/wallpaper/Moon-Castle.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Moon-Castle.png?raw=true)
 
 `Plants Room`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/wallpaper/Plants-Room.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Plants-Room.png?raw=true)
 
 `Pokemon`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/wallpaper/Pokemon.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Pokemon.png?raw=true)
 
 `Rain`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/wallpaper/Rain.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Rain.png?raw=true)
 
 `Sea`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/wallpaper/Sea.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Sea.png?raw=true)
 
 `Stars`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/wallpaper/Stars.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Stars.png?raw=true)
 
 `Sunset`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/wallpaper/Sunset.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Sunset.png?raw=true)
 
 `Village`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/wallpaper/Village.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Village.png?raw=true)
 
 `Workplace`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/wallpaper/Workplace.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Workplace.png?raw=true)
 
 `Zelda`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/wallpaper/Zelda.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Zelda.png?raw=true)
 
 It get's changed via the "Wallpaper" policy:
 ```json
@@ -151,7 +151,7 @@ C:\ProgramData\Microsoft\Default Account Pictures
 
 It changes every setting, which is shown in the `Folder Options` window. Some are personal preference, see suboptions bellow for customization.
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/explorer.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/explorer.png?raw=true)
 
 ---
 
@@ -193,7 +193,7 @@ Miscellaneous notes:
 
 `darktheme-GetThemeFromUnattendSetup.c` for information about the comments, otherwise ignore them.
 
-> [visibility/assets | darktheme-GetThemeFromUnattendSetup.c](https://github.com/5Noxi/win-config/blob/main/visibility/assets/darktheme-GetThemeFromUnattendSetup.c)
+> [visibility/assets | darktheme-GetThemeFromUnattendSetup.c](https://github.com/nohuto/win-config/blob/main/visibility/assets/darktheme-GetThemeFromUnattendSetup.c)
 
 The pictures below show: `Dark Theme`, `Light Theme`.
 
@@ -224,15 +224,15 @@ The suboption would use the 'Polar Night' `#2e3440` color.
 
 > https://www.nordtheme.com/
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/darktheme1.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/darktheme2.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/darktheme1.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/darktheme2.png?raw=true)
 
 # Disable Transparency
 
 The pictures below show: `Transparency On`, `Transparency Off`.
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/transpa1.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/transpa2.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/transpa1.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/transpa2.png?raw=true)
 
 
 ---
@@ -257,11 +257,11 @@ Disables the preview function for (extensions):
 
 Enabled:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/audiovidpreon.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/audiovidpreon.png?raw=true)
 
 Disabled:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/audiovidpreonoff.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/audiovidpreonoff.png?raw=true)
 
 ---
 
@@ -273,8 +273,8 @@ Hide preview pane:
 
 # Remove Home & Gallery
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/homegal.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/homenet.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/homegal.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/homenet.png?raw=true)
 
 ---
 
@@ -299,8 +299,8 @@ Use it on W11, unless you like the new menu - remove the key, to revert it.
 
 Before & after:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/classiconb.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/classicona.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/classiconb.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/classicona.png?raw=true)
 
 # Disable Animations
 
@@ -334,10 +334,10 @@ CMachine::RegQueryDWORD(
 ```
 `AnimationAfterUserOOBE` & `SkipNextFirstLogonAnimation` (`CurrentVersion\Winlogon`) also exist.
 
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/ControlPanel-Desktop.txt  
-> [visibility/assets | animation-WinMain.c](https://github.com/5Noxi/win-config/blob/main/visibility/assets/animation-WinMain.c)
+> https://github.com/nohuto/wpr-reg-records/blob/main/records/ControlPanel-Desktop.txt  
+> [visibility/assets | animation-WinMain.c](https://github.com/nohuto/win-config/blob/main/visibility/assets/animation-WinMain.c)
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/animation.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/animation.png?raw=true)
 
 `ForceDisableModeChangeAnimation` got added in 22621.3807/22631.3807 and is used for "When you set its value to 1 (or a non-zero number), it turns off the display mode change animation. If the value is 0 or the key does not exist, the animation is set to on."
 
@@ -410,7 +410,7 @@ The revert may not work correctly yet, as it only creates the `Bags`/`BagsMRU` k
 
 # Hide Language Bar
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/languagebar.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/languagebar.png?raw=true)
 
 `Time & language > Typing > Advanced keyboard settings > Language bar options`:
 ```c
@@ -455,7 +455,7 @@ RegSetValue	HKCU\Software\Microsoft\CTF\LangBar\Label	Type: REG_DWORD, Length: 4
 
 "Uses more power" (in relation to laptops).
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/clock.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/clock.png?raw=true)
 
 # Taskbar Settings
 
@@ -463,7 +463,7 @@ Removes the search box, moves the taskbar to the left, removes badges, disables 
 
 `TaskbarSd` adds/removes the block in the right corner, which shows the desktop (picture).
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/taskbar.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/taskbar.png?raw=true)
 
 ```json
 "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced": {
@@ -532,22 +532,22 @@ Disallowing it via the `AllowNewsAndInterests` policy won't set `TaskbarDa` to 0
 |48|Use the desktop language bar for when it’s available|
 |64|N/A|
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/visual1.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/visual2.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/visual1.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/visual2.png?raw=true)
 
 > https://gist.github.com/omar-irizarry/d469e1642e3b27df1eebd1e907ffe61d
 
 # Hide Shortcut Icon
 
-Removes the `- Shortcut` text, hides the shortcut & compression arrows. Works by replacing the shortcut `.ico` with a [blank image](https://github.com/5Noxi/Files/releases/download/miscellaneous/Blank.ico).
+Removes the `- Shortcut` text, hides the shortcut & compression arrows. Works by replacing the shortcut `.ico` with a [blank image](https://github.com/nohuto/Files/releases/download/miscellaneous/Blank.ico).
 
 Before:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/shortcutbefore.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/shortcutbefore.png?raw=true)
 
 After:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/shortcutafter.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/shortcutafter.png?raw=true)
 
 # 'New' Context Menu
 
@@ -555,8 +555,8 @@ Instead of creating a `.txt` file, then renaming it to e.g. `.bat` / `.ps1`, you
 
 `Remove 'Add to Favorites' Option`, `Remove 'Share' Option`, `Remove 'Send to' Option`, `Remove 'bmp'/'zip' Options` don't have a revert yet.
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/newcontext1.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/newcontext2.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/newcontext1.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/newcontext2.png?raw=true)
 
 # Desktop Icon Spacing
 
@@ -582,11 +582,11 @@ I created a small tool for fun, since it's a lot easier to quickly change and te
 
 `75px`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/iconspacing75.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/iconspacing75.png?raw=true)
 
 `100px`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/iconspacing100.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/iconspacing100.png?raw=true)
 
 ---
 
@@ -602,11 +602,11 @@ When you copy, move, or delete a file or folder, a progress dialog appears. You 
 
 `EnthusiastMode` - `0` = fewer detailes:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/filetransfer0.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/filetransfer0.png?raw=true)
 
 `EnthusiastMode` - `1` = more details:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/filetransfer1.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/filetransfer1.png?raw=true)
 
 # Alt-Tab App Tabs
 
@@ -614,19 +614,19 @@ Select the amount of recent tabs from apps in the alt+tab menu.
 
 `Don't show tabs`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/0tabs.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/0tabs.png?raw=true)
 
 `3 Tabs`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/3tabs.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/3tabs.png?raw=true)
 
 `5 Tabs`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/5tabs.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/5tabs.png?raw=true)
 
 `20 Tabs`:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/20tabs.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/20tabs.png?raw=true)
 
 ```json
 {
@@ -660,18 +660,18 @@ The option changes it via `HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\E
 
 New (delete `AltTabSettings`):
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/taskswitchnew.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/taskswitchnew.png?raw=true)
 
 Classic (`AltTabSettings` - `1`):
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/taskswitchold.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/taskswitchold.png?raw=true)
 
 
 # Remove Quick Access
 
 Removes the `Quick access` in the File Explorer & sets `Open File Exporer to` to `This PC`.
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/quickaccess.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/quickaccess.png?raw=true)
 
 # System Fonts
 
@@ -691,8 +691,8 @@ List all available font families on your system with the `Open` option, or via `
 Add-Type -AssemblyName System.Drawing;[System.Drawing.FontFamily]::Families | % {$_.Name}
 ```
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/font1.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/font2.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/font1.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/font2.png?raw=true)
 
 ---
 
@@ -782,7 +782,7 @@ StatusFont    Type: REG_BINARY, Length: 92, Data: E5 FF FF FF 00 00 00 00 00 00 
 MessageFont    Type: REG_BINARY, Length: 92, Data: E5 FF FF FF 00 00 00 00 00 00 00 00 00 00 00 00
 IconFont    Type: REG_BINARY, Length: 92, Data: E5 FF FF FF 00 00 00 00 00 00 00 00 00 00 00 00
 ```
-> [visibility/assets | textsize-TextScaleDialogTemplate.c](https://github.com/5Noxi/win-config/blob/main/visibility/assets/textsize-TextScaleDialogTemplate.c)
+> [visibility/assets | textsize-TextScaleDialogTemplate.c](https://github.com/nohuto/win-config/blob/main/visibility/assets/textsize-TextScaleDialogTemplate.c)
 
 # Hide Lock Screen
 
@@ -792,11 +792,11 @@ Add a custom text to the sign in screen via:
 ```c
 HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
 // legalnoticecaption -	Type: REG_SZ - Data: Noverse
-// legalnoticetext	- Type: REG_SZ - Data: https://5noxi.github.io
+// legalnoticetext	- Type: REG_SZ - Data: https://nohuto.github.io
 ```
 By adding them, you'll have to click `OK` every time you boot/log in:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/legalnotice.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/legalnotice.png?raw=true)
 
 ---
 
@@ -988,7 +988,7 @@ HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\Subscripti
 
 # Hide Most Used Apps
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/mostused.jpg?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/mostused.jpg?raw=true)
 
 ```json
 {
@@ -1200,7 +1200,7 @@ Since `powershell.exe` has default color of white (foreground) and blue (backgro
 | Yellow | `1110` | `14` |
 | White | `1111` | `15` |
 
-Calculate it on your own, by using [bitmask-calc](https://github.com/5Noxi/bitmask-calc) - e.g. set bit `1-3` and `7`, to get `Yellow` (foreground) and `DarkGray` (background).
+Calculate it on your own, by using [bitmask-calc](https://github.com/nohuto/bitmask-calc) - e.g. set bit `1-3` and `7`, to get `Yellow` (foreground) and `DarkGray` (background).
 
 If you've set a custom foreground/background color, they won't override the colors changed within the code, e.g.:
 ```powershell
@@ -1237,13 +1237,13 @@ Prevent Themes from changing the mouse cursor.
 
 `Disable Theme Desktop Icons Changes` prevent themes from changing desktop icons.
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/thememouse.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/thememouse.png?raw=true)
 
 # Hide Disabled/Disconnected Devices
 
 Hides disabled/disconnected devices in the `mmsys.cpl` window.
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/hidedevices.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/hidedevices.png?raw=true)
 
 ```c
 // Show disabled/disconnected devices
@@ -1261,11 +1261,11 @@ rundll32.exe	RegSetValue	HKCU\Software\Microsoft\Multimedia\Audio\DeviceCpl\Show
 
 Icon view:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/panel0.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/panel0.png?raw=true)
 
 Category view:
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/panel1.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/panel1.png?raw=true)
 
 ```json
 {
@@ -1398,7 +1398,7 @@ Example:
 }
 ```
 
-![](https://github.com/5Noxi/win-config/blob/main/visibility/images/oem.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/oem.png?raw=true)
 
 # Settings Page Visibility 
 

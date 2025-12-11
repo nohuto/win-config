@@ -21,9 +21,9 @@ Validate the changes with [MouseTester](https://github.com/valleyofdoom/MouseTes
 
 > https://blogs.windows.com/windowsdeveloper/2023/05/26/delivering-delightful-performance-for-more-than-one-billion-users-worldwide/  
 > https://github.com/valleyofdoom/PC-Tuning#1150-background-window-message-rate-permalink  
-> [peripheral/assets | mouse-GetRawMouseThrottlingThresholds.c](https://github.com/5Noxi/win-config/blob/main/peripheral/assets/mouse-GetRawMouseThrottlingThresholds.c)
+> [peripheral/assets | mouse-GetRawMouseThrottlingThresholds.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/mouse-GetRawMouseThrottlingThresholds.c)
 
-![](https://github.com/5Noxi/win-config/blob/main/peripheral/images/mousevalues.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/peripheral/images/mousevalues.png?raw=true)
 
 ---
 
@@ -83,7 +83,7 @@ RegSetValue	HKCU\Software\Microsoft\Multimedia\Audio\UserDuckingPreference	Type:
 RegSetValue	HKCU\Software\Microsoft\Multimedia\Audio\UserDuckingPreference	Type: REG_DWORD, Length: 4, Data: 3
 ```
 
-![](https://github.com/5Noxi/win-config/blob/main/peripheral/images/audioducking.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/peripheral/images/audioducking.png?raw=true)
 
 # Disable Audio Enhancements
 
@@ -97,16 +97,16 @@ The difference is minor (picture), preferable just disable them. Open `mmsys.cpl
 "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\MMDevices\Audio\Capture\{6119fee4-d49c-474d-978c-0e5f9a67acb3}\FxProperties\{1da5d803-d492-4edd-8c23-e0c0ffee7f0e},5","Type: REG_DWORD, Length: 4, Data: 1"
 ```
 
-![](https://github.com/5Noxi/win-config/blob/main/peripheral/images/audioenhance.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/peripheral/images/audioenhance.png?raw=true)
 
 # Disable Spatial Audio
 
 Spatial audio positions sounds in 3D space around you, surround sound mainly anchors audio to speaker directions.
 
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/Audio.txt  
+> https://github.com/nohuto/wpr-reg-records/blob/main/records/Audio.txt  
 > https://www.dolby.com/experience/home-entertainment/articles/what-is-spatial-audio/
 
-![](https://github.com/5Noxi/win-config/blob/main/peripheral/images/spatial.jpeg?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/peripheral/images/spatial.jpeg?raw=true)
 
 ---
 
@@ -252,7 +252,7 @@ Enables write cache & turns off write cache buffer flushing on all connected dis
 \Registry\Machine\SYSTEM\ControlSet001\Enum\SCSI\Disk&Ven_NVMe&Prod_Samsung_SSD_990\5&33c33320&0&000000\Device Parameters\disk : UserWriteCacheSetting
 ```
 > https://learn.microsoft.com/en-us/previous-versions/troubleshoot/windows-server/turn-disk-write-caching-on-off  
-> [peripheral/assets | diskwritecache.c](https://github.com/5Noxi/win-config/blob/main/peripheral/assets/diskwritecache.c)
+> [peripheral/assets | diskwritecache.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/diskwritecache.c)
 
 # Disable Bluetooth
 
@@ -306,8 +306,8 @@ Value > `0xAAAAAAA` ->  Clamped to `2400`
 Otherwise `v11 * 24`
 
 > https://www.betaarchive.com/wiki/index.php/Microsoft_KB_Archive/102990  
-> [peripheral/assets | mkdata-MouConfiguration.c](https://github.com/5Noxi/win-config/blob/main/peripheral/assets/mkdata-MouConfiguration.c)  
-> [peripheral/assets | mkdata-KbdConfiguration.c](https://github.com/5Noxi/win-config/blob/main/peripheral/assets/mkdata-KbdConfiguration.c)
+> [peripheral/assets | mkdata-MouConfiguration.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/mkdata-MouConfiguration.c)  
+> [peripheral/assets | mkdata-KbdConfiguration.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/mkdata-KbdConfiguration.c)
 
 # Device Manager
 
@@ -334,7 +334,7 @@ Click on `View` > `Devices by connection`.
 - Go into `PCI Bus` / `PCI Express Root Complex`
     - Disable all `PCI-to-PCI Bridge` devices, which are unused (`PCI Express Downstream Switch Port`)
 
-![](https://github.com/5Noxi/win-config/blob/main/peripheral/images/devman.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/peripheral/images/devman.png?raw=true)
 
 > https://learn.microsoft.com/en-us/powershell/module/pnpdevice/get-pnpdevice?view=windowsserver2025-ps  
 > https://learn.microsoft.com/en-us/windows-hardware/drivers/devtest/pnputil-command-syntax
@@ -349,8 +349,8 @@ Get-PnpDevice -PresentOnly:$false | ? FriendlyName -eq 'HID-compliant touch scre
 "Tablet mode makes Windows more touch friendly and is helpful on touch capable devices."
 
 > https://support.microsoft.com/en-us/windows/turn-tablet-mode-on-or-off-in-windows-add3fbce-5cb5-bf76-0f9c-8d7b30041f30  
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/Wisp.txt  
-> [peripheral/assets | touch-IsTouchDisabled.c](https://github.com/5Noxi/win-config/blob/main/peripheral/assets/touch-IsTouchDisabled.c)
+> https://github.com/nohuto/wpr-reg-records/blob/main/records/Wisp.txt  
+> [peripheral/assets | touch-IsTouchDisabled.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/touch-IsTouchDisabled.c)
 
 ---
 
@@ -441,8 +441,8 @@ Everything listed below is based on personal research. Mistakes may exist, some 
     "DownLeft" = { 0x47F38E42CEFA51BC, 0xEBDFECA56A8CB1AC };
 ```
 
-> [peripheral/assets | touch-twinui.c](https://github.com/5Noxi/win-config/blob/main/peripheral/assets/touch-twinui.c)  
-> [peripheral/assets | touch-InitializeInputSettingsGlobals.c](https://github.com/5Noxi/win-config/blob/main/peripheral/assets/touch-InitializeInputSettingsGlobals.c)
+> [peripheral/assets | touch-twinui.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/touch-twinui.c)  
+> [peripheral/assets | touch-InitializeInputSettingsGlobals.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/touch-InitializeInputSettingsGlobals.c)
 
 ```
 TabletModeActivated
@@ -510,9 +510,9 @@ Default values:
 WakeOnInputDeviceTypes = 6
 UnDimOnInputDeviceTypes = -1  // 0xFFFFFFFF
 ```
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/Input.txt  
-> https://github.com/5Noxi/wpr-reg-records/blob/main/records/Enum-USB.txt  
-> [peripheral/assets | wakedev-WakeOnInputDeviceTypes.c](https://github.com/5Noxi/win-config/blob/main/peripheral/assets/wakedev-WakeOnInputDeviceTypes.c)
+> https://github.com/nohuto/wpr-reg-records/blob/main/records/Input.txt  
+> https://github.com/nohuto/wpr-reg-records/blob/main/records/Enum-USB.txt  
+> [peripheral/assets | wakedev-WakeOnInputDeviceTypes.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/wakedev-WakeOnInputDeviceTypes.c)
 
 ---
 
@@ -533,7 +533,7 @@ int *, _QWORD, _QWORD))(WdfFunctions_01015 + 1880))(
 \Registry\Machine\SYSTEM\ControlSet001\Services\usbhub\hubg : WakeOnConnectUI
 ```
 
-> [peripheral/assets | wakedev-HUBREG_QueryGlobalHubValues.c](https://github.com/5Noxi/win-config/blob/main/peripheral/assets/wakedev-HUBREG_QueryGlobalHubValues.c)
+> [peripheral/assets | wakedev-HUBREG_QueryGlobalHubValues.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/wakedev-HUBREG_QueryGlobalHubValues.c)
 
 --- 
 
@@ -660,22 +660,22 @@ As you may know a bit can be `0` or `1`, means (bit depth * `6` = dB):
 > https://noirsonance.com/bit-depth-calculator-visualizer/  
 > https://de.wikipedia.org/wiki/Nyquist-Shannon-Abtasttheorem
 
-![](https://github.com/5Noxi/win-config/blob/main/peripheral/images/samplerate.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/peripheral/images/samplerate.png?raw=true)
 
 # Mouse DPI
 
 Use `800` or `1600`. Going too low will end in worse results, as shown in the pictures ([1](https://www.youtube.com/watch?v=mwf_F2VboFQ&t=458s), [2](https://www.youtube.com/watch?v=imYBTj2RXFs&t=274s)).
 
-![](https://github.com/5Noxi/win-config/blob/main/peripheral/images/dpi1.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/peripheral/images/dpi2.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/peripheral/images/dpi3.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/peripheral/images/dpi1.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/peripheral/images/dpi2.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/peripheral/images/dpi3.png?raw=true)
 
 # Polling Rate
 
 Higher sampling rates reduce jitter and latency and ensure more accurate cursor positioning (first image), but may affect performance depending on the hardware (CPU cycles) - [*](https://www.youtube.com/watch?v=jtATbpMqbL4). Using `4 kHz` on a mid-tier PC should not be a problem. Run benchmarks on your system to check whether your PC can handle this rate. It should always be `1 kHz+`. You can use [MouseTester](https://github.com/valleyofdoom/MouseTester/releases) to check if your current polling rate is stable.
 
-![](https://github.com/5Noxi/win-config/blob/main/peripheral/images/polling1.png?raw=true)
-![](https://github.com/5Noxi/win-config/blob/main/peripheral/images/polling2.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/peripheral/images/polling1.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/peripheral/images/polling2.png?raw=true)
 
 # Monitor Settings
 
@@ -687,7 +687,7 @@ Each profile has preconfigured settings. E.g. 'Read mode' is optimized for viewi
 ## **Overdrive/OD/Response Time** - `Test`  
 If you experience [ghosting](https://www.testufo.com/ghosting) (most noticeable in fast paced motions, e.g. FPS games), caused by a slow response time, which cannot keep up with the speed of the changing image, you should try to increase the OD option, which will increase the response time of your monitor. Ghosting looks like a image artifact that appears as a trail of pixels behind a moving object (pixels can't change color fast enough when a new image appears, parts of the old image remain visible), which is why it gets called ghosting -> the trace looks like a ghost of the object. Increasing the overdrive setting can end up in overshooting/inverse ghosting, which is the opposite of ghosting and get's caused from a too high OD. Which means that the response time is too fast for your monitor to handle it, resulting in pixels changing their color too fast. Ghosting (normally) ends up in a trace behind the object (like motion blur), inverse ghosting can cause artifacts in front and behind the object. Search for your monitor [here](https://www.rtings.com/), scroll down to the motion section and compare the response times, to see if your monitor even performs the best one the fastest option. And no you won't "see" a difference between them, if you experience inverse ghosting, renounce the lowest response time and decrease it (as ghosting makes the image unclear -> annoying), if you experience ghosting increase and test it.
 
-![](https://github.com/5Noxi/win-config/blob/main/peripheral/images/monitor1.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/peripheral/images/monitor1.png?raw=true)
 
 ## **Sharpness** - `0%`  
 Personal preference. Increasing it too much will end up in [artificial sharpening](http://www.lagom.nl/lcd-test/sharpness.php) = exaggerated outlines.
@@ -701,12 +701,12 @@ G-Sync matches the monitor's refresh rate to the frame rate. The setting is used
 ## **Color Temperature** - `Warm`  
 Changing it is one of the best ways to reduce eye stain. Using a warm temperature -> less [blue light](https://eyesurgeryguide.org/debunking-the-blue-light-eye-damage-myth/). (read the text below for more information about [blue light](https://eyesurgeryguide.org/debunking-the-blue-light-eye-damage-myth/)) Default mostly is `6500K`. One thing to add: a higher temperature will make it easier for you to concentrate.
 
-![](https://github.com/5Noxi/win-config/blob/main/peripheral/images/monitor2.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/peripheral/images/monitor2.png?raw=true)
 
 ## **Brightness** - `50-70`  
 Depends on how much light there is in your room. If there's a lot of light, you'll have to increase the [brightness](https://plano.co/does-screen-brightness-affect-your-eyes/). If you mainly play in the dark, it's recommended to reduce the [brightness](https://plano.co/does-screen-brightness-affect-your-eyes/) to a level that is comfortable for your eyes. Remember: decreasing it *can* lower the [blue light](https://eyesurgeryguide.org/debunking-the-blue-light-eye-damage-myth/) by `50+%` -> known to be phototoxic to your eyes ([retina](https://en.wikipedia.org/wiki/Retina) - light sensitive tissue), therefore lower the [brightness](https://plano.co/does-screen-brightness-affect-your-eyes/) to reduce the intensity of [blue light](https://eyesurgeryguide.org/debunking-the-blue-light-eye-damage-myth/). For your general knowledge, [blue light](https://eyesurgeryguide.org/debunking-the-blue-light-eye-damage-myth/) has a short wavelength (~[`450-500`](https://www.livephysics.com/physical-constants/optics-pc/wavelength-colors/)), which means that it carries more energy -> higher impact. Don't dim it too much, or it may end up in worse focus.
 
-![](https://github.com/5Noxi/win-config/blob/main/peripheral/images/monitor3.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/peripheral/images/monitor3.png?raw=true)
 
 ## **Contrast** - `~60`  
 It shouldn't be set too high, otherwise you will [not be able to see any details](https://www.testufo.com/whitelevels) and not too low, or it will be too dark. You'll have to test it yourself and find the best value.

@@ -2,7 +2,7 @@
 
 This tool is based on my personal research on several topics, which I began documenting around July 2024. Initially, I uploaded them individually as messages on the [Discord server](https://discord.gg/E2ybG4j9jU), but the amount of different configurations became too large and hard to manage (and Discord isn't ideal for projects like this). If I used information from specific sources, I've included the links. Information gathered via binary string extraction, WPR, IDA, Procmon, etc. Default values from WinDbg, IDA, and stock installations. Minor mistakes or misinterpretations may exist, **corrections are welcome**.
 
-It's based on the GitHub repository and parses it's information out of it. All [`App Tools`](https://github.com/5Noxi/app-tools)/[`Game Tools`](https://github.com/5Noxi/game-tools) are external PowerShell scripts, same goes for the [`Component Manager`](https://github.com/5Noxi/comp-mgr), [`Blocklist Manager`](https://github.com/5Noxi/blocklist-mgr) & [`Bitmask Calculator`](https://github.com/5Noxi/bitmask-calc).
+It's based on the GitHub repository and parses it's information out of it. All [`App Tools`](https://github.com/nohuto/app-tools)/[`Game Tools`](https://github.com/nohuto/game-tools) are external PowerShell scripts, same goes for the [`Component Manager`](https://github.com/nohuto/comp-mgr), [`Blocklist Manager`](https://github.com/nohuto/blocklist-mgr) & [`Bitmask Calculator`](https://github.com/nohuto/bitmask-calc).
 
 ## Tool
 
@@ -25,8 +25,8 @@ This project is AGPL-3.0. You may copy, modify, and redistribute only if you com
 ## My Projects
 
 You can find all of my other projects here:
-> https://5noxi.github.io/projects.html  
-> https://github.com/5Noxi
+> https://nohuto.github.io/projects.html  
+> https://github.com/nohuto
 
 More miscellaneous uploads:
 > https://discord.gg/E2ybG4j9jU
