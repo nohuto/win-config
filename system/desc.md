@@ -1322,6 +1322,17 @@ All `NOC_GLOBAL_SETTING_*` I found in `NotificationController.dll`:
 ```
 The options I've commented on are included in the options under `System > Notifications`/right click menu of notification center.
 
+`DstNotification` disables notifications whenever the system clock changes.
+```c
+// Control Panel > Clock and Region > Date and Time - Notify me when the clock chanes
+
+// Enablded (default)
+HKCU\Control Panel\TimeDate\DstNotification	Type: REG_DWORD, Length: 4, Data: 1
+
+// Disabled
+HKCU\Control Panel\TimeDate\DstNotification	Type: REG_DWORD, Length: 4, Data: 0
+```
+
 ---
 
 ```json

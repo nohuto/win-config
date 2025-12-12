@@ -257,6 +257,7 @@ Enables write cache & turns off write cache buffer flushing on all connected dis
 # Disable Bluetooth
 
 | Service/Driver | Description |
+| --- | --- |
 | `BluetoothUserService_*` | The Bluetooth user service supports proper functionality of Bluetooth features relevant to each user session. |
 | `BTAGService` | Service supporting the audio gateway role of the Bluetooth Handsfree Profile. |
 | `BthA2dp` | Microsoft Bluetooth A2dp driver |
