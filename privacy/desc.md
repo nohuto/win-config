@@ -19,7 +19,7 @@ Miscellaneous notes:
 }
 ```
 
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/Winows-NT.txt
+> https://github.com/nohuto/win-registry/blob/main/records/Winows-NT.txt
 
 
 ```json
@@ -3029,7 +3029,7 @@ CrashDumpEnabled REG_DWORD 0x1 and FilterPages REG_DWORD 0x1 = Active memory dum
 
 > https://learn.microsoft.com/en-us/troubleshoot/windows-server/performance/memory-dump-file-options#registry-values-for-startup-and-recovery  
 > https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/automatic-memory-dump  
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/CrashControl.txt  
+> https://github.com/nohuto/win-registry/blob/main/records/CrashControl.txt  
 > [privacy/assets | crashdmp.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/crashdmp.c)  
 > [privacy/assets | crashdmp-SecureDump_PrepareForInit.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/crashdmp-SecureDump_PrepareForInit.c)
 
@@ -3067,7 +3067,7 @@ Miscellaenous notes:
     "SleepStudyDeviceAccountingLevel"; = 4; // PopSleepStudyDeviceAccountingLevel 
     "SleepStudyDisabled"; = 0; // PopSleepStudyDisabled 
 ```
-> https://github.com/nohuto/wpr-reg-records#power-values
+> https://github.com/nohuto/win-registry#power-values
 ```
 \Registry\Machine\SYSTEM\ControlSet001\Enum\ACPI\AMDI0010\3\Device Parameters\Wdf : SleepstudyState
 \Registry\Machine\SYSTEM\ControlSet001\Enum\ACPI\AMDI0030\0\Device Parameters\Wdf : SleepstudyState
@@ -3139,7 +3139,7 @@ __int64 IsDesktopHeapLoggingOn(void)
 
 > [privacy/assets | rsop-IsDesktopHeapLoggingOn.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/rsop-IsDesktopHeapLoggingOn.c)  
 > https://answers.microsoft.com/en-us/windows/forum/all/question-about-some-dwm-registry-settings/341cac5c-d85a-43e5-89d3-d9734f84da4e  
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/Winows-NT.txt
+> https://github.com/nohuto/win-registry/blob/main/records/Winows-NT.txt
 
 # Disable Message Sync
 

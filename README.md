@@ -6,6 +6,9 @@ It's based on the GitHub repository and parses it's information out of it. All [
 
 ## Tool
 
+See details about the tool here:
+> https://nohuto.github.io/product.html
+
 ## Licencing
 
 This project is AGPL-3.0. You may copy, modify, and redistribute only if you comply with the AGPL: keep copyright and license notices, state your changes, provide the complete corresponding source (including build/installation info for user products), and license your derivative under AGPL-3.0. Any copying or redistribution outside these terms requires explicit permission. Closed-source redistribution of this code is not permitted.
@@ -25,8 +28,7 @@ This project is AGPL-3.0. You may copy, modify, and redistribute only if you com
 ## My Projects
 
 You can find all of my other projects here:
-> https://nohuto.github.io/projects.html  
-> https://github.com/nohuto
+> https://nohuto.github.io/projects.html
 
 More miscellaneous uploads:
 > https://discord.gg/E2ybG4j9jU

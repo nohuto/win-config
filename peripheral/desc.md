@@ -103,7 +103,7 @@ The difference is minor (picture), preferable just disable them. Open `mmsys.cpl
 
 Spatial audio positions sounds in 3D space around you, surround sound mainly anchors audio to speaker directions.
 
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/Audio.txt  
+> https://github.com/nohuto/win-registry/blob/main/records/Audio.txt  
 > https://www.dolby.com/experience/home-entertainment/articles/what-is-spatial-audio/
 
 ![](https://github.com/nohuto/win-config/blob/main/peripheral/images/spatial.jpeg?raw=true)
@@ -350,7 +350,7 @@ Get-PnpDevice -PresentOnly:$false | ? FriendlyName -eq 'HID-compliant touch scre
 "Tablet mode makes Windows more touch friendly and is helpful on touch capable devices."
 
 > https://support.microsoft.com/en-us/windows/turn-tablet-mode-on-or-off-in-windows-add3fbce-5cb5-bf76-0f9c-8d7b30041f30  
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/Wisp.txt  
+> https://github.com/nohuto/win-registry/blob/main/records/Wisp.txt  
 > [peripheral/assets | touch-IsTouchDisabled.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/touch-IsTouchDisabled.c)
 
 ---
@@ -511,8 +511,8 @@ Default values:
 WakeOnInputDeviceTypes = 6
 UnDimOnInputDeviceTypes = -1  // 0xFFFFFFFF
 ```
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/Input.txt  
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/Enum-USB.txt  
+> https://github.com/nohuto/win-registry/blob/main/records/Input.txt  
+> https://github.com/nohuto/win-registry/blob/main/records/Enum-USB.txt  
 > [peripheral/assets | wakedev-WakeOnInputDeviceTypes.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/wakedev-WakeOnInputDeviceTypes.c)
 
 ---

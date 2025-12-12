@@ -73,11 +73,11 @@ This option serves as a general values overview for the `Power` key (similar to 
 
 No values are applied that apply to other options in this section.
 
-> https://github.com/nohuto/wpr-reg-records?tab=readme-ov-file#power-values
+> https://github.com/nohuto/win-registry?tab=readme-ov-file#power-values
 
 ---
 
-See [power-symbols](https://github.com/nohuto/wpr-reg-records/blob/main/assets/power-symbols.txt) for reference. The list doesn't include all existing values yet, but the listed ones do exist. [PopOpenPowerKey-all](https://github.com/nohuto/wpr-reg-records/blob/main/assets/PopOpenPowerKey-all.c) shows the pseudocode for several `Session Manager\\Power` values.
+See [power-symbols](https://github.com/nohuto/win-registry/blob/main/assets/power-symbols.txt) for reference. The list doesn't include all existing values yet, but the listed ones do exist. [PopOpenPowerKey-all](https://github.com/nohuto/win-registry/blob/main/assets/PopOpenPowerKey-all.c) shows the pseudocode for several `Session Manager\\Power` values.
 
 Everything listed below is based on personal research. Mistakes may exist, but I don't think I've made any.
 
@@ -249,8 +249,8 @@ I added some comments to `QueryUsbflagsValuesForDevice.c`, since it renamed the 
 
 > https://github.com/nohuto/win-config/blob/main/power/desc.md#disable-usb-battery-saver  
 > https://github.com/nohuto/win-config/blob/main/power/desc.md#usb-flags  
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/pci.txt  
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/Enum-USB.txt  
+> https://github.com/nohuto/win-registry/blob/main/records/pci.txt  
+> https://github.com/nohuto/win-registry/blob/main/records/Enum-USB.txt  
 > [power/assets | devicepower-HidpFdoConfigureIdleSettings.c](https://github.com/nohuto/win-config/blob/main/power/assets/devicepower-HidpFdoConfigureIdleSettings.c)  
 > [power/assets | devicepower-UsbhGetD3Policy.c](https://github.com/nohuto/win-config/blob/main/power/assets/devicepower-UsbhGetD3Policy.c)  
 > [power/assets | devicepower-QueryUsbflagsValuesForDevice.c](https://github.com/nohuto/win-config/blob/main/power/assets/devicepower-QueryUsbflagsValuesForDevice.c)
@@ -367,9 +367,9 @@ During a full shutdown and boot (S5), the entire user session is torn down and r
 RegSetValue	HKLM\System\CurrentControlSet\Control\Power\HibernateEnabled	Type: REG_DWORD, Length: 4, Data: 0
 ```
 
-> https://github.com/nohuto/wpr-reg-records#power-values  
+> https://github.com/nohuto/win-registry#power-values  
 > https://learn.microsoft.com/en-us/troubleshoot/windows-client/setup-upgrade-and-drivers/disable-and-re-enable-hibernation  
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/Power.txt
+> https://github.com/nohuto/win-registry/blob/main/records/Power.txt
 
 
 # Reduced HiberFile
@@ -428,7 +428,7 @@ To verify or change the type of hibernation file used, run the *powercfg.exe* ut
 | `powercfg /h /type reduced`        | **Change the hibernation file type to reduced.** If the command returns "the parameter is incorrect," see the following example.      |
 | `powercfg /h /size 0`<br> `powercfg /h /type reduced`  | **Retry changing the hibernation file type to reduced.** If the hibernation file is set to a custom size greater than 40%, you must first set the size of the file to zero. Then retry the reduced configuration.     |
 
-> https://github.com/nohuto/wpr-reg-records#power-values  
+> https://github.com/nohuto/win-registry#power-values  
 > https://learn.microsoft.com/en-us/windows/win32/power/system-power-states
 
 # Remove Power Options
@@ -522,7 +522,7 @@ In Windows, fast startup is the default transition when a system shutdown is req
 
 All three values exist as shown below. `PopReadHiberbootGroupPolicy` (`\\Registry\\Machine\\Software\\Policies\\Microsoft\\Windows\\System`) overrides `PopReadHiberbootPolicy` (`Control\\Session Manager\\Power`).
 
-> https://github.com/nohuto/wpr-reg-records#power-values
+> https://github.com/nohuto/win-registry#power-values
 
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power";
@@ -538,7 +538,7 @@ All three values exist as shown below. `PopReadHiberbootGroupPolicy` (`\\Registr
     "HiberIoCpuTime"; = 0; // REG_DWORD, milliseconds, range: 0-0xFFFFFFFF
     "ResumeCompleteTimestamp"; = 0; // REG_QWORD, range: 0-0xFFFFFFFFFFFFFFFF
 ```
-> https://github.com/nohuto/wpr-reg-records?tab=readme-ov-file#power-values  
+> https://github.com/nohuto/win-registry?tab=readme-ov-file#power-values  
 > https://github.com/marcosd4h/memhunter/blob/f68bca7efe31f49c0dc9ad988fb17bec443a1ca7/libs/boost/interprocess/detail/win32_api.hpp#L2373
 ```c
 // PopOpenPowerKey
@@ -597,7 +597,7 @@ You can see processes, which use power throttling by enabling the column (`Detai
     "PowerThrottlingOff"; = 0; // PpmPerfQosGroupPolicyDisable 
 ```
 
-> https://github.com/nohuto/wpr-reg-records#power-values
+> https://github.com/nohuto/win-registry#power-values
 
 ![](https://github.com/nohuto/win-config/blob/main/power/images/powerth.png?raw=true)
 
@@ -619,7 +619,7 @@ Not needed, if you disable energy estimation:
                                     // If following HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\PolicyManager\default\knobs\Power/Controls/EnergyEstimationEnabled, it should have a range of 0-4294967295
 ```
 
-> https://github.com/nohuto/wpr-reg-records#power-values  
+> https://github.com/nohuto/win-registry#power-values  
 > [power/assets | energyesti-PtInitializeTelemetry.c](https://github.com/nohuto/win-config/blob/main/power/assets/energyesti-PtInitializeTelemetry.c)
 
 ![](https://github.com/nohuto/win-config/blob/main/power/images/energyesti.png?raw=true)
@@ -714,7 +714,7 @@ Miscellaneous notes:
 }
 ```
 
-> https://github.com/nohuto/wpr-reg-records#wpr--procmon-registry-activity-records  
+> https://github.com/nohuto/win-registry#wpr--procmon-registry-activity-records  
 
 Needs more research (`ClassGetServiceParameter.c` - default `0`?):
 ```
@@ -737,7 +737,7 @@ Storport Idle Power Management (IPM) isn't enabled by default. It can be enabled
 > https://learn.microsoft.com/en-us/windows-hardware/drivers/storage/registry-entries-for-storport-miniport-drivers  
 > https://github.com/nohuto/windows-driver-docs/blob/staging/windows-driver-docs-pr/network/standardized-inf-keywords-for-power-management.md  
 > https://learn.microsoft.com/en-us/windows-hardware/drivers/storage/ipm-configuration-and-usage  
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/pci.txt  
+> https://github.com/nohuto/win-registry/blob/main/records/pci.txt  
 > [power/assets | storport.c](https://github.com/nohuto/win-config/blob/main/power/assets/storport.c)
 
 # NoLazyMode
@@ -802,7 +802,7 @@ Using the highest clamp as shown above will end up with a BSoD (same goes for `0
     "CoalescingTimerInterval"; = 1500; // PopCoalescingTimerInterval (0x000005DC) - Units: seconds (multiplies value by -10,000,000, one second in 100 ns units, so the default corresponds to a 25min cadence)
     "DeepIoCoalescingEnabled"; = 0; // PopDeepIoCoalescingEnabled 
 ```
-> https://github.com/nohuto/wpr-reg-records?tab=readme-ov-file#power-values
+> https://github.com/nohuto/win-registry?tab=readme-ov-file#power-values
 
 ```c
 void InitTimerPowerSaving(void)
@@ -817,7 +817,7 @@ void InitTimerPowerSaving(void)
 The `CoalescingTimerInterval` value exist (takes a default of `1500` dec, `DeepIoCoalescingEnabled` one is set to `0` by default - both are located in `ntoskrnl.exe`), but doesn't get read on 24H2, the `RITdemonTimerPowerSave...` & `TimerCoalescing` ones get read.
 
 > [power/assets | coalesc-InitTimerCoalescing.c](https://github.com/nohuto/win-config/blob/main/power/assets/coalesc-InitTimerCoalescing.c)  
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/Winows-NT.txt
+> https://github.com/nohuto/win-registry/blob/main/records/Winows-NT.txt
 
 ![](https://github.com/nohuto/win-config/blob/main/power/images/coalesc.png?raw=true)
 
@@ -885,7 +885,7 @@ UsbflagsDeviceKey = (*(__int64 (__fastcall **)(PWDF_DRIVER_GLOBALS, __int64, con
                       0LL);
 ```
 > [power/assets | devicepower-QueryUsbflagsValuesForDevice.c](https://github.com/nohuto/win-config/blob/main/power/assets/devicepower-QueryUsbflagsValuesForDevice.c)  
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/USB-Flags.txt
+> https://github.com/nohuto/win-registry/blob/main/records/USB-Flags.txt
 
 | Power state | ACPI state | Description | 
 |-------------|------------|-------------|
@@ -949,7 +949,7 @@ else if (v6 == 4 && ResultLength >= 4)  // REG_DWORD
 }
 ```
 
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/Classpnp.txt  
+> https://github.com/nohuto/win-registry/blob/main/records/Classpnp.txt  
 > [power/assets | nvmeperf-ClassUpdateDynamicRegistrySettings.c](https://github.com/nohuto/win-config/blob/main/power/assets/nvmeperf-ClassUpdateDynamicRegistrySettings.c)
 
 # Disable Storage Idle States
@@ -960,7 +960,7 @@ If `IdleStatesNumber` is set, the other values are ignored? Let me know if you h
 
 > The values are located in the `EnergyEstimation` (guesses how much power is used over time), so it's probably related to something else. I'll leave it for documentation reasons (and future extended declaration).
 
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/Power.txt  
+> https://github.com/nohuto/win-registry/blob/main/records/Power.txt  
 > [power/assets | storageidle-PmPowerContextInitialization.c](https://github.com/nohuto/win-config/blob/main/power/assets/nvmeperf-ClassUpdateDynamicRegistrySettings.c)
 
 # Disable PM in Standby Mode
@@ -978,7 +978,7 @@ This policy setting specifies that power management is disabled when the machine
     "EnabledActions"; = 0; // PopAggressiveStandbyActionsRegValue 
     "EnableDsNetRefresh"; = 0; // PopEnableDsNetRefresh 
 ```
-> https://github.com/nohuto/wpr-reg-records?tab=readme-ov-file#power-values
+> https://github.com/nohuto/win-registry?tab=readme-ov-file#power-values
 
 | Power state | ACPI state | Description | 
 |-------------|------------|-------------|
@@ -1029,7 +1029,7 @@ This policy setting specifies that power management is disabled when the machine
 
 You can get a lot of information about data ranges and more from `.inf` files, see examples below.
 
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/NIC-Intel.txt  
+> https://github.com/nohuto/win-registry/blob/main/records/NIC-Intel.txt  
 > https://github.com/nohuto/windows-driver-docs/blob/staging/windows-driver-docs-pr/network/standardized-inf-keywords-for-power-management.md  
 > https://github.com/nohuto/windows-driver-docs/blob/staging/windows-driver-docs-pr/network/standardized-inf-keywords-for-ndis-selective-suspend.md
 
@@ -1075,7 +1075,7 @@ Everything listed below is based on personal research. Mistakes may exist, but I
 
 For more detail on each value, see GitHub links above.
 
-> https://github.com/nohuto/wpr-reg-records#intel-nic-values
+> https://github.com/nohuto/win-registry#intel-nic-values
 
 ```inf
 HKR,Ndi\Params\*DeviceSleepOnDisconnect,ParamDesc,    ,%DeviceSleepOnDisconnectDesc%
@@ -1204,7 +1204,7 @@ There's no official documentation on this value, but it probably controls whethe
     "AllowAudioToEnableExecutionRequiredPowerRequests"; = 1; // PopPowerRequestActiveAudioEnablesExecutionRequired 
 ```
 
-> https://github.com/nohuto/wpr-reg-records#power-values
+> https://github.com/nohuto/win-registry#power-values
 
 ```c
 bool PopPowerRequestEvaluateExecutionRequiredStatus()

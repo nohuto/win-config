@@ -54,11 +54,11 @@ Since many people don't yet know which values exist and what default value they 
 > https://github.com/nohuto/windows-books/releases  
 > https://github.com/hfiref0x/WinObjEx64  
 > https://github.com/nohuto/sym-mem-dump  
-> https://github.com/nohuto/wpr-reg-records#kernel-values  
+> https://github.com/nohuto/win-registry#kernel-values  
 
 ---
 
-See [session-manager-symbols](https://github.com/nohuto/wpr-reg-records/blob/main/session-manager-values.txt) for reference.
+See [session-manager-symbols](https://github.com/nohuto/win-registry/blob/main/session-manager-values.txt) for reference.
 
 Everything listed below is based on personal research. Mistakes may exist, but I don't think I've made any.
 
@@ -175,7 +175,7 @@ Everything listed below is based on personal research. Mistakes may exist, but I
     "RNGAuxiliarySeed"; = ; // ExpRNGAuxiliarySeed = 742978275?
 ```
 
-> https://github.com/nohuto/wpr-reg-records?tab=readme-ov-file#session-manager-values
+> https://github.com/nohuto/win-registry?tab=readme-ov-file#session-manager-values
 
 ![](https://github.com/nohuto/win-config/blob/main/system/images/kernel0.png?raw=true)
 ![](https://github.com/nohuto/win-config/blob/main/system/images/kernel1.png?raw=true)
@@ -185,7 +185,7 @@ Everything listed below is based on personal research. Mistakes may exist, but I
 
 `dxgkrnl.sys` is Windows DirectX/WDDM graphics kernel driver that mediates between apps and the GPU to schedule work, manage graphics memory, present frames, and handle TDR hang recovery.
 
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/Graphics-Drivers.txt
+> https://github.com/nohuto/win-registry/blob/main/records/Graphics-Drivers.txt
 
 Many applied values are defaults, some not. See documentation below for details. The applied data is sometimes pure speculation.
 
@@ -193,8 +193,8 @@ Many applied values are defaults, some not. See documentation below for details.
 
 These are default values I found in `dxgkrnl.sys`, see link below for pseudocode snippets I used / link above for all values that get read on boot.
 
-> https://github.com/nohuto/wpr-reg-records/blob/main/dxgkrnl.c  
-> https://github.com/nohuto/wpr-reg-records#kernel--dxg-kernel-values
+> https://github.com/nohuto/win-registry/blob/main/dxgkrnl.c  
+> https://github.com/nohuto/win-registry#kernel--dxg-kernel-values
 
 Everything listed below is based on personal research. Mistakes may exist, but I don't think I've made any.
 
@@ -443,7 +443,7 @@ This option currently includes some speculations and default values. I haven't h
 
 ---
 
-See [dwm.c](https://github.com/nohuto/wpr-reg-records/blob/main/assets/dwm.c) for used snippets (taken from `dwmcore.dll`, `win32full.sys`, `dwm.exe`, `dwminit.dll`, `uDWM.dll`).
+See [dwm.c](https://github.com/nohuto/win-registry/blob/main/assets/dwm.c) for used snippets (taken from `dwmcore.dll`, `win32full.sys`, `dwm.exe`, `dwminit.dll`, `uDWM.dll`).
 
 Everything listed below is based on personal research. Mistakes may exist, but I don't think I've made any.
 
@@ -555,7 +555,7 @@ Everything listed below is based on personal research. Mistakes may exist, but I
     "RefreshRatePercentage"; = 10;
 ```
 
-> https://github.com/nohuto/wpr-reg-records#dwm-values
+> https://github.com/nohuto/win-registry#dwm-values
 
 # Win32PrioritySeparation
 
@@ -643,7 +643,7 @@ CiSystemResponsiveness = 10 * (value / 10);
 > 100  -> 20   (fallback)
 ```
 
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/MultiMedia.txt  
+> https://github.com/nohuto/win-registry/blob/main/records/MultiMedia.txt  
 > [system/assets | sysresp-CiConfigInitialize.c](https://github.com/nohuto/win-config/blob/main/system/assets/sysresp-CiConfigInitialize.c)
 
 # Disable Scheduled Tasks
@@ -1148,7 +1148,7 @@ Forces hung apps and services to terminate faster.
 
 More timeout related values located in `HKCU\Control Panel\Desktop`: `CriticalAppShutdownCleanupTimeout`, `CriticalAppShutdownTimeout`, `QuickResolverTimeout`, `ActiveWndTrkTimeout`, `CaretTimeout`, `ForegroundLockTimeout`, `LowLevelHooksTimeout`. I may add information about some of them soon.
 
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/ControlPanel-Desktop.txt
+> https://github.com/nohuto/win-registry/blob/main/records/ControlPanel-Desktop.txt
 
 # Disable FTH
 
@@ -1240,7 +1240,7 @@ Default value is `85` -> `85%` (gets used if value isn't present), clamp range i
 
 Disables the `Low Disk Space` notification.
 
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/CV-Explorer.txt
+> https://github.com/nohuto/win-registry/blob/main/records/CV-Explorer.txt
 
 ![](https://github.com/nohuto/win-config/blob/main/system/images/lowdiskspace.jpg?raw=true)
 
@@ -1265,7 +1265,7 @@ Allows modern apps to use a more efficient memory allocator.
                     // if the value exists but is stored as REG_NONE (type==0):
                     //    RtlpLowFragHeapGlobalFlags |= 0x8;   // global disable/override
 ```
-> https://github.com/nohuto/wpr-reg-records#session-manager-values  
+> https://github.com/nohuto/win-registry#session-manager-values  
 > [system/assets | segment-RtlpHpApplySegmentHeapConfigurations.c](https://github.com/nohuto/win-config/blob/main/system/assets/segment-RtlpHpApplySegmentHeapConfigurations.c)
 
 For a specific executeable:
@@ -1617,7 +1617,7 @@ Symlink: `C:\Users\YourName\Desktop\logo.png`
 > https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/fsutil-8dot3name  
 > https://github.com/MicrosoftDocs/windows-driver-docs/blob/5e03e46194f2a977da34fdf453f2703262370a23/windows-driver-docs-pr/ifs/offloaded-data-transfers.md?plain=1#L104  
 > https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry  
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/FileSystem.txt
+> https://github.com/nohuto/win-registry/blob/main/records/FileSystem.txt
 
 > [system/assets | filesystem-NtfsUpdateDynamicRegistrySettings.c](https://github.com/nohuto/win-config/blob/main/system/assets/filesystem-NtfsUpdateDynamicRegistrySettings.c)
 

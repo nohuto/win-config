@@ -721,7 +721,7 @@ Since `EnableNVMeInterface` is included in the function, I'll add it here. Defau
 
 DisableNativeNVMeStack db 0 // default
 ```
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/StorPort.txt
+> https://github.com/nohuto/win-registry/blob/main/records/StorPort.txt
 
 # Disable System Restore
 
@@ -1158,7 +1158,7 @@ if (dword_1C015B874 != v15) {
     WdLogGlobalForLineNumber = 2387;
 }
 ```
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/Graphics-Drivers.txt  
+> https://github.com/nohuto/win-registry/blob/main/records/Graphics-Drivers.txt  
 > [security/assets | TdrInit.c](https://github.com/nohuto/win-config/blob/main/security/assets/TdrInit.c)
 
 # Password Age

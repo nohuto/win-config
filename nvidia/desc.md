@@ -127,7 +127,7 @@ sin(0) = 0  = 0x00000000 hex
 > https://github.com/pbatard/nvBrightness/blob/8f4a183532f1048375608fc70ad03c38652fc140/src/nvDisplay.cpp#L293  
 > https://github.com/nohuto/win-config/blob/main/nvidia/assets/color-displayDB.cpp  
 > https://github.com/nohuto/win-config/blob/main/nvidia/assets/color-DesktopColors.cpp  
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/nvlddmkm.txt
+> https://github.com/nohuto/win-registry/blob/main/records/nvlddmkm.txt
 
 ```powershell
 \Registry\Machine\SYSTEM\ControlSet001\Services\nvlddmkm\State\DisplayDatabase\ADAPTER_10DE_2482_00000007_00000000 : StereoPreferredTargetIdRegistryKey
@@ -1533,7 +1533,7 @@ Rather leave this option untouched, preemption isn't disabled by default.
 > https://therealmjp.github.io/posts/breaking-down-barriers-part-4-gpu-preemption/  
 > https://learn.microsoft.com/en-us/windows-hardware/drivers/display/gpu-preemption  
 > https://en-academic.com/dic.nsf/enwiki/1050761  
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/nvlddmkm.txt  
+> https://github.com/nohuto/win-registry/blob/main/records/nvlddmkm.txt  
 > [nvidia/assets | preemption-dxgmms1.c](https://github.com/nohuto/win-config/blob/main/nvidia/assets/preemption-dxgmms1.c)
 
 # Enable Developer Settings
@@ -1616,4 +1616,4 @@ if (!(unsigned int)GetPersistedRegistryValueW(
 > [nvidia/assets | mpo-bDwmOverlayTestMode.c](https://github.com/nohuto/win-config/blob/main/nvidia/assets/mpo-bDwmOverlayTestMode.c)  
 > https://wiki.special-k.info/en/SwapChain  
 > https://wiki.special-k.info/Presentation_Model  
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/Windows-Dwm.txt
+> https://github.com/nohuto/win-registry/blob/main/records/Windows-Dwm.txt

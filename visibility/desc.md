@@ -334,7 +334,7 @@ CMachine::RegQueryDWORD(
 ```
 `AnimationAfterUserOOBE` & `SkipNextFirstLogonAnimation` (`CurrentVersion\Winlogon`) also exist.
 
-> https://github.com/nohuto/wpr-reg-records/blob/main/records/ControlPanel-Desktop.txt  
+> https://github.com/nohuto/win-registry/blob/main/records/ControlPanel-Desktop.txt  
 > [visibility/assets | animation-WinMain.c](https://github.com/nohuto/win-config/blob/main/visibility/assets/animation-WinMain.c)
 
 ![](https://github.com/nohuto/win-config/blob/main/visibility/images/animation.png?raw=true)
