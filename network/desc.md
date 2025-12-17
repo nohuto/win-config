@@ -1,17 +1,7 @@
 # Encrypted DNS
 
-The option currently uses the encrypted `Mullvad` - `extended.dns.mullvad.net` (DoH), which includes blocklists against ads, tackers and malware by default. If you want the most private setup, run your self hosted DNS server. This option will only work on W11.
-
-| Hostname                 | IPv4        | IPv6         | DoH port | DoT port | Ads | Trackers | Malware | Adult | Gambling | Social media |
-| ------------------------ | ----------- | ------------ | -------: | -------: | :-: | :------: | :-----: | :---: | :------: | :----------: |
-| dns.mullvad.net          | 194.242.2.2 | 2a07:e340::2 |      443 |      853 |     |          |         |       |          |              |
-| adblock.dns.mullvad.net  | 194.242.2.3 | 2a07:e340::3 |      443 |      853 |  x  |     x    |         |       |          |              |
-| base.dns.mullvad.net     | 194.242.2.4 | 2a07:e340::4 |      443 |      853 |  x  |     x    |    x    |       |          |              |
-| extended.dns.mullvad.net | 194.242.2.5 | 2a07:e340::5 |      443 |      853 |  x  |     x    |    x    |       |          |              |
-| family.dns.mullvad.net   | 194.242.2.6 | 2a07:e340::6 |      443 |      853 |  x  |     x    |    x    |   x   |     x    |              |
-| all.dns.mullvad.net      | 194.242.2.9 | 2a07:e340::9 |      443 |      853 |  x  |     x    |    x    |   x   |     x    |       x      |
-
-> https://github.com/mullvad/dns-blocklists
+Unencrypted = DNS queries and responses are sent in plaintext.
+DoH = DNS queries and responses are encrypted, yet they are sent via HTTP or HTTP/2 protocols instead of directly via UDP. DoH ensures that attackers cannot spoof or modify DNS traffic. From a network administrator's perspective, DoH traffic looks like any other HTTPS traffic.
 
 The DNS server get's applied via registry (tracked while applying it via the settings):
 ```csv
@@ -22,16 +12,6 @@ HKLM\System\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\{Net
 `NetID` is saved in your network adapter GUID key (`{4d36e972-e325-11ce-bfc1-08002be10318}`) named `NetCfgInstanceId`.
 
 ---
-
-| DNS Provider | Protocols | Logging / Privacy Policy | [ECS](https://www.privacyguides.org/en/advanced/dns-overview/#what-is-edns-client-subnet-ecs) | Filtering | Signed Apple Profile |
-|---|---|---|---|---|---|
-| [**AdGuard Public DNS**](https://adguard-dns.io/en/public-dns.html) | Cleartext <br>DoH/3 <br>DoT <br>DoQ <br>DNSCrypt | Anonymized | Anonymized | Based on server choice. Filter list being used can be found here. [*](https://github.com/AdguardTeam/AdGuardSDNSFilter) | Yes [*](https://adguard-dns.io/en/blog/encrypted-dns-ios-14.html) |
-| [**Cloudflare**](https://developers.cloudflare.com/1.1.1.1/setup) | Cleartext <br>DoH/3 <br>DoT | Anonymized | No | Based on server choice. | No [*](https://community.cloudflare.com/t/requesting-1-1-1-1-signed-profiles-for-apple/571846) |
-| [**Control D Free DNS**](https://controld.com/free-dns) | Cleartext <br>DoH/3 <br>DoT <br>DoQ | No | No | Based on server choice. | Yes <br>[*IOS](https://docs.controld.com/docs/ios-platform) <br>[*MacOS](https://docs.controld.com/docs/macos-platform#manual-setup-profile) |
-| [**Mullvad**](https://mullvad.net/en/help/dns-over-https-and-dns-over-tls) | DoH <br>DoT | No | No | Based on server choice. Filter list being used can be found here. [*](https://github.com/mullvad/dns-adblock) | Yes [*](https://github.com/mullvad/encrypted-dns-profiles) |
-| [**Quad9**](https://quad9.net) | Cleartext <br>DoH <br>DoT <br>DNSCrypt | Anonymized | Optional | Based on server choice. Malware blocking is included by default. | Yes <br>[*IOS](https://docs.quad9.net/Setup_Guides/iOS/iOS_14_and_later_(Encrypted) <br>[*MacOS](https://docs.quad9.net/Setup_Guides/MacOS/Big_Sur_and_later_(Encrypted) |
-
-> https://www.privacyguides.org/en/dns/  
 
 | Protocol  | Explanation |
 | --------- | ---- |
