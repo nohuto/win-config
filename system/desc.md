@@ -735,7 +735,7 @@ The main option doesn't apply all suboptions. For further custumization use [ser
 The suboptions probably overlap the documentation. If so, you can open the markdown file on my GitHub instead:
 > https://github.com/nohuto/win-config/blob/main/system/desc.md#disable-servicesdrivers
 
-Note: Disabling `AppXSvc` (`Microsoft Store Services` option) breaks CmdPal and other store applications, disabling `ShellHWDetection` (`Autplay` option) causes CmdPal to not start directly after boot for whatever reason.
+Note: Disabling `AppXSvc` (`Microsoft Store Services` option) breaks CmdPal and other store applications, disabling `ShellHWDetection` (`Autoplay` option) causes CmdPal to not start directly after boot for whatever reason.
 
 See [services](https://github.com/nohuto/win-config/blob/main/system/assets/services.txt)/[drivers](https://github.com/nohuto/win-config/blob/main/system/assets/drivers.txt) for reference, these files were generated on a stock `W11 IoT Enterprise LTSC` installation via [serviwin](https://www.nirsoft.net/utils/serviwin.html).
 
@@ -743,9 +743,10 @@ See [services](https://github.com/nohuto/win-config/blob/main/system/assets/serv
 | --- | --- | --- |
 | Activity Moderation | `bam` | Controls activity of background applications |
 |  | `dam` | Controls activity of desktop applications |
-| Autplay | `ShellHWDetection` | Provides notifications for AutoPlay hardware events. |
+| Autoplay | `ShellHWDetection` | Provides notifications for AutoPlay hardware events. |
 | Beep | `Beep` | - |
 | Biometrics | `WbioSrvc` | The Windows biometric service gives client applications the ability to capture, compare, manipulate, and store biometric data without gaining direct access to any biometric hardware or samples. The service is hosted in a privileged SVCHOST process. |
+| Bitlocker | `fvevol` | BitLocker Drive Encryption Filter Driver |
 | Bluetooth | `BTAGService` | Service supporting the audio gateway role of the Bluetooth Handsfree Profile. |
 |  | `BluetoothUserService_*` | The Bluetooth user service supports proper functionality of Bluetooth features relevant to each user session. |
 |  | `BthA2dp` | Microsoft Bluetooth A2dp driver |
@@ -767,6 +768,7 @@ See [services](https://github.com/nohuto/win-config/blob/main/system/assets/serv
 |  | `FrameServerMonitor` | Monitors the health and state for the Windows Camera Frame Server service. |
 | CDROM | `cdrom` | CD-ROM Driver |
 | Clipboard | `cbdhsvc` | This user service is used for Clipboard scenarios |
+| Cloud Filter | `CldFlt` | Cloud Files Mini Filter Driver |
 | Device Setup Manager | `DsmSvc` | Enables the detection, download and installation of device-related software. If this service is disabled, devices may be configured with outdated software, and may not work correctly. |
 | DHCP | `Dhcp` | Registers and updates IP addresses and DNS records for this computer. If this service is stopped, this computer will not receive dynamic IP addresses and DNS updates. If this service is disabled, any services that explicitly depend on it will fail to start. |
 | Diagnostics | `DusmSvc` | Network data usage, data limit, restrict background data, metered networks. |
@@ -776,6 +778,8 @@ See [services](https://github.com/nohuto/win-config/blob/main/system/assets/serv
 |  | `WdiSystemHost` | The Diagnostic System Host is used by the Diagnostic Policy Service to host diagnostics that need to run in a Local System context. If this service is stopped, any diagnostics that depend on it will no longer function. |
 |  | `TroubleshootingSvc` | Enables automatic mitigation for known problems by applying recommended troubleshooting. If stopped, your device will not get recommended troubleshooting for problems on your device. |
 |  | `Ndu` | This service provides network data usage monitoring functionality |
+| Domain/RPC | `Netlogon` | Maintains a secure channel between this computer and the domain controller for authenticating users and services. If this service is stopped, the computer may not authenticate users and services and the domain controller cannot register DNS records. If this service is disabled, any services that explicitly depend on it will fail to start. |
+|  | `MsRPC` | - |
 | Edge | `MicrosoftEdgeElevationService` | - |
 |  | `edgeupdate` | - |
 |  | `edgeupdatem` | - |
@@ -805,6 +809,7 @@ See [services](https://github.com/nohuto/win-config/blob/main/system/assets/serv
 | IPv6 | `Tcpip6` | @todo.dll,-100;Microsoft IPv6 Protocol Driver |
 |  | `IpxlatCfgSvc` | Configures and enables translation from v4 to v6 and vice versa |
 | IP Helper | `iphlpsvc` | Provides tunnel connectivity using IPv6 transition technologies (6to4, ISATAP, Port Proxy, and Teredo), and IP-HTTPS. If this service is stopped, the computer will not have the enhanced connectivity benefits that these technologies offer. |
+| Kernel Debug Network | `kdnic` | Microsoft Kernel Debugger Network Miniport |
 | Location | `lfsvc` | This service monitors the current location of the system and manages geofences (a geographical location with associated events). If you turn off this service, applications will be unable to use or receive notifications for geolocation or geofences. |
 | Maps Manager | `MapsBroker` | Windows service for application access to downloaded maps. This service is started on-demand by application accessing downloaded maps. Disabling this service will prevent apps from accessing maps. |
 | Network Discovery | `fdPHost` | The FDPHOST service hosts the Function Discovery (FD) network discovery providers. These FD providers supply network discovery services for the Simple Services Discovery Protocol (SSDP) and Web Services Discovery (WS-D) protocol. Stopping or disabling the FDPHOST service will disable network discovery for these protocols when using FD. When this service is unavailable, network services using FD and relying on these discovery protocols will be unable to find network devices or resources. |
@@ -863,13 +868,30 @@ See [services](https://github.com/nohuto/win-config/blob/main/system/assets/serv
 | Time | `W32Time` | Maintains date and time synchronization on all clients and servers in the network. If this service is stopped, date and time synchronization will be unavailable. If this service is disabled, any services that explicitly depend on it will fail to start. |
 |  | `autotimesvc` | This service sets time based on NITZ messages from a Mobile Network |
 |  | `tzautoupdate` | Automatically sets the system time zone. |
+| Trusted Runtime | `WindowsTrustedRT` | Windows Trusted Runtime Interface Driver |
+|  | `WindowsTrustedRTProxy` | Windows Trusted Runtime Service Proxy Driver |
+|  | `PEAUTH` | Protected Environment Authentication and Authorization Export Driver |
 | UAC | `luafv` | Virtualizes file write failures to per-user locations. |
 | User Data & Sync Platform | `UnistoreSvc` | Handles storage of structured user data, including contact info, calendars, messages, and other content. If you stop or disable this service, apps that use this data might not work correctly. |
 |  | `UserDataSvc` | Provides apps access to structured user data, including contact info, calendars, messages, and other content. If you stop or disable this service, apps that use this data might not work correctly. |
+| Virtual Bus | `CompositeBus` | Multi-Transport Composite Bus Enumerator |
+|  | `umbus` | User-Mode Bus Enumerator |
+|  | `vdrvroot` | Virtual Drive Root Enumerator |
+|  | `NdisVirtualBus` | Microsoft Virtual Network Adapter Enumerator |
 | WER | `WerSvc` | Allows errors to be reported when programs stop working or responding and allows existing solutions to be delivered. Also allows logs to be generated for diagnostic and repair services. If this service is stopped, error reporting might not work correctly and results of diagnostic services and repairs might not be displayed. |
 |  | `wercplsupport` | This service provides support for viewing, sending and deletion of system-level problem reports for the Problem Reports control panel. |
 | Wi-Fi | `WlanSvc` | The WLANSVC service provides the logic required to configure, discover, connect to, and disconnect from a wireless local area network (WLAN) as defined by IEEE 802.11 standards. It also contains the logic to turn your computer into a software access point so that other devices or computers can connect to your computer wirelessly using a WLAN adapter that can support this. Stopping or disabling the WLANSVC service will make all WLAN adapters on your computer inaccessible from the Windows networking UI. It is strongly recommended that you have the WLANSVC service running if your computer has a WLAN adapter. |
 |  | `vwififlt` | Virtual WiFi Filter Driver |
+| Windows Defender | `WinDefend` | Helps protect users from malware and other potentially unwanted software |
+|  | `MsSecCore` | Microsoft Security Core Boot Driver |
+|  | `wscsvc` | The WSCSVC (Windows Security Center) service monitors and reports security health settings on the computer.  The health settings include firewall (on/off), antivirus (on/off/out of date), antispyware (on/off/out of date), Windows Update (automatically/manually download and install updates), User Account Control (on/off), and Internet settings (recommended/not recommended). The service provides COM APIs for independent software vendors to register and record the state of their products to the Security Center service.  The Security and Maintenance UI uses the service to provide systray alerts and a graphical view of the security health states in the Security and Maintenance control panel.  Network Access Protection (NAP) uses the service to report the security health states of clients to the NAP Network Policy Server to make network quarantine decisions.  The service also has a public API that allows external consumers to programmatically retrieve the aggregated security health state of the system. |
+|  | `WdFilter` | Microsoft Defender Antivirus On-Access Malware Protection Mini-Filter Driver |
+|  | `WdBoot` | Microsoft Defender Antivirus Boot Driver |
+|  | `WdNisSvc` | Helps guard against intrusion attempts targeting known and newly discovered vulnerabilities in network protocols |
+|  | `WdNisDrv` | Helps guard against intrusion attempts targeting known and newly discovered vulnerabilities in network protocols |
+|  | `SecurityHealthService` | Windows Security Service handles unified device protection and health information |
+|  | `Sense` | Windows Defender Advanced Threat Protection service helps protect against advanced threats by monitoring and reporting security events that happen on the computer. |
+|  | `MDCoreSvc` | Monitors the availability, health, and performance of various security components |
 | Windows Insider | `wisvc` | Provides infrastructure support for the Windows Insider Program. This service must remain enabled for the Windows Insider Program to work. |
 | Windows Search | `WSearch` | Provides content indexing, property caching, and search results for files, e-mail, and other content. |
 | Windows Update | `WaaSMedicSvc` | Repairs damaged Windows Update components so that the computer can keep getting updates. |
@@ -880,6 +902,11 @@ See [services](https://github.com/nohuto/win-config/blob/main/system/assets/serv
 |  | `XblAuthManager` | Provides authentication and authorization services for interacting with Xbox Live. If this service is stopped, some applications may not operate correctly. |
 |  | `XblGameSave` | This service syncs save data for Xbox Live save enabled games. If this service is stopped, game save data will not upload to or download from Xbox Live. |
 |  | `XboxNetApiSvc` | This service supports the Windows.Networking.XboxLive application programming interface. |
+| VBox | `VBoxNetAdp` | VirtualBox NDIS 6.0 Host-Only Network Adapter Driver |
+|  | `VBoxNetLwf` | VirtualBox NDIS 6.0 Lightweight Filter Driver  |
+|  | `VBoxSup` | VirtualBox Support Driver |
+|  | `VBoxUSBMon` | VirtualBox USB Monitor Driver |
+|  | `VBoxSDS` | Used as a COM server for VirtualBox API. VirtualBox Global Interface. |
 | Miscellaneous | `WalletService` | Hosts objects used by clients of the wallet |
 |  | `PenService` | Part of Windows Ink Services Platform Tablet Input Subsystem and is used to implement Microsoft Tablet PC functionality.  |
 |  | `buttonconverter` | Service for Portable Device Control devices |

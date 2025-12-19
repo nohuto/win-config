@@ -3633,7 +3633,6 @@ https://www.bing.com/search?q=how+to+get+help+in+windows+11
 `Get-Help Set-MpPreference -Full` exposes the command:
 ```powershell
 -DisableCoreServiceTelemetry <bool>
-
     Required?                    false
     Position?                    Named
     Accept pipeline input?       false
@@ -3662,7 +3661,6 @@ This flag blocks the Defender Core service from the One Data Service (1DS) telem
 
 ```powershell
 -DisableCoreServiceECSIntegration <bool>
-
     Required?                    false
     Position?                    Named
     Accept pipeline input?       false
