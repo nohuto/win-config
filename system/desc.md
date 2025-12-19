@@ -735,7 +735,7 @@ The main option doesn't apply all suboptions. For further custumization use [ser
 The suboptions probably overlap the documentation. If so, you can open the markdown file on my GitHub instead:
 > https://github.com/nohuto/win-config/blob/main/system/desc.md#disable-servicesdrivers
 
-Note: Disabling `AppXSvc` (`Microsoft Store Services` option) breaks CmdPal and other store applications.
+Note: Disabling `AppXSvc` (`Microsoft Store Services` option) breaks CmdPal and other store applications, disabling `ShellHWDetection` (`Autplay` option) causes CmdPal to not start directly after boot for whatever reason.
 
 See [services](https://github.com/nohuto/win-config/blob/main/system/assets/services.txt)/[drivers](https://github.com/nohuto/win-config/blob/main/system/assets/drivers.txt) for reference, these files were generated on a stock `W11 IoT Enterprise LTSC` installation via [serviwin](https://www.nirsoft.net/utils/serviwin.html).
 

@@ -181,6 +181,8 @@ AutoRun is a mechanism that uses an `autorun.inf` file on removable media (like 
 
 AutoPlay is a feature that detects the type of content on newly inserted media or connected devices and then offers actions such as "Open folder, Play media, Import photos". It can read some information from `autorun.inf`, but it doesn't automatically run programs without user confirmation.
 
+Disabling `ShellHWDetection` causes CmdPal to not start directly after boot for whatever reason, which is why I added a suboption to enable the service.
+
 Example `autorun.inf` content:
 ```inf
 [autorun]
