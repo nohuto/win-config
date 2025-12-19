@@ -746,7 +746,6 @@ See [services](https://github.com/nohuto/win-config/blob/main/system/assets/serv
 | Autoplay | `ShellHWDetection` | Provides notifications for AutoPlay hardware events. |
 | Beep | `Beep` | - |
 | Biometrics | `WbioSrvc` | The Windows biometric service gives client applications the ability to capture, compare, manipulate, and store biometric data without gaining direct access to any biometric hardware or samples. The service is hosted in a privileged SVCHOST process. |
-| Bitlocker | `fvevol` | BitLocker Drive Encryption Filter Driver |
 | Bluetooth | `BTAGService` | Service supporting the audio gateway role of the Bluetooth Handsfree Profile. |
 |  | `BluetoothUserService_*` | The Bluetooth user service supports proper functionality of Bluetooth features relevant to each user session. |
 |  | `BthA2dp` | Microsoft Bluetooth A2dp driver |
@@ -910,6 +909,8 @@ See [services](https://github.com/nohuto/win-config/blob/main/system/assets/serv
 | Miscellaneous | `WalletService` | Hosts objects used by clients of the wallet |
 |  | `PenService` | Part of Windows Ink Services Platform Tablet Input Subsystem and is used to implement Microsoft Tablet PC functionality.  |
 |  | `buttonconverter` | Service for Portable Device Control devices |
+
+Disabling `fvevol` (BitLocker Drive Encryption Filter Driver) = `INACCESSIBLE_BOOT_DEVICE` BSoD.
 
 # Time Zone
 
