@@ -1221,7 +1221,7 @@ This policy setting requires the user to enter Microsoft Windows credentials usi
 },
 ```
 
-# Dynamic Lock
+# Enable Dynamic Lock
 
 Automatically locks your device when you're away. It requires Bluetooth to be active. This option is disabled by default.
 

@@ -64,22 +64,32 @@ def kill_rw_processes() -> None:
         text=True,
     )
 
-def _startup_script_path() -> Path:
+def _startup_target_path(name: str) -> Path:
     local_app = Path(os.environ.get("LOCALAPPDATA", str(Path.home())))
     dest_dir = local_app / "Noverse" / "IMOD"
     dest_dir.mkdir(parents=True, exist_ok=True)
-    return dest_dir / Path(__file__).name
+    return dest_dir / name
+
+
+def _is_frozen() -> bool:
+    return bool(getattr(sys, "frozen", False))
 
 
 def install_startup_task(raw_args: Sequence[str]) -> None:
-    python_path = Path(sys.executable).resolve()
-    script_source = Path(__file__).resolve()
-    dest_script = _startup_script_path()
-    if script_source.resolve() != dest_script.resolve():
-        shutil.copy2(script_source, dest_script)
-
     filtered = [arg for arg in raw_args if arg != "--startup"]
-    cmd_args = [str(python_path), str(dest_script)] + filtered
+    if _is_frozen():
+        exe_path = Path(sys.executable).resolve()
+        dest_target = _startup_target_path(exe_path.name)
+        if exe_path.resolve() != dest_target.resolve():
+            shutil.copy2(exe_path, dest_target)
+        cmd_args = [str(dest_target)] + filtered
+    else:
+        python_path = Path(sys.executable).resolve()
+        script_source = Path(__file__).resolve()
+        dest_script = _startup_target_path(script_source.name)
+        if script_source.resolve() != dest_script.resolve():
+            shutil.copy2(script_source, dest_script)
+        cmd_args = [str(python_path), str(dest_script)] + filtered
     task_cmd = subprocess.list2cmdline(cmd_args)
     task_name = "Noverse-IMOD"
     result = subprocess.run(["schtasks", "/Create", "/SC", "ONLOGON", "/RL", "HIGHEST", "/TN", task_name, "/TR", task_cmd, "/F", ], capture_output=True, text=True)

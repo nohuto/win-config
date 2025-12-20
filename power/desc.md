@@ -1,7 +1,5 @@
 # Disable xHCI IMOD
 
-This option currently works via a external python file, I'll probably implement it into the GUI soon.
-
 | Flag | Description |
 | --- | --- |
 | `--rw-path PATH` | Override the default `%LOCALAPPDATA%\Noverse\IMOD\RwPortable\Win64\Portable\Rw.exe` location |
@@ -11,8 +9,20 @@ This option currently works via a external python file, I'll probably implement 
 | `--interrupter ID` / `-i ID` | Restrict the operation to specific interrupter IDs, repeat the flag for multiple IDs (defaults to all) |
 | `--interval VALUE` | Set a custom IMOD interval (0–0xFFFF, in 250 ns ticks). Use for example `0xC800` (~48 Hz) to see if chaning the interval works |
 | `--no-write` | Only read and print IMOD registers (skip the write for information only) |
-| `--startup` | Copy the py to `%LOCALAPPDATA%\Noverse\IMOD\` and creates a scheduled task that runs the command at each logon |
+| `--startup` | Copy the script or exe to `%LOCALAPPDATA%\Noverse\IMOD\` and creates a scheduled task that runs the command at each logon |
 | `--verbose` | Output all `rw.exe` commands/results |
+
+
+```c
+--all --no-write // information only
+--all --no-write --verbose // rw commands/output
+--all // 0 for all controllers
+--all --interval 0xC800 // testing (~48hz)
+--all --startup // 0 for all controllers, creates scheduled task
+```
+
+You can download the executeable from my repository, I packed it into one package since some may not have python installed on their system.
+> https://github.com/nohuto/win-config/blob/main/power/assets/NV-IMOD.exe
 
 ## xHCI Interrupt Moderation Notes
 
