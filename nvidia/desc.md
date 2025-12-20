@@ -21,6 +21,9 @@ Complete NVIDIA driver preparation tool.
 
 # NVCPL Settings
 
+`Minimal` = Uses the configurations while turning off features like G-SYNC, Antialiasing, Sharpening, Ambient Occlusion, NIS, Ansel etc.  
+`Compatible` = Uses the same configurations but keeps those features enabled/app-controlled
+
 The following includes details of how the panel sets the changes and more, a lot of it is for informational purposes only.
 
 - 3D Settings
