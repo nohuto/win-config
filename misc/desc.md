@@ -250,7 +250,7 @@ winget install SergeyFilippov.RegistryFinder
 
 # 7-Zip Settings
 
-7-Zip minimal context menu settings:
+7-Zip minimal context menu settings (if cascaded context menu enabled):
 
 ![](https://github.com/nohuto/win-config/blob/main/misc/images/7z-folder.png?raw=true)
 ![](https://github.com/nohuto/win-config/blob/main/misc/images/7z-archive.png?raw=true)
