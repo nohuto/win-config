@@ -4,7 +4,7 @@
 # https://discord.gg/E2ybG4j9jU
 
 from __future__ import annotations
-import argparse, json, os, re, shutil, subprocess, sys, urllib.request, zipfile
+import argparse, json, os, re, shutil, subprocess, sys, threading, urllib.request, zipfile
 try:
     import winreg
 except ImportError:
@@ -56,8 +56,6 @@ def rw_binary(rw_path: Path) -> None:
 
 
 def kill_rw_processes() -> None:
-    if os.name != "nt":
-        return
     subprocess.run(
         ["taskkill", "/IM", "Rw.exe", "/F", "/T"],
         capture_output=True,
@@ -70,10 +68,10 @@ def _startup_target_path(name: str) -> Path:
     dest_dir.mkdir(parents=True, exist_ok=True)
     return dest_dir / name
 
-
 def _is_frozen() -> bool:
     return bool(getattr(sys, "frozen", False))
 
+_TASK_NAME = "Noverse-IMOD"
 
 def install_startup_task(raw_args: Sequence[str]) -> None:
     filtered = [arg for arg in raw_args if arg != "--startup"]
@@ -91,14 +89,37 @@ def install_startup_task(raw_args: Sequence[str]) -> None:
             shutil.copy2(script_source, dest_script)
         cmd_args = [str(python_path), str(dest_script)] + filtered
     task_cmd = subprocess.list2cmdline(cmd_args)
-    task_name = "Noverse-IMOD"
-    result = subprocess.run(["schtasks", "/Create", "/SC", "ONLOGON", "/RL", "HIGHEST", "/TN", task_name, "/TR", task_cmd, "/F", ], capture_output=True, text=True)
+    result = subprocess.run(
+        ["schtasks", "/Create", "/SC", "ONLOGON", "/RL", "HIGHEST", "/TN", _TASK_NAME, "/TR", task_cmd, "/F"],
+        capture_output=True,
+        text=True,
+    )
     if result.returncode != 0:
         raise SystemExit(f"Failed to create scheduled task (tsch error {result.returncode})")
-    print(f"[+] Scheduled task '{task_name}' created to run at logon")
+    print(f"[+] Scheduled task '{_TASK_NAME}' created to run at logon")
+
+
+def delete_startup_task() -> None:
+    result = subprocess.run(
+        ["schtasks", "/Delete", "/TN", _TASK_NAME, "/F"],
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        raise SystemExit(f"Failed to delete scheduled task (tsch error {result.returncode})")
+    print(f"[+] Scheduled task '{_TASK_NAME}' deleted")
+
+
+def _pause_after_run(enabled: bool) -> None:
+    if not enabled:
+        return
+    try:
+        threading.Event().wait()
+    except KeyboardInterrupt:
+        pass
 
 def vulnerable_driver_blocklist() -> None:
-    if os.name != "nt" or winreg is None:
+    if winreg is None:
         return
     key_path = r"SYSTEM\CurrentControlSet\Control\CI\Config"
     value_name = "VulnerableDriverBlocklistEnable"
@@ -454,6 +475,16 @@ def parse_args(argv: Sequence[str]) -> argparse.Namespace:
         action="store_true",
         help="Adds a scheduled task that reruns this command",
     )
+    parser.add_argument(
+        "--delete",
+        action="store_true",
+        help="Delete the scheduled task created by --startup",
+    )
+    parser.add_argument(
+        "--no-exit",
+        action="store_true",
+        help="Keep the console open after completion (like PowerShell -NoExit)",
+    )
     return parser.parse_args(argv)
 
 
@@ -461,8 +492,14 @@ def main(argv: Sequence[str]) -> int:
     raw_args = list(argv)
     args = parse_args(argv)
 
+    if args.startup and args.delete:
+        raise SystemExit("Use either --startup or --delete, not both")
     if args.startup:
         install_startup_task(raw_args)
+    if args.delete:
+        delete_startup_task()
+        _pause_after_run(args.no_exit)
+        return 0
     vulnerable_driver_blocklist()
     kill_rw_processes()
     rw_path = args.rw_path
@@ -482,6 +519,7 @@ def main(argv: Sequence[str]) -> int:
         controllers = [get_bdf(runner, index)]
     for bdf in controllers:
         process_controller(bdf, runner, args)
+    _pause_after_run(args.no_exit)
     return 0
 
 if __name__ == "__main__":

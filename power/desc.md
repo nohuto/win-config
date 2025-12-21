@@ -10,15 +10,17 @@
 | `--interval VALUE` | Set a custom IMOD interval (0–0xFFFF, in 250 ns ticks). Use for example `0xC800` (~48 Hz) to see if chaning the interval works |
 | `--no-write` | Only read and print IMOD registers (skip the write for information only) |
 | `--startup` | Copy the script or exe to `%LOCALAPPDATA%\Noverse\IMOD\` and creates a scheduled task that runs the command at each logon |
+| `--delete` | Delete the scheduled task created by `--startup` |
+| `--no-exit` | Keep the console open after completion |
 | `--verbose` | Output all `rw.exe` commands/results |
 
-
 ```c
---all --no-write // information only
---all --no-write --verbose // rw commands/output
+--all --no-write --no-exit // information only
+--all --no-write --verbose --no-exit // rw commands/output
 --all // 0 for all controllers
 --all --interval 0xC800 // testing (~48hz)
 --all --startup // 0 for all controllers, creates scheduled task
+--delete // removes the task
 ```
 
 You can download the executeable from my repository, I packed it into one package since some may not have python installed on their system.
