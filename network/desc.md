@@ -404,8 +404,8 @@ Disables Wi-Fi services/drivers, scheduled tasks.
 ---
 
 ```c
-"\\Microsoft\\Windows\\WCM\\WiFiTask" // %SystemRoot%\System32\WiFiTask.exe
-"\\Microsoft\\Windows\\WwanSvc\\NotificationTask" // %SystemRoot%\System32\WiFiTask.exe wwan
+"\\Microsoft\\Windows\\WCM\\WiFiTask" // %WINDIR%\System32\WiFiTask.exe
+"\\Microsoft\\Windows\\WwanSvc\\NotificationTask" // %WINDIR%\System32\WiFiTask.exe wwan
 ```
 
 # Disable Active Probing

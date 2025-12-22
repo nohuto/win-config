@@ -352,7 +352,7 @@
         "Path":  "\\Microsoft\\Windows\\AccountHealth\\",
         "Description":  "AccountHealth Task Handler evaluates the state of a Microsoft Account and takes any necessary repair action",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\accounthealth.dll,-100)",
+                                 "Author":  "$(@%WINDIR%\\system32\\accounthealth.dll,-100)",
                                  "URI":  "\\Microsoft\\Windows\\AccountHealth\\RecoverabilityToastTask"
                              },
         "Principals":  {
@@ -387,7 +387,7 @@
         "Description":  "Updates the AD RMS rights policy templates for the user. This job does not provide a credential prompt if authentication to the template distribution web service on the server fails. In this case, it fails silently.",
         "RegistrationInfo":  {
                                  "Date":  "2006-11-10T14:29:55.5851926",
-                                 "Author":  "$(@%systemRoot%\\System32\\msdrm.dll,-6001)",
+                                 "Author":  "$(@%WINDIR%\\System32\\msdrm.dll,-6001)",
                                  "URI":  "\\Microsoft\\Windows\\Active Directory Rights Management Services Client\\AD RMS Rights Policy Template Management (Automated)"
                              },
         "Principals":  {
@@ -433,7 +433,7 @@
         "Description":  "Updates the AD RMS rights policy templates for the user. This job provides a credential prompt if authentication to the template distribution web service on the server fails.",
         "RegistrationInfo":  {
                                  "Date":  "2006-11-10T14:29:55.5851926",
-                                 "Author":  "$(@%systemRoot%\\System32\\msdrm.dll,-6001)",
+                                 "Author":  "$(@%WINDIR%\\System32\\msdrm.dll,-6001)",
                                  "URI":  "\\Microsoft\\Windows\\Active Directory Rights Management Services Client\\AD RMS Rights Policy Template Management (Manual)"
                              },
         "Principals":  {
@@ -471,7 +471,7 @@
         "Description":  "This task performs steps necessary to configure Windows Information Protection.",
         "RegistrationInfo":  {
                                  "Date":  "2015-02-09T10:54:13.9629482",
-                                 "Author":  "$(@%SystemRoot%\\system32\\ApplockerCsp.dll,-100)",
+                                 "Author":  "$(@%WINDIR%\\system32\\ApplockerCsp.dll,-100)",
                                  "URI":  "\\Microsoft\\Windows\\AppID\\EDP Policy Manager"
                              },
         "Principals":  {
@@ -508,7 +508,7 @@
         "Path":  "\\Microsoft\\Windows\\AppID\\",
         "Description":  "Converts the software restriction policies policy from XML into binary format.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\appidsvc.dll,-301)",
+                                 "Author":  "$(@%WINDIR%\\system32\\appidsvc.dll,-301)",
                                  "URI":  "\\Microsoft\\Windows\\AppID\\PolicyConverter"
                              },
         "Principals":  {
@@ -539,7 +539,7 @@
         "Path":  "\\Microsoft\\Windows\\AppID\\",
         "Description":  "Inspects the AppID certificate cache for invalid or revoked certificates.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\appidsvc.dll,-201)",
+                                 "Author":  "$(@%WINDIR%\\system32\\appidsvc.dll,-201)",
                                  "URI":  "\\Microsoft\\Windows\\AppID\\VerifiedPublisherCertStoreCheck"
                              },
         "Principals":  {
@@ -578,7 +578,7 @@
         "Path":  "\\Microsoft\\Windows\\Application Experience\\",
         "Description":  "Gathers Win32 application data for App Backup scenario",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\aemarebackup.dll,-701)",
+                                 "Author":  "$(@%WINDIR%\\system32\\aemarebackup.dll,-701)",
                                  "URI":  "\\Microsoft\\Windows\\Application Experience\\MareBackup"
                              },
         "Principals":  {
@@ -621,7 +621,7 @@
         "Path":  "\\Microsoft\\Windows\\Application Experience\\",
         "Description":  "Collects program telemetry information if opted-in to the Microsoft Customer Experience Improvement Program.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\compattelrunner.exe,-501)",
+                                 "Author":  "$(@%WINDIR%\\system32\\compattelrunner.exe,-501)",
                                  "URI":  "\\Microsoft\\Windows\\Application Experience\\Microsoft Compatibility Appraiser"
                              },
         "Principals":  {
@@ -659,7 +659,7 @@
         "Path":  "\\Microsoft\\Windows\\Application Experience\\",
         "Description":  "Collects program telemetry information if opted-in to the Microsoft Customer Experience Improvement Program.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\compattelrunner.exe,-501)",
+                                 "Author":  "$(@%WINDIR%\\system32\\compattelrunner.exe,-501)",
                                  "URI":  "\\Microsoft\\Windows\\Application Experience\\Microsoft Compatibility Appraiser Exp"
                              },
         "Principals":  {
@@ -732,7 +732,7 @@
         "Path":  "\\Microsoft\\Windows\\Application Experience\\",
         "Description":  "Merges shim databases that are pending merge.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\sdbinst.exe,-1061)",
+                                 "Author":  "$(@%WINDIR%\\system32\\sdbinst.exe,-1061)",
                                  "URI":  "\\Microsoft\\Windows\\Application Experience\\SdbinstMergeDbTask"
                              },
         "Principals":  {
@@ -770,7 +770,7 @@
         "Path":  "\\Microsoft\\Windows\\Application Experience\\",
         "Description":  "Scans startup entries and raises notification to the user if there are too many startup entries.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\Startupscan.dll,-701)",
+                                 "Author":  "$(@%WINDIR%\\system32\\Startupscan.dll,-701)",
                                  "URI":  "\\Microsoft\\Windows\\Application Experience\\StartupAppTask"
                              },
         "Principals":  {
@@ -807,7 +807,7 @@
         "Path":  "\\Microsoft\\Windows\\ApplicationData\\",
         "Description":  "Verifies AppUriHandler host registrations.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\AppHostRegistrationVerifier.exe,-10004)",
+                                 "Author":  "$(@%WINDIR%\\system32\\AppHostRegistrationVerifier.exe,-10004)",
                                  "URI":  "\\Microsoft\\Windows\\ApplicationData\\appuriverifierdaily"
                              },
         "Principals":  {
@@ -846,7 +846,7 @@
         "Path":  "\\Microsoft\\Windows\\ApplicationData\\",
         "Description":  "Verifies AppUriHandler host registrations.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\AppHostRegistrationVerifier.exe,-10004)",
+                                 "Author":  "$(@%WINDIR%\\system32\\AppHostRegistrationVerifier.exe,-10004)",
                                  "URI":  "\\Microsoft\\Windows\\ApplicationData\\appuriverifierinstall"
                              },
         "Principals":  {
@@ -882,7 +882,7 @@
         "Path":  "\\Microsoft\\Windows\\ApplicationData\\",
         "Description":  "Cleans up each package\u0027s unused temporary files.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\Windows.Storage.ApplicationData.dll,-5002)",
+                                 "Author":  "$(@%WINDIR%\\system32\\Windows.Storage.ApplicationData.dll,-5002)",
                                  "URI":  "\\Microsoft\\Windows\\ApplicationData\\CleanupTemporaryState"
                              },
         "Principals":  {
@@ -918,7 +918,7 @@
         "Path":  "\\Microsoft\\Windows\\ApplicationData\\",
         "Description":  "Performs maintenance for the Data Sharing Service.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\dssvc.dll,-10004)",
+                                 "Author":  "$(@%WINDIR%\\system32\\dssvc.dll,-10004)",
                                  "URI":  "\\Microsoft\\Windows\\ApplicationData\\DsSvcCleanup"
                              },
         "Principals":  {
@@ -953,7 +953,7 @@
         "Path":  "\\Microsoft\\Windows\\AppListBackup\\",
         "Description":  "@C:\\WINDOWS\\system32\\AppListBackupLauncher.dll,-602",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\AppListBackupLauncher.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\AppListBackupLauncher.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\AppListBackup\\Backup"
                              },
         "Principals":  {
@@ -989,7 +989,7 @@
         "Path":  "\\Microsoft\\Windows\\AppListBackup\\",
         "Description":  "@C:\\WINDOWS\\system32\\AppListBackupLauncher.dll,-602",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\AppListBackupLauncher.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\AppListBackupLauncher.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\AppListBackup\\BackupNonMaintenance"
                              },
         "Principals":  {
@@ -1099,7 +1099,7 @@
         "Path":  "\\Microsoft\\Windows\\Autochk\\",
         "Description":  "This task collects and uploads autochk SQM data if opted-in to the Microsoft Customer Experience Improvement Program.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\acproxy.dll,-101)",
+                                 "Author":  "$(@%WINDIR%\\system32\\acproxy.dll,-101)",
                                  "URI":  "\\Microsoft\\Windows\\Autochk\\Proxy"
                              },
         "Principals":  {
@@ -1196,7 +1196,7 @@
         "Path":  "\\Microsoft\\Windows\\Bluetooth\\",
         "Description":  "Uninstalls the PnP device associated with the specified Bluetooth service ID",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\BthUdTask.exe,-1002)",
+                                 "Author":  "$(@%WINDIR%\\system32\\BthUdTask.exe,-1002)",
                                  "URI":  "\\Microsoft\\Windows\\Bluetooth\\UninstallDeviceTask"
                              },
         "Principals":  {
@@ -1227,7 +1227,7 @@
         "Path":  "\\Microsoft\\Windows\\BrokerInfrastructure\\",
         "Description":  "Maintains registrations for background tasks for Universal Windows Platform applications.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\System32\\bisrv.dll,-102)",
+                                 "Author":  "$(@%WINDIR%\\System32\\bisrv.dll,-102)",
                                  "URI":  "\\Microsoft\\Windows\\BrokerInfrastructure\\BgTaskRegistrationMaintenanceTask"
                              },
         "Principals":  {
@@ -1266,7 +1266,7 @@
         "Path":  "\\Microsoft\\Windows\\capabilityaccessmanager\\",
         "Description":  "Capability Access Manager Maintenance Tasks",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\CapabilityAccessManager.dll,-3)",
+                                 "Author":  "$(@%WINDIR%\\system32\\CapabilityAccessManager.dll,-3)",
                                  "URI":  "\\Microsoft\\Windows\\capabilityaccessmanager\\maintenancetasks"
                              },
         "Principals":  {
@@ -1301,7 +1301,7 @@
         "Path":  "\\Microsoft\\Windows\\CertificateServicesClient\\",
         "Description":  "This task enrolls a certificate for Attestation Identity Key.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\ngctasks.dll,-100)",
+                                 "Author":  "$(@%WINDIR%\\system32\\ngctasks.dll,-100)",
                                  "URI":  "\\Microsoft\\Windows\\CertificateServicesClient\\AikCertEnrollTask"
                              },
         "Principals":  {
@@ -1333,7 +1333,7 @@
         "Path":  "\\Microsoft\\Windows\\CertificateServicesClient\\",
         "Description":  "This task synchronizes cryptographic policy.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\ngctasks.dll,-100)",
+                                 "Author":  "$(@%WINDIR%\\system32\\ngctasks.dll,-100)",
                                  "URI":  "\\Microsoft\\Windows\\CertificateServicesClient\\CryptoPolicyTask"
                              },
         "Principals":  {
@@ -1364,7 +1364,7 @@
         "Path":  "\\Microsoft\\Windows\\CertificateServicesClient\\",
         "Description":  "This task pre-generates TPM based Attestation Identity Key (AIK) and Storage Key (SK).",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\ngctasks.dll,-100)",
+                                 "Author":  "$(@%WINDIR%\\system32\\ngctasks.dll,-100)",
                                  "URI":  "\\Microsoft\\Windows\\CertificateServicesClient\\KeyPreGenTask"
                              },
         "Principals":  {
@@ -1416,7 +1416,7 @@
         "Path":  "\\Microsoft\\Windows\\CertificateServicesClient\\",
         "Description":  "Certificate Services Client automatically manages digital identities such as Certificates, Keys and Credentials for the users and the machine, enabling enrollment, roaming and other services.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\dimsjob.dll,-101)",
+                                 "Author":  "$(@%WINDIR%\\system32\\dimsjob.dll,-101)",
                                  "URI":  "\\Microsoft\\Windows\\CertificateServicesClient\\SystemTask"
                              },
         "Principals":  {
@@ -1466,7 +1466,7 @@
         "Path":  "\\Microsoft\\Windows\\CertificateServicesClient\\",
         "Description":  "Certificate Services Client automatically manages digital identities such as Certificates, Keys and Credentials for the users and the machine, enabling enrollment, roaming and other services.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\dimsjob.dll,-101)",
+                                 "Author":  "$(@%WINDIR%\\system32\\dimsjob.dll,-101)",
                                  "URI":  "\\Microsoft\\Windows\\CertificateServicesClient\\UserTask"
                              },
         "Principals":  {
@@ -1525,7 +1525,7 @@
         "Path":  "\\Microsoft\\Windows\\CertificateServicesClient\\",
         "Description":  "Certificate Services Client automatically manages digital identities such as Certificates, Keys and Credentials for the users and the machine, enabling enrollment, roaming and other services.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\dimsjob.dll,-101)",
+                                 "Author":  "$(@%WINDIR%\\system32\\dimsjob.dll,-101)",
                                  "URI":  "\\Microsoft\\Windows\\CertificateServicesClient\\UserTask-Roam"
                              },
         "Principals":  {
@@ -1569,7 +1569,7 @@
         "Path":  "\\Microsoft\\Windows\\Chkdsk\\",
         "Description":  "NTFS Volume Health Scan",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\pstask.dll,-101)",
+                                 "Author":  "$(@%WINDIR%\\system32\\pstask.dll,-101)",
                                  "URI":  "\\Microsoft\\Windows\\Chkdsk\\ProactiveScan"
                              },
         "Principals":  {
@@ -1636,7 +1636,7 @@
         "Description":  "Windows Store legacy license migration task",
         "RegistrationInfo":  {
                                  "Date":  "2014-01-01T00:00:00",
-                                 "Author":  "$(@%SystemRoot%\\system32\\ClipUp.exe,-100)",
+                                 "Author":  "$(@%WINDIR%\\system32\\ClipUp.exe,-100)",
                                  "URI":  "\\Microsoft\\Windows\\Clip\\License Validation"
                              },
         "Principals":  {
@@ -1662,7 +1662,7 @@
                          "Enabled":  "false"
                      },
         "Actions":  {
-                        "Command":  "%SystemRoot%\\system32\\ClipUp.exe",
+                        "Command":  "%WINDIR%\\system32\\ClipUp.exe",
                         "Arguments":  "-p -s -o",
                         "Type":  "Exec"
                     }
@@ -1673,7 +1673,7 @@
         "Description":  "FClip",
         "RegistrationInfo":  {
                                  "Date":  "2021-03-01T00:00:00",
-                                 "Author":  "$(@%SystemRoot%\\system32\\fclip.exe,-100)",
+                                 "Author":  "$(@%WINDIR%\\system32\\fclip.exe,-100)",
                                  "URI":  "\\Microsoft\\Windows\\Clip\\LicenseImdsIntegration"
                              },
         "Principals":  {
@@ -1710,7 +1710,7 @@
                          }
                      ],
         "Actions":  {
-                        "Command":  "%SystemRoot%\\system32\\fclip.exe",
+                        "Command":  "%WINDIR%\\system32\\fclip.exe",
                         "Type":  "Exec"
                     }
     },
@@ -1750,7 +1750,7 @@
         "Path":  "\\Microsoft\\Windows\\CloudRestore\\",
         "Description":  "Handles restoring settings from the cloud",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\CloudRestoreLauncher.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\CloudRestoreLauncher.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\CloudRestore\\Backup"
                              },
         "Principals":  {
@@ -1790,7 +1790,7 @@
         "Path":  "\\Microsoft\\Windows\\CloudRestore\\",
         "Description":  "Handles restoring settings from the cloud",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\CloudRestoreLauncher.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\CloudRestoreLauncher.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\CloudRestore\\Restore"
                              },
         "Principals":  {
@@ -1825,7 +1825,7 @@
         "Path":  "\\Microsoft\\Windows\\ConsentUX\\UnifiedConsent\\",
         "Description":  "@C:\\WINDOWS\\system32\\unifiedconsent.dll,-101",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\system32\\unifiedconsent.dll,-102)",
+                                 "Author":  "$(@%WINDIR%\\system32\\unifiedconsent.dll,-102)",
                                  "URI":  "\\Microsoft\\Windows\\ConsentUX\\UnifiedConsent\\UnifiedConsentSyncTask"
                              },
         "Principals":  {
@@ -1868,7 +1868,7 @@
         "Path":  "\\Microsoft\\Windows\\Containers\\",
         "Description":  "Performs timely container component cleanup",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\system32\\cmcleanup.dll,-101)",
+                                 "Author":  "$(@%WINDIR%\\system32\\cmcleanup.dll,-101)",
                                  "URI":  "\\Microsoft\\Windows\\Containers\\CmCleanup"
                              },
         "Principals":  {
@@ -1905,7 +1905,7 @@
         "Path":  "\\Microsoft\\Windows\\Customer Experience Improvement Program\\",
         "Description":  "If the user has consented to participate in the Windows Customer Experience Improvement Program, this job collects and sends usage data to Microsoft.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\system32\\wsqmcons.exe,-108)",
+                                 "Author":  "$(@%WINDIR%\\system32\\wsqmcons.exe,-108)",
                                  "URI":  "\\Microsoft\\Windows\\Customer Experience Improvement Program\\Consolidator"
                              },
         "Principals":  {
@@ -1931,7 +1931,7 @@
                          "StartBoundary":  "2004-01-02T00:00:00"
                      },
         "Actions":  {
-                        "Command":  "%SystemRoot%\\System32\\wsqmcons.exe",
+                        "Command":  "%WINDIR%\\System32\\wsqmcons.exe",
                         "Type":  "Exec"
                     }
     },
@@ -1940,7 +1940,7 @@
         "Path":  "\\Microsoft\\Windows\\Customer Experience Improvement Program\\",
         "Description":  "The USB CEIP (Customer Experience Improvement Program) task collects Universal Serial Bus related statistics and information about your machine and sends it to the Windows Device Connectivity engineering group at Microsoft.  The information received is used to help improve the reliability, stability, and overall functionality of USB in Windows.  If the user has not consented to participate in Windows CEIP, this task does not do anything.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\usbceip.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\usbceip.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Customer Experience Improvement Program\\UsbCeip"
                              },
         "Principals":  {
@@ -1976,7 +1976,7 @@
         "Path":  "\\Microsoft\\Windows\\Data Integrity Scan\\",
         "Description":  "Scans fault-tolerant volumes for latent corruptions",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\discan.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\discan.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Data Integrity Scan\\Data Integrity Check And Scan"
                              },
         "Principals":  {
@@ -2020,7 +2020,7 @@
         "Path":  "\\Microsoft\\Windows\\Data Integrity Scan\\",
         "Description":  "Scans fault-tolerant volumes for latent corruptions",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\discan.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\discan.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Data Integrity Scan\\Data Integrity Scan"
                              },
         "Principals":  {
@@ -2054,7 +2054,7 @@
         "Path":  "\\Microsoft\\Windows\\Data Integrity Scan\\",
         "Description":  "Scans fault-tolerant volumes for fast crash recovery",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\discan.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\discan.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Data Integrity Scan\\Data Integrity Scan for Crash Recovery"
                              },
         "Principals":  {
@@ -2091,7 +2091,7 @@
         "Path":  "\\Microsoft\\Windows\\Defrag\\",
         "Description":  "This task optimizes local storage drives.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\defragsvc.dll,-801)",
+                                 "Author":  "$(@%WINDIR%\\system32\\defragsvc.dll,-801)",
                                  "URI":  "\\Microsoft\\Windows\\Defrag\\ScheduledDefrag"
                              },
         "Principals":  {
@@ -2208,7 +2208,7 @@
         "Path":  "\\Microsoft\\Windows\\Device Setup\\",
         "Description":  "@C:\\WINDOWS\\system32\\DeviceSetupManagerAPI.dll,-602",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\DeviceSetupManagerAPI.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\DeviceSetupManagerAPI.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Device Setup\\Driver Recovery on Reboot"
                              },
         "Principals":  {
@@ -2243,7 +2243,7 @@
         "Path":  "\\Microsoft\\Windows\\Device Setup\\",
         "Description":  "Performs a device metadata refresh on a periodic basis",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\System32\\DeviceSetupManager.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\System32\\DeviceSetupManager.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Device Setup\\Metadata Refresh"
                              },
         "Principals":  {
@@ -2739,7 +2739,7 @@
         "Path":  "\\Microsoft\\Windows\\Diagnosis\\",
         "Description":  "Check for recommended troubleshooting from Microsoft",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\system32\\mitigationclient.dll,-200)",
+                                 "Author":  "$(@%WINDIR%\\system32\\mitigationclient.dll,-200)",
                                  "URI":  "\\Microsoft\\Windows\\Diagnosis\\RecommendedTroubleshootingScanner"
                              },
         "Principals":  {
@@ -2790,7 +2790,7 @@
         "Path":  "\\Microsoft\\Windows\\Diagnosis\\",
         "Description":  "The Windows Scheduled Maintenance Task performs periodic maintenance of the computer system by fixing problems automatically or reporting them through Security and Maintenance.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\sdiagschd.dll,-101)",
+                                 "Author":  "$(@%WINDIR%\\system32\\sdiagschd.dll,-101)",
                                  "URI":  "\\Microsoft\\Windows\\Diagnosis\\Scheduled"
                              },
         "Principals":  {
@@ -2943,7 +2943,7 @@
         "Path":  "\\Microsoft\\Windows\\DiskCleanup\\",
         "Description":  "Maintenance task used by the system to launch a silent auto disk cleanup when running low on free disk space.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\cleanmgr.exe,-1300)",
+                                 "Author":  "$(@%WINDIR%\\system32\\cleanmgr.exe,-1300)",
                                  "URI":  "\\Microsoft\\Windows\\DiskCleanup\\SilentCleanup"
                              },
         "Principals":  {
@@ -2982,7 +2982,7 @@
         "Path":  "\\Microsoft\\Windows\\DiskDiagnostic\\",
         "Description":  "The Windows Disk Diagnostic reports general disk and system information to Microsoft for users participating in the Customer Experience Program.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\System32\\DFDTS.dll,-101)",
+                                 "Author":  "$(@%WINDIR%\\System32\\DFDTS.dll,-101)",
                                  "URI":  "\\Microsoft\\Windows\\DiskDiagnostic\\Microsoft-Windows-DiskDiagnosticDataCollector"
                              },
         "Principals":  {
@@ -3019,7 +3019,7 @@
         "Path":  "\\Microsoft\\Windows\\DiskDiagnostic\\",
         "Description":  "The Microsoft-Windows-DiskDiagnosticResolver warns users about faults reported by hard disks that support the Self Monitoring and Reporting Technology (S.M.A.R.T.) standard. This task is triggered automatically by the Diagnostic Policy Service when a S.M.A.R.T. fault is detected.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\System32\\DFDTS.dll,-101)",
+                                 "Author":  "$(@%WINDIR%\\System32\\DFDTS.dll,-101)",
                                  "URI":  "\\Microsoft\\Windows\\DiskDiagnostic\\Microsoft-Windows-DiskDiagnosticResolver"
                              },
         "Principals":  {
@@ -3145,7 +3145,7 @@
                          "Type":  "WnfStateChangeTrigger"
                      },
         "Actions":  {
-                        "Command":  "%SystemRoot%\\System32\\dusmtask.exe",
+                        "Command":  "%WINDIR%\\System32\\dusmtask.exe",
                         "Type":  "Exec"
                     }
     },
@@ -3274,7 +3274,7 @@
         "Path":  "\\Microsoft\\Windows\\ExploitGuard\\",
         "Description":  "Task for applying changes to the machine\u0027s Exploit Protection settings.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\mitigationconfiguration.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\mitigationconfiguration.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\ExploitGuard\\ExploitGuard MDM policy Refresh"
                              },
         "Principals":  {
@@ -3313,7 +3313,7 @@
         "Path":  "\\Microsoft\\Windows\\Feedback\\Siuf\\",
         "Description":  "Update SIUF strings",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\system32\\dmclient.exe,-200)",
+                                 "Author":  "$(@%WINDIR%\\system32\\dmclient.exe,-200)",
                                  "URI":  "\\Microsoft\\Windows\\Feedback\\Siuf\\DmClient"
                              },
         "Principals":  {
@@ -3351,7 +3351,7 @@
         "Path":  "\\Microsoft\\Windows\\Feedback\\Siuf\\",
         "Description":  "Update SIUF strings",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\system32\\dmclient.exe,-200)",
+                                 "Author":  "$(@%WINDIR%\\system32\\dmclient.exe,-200)",
                                  "URI":  "\\Microsoft\\Windows\\Feedback\\Siuf\\DmClientOnScenarioDownload"
                              },
         "Principals":  {
@@ -3386,7 +3386,7 @@
         "Path":  "\\Microsoft\\Windows\\File Classification Infrastructure\\",
         "Description":  "Synchronizes the File Classification Infrastructure taxonomy on the computer with the resource property definitions stored in Active Directory Domain Services.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\srm.dll,-18001)",
+                                 "Author":  "$(@%WINDIR%\\system32\\srm.dll,-18001)",
                                  "URI":  "\\Microsoft\\Windows\\File Classification Infrastructure\\Property Definition Sync"
                              },
         "Principals":  {
@@ -3427,7 +3427,7 @@
         "Description":  "Protects user files from accidental loss by copying them to a backup location when the system is unattended",
         "RegistrationInfo":  {
                                  "Date":  "2010-08-12T00:00:00",
-                                 "Author":  "$(@%systemRoot%\\system32\\fhtask.dll,-201)",
+                                 "Author":  "$(@%WINDIR%\\system32\\fhtask.dll,-201)",
                                  "URI":  "\\Microsoft\\Windows\\FileHistory\\File History (maintenance mode)"
                              },
         "Principals":  {
@@ -3462,7 +3462,7 @@
         "Path":  "\\Microsoft\\Windows\\Flighting\\FeatureConfig\\",
         "Description":  "Task periodically logging feature usage reports",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\fcon.dll,-602)",
+                                 "Author":  "$(@%WINDIR%\\system32\\fcon.dll,-602)",
                                  "URI":  "\\Microsoft\\Windows\\Flighting\\FeatureConfig\\BootstrapUsageDataReporting"
                              },
         "Principals":  {
@@ -3501,7 +3501,7 @@
         "Path":  "\\Microsoft\\Windows\\Flighting\\FeatureConfig\\",
         "Description":  "Task periodically reconciling feature configurations",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\fcon.dll,-601)",
+                                 "Author":  "$(@%WINDIR%\\system32\\fcon.dll,-601)",
                                  "URI":  "\\Microsoft\\Windows\\Flighting\\FeatureConfig\\GovernedFeatureUsageProcessing"
                              },
         "Principals":  {
@@ -3532,7 +3532,7 @@
         "Path":  "\\Microsoft\\Windows\\Flighting\\FeatureConfig\\",
         "Description":  "Task periodically reconciling feature configurations",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\fcon.dll,-601)",
+                                 "Author":  "$(@%WINDIR%\\system32\\fcon.dll,-601)",
                                  "URI":  "\\Microsoft\\Windows\\Flighting\\FeatureConfig\\ReconcileConfigs"
                              },
         "Principals":  {
@@ -3563,7 +3563,7 @@
         "Path":  "\\Microsoft\\Windows\\Flighting\\FeatureConfig\\",
         "Description":  "Task periodically reconciling feature configurations",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\fcon.dll,-601)",
+                                 "Author":  "$(@%WINDIR%\\system32\\fcon.dll,-601)",
                                  "URI":  "\\Microsoft\\Windows\\Flighting\\FeatureConfig\\ReconcileFeatures"
                              },
         "Principals":  {
@@ -3614,7 +3614,7 @@
         "Path":  "\\Microsoft\\Windows\\Flighting\\FeatureConfig\\",
         "Description":  "Task persisting feature usage data to disk",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\fcon.dll,-602)",
+                                 "Author":  "$(@%WINDIR%\\system32\\fcon.dll,-602)",
                                  "URI":  "\\Microsoft\\Windows\\Flighting\\FeatureConfig\\UsageDataFlushing"
                              },
         "Principals":  {
@@ -3654,7 +3654,7 @@
         "Path":  "\\Microsoft\\Windows\\Flighting\\FeatureConfig\\",
         "Description":  "Task persisting feature usage data to disk",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\fcon.dll,-602)",
+                                 "Author":  "$(@%WINDIR%\\system32\\fcon.dll,-602)",
                                  "URI":  "\\Microsoft\\Windows\\Flighting\\FeatureConfig\\UsageDataReceiver"
                              },
         "Principals":  {
@@ -3686,7 +3686,7 @@
         "Path":  "\\Microsoft\\Windows\\Flighting\\FeatureConfig\\",
         "Description":  "Task periodically logging feature usage reports",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\fcon.dll,-602)",
+                                 "Author":  "$(@%WINDIR%\\system32\\fcon.dll,-602)",
                                  "URI":  "\\Microsoft\\Windows\\Flighting\\FeatureConfig\\UsageDataReporting"
                              },
         "Principals":  {
@@ -3722,7 +3722,7 @@
         "Path":  "\\Microsoft\\Windows\\Flighting\\OneSettings\\",
         "Description":  "Task periodically refreshing data for OneSettings clients.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\wosc.dll,-601)",
+                                 "Author":  "$(@%WINDIR%\\system32\\wosc.dll,-601)",
                                  "URI":  "\\Microsoft\\Windows\\Flighting\\OneSettings\\RefreshCache"
                              },
         "Principals":  {
@@ -3809,8 +3809,8 @@
                          }
                      ],
         "Actions":  {
-                        "Command":  "%systemroot%\\system32\\cmd.exe",
-                        "Arguments":  "/d /c %systemroot%\\system32\\hpatchmonTask.cmd",
+                        "Command":  "%WINDIR%\\system32\\cmd.exe",
+                        "Arguments":  "/d /c %WINDIR%\\system32\\hpatchmonTask.cmd",
                         "Type":  "Exec"
                     }
     },
@@ -4376,7 +4376,7 @@
         "Path":  "\\Microsoft\\Windows\\International\\",
         "Description":  "Synchronize User Language Settings from other devices.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\System32\\CoreGlobConfig.Dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\System32\\CoreGlobConfig.Dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\International\\Synchronize Language Settings"
                              },
         "Principals":  {
@@ -4417,7 +4417,7 @@
         "Path":  "\\Microsoft\\Windows\\Kernel\\",
         "Description":  "This task cleans up 5-level paging binaries on systems that do not support 5-level paging.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\system32\\la57setup.exe,-201)",
+                                 "Author":  "$(@%WINDIR%\\system32\\la57setup.exe,-201)",
                                  "URI":  "\\Microsoft\\Windows\\Kernel\\La57Cleanup"
                              },
         "Principals":  {
@@ -4453,7 +4453,7 @@
         "Path":  "\\Microsoft\\Windows\\LanguageComponentsInstaller\\",
         "Description":  "Install language components that match the user\u0027s language list.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\System32\\LanguageComponentsInstaller.Dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\System32\\LanguageComponentsInstaller.Dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\LanguageComponentsInstaller\\Installation"
                              },
         "Principals":  {
@@ -4491,7 +4491,7 @@
         "Path":  "\\Microsoft\\Windows\\LanguageComponentsInstaller\\",
         "Description":  "Install language components that match the user\u0027s language list.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\LanguageOverlayServer.dll,-102)",
+                                 "Author":  "$(@%WINDIR%\\system32\\LanguageOverlayServer.dll,-102)",
                                  "URI":  "\\Microsoft\\Windows\\LanguageComponentsInstaller\\ReconcileLanguageResources"
                              },
         "Principals":  {
@@ -4528,7 +4528,7 @@
         "Path":  "\\Microsoft\\Windows\\LanguageComponentsInstaller\\",
         "Description":  "Uninstall language components that are not in any user\u0027s language list.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\System32\\LanguageComponentsInstaller.Dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\System32\\LanguageComponentsInstaller.Dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\LanguageComponentsInstaller\\Uninstallation"
                              },
         "Principals":  {
@@ -4566,7 +4566,7 @@
         "Path":  "\\Microsoft\\Windows\\License Manager\\",
         "Description":  "Exchanges temporary preinstalled licenses for Microsoft Store licenses.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\TempSignedLicenseExchangeTask.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\TempSignedLicenseExchangeTask.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\License Manager\\TempSignedLicenseExchange"
                              },
         "Principals":  {
@@ -4636,7 +4636,7 @@
         "Description":  "Measures a system\u0027s performance and capabilities",
         "RegistrationInfo":  {
                                  "Date":  "2008-02-25T19:15:00",
-                                 "Author":  "$(@%systemroot%\\system32\\winsatapi.dll,-112)",
+                                 "Author":  "$(@%WINDIR%\\system32\\winsatapi.dll,-112)",
                                  "URI":  "\\Microsoft\\Windows\\Maintenance\\WinSAT"
                              },
         "Principals":  {
@@ -4673,7 +4673,7 @@
         "Path":  "\\Microsoft\\Windows\\Management\\Autopilot\\",
         "Description":  "@C:\\WINDOWS\\system32\\Autopilot.dll,-602",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\Autopilot.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\Autopilot.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Management\\Autopilot\\DetectHardwareChange"
                              },
         "Principals":  {
@@ -4711,7 +4711,7 @@
         "Path":  "\\Microsoft\\Windows\\Management\\Autopilot\\",
         "Description":  "@C:\\WINDOWS\\system32\\Autopilot.dll,-603",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\Autopilot.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\Autopilot.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Management\\Autopilot\\RemediateHardwareChange"
                              },
         "Principals":  {
@@ -4917,7 +4917,7 @@
         "Description":  "This task shows various Map related toasts",
         "RegistrationInfo":  {
                                  "Date":  "2014-11-05T00:00:00",
-                                 "Author":  "$(@%SystemRoot%\\system32\\mapstoasttask.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\mapstoasttask.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Maps\\MapsToastTask"
                              },
         "Principals":  {
@@ -4952,7 +4952,7 @@
         "Description":  "This task checks for updates to maps which you have downloaded for offline use. Disabling this task will prevent Windows from notifying you of updated maps.",
         "RegistrationInfo":  {
                                  "Date":  "2014-11-05T00:00:00",
-                                 "Author":  "$(@%SystemRoot%\\system32\\mapsupdatetask.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\mapsupdatetask.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Maps\\MapsUpdateTask"
                              },
         "Principals":  {
@@ -4991,7 +4991,7 @@
         "Path":  "\\Microsoft\\Windows\\MemoryDiagnostic\\",
         "Description":  "Schedules an offline memory diagnostic in response to system events.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\MemoryDiagnostic.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\MemoryDiagnostic.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\MemoryDiagnostic\\AutomaticOfflineMemoryDiagnostic"
                              },
         "Principals":  {
@@ -5025,7 +5025,7 @@
         "Path":  "\\Microsoft\\Windows\\MemoryDiagnostic\\",
         "Description":  "Schedules a memory diagnostic in response to system events.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\MemoryDiagnostic.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\MemoryDiagnostic.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\MemoryDiagnostic\\ProcessMemoryDiagnosticEvents"
                              },
         "Principals":  {
@@ -5076,7 +5076,7 @@
         "Path":  "\\Microsoft\\Windows\\MemoryDiagnostic\\",
         "Description":  "Detects and mitigates problems in physical memory (RAM).",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\MemoryDiagnostic.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\MemoryDiagnostic.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\MemoryDiagnostic\\RunFullMemoryDiagnostic"
                              },
         "Principals":  {
@@ -5117,7 +5117,7 @@
         "Path":  "\\Microsoft\\Windows\\MUI\\",
         "Description":  "Launch language cleanup tool",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\System32\\lpremove.exe,-100)",
+                                 "Author":  "$(@%WINDIR%\\System32\\lpremove.exe,-100)",
                                  "URI":  "\\Microsoft\\Windows\\MUI\\LPRemove"
                              },
         "Principals":  {
@@ -5224,7 +5224,7 @@
         "Path":  "\\Microsoft\\Windows\\NlaSvc\\",
         "Description":  "Background task for performing per user and web interactions",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\wifitask.exe,-1)",
+                                 "Author":  "$(@%WINDIR%\\system32\\wifitask.exe,-1)",
                                  "URI":  "\\Microsoft\\Windows\\NlaSvc\\WiFiTask"
                              },
         "Principals":  {
@@ -5249,7 +5249,7 @@
                          "Type":  "WnfStateChangeTrigger"
                      },
         "Actions":  {
-                        "Command":  "%SystemRoot%\\System32\\WiFiTask.exe",
+                        "Command":  "%WINDIR%\\System32\\WiFiTask.exe",
                         "Arguments":  "nla",
                         "Type":  "Exec"
                     }
@@ -5259,7 +5259,7 @@
         "Path":  "\\Microsoft\\Windows\\Offline Files\\",
         "Description":  "This task controls periodic background synchronization of Offline Files when the user is working in an offline mode.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\cscui.dll,-5001)",
+                                 "Author":  "$(@%WINDIR%\\system32\\cscui.dll,-5001)",
                                  "URI":  "\\Microsoft\\Windows\\Offline Files\\Background Synchronization"
                              },
         "Principals":  {
@@ -5298,7 +5298,7 @@
         "Path":  "\\Microsoft\\Windows\\Offline Files\\",
         "Description":  "This task initiates synchronization of Offline Files when a user logs onto the system.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\cscui.dll,-5001)",
+                                 "Author":  "$(@%WINDIR%\\system32\\cscui.dll,-5001)",
                                  "URI":  "\\Microsoft\\Windows\\Offline Files\\Logon Synchronization"
                              },
         "Principals":  {
@@ -5365,7 +5365,7 @@
         "Path":  "\\Microsoft\\Windows\\PerformanceTrace\\",
         "Description":  "Handles Win+Shift+Control+T hotkey to take a Shell performance trace",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\PerformanceTraceHandler.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\PerformanceTraceHandler.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\PerformanceTrace\\RequestTrace"
                              },
         "Principals":  {
@@ -5397,7 +5397,7 @@
         "Path":  "\\Microsoft\\Windows\\PerformanceTrace\\",
         "Description":  "Handles displaying UX when hotkey trace is taken",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\PerformanceTraceHandler.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\PerformanceTraceHandler.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\PerformanceTrace\\WhesvcToast"
                              },
         "Principals":  {
@@ -5430,7 +5430,7 @@
         "Description":  "This task updates the Secure Boot variables.",
         "RegistrationInfo":  {
                                  "Date":  "2012-02-07T16:39:20",
-                                 "Author":  "$(@%SystemRoot%\\system32\\TpmTasks.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\TpmTasks.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\PI\\Secure-Boot-Update"
                              },
         "Principals":  {
@@ -5468,7 +5468,7 @@
         "Description":  "This task gathers information about the Trusted Platform Module (TPM), Secure Boot, and Measured Boot.",
         "RegistrationInfo":  {
                                  "Date":  "2011-07-22T00:00:00.8844064",
-                                 "Author":  "$(@%SystemRoot%\\system32\\TpmTasks.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\TpmTasks.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\PI\\Sqm-Tasks"
                              },
         "Principals":  {
@@ -5503,7 +5503,7 @@
         "Path":  "\\Microsoft\\Windows\\Plug and Play\\",
         "Description":  "Device Installation Group Policy Change Handler",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\pnppolicy.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\pnppolicy.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Plug and Play\\Device Install Group Policy"
                              },
         "Principals":  {
@@ -5537,7 +5537,7 @@
         "Path":  "\\Microsoft\\Windows\\Plug and Play\\",
         "Description":  "Notifies the user that Windows needs to be restarted to finish setting up a device.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\pnpui.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\pnpui.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Plug and Play\\Device Install Reboot Required"
                              },
         "Principals":  {
@@ -5576,7 +5576,7 @@
         "Path":  "\\Microsoft\\Windows\\Plug and Play\\",
         "Description":  "Generalize driver state in order to prepare the system to be bootable on any hardware configuration.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\System32\\sppnp.dll,-2000)",
+                                 "Author":  "$(@%WINDIR%\\System32\\sppnp.dll,-2000)",
                                  "URI":  "\\Microsoft\\Windows\\Plug and Play\\Sysprep Generalize Drivers"
                              },
         "Principals":  {
@@ -5597,7 +5597,7 @@
 
                      },
         "Actions":  {
-                        "Command":  "%SystemRoot%\\System32\\drvinst.exe",
+                        "Command":  "%WINDIR%\\System32\\drvinst.exe",
                         "Arguments":  "6",
                         "Type":  "Exec"
                     }
@@ -5607,7 +5607,7 @@
         "Path":  "\\Microsoft\\Windows\\Pluton\\",
         "Description":  "PlutonTasks Task Handler",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\PlutonTasks.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\PlutonTasks.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Pluton\\Pluton-Ksp-Provisioning"
                              },
         "Principals":  {
@@ -5638,7 +5638,7 @@
         "Path":  "\\Microsoft\\Windows\\Power Efficiency Diagnostics\\",
         "Description":  "This task analyzes the system looking for conditions that may cause high energy use.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\system32\\energytask.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\energytask.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Power Efficiency Diagnostics\\AnalyzeSystem"
                              },
         "Principals":  {
@@ -5859,7 +5859,7 @@
         "Path":  "\\Microsoft\\Windows\\Ras\\",
         "Description":  "Provides support for the switching of mobility enabled VPN connections if their underlying interface goes down.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\rasmbmgr.dll,-201)",
+                                 "Author":  "$(@%WINDIR%\\system32\\rasmbmgr.dll,-201)",
                                  "URI":  "\\Microsoft\\Windows\\Ras\\MobilityManager"
                              },
         "Principals":  {
@@ -5891,7 +5891,7 @@
         "Path":  "\\Microsoft\\Windows\\RecoveryEnvironment\\",
         "Description":  "Validates the Windows Recovery Environment.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\ReAgentTask.dll,-601)",
+                                 "Author":  "$(@%WINDIR%\\system32\\ReAgentTask.dll,-601)",
                                  "URI":  "\\Microsoft\\Windows\\RecoveryEnvironment\\VerifyWinRE"
                              },
         "Principals":  {
@@ -5931,7 +5931,7 @@
         "Path":  "\\Microsoft\\Windows\\ReFsDedupSvc\\",
         "Description":  "Initializes the REFS Dedup Service when the first dedup enabled volume is detected on the system. Do not remove or modify this task.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\refsdedupsvc.exe,-102)",
+                                 "Author":  "$(@%WINDIR%\\system32\\refsdedupsvc.exe,-102)",
                                  "URI":  "\\Microsoft\\Windows\\ReFsDedupSvc\\Initialization"
                              },
         "Principals":  {
@@ -5964,7 +5964,7 @@
         "Path":  "\\Microsoft\\Windows\\Registry\\",
         "Description":  "Registry Idle Backup Task",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\regidle.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\regidle.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Registry\\RegIdleBackup"
                              },
         "Principals":  {
@@ -6003,7 +6003,7 @@
         "Description":  "Checks group policy for changes relevant to Remote Assistance",
         "RegistrationInfo":  {
                                  "Date":  "2005-11-08T17:18:32",
-                                 "Author":  "$(@%systemroot%\\system32\\msra.exe,-686)",
+                                 "Author":  "$(@%WINDIR%\\system32\\msra.exe,-686)",
                                  "URI":  "\\Microsoft\\Windows\\RemoteAssistance\\RemoteAssistanceTask"
                              },
         "Principals":  {
@@ -6047,7 +6047,7 @@
         "Path":  "\\Microsoft\\Windows\\RetailDemo\\",
         "Description":  "Auto cleanup RetailDemo Offline content",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\system32\\rdxtaskfactory.dll,-100)",
+                                 "Author":  "$(@%WINDIR%\\system32\\rdxtaskfactory.dll,-100)",
                                  "URI":  "\\Microsoft\\Windows\\RetailDemo\\CleanupOfflineContent"
                              },
         "Principals":  {
@@ -6227,7 +6227,7 @@
         "Path":  "\\Microsoft\\Windows\\Shell\\",
         "Description":  "Provides support for shell components that access system data",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\shell32.dll,-14349)",
+                                 "Author":  "$(@%WINDIR%\\system32\\shell32.dll,-14349)",
                                  "URI":  "\\Microsoft\\Windows\\Shell\\CreateObjectTask"
                              },
         "Principals":  {
@@ -6259,7 +6259,7 @@
         "Path":  "\\Microsoft\\Windows\\Shell\\",
         "Description":  "Initializes Family Safety monitoring and enforcement.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\System32\\wpcmon.exe,-32014)",
+                                 "Author":  "$(@%WINDIR%\\System32\\wpcmon.exe,-32014)",
                                  "URI":  "\\Microsoft\\Windows\\Shell\\FamilySafetyMonitor"
                              },
         "Principals":  {
@@ -6292,7 +6292,7 @@
         "Path":  "\\Microsoft\\Windows\\Shell\\",
         "Description":  "Synchronizes the latest settings with the Microsoft family features service.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\System32\\WpcRefreshTask.dll,-32011)",
+                                 "Author":  "$(@%WINDIR%\\System32\\WpcRefreshTask.dll,-32011)",
                                  "URI":  "\\Microsoft\\Windows\\Shell\\FamilySafetyRefreshTask"
                              },
         "Principals":  {
@@ -6326,7 +6326,7 @@
         "Path":  "\\Microsoft\\Windows\\Shell\\",
         "Description":  "Keeps the search index up to date",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\srchadmin.dll,-1901)",
+                                 "Author":  "$(@%WINDIR%\\system32\\srchadmin.dll,-1901)",
                                  "URI":  "\\Microsoft\\Windows\\Shell\\IndexerAutomaticMaintenance"
                              },
         "Principals":  {
@@ -6394,7 +6394,7 @@
         "Path":  "\\Microsoft\\Windows\\Shell\\",
         "Description":  "Downloads a backup of your synced theme images",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\Themes.SsfDownload.ScheduledTask.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\Themes.SsfDownload.ScheduledTask.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Shell\\ThemesSyncedImageDownload"
                              },
         "Principals":  {
@@ -6433,7 +6433,7 @@
         "Path":  "\\Microsoft\\Windows\\Shell\\",
         "Description":  "Updates installed undocked flighting packages",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\UndockedFlightingUpdateTask.exe,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\UndockedFlightingUpdateTask.exe,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Shell\\UndockedFlightingUpdate"
                              },
         "Principals":  {
@@ -6500,7 +6500,7 @@
         "Path":  "\\Microsoft\\Windows\\SoftwareProtectionPlatform\\",
         "Description":  "This task restarts the Software Protection Platform service at the specified time",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\sppc.dll,-200)",
+                                 "Author":  "$(@%WINDIR%\\system32\\sppc.dll,-200)",
                                  "URI":  "\\Microsoft\\Windows\\SoftwareProtectionPlatform\\SvcRestartTask"
                              },
         "Principals":  {
@@ -6540,7 +6540,7 @@
         "Path":  "\\Microsoft\\Windows\\SoftwareProtectionPlatform\\",
         "Description":  "This task restarts the Software Protection Platform service when user logon occurs",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\sppc.dll,-200)",
+                                 "Author":  "$(@%WINDIR%\\system32\\sppc.dll,-200)",
                                  "URI":  "\\Microsoft\\Windows\\SoftwareProtectionPlatform\\SvcRestartTaskLogon"
                              },
         "Principals":  {
@@ -6578,7 +6578,7 @@
         "Path":  "\\Microsoft\\Windows\\SoftwareProtectionPlatform\\",
         "Description":  "This task restarts the Software Protection Platform service when a new network is detected",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\sppc.dll,-200)",
+                                 "Author":  "$(@%WINDIR%\\system32\\sppc.dll,-200)",
                                  "URI":  "\\Microsoft\\Windows\\SoftwareProtectionPlatform\\SvcRestartTaskNetwork"
                              },
         "Principals":  {
@@ -6617,7 +6617,7 @@
         "Path":  "\\Microsoft\\Windows\\SpacePort\\",
         "Description":  "Storage Spaces Settings",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\SpaceAgent.exe,-2)",
+                                 "Author":  "$(@%WINDIR%\\system32\\SpaceAgent.exe,-2)",
                                  "URI":  "\\Microsoft\\Windows\\SpacePort\\SpaceAgentTask"
                              },
         "Principals":  {
@@ -6656,7 +6656,7 @@
         "Path":  "\\Microsoft\\Windows\\SpacePort\\",
         "Description":  "@C:\\WINDOWS\\system32\\spaceman.exe,-3",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\spaceman.exe,-2)",
+                                 "Author":  "$(@%WINDIR%\\system32\\spaceman.exe,-2)",
                                  "URI":  "\\Microsoft\\Windows\\SpacePort\\SpaceManagerTask"
                              },
         "Principals":  {
@@ -6739,7 +6739,7 @@
         "Path":  "\\Microsoft\\Windows\\StateRepository\\",
         "Description":  "@C:\\WINDOWS\\system32\\Windows.StateRepositoryClient.dll,-602",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\Windows.StateRepositoryClient.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\Windows.StateRepositoryClient.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\StateRepository\\MaintenanceTasks"
                              },
         "Principals":  {
@@ -6774,7 +6774,7 @@
         "Path":  "\\Microsoft\\Windows\\Storage Tiers Management\\",
         "Description":  "Initializes the Storage Tiers Management service when the first tiered storage space is detected on the system. Do not remove or modify this task.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\TieringEngineService.exe,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\TieringEngineService.exe,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Storage Tiers Management\\Storage Tiers Management Initialization"
                              },
         "Principals":  {
@@ -6807,7 +6807,7 @@
         "Path":  "\\Microsoft\\Windows\\Storage Tiers Management\\",
         "Description":  "Optimizes the placement of data in storage tiers on all tiered storage spaces in the system.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\TieringEngineService.exe,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\TieringEngineService.exe,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Storage Tiers Management\\Storage Tiers Optimization"
                              },
         "Principals":  {
@@ -6846,7 +6846,7 @@
         "Description":  "Enable susbscription license acquisition",
         "RegistrationInfo":  {
                                  "Date":  "2016-01-01T00:00:00",
-                                 "Author":  "$(@%SystemRoot%\\system32\\ClipRenew.exe,-100)",
+                                 "Author":  "$(@%WINDIR%\\system32\\ClipRenew.exe,-100)",
                                  "URI":  "\\Microsoft\\Windows\\Subscription\\EnableLicenseAcquisition"
                              },
         "Principals":  {
@@ -6885,7 +6885,7 @@
                          }
                      ],
         "Actions":  {
-                        "Command":  "%SystemRoot%\\system32\\ClipRenew.exe",
+                        "Command":  "%WINDIR%\\system32\\ClipRenew.exe",
                         "Arguments":  "-e",
                         "Type":  "Exec"
                     }
@@ -6896,7 +6896,7 @@
         "Description":  "Susbscription license acquisition",
         "RegistrationInfo":  {
                                  "Date":  "2016-01-01T00:00:00",
-                                 "Author":  "$(@%SystemRoot%\\system32\\ClipRenew.exe,-100)",
+                                 "Author":  "$(@%WINDIR%\\system32\\ClipRenew.exe,-100)",
                                  "URI":  "\\Microsoft\\Windows\\Subscription\\LicenseAcquisition"
                              },
         "Principals":  {
@@ -6934,7 +6934,7 @@
                          }
                      ],
         "Actions":  {
-                        "Command":  "%SystemRoot%\\system32\\ClipRenew.exe",
+                        "Command":  "%WINDIR%\\system32\\ClipRenew.exe",
                         "Type":  "Exec"
                     }
     },
@@ -6943,7 +6943,7 @@
         "Path":  "\\Microsoft\\Windows\\Sustainability\\",
         "Description":  "PowerGridForecastTask has a COM Task Handler",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\PowerGridForecastTask.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\PowerGridForecastTask.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Sustainability\\PowerGridForecastTask"
                              },
         "Principals":  {
@@ -6982,7 +6982,7 @@
         "Path":  "\\Microsoft\\Windows\\Sustainability\\",
         "Description":  "Telemetry events for Sustainability",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\EcoScoreTask.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\EcoScoreTask.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Sustainability\\SustainabilityTelemetry"
                              },
         "Principals":  {
@@ -7017,7 +7017,7 @@
         "Path":  "\\Microsoft\\Windows\\Sysmain\\",
         "Description":  "Hybrid Drive cache prepopulation task",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\System32\\sysmain.dll,-3000)",
+                                 "Author":  "$(@%WINDIR%\\System32\\sysmain.dll,-3000)",
                                  "URI":  "\\Microsoft\\Windows\\Sysmain\\HybridDriveCachePrepopulate"
                              },
         "Principals":  {
@@ -7056,7 +7056,7 @@
         "Path":  "\\Microsoft\\Windows\\Sysmain\\",
         "Description":  "Hybrid Drive cache rebalance maintenance task",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\System32\\sysmain.dll,-3000)",
+                                 "Author":  "$(@%WINDIR%\\System32\\sysmain.dll,-3000)",
                                  "URI":  "\\Microsoft\\Windows\\Sysmain\\HybridDriveCacheRebalance"
                              },
         "Principals":  {
@@ -7096,7 +7096,7 @@
         "Path":  "\\Microsoft\\Windows\\Sysmain\\",
         "Description":  "Reserved Priority static db sync maintenance task",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\System32\\sysmain.dll,-3000)",
+                                 "Author":  "$(@%WINDIR%\\System32\\sysmain.dll,-3000)",
                                  "URI":  "\\Microsoft\\Windows\\Sysmain\\ResPriStaticDbSync"
                              },
         "Principals":  {
@@ -7134,7 +7134,7 @@
         "Path":  "\\Microsoft\\Windows\\Sysmain\\",
         "Description":  "Working set swap assessment maintenance task",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\System32\\sysmain.dll,-3000)",
+                                 "Author":  "$(@%WINDIR%\\System32\\sysmain.dll,-3000)",
                                  "URI":  "\\Microsoft\\Windows\\Sysmain\\WsSwapAssessmentTask"
                              },
         "Principals":  {
@@ -7172,7 +7172,7 @@
         "Path":  "\\Microsoft\\Windows\\SystemRestore\\",
         "Description":  "This task creates regular system protection points.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\srrstr.dll,-321)",
+                                 "Author":  "$(@%WINDIR%\\system32\\srrstr.dll,-321)",
                                  "URI":  "\\Microsoft\\Windows\\SystemRestore\\SR"
                              },
         "Principals":  {
@@ -7210,7 +7210,7 @@
         "Path":  "\\Microsoft\\Windows\\Task Manager\\",
         "Description":  "Runs a task as the interactive user.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\wdc.dll,-10041)",
+                                 "Author":  "$(@%WINDIR%\\system32\\wdc.dll,-10041)",
                                  "URI":  "\\Microsoft\\Windows\\Task Manager\\Interactive"
                              },
         "Principals":  {
@@ -7276,7 +7276,7 @@
         "Path":  "\\Microsoft\\Windows\\Time Synchronization\\",
         "Description":  "This task performs time synchronization.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\TimeSyncTask.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\TimeSyncTask.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Time Synchronization\\ForceSynchronizeTime"
                              },
         "Principals":  {
@@ -7315,7 +7315,7 @@
         "Path":  "\\Microsoft\\Windows\\Time Synchronization\\",
         "Description":  "Maintains date and time synchronization on all clients and servers in the network. If this service is stopped, date and time synchronization will be unavailable. If this service is disabled, any services that explicitly depend on it will fail to start.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\w32time.dll,-202)",
+                                 "Author":  "$(@%WINDIR%\\system32\\w32time.dll,-202)",
                                  "URI":  "\\Microsoft\\Windows\\Time Synchronization\\SynchronizeTime"
                              },
         "Principals":  {
@@ -7355,7 +7355,7 @@
         "Description":  "Updates timezone information. If this task is stopped, local time may not be accurate for some time zones.",
         "RegistrationInfo":  {
                                  "Date":  "2013-01-10T16:32:04.2837388",
-                                 "Author":  "$(@%SystemRoot%\\system32\\tzsyncres.dll,-101)",
+                                 "Author":  "$(@%WINDIR%\\system32\\tzsyncres.dll,-101)",
                                  "URI":  "\\Microsoft\\Windows\\Time Zone\\SynchronizeTimeZone"
                              },
         "Principals":  {
@@ -7392,7 +7392,7 @@
         "Description":  "This task requests a Health Attestation Certificate.",
         "RegistrationInfo":  {
                                  "Date":  "2015-02-16T17:49:20.8844064",
-                                 "Author":  "$(@%SystemRoot%\\system32\\TpmTasks.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\TpmTasks.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\TPM\\Tpm-HASCertRetr"
                              },
         "Principals":  {
@@ -7424,7 +7424,7 @@
         "Description":  "This task supports the Trusted Platform Module (TPM) by performing background actions on behalf of the OS.",
         "RegistrationInfo":  {
                                  "Date":  "2010-06-10T17:49:20.8844064",
-                                 "Author":  "$(@%SystemRoot%\\system32\\TpmTasks.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\TpmTasks.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\TPM\\Tpm-Maintenance"
                              },
         "Principals":  {
@@ -7467,7 +7467,7 @@
         "Description":  "This task supports the Trusted Platform Module (TPM) by performing background actions on behalf of the OS.",
         "RegistrationInfo":  {
                                  "Date":  "2023-12-01T17:49:20.8844064",
-                                 "Author":  "$(@%SystemRoot%\\system32\\TpmTasks.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\TpmTasks.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\TPM\\Tpm-PreAttestationHealthCheck"
                              },
         "Principals":  {
@@ -7498,7 +7498,7 @@
         "Path":  "\\Microsoft\\Windows\\UpdateOrchestrator\\",
         "Description":  "",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\system32\\usosvc.dll,-103)",
+                                 "Author":  "$(@%WINDIR%\\system32\\usosvc.dll,-103)",
                                  "URI":  "\\Microsoft\\Windows\\UpdateOrchestrator\\Report policies"
                              },
         "Principals":  {
@@ -7531,7 +7531,7 @@
                          }
                      ],
         "Actions":  {
-                        "Command":  "%systemroot%\\system32\\usoclient.exe",
+                        "Command":  "%WINDIR%\\system32\\usoclient.exe",
                         "Arguments":  "ReportPolicies",
                         "Type":  "Exec"
                     }
@@ -7564,7 +7564,7 @@
 
                      },
         "Actions":  {
-                        "Command":  "%systemroot%\\system32\\usoclient.exe",
+                        "Command":  "%WINDIR%\\system32\\usoclient.exe",
                         "Arguments":  "StartMaintenanceWork",
                         "Type":  "Exec"
                     }
@@ -7601,7 +7601,7 @@
                          "StartBoundary":  "2019-01-01T12:00:00"
                      },
         "Actions":  {
-                        "Command":  "%systemroot%\\system32\\usoclient.exe",
+                        "Command":  "%WINDIR%\\system32\\usoclient.exe",
                         "Arguments":  "StartScan",
                         "Type":  "Exec"
                     }
@@ -7651,7 +7651,7 @@
                          }
                      ],
         "Actions":  {
-                        "Command":  "%systemroot%\\system32\\usoclient.exe",
+                        "Command":  "%WINDIR%\\system32\\usoclient.exe",
                         "Arguments":  "StartScan",
                         "Type":  "Exec"
                     }
@@ -7685,7 +7685,7 @@
                          "StartBoundary":  "2025-12-21T23:44:00-08:00"
                      },
         "Actions":  {
-                        "Command":  "%systemroot%\\system32\\usoclient.exe",
+                        "Command":  "%WINDIR%\\system32\\usoclient.exe",
                         "Arguments":  "StartWork",
                         "Type":  "Exec"
                     }
@@ -7718,7 +7718,7 @@
                          "StartBoundary":  "2025-12-21T23:29:00-08:00"
                      },
         "Actions":  {
-                        "Command":  "%systemroot%\\system32\\usoclient.exe",
+                        "Command":  "%WINDIR%\\system32\\usoclient.exe",
                         "Arguments":  "StartWork",
                         "Type":  "Exec"
                     }
@@ -7728,7 +7728,7 @@
         "Path":  "\\Microsoft\\Windows\\UpdateOrchestrator\\",
         "Description":  "This task performs a scheduled Windows Update scan.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\system32\\usosvc.dll,-103)",
+                                 "Author":  "$(@%WINDIR%\\system32\\usosvc.dll,-103)",
                                  "URI":  "\\Microsoft\\Windows\\UpdateOrchestrator\\Start Oobe Expedite Work"
                              },
         "Principals":  {
@@ -7751,7 +7751,7 @@
                          "Delay":  "PT15M"
                      },
         "Actions":  {
-                        "Command":  "%systemroot%\\system32\\usoclient.exe",
+                        "Command":  "%WINDIR%\\system32\\usoclient.exe",
                         "Arguments":  "StartWork",
                         "Type":  "Exec"
                     }
@@ -7761,7 +7761,7 @@
         "Path":  "\\Microsoft\\Windows\\UpdateOrchestrator\\",
         "Description":  "This task performs a scheduled Windows Update scan.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\system32\\usosvc.dll,-103)",
+                                 "Author":  "$(@%WINDIR%\\system32\\usosvc.dll,-103)",
                                  "URI":  "\\Microsoft\\Windows\\UpdateOrchestrator\\StartOobeAppsScanAfterUpdate"
                              },
         "Principals":  {
@@ -7784,7 +7784,7 @@
                          "Delay":  "PT15M"
                      },
         "Actions":  {
-                        "Command":  "%systemroot%\\system32\\usoclient.exe",
+                        "Command":  "%WINDIR%\\system32\\usoclient.exe",
                         "Arguments":  "StartOobeAppsScanAfterUpdate",
                         "Type":  "Exec"
                     }
@@ -7794,7 +7794,7 @@
         "Path":  "\\Microsoft\\Windows\\UpdateOrchestrator\\",
         "Description":  "This task performs a scheduled Windows Update scan.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\system32\\usosvc.dll,-103)",
+                                 "Author":  "$(@%WINDIR%\\system32\\usosvc.dll,-103)",
                                  "URI":  "\\Microsoft\\Windows\\UpdateOrchestrator\\StartOobeAppsScan_LicenseAccepted"
                              },
         "Principals":  {
@@ -7816,7 +7816,7 @@
                          "Type":  "WnfStateChangeTrigger"
                      },
         "Actions":  {
-                        "Command":  "%systemroot%\\system32\\usoclient.exe",
+                        "Command":  "%WINDIR%\\system32\\usoclient.exe",
                         "Arguments":  "StartOobeAppsScan",
                         "Type":  "Exec"
                     }
@@ -7826,7 +7826,7 @@
         "Path":  "\\Microsoft\\Windows\\UpdateOrchestrator\\",
         "Description":  "@C:\\WINDOWS\\system32\\UIEOrchestrator.exe,-106",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\system32\\UIEOrchestrator.exe,-103)",
+                                 "Author":  "$(@%WINDIR%\\system32\\UIEOrchestrator.exe,-103)",
                                  "URI":  "\\Microsoft\\Windows\\UpdateOrchestrator\\UIEOrchestrator"
                              },
         "Principals":  {
@@ -7854,7 +7854,7 @@
                          "StartBoundary":  "2000-01-01T03:00:00"
                      },
         "Actions":  {
-                        "Command":  "%systemroot%\\system32\\UIEOrchestrator.exe",
+                        "Command":  "%WINDIR%\\system32\\UIEOrchestrator.exe",
                         "Arguments":  "/SendHeartbeat",
                         "Type":  "Exec"
                     }
@@ -7864,7 +7864,7 @@
         "Path":  "\\Microsoft\\Windows\\UpdateOrchestrator\\",
         "Description":  "This task triggers a system reboot following update installation.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\system32\\usosvc.dll,-103)",
+                                 "Author":  "$(@%WINDIR%\\system32\\usosvc.dll,-103)",
                                  "URI":  "\\Microsoft\\Windows\\UpdateOrchestrator\\USO_UxBroker"
                              },
         "Principals":  {
@@ -7894,7 +7894,7 @@
                          }
                      ],
         "Actions":  {
-                        "Command":  "%systemroot%\\system32\\MusNotification.exe",
+                        "Command":  "%WINDIR%\\system32\\MusNotification.exe",
                         "Type":  "Exec"
                     }
     },
@@ -7903,7 +7903,7 @@
         "Path":  "\\Microsoft\\Windows\\UpdateOrchestrator\\",
         "Description":  "",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\system32\\usosvc.dll,-103)",
+                                 "Author":  "$(@%WINDIR%\\system32\\usosvc.dll,-103)",
                                  "URI":  "\\Microsoft\\Windows\\UpdateOrchestrator\\UUS Failover Task"
                              },
         "Principals":  {
@@ -7936,7 +7936,7 @@
         "Path":  "\\Microsoft\\Windows\\UPnP\\",
         "Description":  "Set UPnPHost service to Auto-Start",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\upnphost.dll,-215)",
+                                 "Author":  "$(@%WINDIR%\\system32\\upnphost.dll,-215)",
                                  "URI":  "\\Microsoft\\Windows\\UPnP\\UPnPHostConfig"
                              },
         "Principals":  {
@@ -7967,7 +7967,7 @@
         "Path":  "\\Microsoft\\Windows\\USB\\",
         "Description":  "Usb Error Notification Task",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\usbtask.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\usbtask.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\USB\\Usb-Notifications"
                              },
         "Principals":  {
@@ -8011,7 +8011,7 @@
         "Path":  "\\Microsoft\\Windows\\User Profile Service\\",
         "Description":  "This task will automatically upload a roaming user profile\u0027s registry hive to its network location.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\profsvc,-500)",
+                                 "Author":  "$(@%WINDIR%\\system32\\profsvc,-500)",
                                  "URI":  "\\Microsoft\\Windows\\User Profile Service\\HiveUploadTask"
                              },
         "Principals":  {
@@ -8056,7 +8056,7 @@
         "Path":  "\\Microsoft\\Windows\\WaaSMedic\\",
         "Description":  "@C:\\WINDOWS\\system32\\WaasMedicSvcImpl.dll,-104",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\WaasMedicSvcImpl.dll,-102)",
+                                 "Author":  "$(@%WINDIR%\\system32\\WaasMedicSvcImpl.dll,-102)",
                                  "URI":  "\\Microsoft\\Windows\\WaaSMedic\\PerformRemediation"
                              },
         "Principals":  {
@@ -8094,7 +8094,7 @@
         "Path":  "\\Microsoft\\Windows\\WCM\\",
         "Description":  "Background task for performing per user and web interactions",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\wifitask.exe,-1)",
+                                 "Author":  "$(@%WINDIR%\\system32\\wifitask.exe,-1)",
                                  "URI":  "\\Microsoft\\Windows\\WCM\\WiFiTask"
                              },
         "Principals":  {
@@ -8119,7 +8119,7 @@
                          "Type":  "WnfStateChangeTrigger"
                      },
         "Actions":  {
-                        "Command":  "%SystemRoot%\\System32\\WiFiTask.exe",
+                        "Command":  "%WINDIR%\\System32\\WiFiTask.exe",
                         "Type":  "Exec"
                     }
     },
@@ -8128,7 +8128,7 @@
         "Path":  "\\Microsoft\\Windows\\WDI\\",
         "Description":  "The Windows Diagnostic Infrastructure Resolution host enables interactive resolutions for system problems detected by the Diagnostic Policy Service. It is triggered when necessary by the Diagnostic Policy Service in the appropriate user session. If the Diagnostic Policy Service is not running, the task will not run",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\dps.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\dps.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\WDI\\ResolutionHost"
                              },
         "Principals":  {
@@ -8314,7 +8314,7 @@
         "Path":  "\\Microsoft\\Windows\\Windows Error Reporting\\",
         "Description":  "Windows Error Reporting task to process queued reports.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\wer.dll,-293)",
+                                 "Author":  "$(@%WINDIR%\\system32\\wer.dll,-293)",
                                  "URI":  "\\Microsoft\\Windows\\Windows Error Reporting\\QueueReporting"
                              },
         "Principals":  {
@@ -8369,7 +8369,7 @@
         "Path":  "\\Microsoft\\Windows\\Windows Filtering Platform\\",
         "Description":  "This task adjusts the start type for firewall-triggered services when the start type of the Base Filtering Engine (BFE) is disabled.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\bfe.dll,-2001)",
+                                 "Author":  "$(@%WINDIR%\\system32\\bfe.dll,-2001)",
                                  "URI":  "\\Microsoft\\Windows\\Windows Filtering Platform\\BfeOnServiceStartTypeChange"
                              },
         "Principals":  {
@@ -8561,7 +8561,7 @@
         "Path":  "\\Microsoft\\Windows\\WindowsColorSystem\\",
         "Description":  "This task applies color calibration settings.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\mscms.dll,-201)",
+                                 "Author":  "$(@%WINDIR%\\system32\\mscms.dll,-201)",
                                  "URI":  "\\Microsoft\\Windows\\WindowsColorSystem\\Calibration Loader"
                              },
         "Principals":  {
@@ -8598,7 +8598,7 @@
         "Path":  "\\Microsoft\\Windows\\WindowsUpdate\\",
         "Description":  "This task is used to refresh group policy cache in Windows Update",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemRoot%\\system32\\updatepolicy.dll,-1000)",
+                                 "Author":  "$(@%WINDIR%\\system32\\updatepolicy.dll,-1000)",
                                  "URI":  "\\Microsoft\\Windows\\WindowsUpdate\\Refresh Group Policy Cache"
                              },
         "Principals":  {
@@ -8630,7 +8630,7 @@
         "Path":  "\\Microsoft\\Windows\\WindowsUpdate\\",
         "Description":  "This task is used to start the Windows Update service when needed to perform scheduled operations such as scans.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\System32\\wuaueng.dll,-112)",
+                                 "Author":  "$(@%WINDIR%\\System32\\wuaueng.dll,-112)",
                                  "URI":  "\\Microsoft\\Windows\\WindowsUpdate\\Scheduled Start"
                              },
         "Principals":  {
@@ -8671,7 +8671,7 @@
                          }
                      ],
         "Actions":  {
-                        "Command":  "%systemroot%\\System32\\sc.exe",
+                        "Command":  "%WINDIR%\\System32\\sc.exe",
                         "Arguments":  "start wuauserv",
                         "Type":  "Exec"
                     }
@@ -8681,7 +8681,7 @@
         "Path":  "\\Microsoft\\Windows\\Wininet\\",
         "Description":  "Wininet Cache Task",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\wininet.dll,-16000)",
+                                 "Author":  "$(@%WINDIR%\\system32\\wininet.dll,-16000)",
                                  "URI":  "\\Microsoft\\Windows\\Wininet\\CacheTask"
                              },
         "Principals":  {
@@ -8782,7 +8782,7 @@
         "Path":  "\\Microsoft\\Windows\\WOF\\",
         "Description":  "This task supports the WIM Boot by performing background actions on behalf of the OS.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\WofTasks.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\WofTasks.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\WOF\\WIM-Hash-Management"
                              },
         "Principals":  {
@@ -8818,7 +8818,7 @@
         "Path":  "\\Microsoft\\Windows\\WOF\\",
         "Description":  "This task supports the WIM Boot by performing background actions on behalf of the OS.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\WofTasks.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\WofTasks.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\WOF\\WIM-Hash-Validation"
                              },
         "Principals":  {
@@ -8853,7 +8853,7 @@
         "Path":  "\\Microsoft\\Windows\\Work Folders\\",
         "Description":  "This task initiates synchronization of Work Folders partnerships when a user logs onto the system.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\WorkFoldersShell.dll,-18001)",
+                                 "Author":  "$(@%WINDIR%\\system32\\WorkFoldersShell.dll,-18001)",
                                  "URI":  "\\Microsoft\\Windows\\Work Folders\\Work Folders Logon Synchronization"
                              },
         "Principals":  {
@@ -8886,7 +8886,7 @@
         "Path":  "\\Microsoft\\Windows\\Work Folders\\",
         "Description":  "This task initiates maintenance work required for on-going good performance of data synchronization of Work Folders partnerships.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%systemroot%\\system32\\WorkFoldersShell.dll,-18005)",
+                                 "Author":  "$(@%WINDIR%\\system32\\WorkFoldersShell.dll,-18005)",
                                  "URI":  "\\Microsoft\\Windows\\Work Folders\\Work Folders Maintenance Work"
                              },
         "Principals":  {
@@ -8959,7 +8959,7 @@
                          }
                      ],
         "Actions":  {
-                        "Command":  "%SystemRoot%\\System32\\dsregcmd.exe",
+                        "Command":  "%WINDIR%\\System32\\dsregcmd.exe",
                         "Arguments":  "$(Arg0) $(Arg1) $(Arg2)",
                         "Type":  "Exec"
                     }
@@ -8969,7 +8969,7 @@
         "Path":  "\\Microsoft\\Windows\\Workplace Join\\",
         "Description":  "Sync device attributes to Microsoft Entra ID.",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\dsregtask.dll,-600)",
+                                 "Author":  "$(@%WINDIR%\\system32\\dsregtask.dll,-600)",
                                  "URI":  "\\Microsoft\\Windows\\Workplace Join\\Device-Sync"
                              },
         "Principals":  {
@@ -9032,7 +9032,7 @@
                          }
                      ],
         "Actions":  {
-                        "Command":  "%SystemRoot%\\System32\\dsregcmd.exe",
+                        "Command":  "%WINDIR%\\System32\\dsregcmd.exe",
                         "Arguments":  "/checkrecovery",
                         "Type":  "Exec"
                     }
@@ -9042,7 +9042,7 @@
         "Path":  "\\Microsoft\\Windows\\WwanSvc\\",
         "Description":  "Background task for performing per user and web interactions",
         "RegistrationInfo":  {
-                                 "Author":  "$(@%SystemRoot%\\system32\\wifitask.exe,-1)",
+                                 "Author":  "$(@%WINDIR%\\system32\\wifitask.exe,-1)",
                                  "URI":  "\\Microsoft\\Windows\\WwanSvc\\NotificationTask"
                              },
         "Principals":  {
@@ -9067,7 +9067,7 @@
                          "Type":  "WnfStateChangeTrigger"
                      },
         "Actions":  {
-                        "Command":  "%SystemRoot%\\System32\\WiFiTask.exe",
+                        "Command":  "%WINDIR%\\System32\\WiFiTask.exe",
                         "Arguments":  "wwan",
                         "Type":  "Exec"
                     }

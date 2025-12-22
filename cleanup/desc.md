@@ -59,25 +59,36 @@ If it's been fewer than 10 days since you upgraded to Windows, your previous ver
 ```
 > https://support.microsoft.com/en-us/windows/delete-your-previous-version-of-windows-f8b26680-e083-c710-b757-7567d69dbb74
 
-
 # SRUM Data
 
 Deletes the SRUM database file, which tracks app, service, and network usage.
 
 Location:
 ```bat
-%windir%\System32\sru
+%WINDIR%\System32\sru
+```
+Paths removed:
+```text
+%WINDIR%\System32\sru\SRUDB.dat
 ```
 Read the SRUM data:
 > https://github.com/MarkBaggett/srum-dump
 
 # DirectX Shader Cache
 
-Clears the DirectX caches and any vendor caches (NVIDIA `DXCache`/`GLCache`/`NV_Cache`, AMD `DXCache`, Intel `DXCache`). Clearing the cache forces shaders to be recompiled the next time an application starts. Expect a short period of shader compilation stutter immediately after cleaning.
+Clears the DirectX cache and NVIDIA caches used for shader compilation. Clearing the cache forces shaders to be recompiled the next time an application starts. Expect a short period of shader compilation stutter immediately after cleaning.
 
 Remember to temporarily set `Shader Cache Size` to `Disabled`, use the option, then return it to `Unlimited` so the driver use the files.
 
 ![](https://github.com/nohuto/win-config/blob/main/nvidia/images/shadercache.png?raw=true)
+
+Paths removed:
+```text
+%LOCALAPPDATA%\D3DSCache
+%LOCALAPPDATA%\NVIDIA\DXCache
+%LOCALAPPDATA%\NVIDIA\GLCache
+%LOCALAPPDATA%\NVIDIA Corporation\NV_Cache
+```
 
 # Recycle Bin
 
@@ -85,6 +96,10 @@ Empties the recycle bin for every mounted drive. Windows stores deleted files pe
 
 ```powershell
 C:\$Recycle.Bin\S-<user-id>
+```
+Command used:
+```powershell
+Clear-RecycleBin -Force
 ```
 
 # Shadow Copies
@@ -97,29 +112,67 @@ vssadmin list shadows /for=<ForVolumeSpec> /shadow=<ShadowID>
 `<ForVolumeSpec>` -> Volume
 `<ShadowID>` -> Shadow copy specified by ShadowID
 
+Command used:
+```cmd
+vssadmin delete shadows /all /quiet
+```
+
 # Background History
 
 The personalization window keeps the last five wallpaper paths in `HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Wallpapers` (`BackgroundHistoryPath0-4`) and cached copies under `%AppData%\Microsoft\Windows\Themes\CachedFiles`.
+
+# MUI Cache
+
+Clears per user MUI cache entries that store resolved display names for executables, shortcuts, and shell items. Windows recreates these entries as programs are launched.
+
+Registry paths removed:
+```text
+HKCU\Software\Microsoft\Windows\ShellNoRoam\MUICache
+HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache
+```
 
 # Font Cache
 
 The font cache is a file or set of files to manage and display the installed fonts so they load faster. Sometimes the font cache may become corrupted and cause fonts to not rendering properly, or displaying invalid characters. If not having such issues there's no point in clearing it.
 
 ```powershell
-"%WinDir%\\ServiceProfiles\\LocalService\\AppData\\Local\\FontCache\\*FontCache*", "%WinDir%\\System32\\FNTCACHE.DAT"
+"%WINDIR%\\ServiceProfiles\\LocalService\\AppData\\Local\\FontCache\\*FontCache*", "%WINDIR%\\System32\\FNTCACHE.DAT"
 ```
+
+The cleanup stops the `FontCache` service, deletes cache files, then Windows rebuilds the cache on next launch.
 
 # Temporary Internet Files
 
-Legacy WinINet consumers (Explorer, old Control Panel surfaces, webviews inside installers, etc.) still use `%LOCALAPPDATA%\Microsoft\Windows\INetCache`, `%LOCALAPPDATA%\Microsoft\Windows\INetCookies`, `%LOCALAPPDATA%\Microsoft\Windows\WebCache`, `%LOCALAPPDATA%\Microsoft\Windows\History`. Expect the first launch of an affected app to take longer while it rebuilds HTTP caches.
+Legacy WinINet consumers (Explorer, old Control Panel surfaces, webviews inside installers, etc.) still use these caches. Expect the first launch of an affected app to take longer while it rebuilds HTTP caches.
+
+Paths removed:
+```text
+%LOCALAPPDATA%\Microsoft\Windows\INetCache\*
+%LOCALAPPDATA%\Microsoft\Windows\INetCookies\*
+%LOCALAPPDATA%\Microsoft\Windows\WebCache\*
+%LOCALAPPDATA%\Microsoft\Windows\Temporary Internet Files\*
+```
 
 # Delivery Optimization Files
 
-Delivery Optimization (DoSvc) stores update files under `C:\Windows\SoftwareDistribution\DeliveryOptimization` and uses `C:\ProgramData\Microsoft\Network\Downloader` for the BITS session data. The option stops DoSvc to delete the files, but won't start it as it's not recommended to have it enabled anyway.
+Delivery Optimization (DoSvc) stores update files under `%WINDIR%\SoftwareDistribution\DeliveryOptimization`, uses `%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization` for cache metadata, and `%PROGRAMDATA%\Microsoft\Network\Downloader` for the BITS session data. The option stops DoSvc to delete the files, but won't start it as it's not recommended to have it enabled anyway.
+
+Paths removed:
+```text
+%WINDIR%\SoftwareDistribution\DeliveryOptimization\*
+%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\*
+%PROGRAMDATA%\Microsoft\Network\Downloader\*
+```
 
 # Temporary Files
 
 Per user temporary files are saved in `%TEMP%`, global files under `%WINDIR%\Temp`. Some installers never delete leftovers, so those can pollute the folder. Anything that is still used will be skipped.
+
+Paths removed:
+```text
+%TEMP%\*
+%WINDIR%\Temp\*
+```
 
 # Clipboard History
 
@@ -129,14 +182,29 @@ See your current clipboard content via:
 ```powershell
 Get-Clipboard
 ```
+Command used:
+```powershell
+cmd /c "echo. | clip"
+```
 
 # DNS Cache
 
 `Get-DnsClientCache` shows the resolver cache that stores recent lookups. Flushing it via `ipconfig /flushdns` can fix stale entries after moving domains or switching VPN profiles (or if editing the hosts file).
 
+Command used:
+```cmd
+ipconfig /flushdns
+```
+
 # WER Files
 
 Windows Error Reporting (WER) queues crash dumps and report metadata under `%PROGRAMDATA%\Microsoft\Windows\WER` (system) and `%LOCALAPPDATA%\Microsoft\Windows\WER` (per user). Clearing the queue removes pending uploads and archived `.wer` files.
+
+Paths removed:
+```text
+%PROGRAMDATA%\Microsoft\Windows\WER\*
+%LOCALAPPDATA%\Microsoft\Windows\WER\*
+```
 
 # Event Logs
 
@@ -149,21 +217,57 @@ wevtutil el
 
 > https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/wevtutil
 
+Command used:
+```powershell
+$logs = wevtutil el
+foreach ($log in $logs) { wevtutil cl $log | Out-Null }
+```
+
 # Windows Update Cache
 
 Troubleshooting update loops often requires resetting `%WINDIR%\SoftwareDistribution` and `%WINDIR%\System32\catroot2`. This forces Windows Update to redownload the catalog metadata.
 
+Paths removed:
+```text
+%WINDIR%\SoftwareDistribution\Download\*
+%WINDIR%\SoftwareDistribution\DataStore\*
+%WINDIR%\System32\catroot2\*
+```
+
+Services stopped first:
+```text
+bits, wuauserv, cryptsvc, msiserver
+```
+
 # Thumbnail Cache
 
-Placeholder.
+Windows recreates these automatically as thumbnails are generated.
+
+Paths removed:
+```text
+%LOCALAPPDATA%\Microsoft\Windows\Explorer\*.db
+```
 
 # Prefetch Files
 
-Placeholder.
+Prefetch files will be rebuilt over time, clearing them can temporarily slow application launches.
+
+Paths removed:
+```text
+%WINDIR%\Prefetch
+```
 
 # BSoD Memory Dump Files
 
-Placeholder.
+Removes kernel crash dump data created after a system bugcheck. Useful if you want to reclaim disk space or you have already analyzed the crash.
+
+This option clears both LiveKernelReports and `MEMORY.DMP` when present.
+
+Paths removed:
+```text
+%WINDIR%\LiveKernelReports
+%WINDIR%\MEMORY.DMP
+```
 
 # Product Key
 
@@ -171,10 +275,48 @@ Placeholder.
 
 > https://learn.microsoft.com/en-us/windows-server/get-started/activation-slmgr-vbs-options#advanced-options
 
+Command used:
+```cmd
+slmgr /cpky
+```
+
 # Downloaded Program Files
 
-Placeholder.
+Clears cached ActiveX and legacy web components used by older installers and control panel items. Modern apps typically ignore this folder, so this is generally safe to remove.
+
+Paths removed:
+```text
+%WINDIR%\Downloaded Program Files
+```
 
 # System Logs
 
-Placeholder.
+Cleans up a broad set of Windows log files (setup, component servicing, WMI, firewall, update logs, and related trace files). Use this after troubleshooting or when you want to reduce accumulated log size. This doesn't affect live event logs (see the separate Event Logs option).
+
+Paths removed:
+```c
+"%WINDIR%\\*.log",
+"%WINDIR%\\debug\\*.log",
+"%WINDIR%\\debug\\PASSWD.LOG",
+"%WINDIR%\\debug\\Setup\\UpdSh.log",
+"%WINDIR%\\debug\\UserMode\\*.log",
+"%WINDIR%\\Logs\\CBS",
+"%WINDIR%\\Logs\\DISM",
+"%WINDIR%\\Logs\\NetSetup",
+"%WINDIR%\\Logs\\SIH",
+"%WINDIR%\\Logs\\waasmedic",
+"%WINDIR%\\Microsoft.NET\\Framework\\*\\*.log",
+"%WINDIR%\\ntbtlog.txt", // bcdedit /set bootlog Yes
+"%WINDIR%\\SchedLgU.txt",
+"%WINDIR%\\security\\logs\\*.log",
+"%WINDIR%\\security\\logs\\*.old",
+"%WINDIR%\\setuplog.txt",
+"%WINDIR%\\SoftwareDistribution\\*.log",
+"%WINDIR%\\SoftwareDistribution\\DataStore\\Logs\\*",
+"%WINDIR%\\System32\\*.log",
+"%WINDIR%\\System32\\LogFiles\\setupcln",
+"%WINDIR%\\System32\\LogFiles\\WMI",
+"%WINDIR%\\System32\\wbem\\Logs\\*.log"
+```
+
+> https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/schtasks-run#remarks

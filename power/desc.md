@@ -651,7 +651,7 @@ Use the commands below, to import power plans by double-clicking them. Modify th
   "FriendlyTypeName": { "Type": "REG_SZ", "Data": "Power Plan" }
 },
 "HKCR\\.pow\\DefaultIcon": {
-  "": { "Type": "REG_EXPAND_SZ", "Data": "%%SystemRoot%%\\System32\\powercfg.cpl,-202" }
+  "": { "Type": "REG_EXPAND_SZ", "Data": "%%WINDIR%%\\System32\\powercfg.cpl,-202" }
 },
 "HKCR\\.pow\\shell\\Import\\command": {
   "": { "Type": "REG_SZ", "Data": "powercfg /import \"%%1\"" }

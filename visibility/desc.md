@@ -1247,7 +1247,7 @@ Spotlight is used to provide new pictures on your lock screen.
 
 Since `powershell.exe` has default color of white (foreground) and blue (background), some may want to change it.
 
-`ScreenColors` value, located in `HKCU\Console\%SystemRoot%_System32_WindowsPowerShell_v1.0_powershell.exe`  
+`ScreenColors` value, located in `HKCU\Console\%WINDIR%_System32_WindowsPowerShell_v1.0_powershell.exe`  
 `0-3` bit = `Foreground color`  
 `4-7` bit = `Background color`
 
@@ -1298,7 +1298,7 @@ Install the latest PowerShell for new features and improvements! https://aka.ms/
 PS C:\Users\Nohuxi>
 ```
 ```powershell
-for %%L in ("%APPDATA%\Microsoft\Windows\Start Menu\Programs\Windows PowerShell\*.lnk") do powershell -c "$s=New-Object -ComObject WScript.Shell; $lnk=$s.CreateShortcut('%%~fL'); $lnk.TargetPath='%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe'; $lnk.Arguments='-NoLogo'; $lnk.Save()"
+for %%L in ("%APPDATA%\Microsoft\Windows\Start Menu\Programs\Windows PowerShell\*.lnk") do powershell -c "$s=New-Object -ComObject WScript.Shell; $lnk=$s.CreateShortcut('%%~fL'); $lnk.TargetPath='%WINDIR%\System32\WindowsPowerShell\v1.0\powershell.exe'; $lnk.Arguments='-NoLogo'; $lnk.Save()"
 ```
 
 # Disable Theme Mouse Changes

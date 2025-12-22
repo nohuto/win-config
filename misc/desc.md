@@ -281,7 +281,7 @@ winget install M2Team.NanaZip
 
 Stops VSC to send telemetry, crash reports, disable online experiments, turn off automatic updates (manual updates), prevent fetching release notes, stop automatic extension and git repository updates, limit extension recommendations to on demand requests, and block fetching package information from online sources like NPM or Bower.
 
-```json
+```c
 [{
   // "extensions.showRecommendationsOnlyOnDemand": true,
 	"message": "This setting is deprecated. Use extensions.ignoreRecommendations setting to control recommendation notifications. Use Extensions view's visibility actions to hide Recommended view by default.",
@@ -294,7 +294,7 @@ Stops VSC to send telemetry, crash reports, disable online experiments, turn off
 }]
 ```
 ```ts
-// It exepects a string, means 0-3 are invalid
+// It exepects a string, means 0-3 are invalid (also "0"... are)
 export const enum TelemetryLevel {
 	NONE = 0, // off
 	CRASH = 1, // crash

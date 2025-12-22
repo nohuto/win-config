@@ -5980,7 +5980,7 @@ Process ID        :
 
 ==================================================
 Name              : tcpipreg
-Display Name      : @%SystemRoot%\System32\drivers\tcpipreg.sys,-10110,
+Display Name      : @%WINDIR%\System32\drivers\tcpipreg.sys,-10110,
 Status            : Started
 Startup Type      : Automatic
 ErrorControl      : Normal
