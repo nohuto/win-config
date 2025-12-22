@@ -279,16 +279,27 @@ winget install M2Team.NanaZip
 
 # Disable VSC Telemetry
 
-**Caution:** The revert currently deletes `settings.json`. Means any settings you used beside the ones which get applied using this option will get removed.
-
 Stops VSC to send telemetry, crash reports, disable online experiments, turn off automatic updates (manual updates), prevent fetching release notes, stop automatic extension and git repository updates, limit extension recommendations to on demand requests, and block fetching package information from online sources like NPM or Bower.
+
+```json
+[{
+  // "extensions.showRecommendationsOnlyOnDemand": true,
+	"message": "This setting is deprecated. Use extensions.ignoreRecommendations setting to control recommendation notifications. Use Extensions view's visibility actions to hide Recommended view by default.",
+
+  // "telemetry.enableCrashReporter": false,
+	"message": "If this setting is false, no telemetry will be sent regardless of the new setting's value. Deprecated due to being combined into the `#telemetry.telemetryLevel#` setting.",
+
+  // "telemetry.enableTelemetry": false,
+	"message": "If this setting is false, no telemetry will be sent regardless of the new setting's value. Deprecated in favor of the `#telemetry.telemetryLevel#` setting.",
+}]
+```
 ```ts
+// It exepects a string, means 0-3 are invalid
 export const enum TelemetryLevel {
-	NONE = 0,
-	CRASH = 1,
-	ERROR = 2,
-	USAGE = 3
-}
+	NONE = 0, // off
+	CRASH = 1, // crash
+	ERROR = 2, // error
+	USAGE = 3 // all
 ```
 ```json
 "config.autofetch": "When set to true, commits will automatically be fetched from the default remote of the current Git repository. Setting to `all` will fetch from all remotes.",
