@@ -68,7 +68,7 @@ Location:
 %WINDIR%\System32\sru
 ```
 Paths removed:
-```text
+```c
 %WINDIR%\System32\sru\SRUDB.dat
 ```
 Read the SRUM data:
@@ -83,7 +83,7 @@ Remember to temporarily set `Shader Cache Size` to `Disabled`, use the option, t
 ![](https://github.com/nohuto/win-config/blob/main/nvidia/images/shadercache.png?raw=true)
 
 Paths removed:
-```text
+```c
 %LOCALAPPDATA%\D3DSCache
 %LOCALAPPDATA%\NVIDIA\DXCache
 %LOCALAPPDATA%\NVIDIA\GLCache
@@ -119,14 +119,24 @@ vssadmin delete shadows /all /quiet
 
 # Background History
 
-The personalization window keeps the last five wallpaper paths in `HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Wallpapers` (`BackgroundHistoryPath0-4`) and cached copies under `%AppData%\Microsoft\Windows\Themes\CachedFiles`.
+The personalization window keeps the last five wallpaper paths in `HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Wallpapers` and cached copies under `%AppData%\Microsoft\Windows\Themes\CachedFiles`.
+
+```json
+"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Wallpapers": {
+  "BackgroundHistoryPath0": { "Action": "deletevalue" },
+  "BackgroundHistoryPath1": { "Action": "deletevalue" },
+  "BackgroundHistoryPath2": { "Action": "deletevalue" },
+  "BackgroundHistoryPath3": { "Action": "deletevalue" },
+  "BackgroundHistoryPath4": { "Action": "deletevalue" }
+}
+```
 
 # MUI Cache
 
 Clears per user MUI cache entries that store resolved display names for executables, shortcuts, and shell items. Windows recreates these entries as programs are launched.
 
 Registry paths removed:
-```text
+```c
 HKCU\Software\Microsoft\Windows\ShellNoRoam\MUICache
 HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache
 ```
@@ -146,7 +156,7 @@ The cleanup stops the `FontCache` service, deletes cache files, then Windows reb
 Legacy WinINet consumers (Explorer, old Control Panel surfaces, webviews inside installers, etc.) still use these caches. Expect the first launch of an affected app to take longer while it rebuilds HTTP caches.
 
 Paths removed:
-```text
+```c
 %LOCALAPPDATA%\Microsoft\Windows\INetCache\*
 %LOCALAPPDATA%\Microsoft\Windows\INetCookies\*
 %LOCALAPPDATA%\Microsoft\Windows\WebCache\*
@@ -158,7 +168,7 @@ Paths removed:
 Delivery Optimization (DoSvc) stores update files under `%WINDIR%\SoftwareDistribution\DeliveryOptimization`, uses `%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization` for cache metadata, and `%PROGRAMDATA%\Microsoft\Network\Downloader` for the BITS session data. The option stops DoSvc to delete the files, but won't start it as it's not recommended to have it enabled anyway.
 
 Paths removed:
-```text
+```c
 %WINDIR%\SoftwareDistribution\DeliveryOptimization\*
 %WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\*
 %PROGRAMDATA%\Microsoft\Network\Downloader\*
@@ -169,7 +179,7 @@ Paths removed:
 Per user temporary files are saved in `%TEMP%`, global files under `%WINDIR%\Temp`. Some installers never delete leftovers, so those can pollute the folder. Anything that is still used will be skipped.
 
 Paths removed:
-```text
+```c
 %TEMP%\*
 %WINDIR%\Temp\*
 ```
@@ -201,7 +211,7 @@ ipconfig /flushdns
 Windows Error Reporting (WER) queues crash dumps and report metadata under `%PROGRAMDATA%\Microsoft\Windows\WER` (system) and `%LOCALAPPDATA%\Microsoft\Windows\WER` (per user). Clearing the queue removes pending uploads and archived `.wer` files.
 
 Paths removed:
-```text
+```c
 %PROGRAMDATA%\Microsoft\Windows\WER\*
 %LOCALAPPDATA%\Microsoft\Windows\WER\*
 ```
@@ -228,14 +238,14 @@ foreach ($log in $logs) { wevtutil cl $log | Out-Null }
 Troubleshooting update loops often requires resetting `%WINDIR%\SoftwareDistribution` and `%WINDIR%\System32\catroot2`. This forces Windows Update to redownload the catalog metadata.
 
 Paths removed:
-```text
+```c
 %WINDIR%\SoftwareDistribution\Download\*
 %WINDIR%\SoftwareDistribution\DataStore\*
 %WINDIR%\System32\catroot2\*
 ```
 
 Services stopped first:
-```text
+```c
 bits, wuauserv, cryptsvc, msiserver
 ```
 
@@ -244,7 +254,7 @@ bits, wuauserv, cryptsvc, msiserver
 Windows recreates these automatically as thumbnails are generated.
 
 Paths removed:
-```text
+```c
 %LOCALAPPDATA%\Microsoft\Windows\Explorer\*.db
 ```
 
@@ -253,7 +263,7 @@ Paths removed:
 Prefetch files will be rebuilt over time, clearing them can temporarily slow application launches.
 
 Paths removed:
-```text
+```c
 %WINDIR%\Prefetch
 ```
 
@@ -264,7 +274,7 @@ Removes kernel crash dump data created after a system bugcheck. Useful if you wa
 This option clears both LiveKernelReports and `MEMORY.DMP` when present.
 
 Paths removed:
-```text
+```c
 %WINDIR%\LiveKernelReports
 %WINDIR%\MEMORY.DMP
 ```
@@ -285,7 +295,7 @@ slmgr /cpky
 Clears cached ActiveX and legacy web components used by older installers and control panel items. Modern apps typically ignore this folder, so this is generally safe to remove.
 
 Paths removed:
-```text
+```c
 %WINDIR%\Downloaded Program Files
 ```
 
