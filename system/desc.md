@@ -666,9 +666,9 @@ CiSystemResponsiveness = 10 * (value / 10);
 
 ## Tasks Details
 
-![](https://github.com/nohuto/win-config/blob/main/power/images/mmcss1.png?raw=true)
-![](https://github.com/nohuto/win-config/blob/main/power/images/mmcss2.png?raw=true)
-![](https://github.com/nohuto/win-config/blob/main/power/images/mmcss3.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/mmcss1.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/mmcss2.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/mmcss3.png?raw=true)
 
 ## NoLazyMode Details
 
@@ -687,7 +687,7 @@ It sets `NoLazyMode` to `0`, don't set it to `1`. This is currently more likely 
 > https://github.com/djdallmann/GamingPCSetup/blob/master/CONTENT/RESEARCH/WINSERVICES/README.md#q-what-the-heck-is-nolazymode-is-it-real-what-does-it-do
 > https://github.com/djdallmann/GamingPCSetup/blob/master/CONTENT/RESEARCH/WINSERVICES/README.md#q-does-the-mmcss-alwayson-registry-setting-exist
 
-![](https://github.com/nohuto/win-config/blob/main/power/images/nolazymode.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/nolazymode.png?raw=true)
 
 # Disable Scheduled Tasks
 
