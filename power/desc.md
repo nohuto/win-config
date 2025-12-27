@@ -752,25 +752,6 @@ Storport Idle Power Management (IPM) isn't enabled by default. It can be enabled
 > https://github.com/nohuto/win-registry/blob/main/records/pci.txt  
 > [power/assets | storport.c](https://github.com/nohuto/win-config/blob/main/power/assets/storport.c)
 
-# NoLazyMode
-
-`NoLazyMode` = `0` (default)
-`LazyModeTimeout` = `1000000` (default)
-
-
-It sets `NoLazyMode` to `0`, don't set it to `1`. This is currently more likely a placeholder for future documentation. Instead of using `NoLazyMode`, change `LazyModeTimeout`.
-```
-\Registry\Machine\SOFTWARE\Microsoft\Windows NT\CurrentVersion\MultiMedia\systemprofile : NoLazyMode
-```
-`AlwaysOn` value exists in W7 and W8, but doesn't exist in W10 and W11 anymore.
-
-"The screenshot below demonstrates some of the initial differences between each mode enabled (0x1) vs off (x0, Non-Present), during these tests MMCSS tasks were engaged and the same pattern reoccurred each time e.g. the Idle related conditions were no longer present leaving only System Responsiveness, Deep Sleep and Realtime MMCSS scheduler task results."
-
-> https://github.com/djdallmann/GamingPCSetup/blob/master/CONTENT/RESEARCH/WINSERVICES/README.md#q-what-the-heck-is-nolazymode-is-it-real-what-does-it-do
-> https://github.com/djdallmann/GamingPCSetup/blob/master/CONTENT/RESEARCH/WINSERVICES/README.md#q-does-the-mmcss-alwayson-registry-setting-exist
-
-![](https://github.com/nohuto/win-config/blob/main/power/images/nolazymode.png?raw=true)
-
 # Disable Timer Coalescing
 
 "CoalesecingTimerinterval is a computer system energy-saving technique that reduces CPU power consumption by reducing the precision of software timers to allow the synchronization of process wake-ups, minimizing the number of times the CPU is forced to perform the relatively power-costly operation of entering and exiting idle states"

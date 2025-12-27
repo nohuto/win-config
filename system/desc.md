@@ -595,7 +595,28 @@ for ($i=0; $i -le 271; $i++) {
 
 > [system/assets | Win32PrioritySeparation.pdf](https://github.com/nohuto/win-config/blob/main/system/assets/Win32PrioritySeparation.pdf)
 
-# System Responsiveness
+# MMCSS Values
+
+All values are read via `CiConfigReadDWORD()`, so the type is DWORD for all listed ones. CiConfigInitializeFromRegistry probably handles the `\Tasks\` values.
+
+See [system/assets | mmcss-CiConfigInitialize.c](https://github.com/nohuto/win-config/blob/main/system/assets/mmcss-CiConfigInitialize.c) for notes.
+
+```c
+"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\multimedia\\systemprofile";
+    "SystemResponsiveness" = 100; // addr 0x1C0011090LL, see text below for details
+    "NetworkThrottlingIndex" = 10; // addr 0x1C00110A0LL, 0 = 1, 1..70 keep, 71..0xFFFFFFFE -> 70, 0xFFFFFFFF (CsInitialize skips CiNdisThrottleWorkItem allocation and CiNdisOpenDevice) keep
+    "NoLazyMode" = 0; // addr 0x1C0011080LL, non-zero = true, see below for more
+    "IdleDetectionCycles" = 2; // addr 0x1C00110B0LL, valid 1..31 else -> 2
+    "LazyModeTimeout" = 1000000; // addr 0x1C00110C0LL, 0 -> 1000000
+    "SchedulerTimerResolution" = 10000; // addr 0x1C00110D0LL, >10000 -> 10000
+    "SchedulerPeriod" = 100000; // addr 0x1C00110E0LL, valid 50000..1000000 else -> 100000
+    "MaxThreadsPerProcess" = 32; // addr 0x1C00110F0LL, valid 8..128 else -> 32
+    "MaxThreadsTotal" = 256; // addr 0x1C0011100LL, valid 64..65535 else -> 256
+```
+
+> https://github.com/nohuto/win-registry/blob/main/records/MultiMedia.txt
+
+## SystemResponsiveness Details
 
 "Determines the percentage of CPU resources that should be guaranteed to low-priority tasks. For example, if this value is 20, then 20% of CPU resources are reserved for low-priority tasks. Note that values that are not evenly divisible by 10 are rounded down to the nearest multiple of 10. Values below 10 and above 100 are clamped to 20. A value of 100 disables MMCSS (driver returns `STATUS_SERVER_DISABLED`)." (`mmcss.sys`)
 
@@ -643,8 +664,24 @@ CiSystemResponsiveness = 10 * (value / 10);
 > 100  -> 20   (fallback)
 ```
 
-> https://github.com/nohuto/win-registry/blob/main/records/MultiMedia.txt  
-> [system/assets | sysresp-CiConfigInitialize.c](https://github.com/nohuto/win-config/blob/main/system/assets/sysresp-CiConfigInitialize.c)
+## NoLazyMode Details
+
+`NoLazyMode` = `0` (default)
+`LazyModeTimeout` = `1000000` (default)
+
+
+It sets `NoLazyMode` to `0`, don't set it to `1`. This is currently more likely a placeholder for future documentation. Instead of using `NoLazyMode`, change `LazyModeTimeout`.
+```
+\Registry\Machine\SOFTWARE\Microsoft\Windows NT\CurrentVersion\MultiMedia\systemprofile : NoLazyMode
+```
+`AlwaysOn` value exists in W7 and W8, but doesn't exist in W10 and W11 anymore.
+
+"The screenshot below demonstrates some of the initial differences between each mode enabled (0x1) vs off (x0, Non-Present), during these tests MMCSS tasks were engaged and the same pattern reoccurred each time e.g. the Idle related conditions were no longer present leaving only System Responsiveness, Deep Sleep and Realtime MMCSS scheduler task results."
+
+> https://github.com/djdallmann/GamingPCSetup/blob/master/CONTENT/RESEARCH/WINSERVICES/README.md#q-what-the-heck-is-nolazymode-is-it-real-what-does-it-do
+> https://github.com/djdallmann/GamingPCSetup/blob/master/CONTENT/RESEARCH/WINSERVICES/README.md#q-does-the-mmcss-alwayson-registry-setting-exist
+
+![](https://github.com/nohuto/win-config/blob/main/power/images/nolazymode.png?raw=true)
 
 # Disable Scheduled Tasks
 
@@ -1020,7 +1057,7 @@ Get a list of available timezones with more detail via:
 Get-TimeZone -ListAvailable
 ```
 
-# Enable Game Mode
+# Game Mode
 
 Game Mode should: "Prevents Windows Update from performing driver installations and sending restart notifications" Does it work? Not really, in my experience it tends to lower the priority and prevent driver updates (correct me if you've experienced otherwise) - It may also mess with process/thread priorities. Not all games support it, generally leave it enabled or benchmark the differences in equal scenarios.
 
