@@ -857,6 +857,8 @@ ERROR_VOLUME_NOT_SUPPORT_EFS = 0x8007177E;
 
 VBS won't work if Hyper-V is disabled. HVCI = hypervisor-protected code integrity.
 
+Hypervisor-Based Code Integrity (HVCI) and Kernel-Mode Code Integrity (KMCI) power `Device Guard`, LSA (Lsass.exe) and isolated LSA (LsaIso.exe) power `Credential Guard`.
+
 "Virtualization-based security, or VBS, uses hardware virtualization and the Windows hypervisor to create an isolated virtual environment that becomes the root of trust of the OS that assumes the kernel can be compromised. Windows uses this isolated environment to host a number of security solutions, providing them with greatly increased protection from vulnerabilities in the operating system, and preventing the use of malicious exploits which attempt to defeat protections. VBS enforces restrictions to protect vital system and operating system resources, or to protect security assets such as authenticated user credentials.
 
 One such example security solution is memory integrity, which protects and hardens Windows by running kernel mode code integrity within the isolated virtual environment of VBS. Kernel mode code integrity is the Windows process that checks all kernel mode drivers and binaries before they're started, and prevents unsigned or untrusted drivers or system files from being loaded into system memory. Memory integrity also restricts kernel memory allocations that could be used to compromise the system, ensuring that kernel memory pages are only made executable after passing code integrity checks inside the secure runtime environment, and executable pages themselves are never writable. That way, even if there are vulnerabilities like a buffer overflow that allow malware to attempt to modify memory, executable code pages cannot be modified, and modified memory cannot be made executable."
@@ -883,6 +885,13 @@ You can disable VBS for a VM with:
 ```powershell
 Set-VMSecurity -VMName <VMName> -VirtualizationBasedSecurityOptOut $true
 ```
+
+Details on device/credential guard:
+
+![](https://github.com/nohuto/win-config/blob/main/security/images/vbs-guards1.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/security/images/vbs-guards2.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/security/images/vbs-guards3.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/security/images/vbs-guards4.png?raw=true)
 
 ```json
 {

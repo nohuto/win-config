@@ -618,6 +618,8 @@ See [system/assets | mmcss-CiConfigInitialize.c](https://github.com/nohuto/win-c
 
 ## SystemResponsiveness Details
 
+By default, multimedia threads get 80 percent of the CPU time available, while other threads receive 20 percent.
+
 "Determines the percentage of CPU resources that should be guaranteed to low-priority tasks. For example, if this value is 20, then 20% of CPU resources are reserved for low-priority tasks. Note that values that are not evenly divisible by 10 are rounded down to the nearest multiple of 10. Values below 10 and above 100 are clamped to 20. A value of 100 disables MMCSS (driver returns `STATUS_SERVER_DISABLED`)." (`mmcss.sys`)
 
 > https://github.com/MicrosoftDocs/win32/blob/docs/desktop-src/ProcThread/multimedia-class-scheduler-service.md#registry-settings
@@ -665,6 +667,28 @@ CiSystemResponsiveness = 10 * (value / 10);
 ```
 
 ## Tasks Details
+
+Existing tasks (OEMs can add additional tasks):
+- Audio
+- Capture
+- Distribution
+- Games (unused)
+- Playback
+- Pro Audio
+- Window Manager
+
+| Value | Format | Possible values |
+| --- | --- | --- |
+| **Affinity** | **REG\_DWORD** | A bitmask that indicates the processor affinity. Both 0x00 and 0xFFFFFFFF indicate that processor affinity is not used. |
+| **Background Only** | **REG\_SZ**    | Indicates whether this is a background task (no user interface). The threads of a background task do not change because of a change in window focus. This value can be set to True or False. |
+| **BackgroundPriority** | **REG\_DWORD** | The background priority. The range of values is 1-8. |
+| **Clock Rate** | **REG\_DWORD** | A hint used by MMCSS to determine the granularity of processor resource scheduling.**Windows Server 2008 and Windows Vista:** The maximum guaranteed clock rate the system uses if a thread joins this task, in 100-nanosecond intervals. Starting with Windows 7 and Windows Server 2008 R2, this guarantee was removed to reduce system power consumption.<br/> |
+| **GPU Priority** | **REG\_DWORD** | The GPU priority. The range of values is 0-31. This priority is not yet used. |
+| **Priority** | **REG\_DWORD** | The task priority. The range of values is 1 (low) to 8 (high).For tasks with a **Scheduling Category** of High, this value is always treated as 2.<br/> |
+| **Scheduling Category** | **REG\_SZ**    | The scheduling category. This value can be set to High, Medium, or Low. |
+| **SFIO Priority** | **REG\_SZ** | The scheduled I/O priority. This value can be set to Idle, Low, Normal, or High. This value is not used. |
+
+> https://github.com/MicrosoftDocs/win32/blob/docs/desktop-src/ProcThread/multimedia-class-scheduler-service.md#registry-settings
 
 ![](https://github.com/nohuto/win-config/blob/main/system/images/mmcss1.png?raw=true)
 ![](https://github.com/nohuto/win-config/blob/main/system/images/mmcss2.png?raw=true)
