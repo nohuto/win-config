@@ -664,6 +664,12 @@ CiSystemResponsiveness = 10 * (value / 10);
 > 100  -> 20   (fallback)
 ```
 
+## Tasks Details
+
+![](https://github.com/nohuto/win-config/blob/main/power/images/mmcss1.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/power/images/mmcss2.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/power/images/mmcss3.png?raw=true)
+
 ## NoLazyMode Details
 
 `NoLazyMode` = `0` (default)
