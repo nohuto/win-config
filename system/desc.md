@@ -129,7 +129,7 @@ The idle function shown below only treats entries whose low bits equal `1` as wa
 
 Before the processor enters idle, 23H2 uses [`KePrepareNonClockOwnerForIdle`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KePrepareNonClockOwnerForIdle.c) in per CPU scheduling, while 25H2 uses [`KePrepareClockTimerForIdle`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-25H2/ntoskrnl/KePrepareClockTimerForIdle.c).
 
-With per CPU clock tick scheduling disabled, `KiUpdateRunTime` doesn't program `KClockTimerQuantumEnd` & the clock owner uses [`KiForwardTick`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KiForwardTick.c) to send ticks to the other processors instead, so their quantum checks don't depend on that per CPU timer being rearmed. See the '[Per CPU Clock Tick Scheduling Disabled](https://noverse.dev/docs/win-config/system/priority-separation/#per-cpu-clock-tick-scheduling-disabled)' capture.
+If per CPU clock tick scheduling are disabled, `KiUpdateRunTime` doesn't program `KClockTimerQuantumEnd` & the clock owner uses [`KiForwardTick`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KiForwardTick.c) to send ticks to the other processors, so their quantum checks don't depend on that per CPU timer being rearmed (see '[Per CPU Clock Tick Scheduling Disabled](https://noverse.dev/docs/win-config/system/priority-separation/#per-cpu-clock-tick-scheduling-disabled)' capture).
 
 You can see whether per CPU scheduling is used via ([Timer Expiration, EnablePerCpuClockTickScheduling](https://noverse.dev/docs/win-config/system/timer-expiration/#enablepercpuclocktickscheduling) for more details):
 
@@ -3427,7 +3427,7 @@ Everything listed below is based on personal findings, mistakes may exist.
     "PoCleanShutdownFlags" = 0; // PopShutdownCleanly
     "PowerOffFrozenProcessors" = 1; // KiPowerOffFrozenProcessors, seems unused (but initialized), was probably used to "power off" processors that are frozen (see windbg !frozen)
     "ReadyTimeTicks" = 6; // KiNormalPriorityBoostReadyTimeTicks
-    "RebalanceMinPriority" = 1; // if _KTHREAD.Priority >= KiRebalanceMinPriority (or the current _KPRCB is soft parked), its scheduling group has CPU time available & _KTHREAD.Affinity allows an idle CPU in _KSCHEDULER_SUBNODE.IdleNonParkedCpuSet, KiQueueReadyThread continues through KiEnterDeferredReadyState/KiDeferredReadyThread/KiDeferredReadySingleThread for processor selection 
+    "RebalanceMinPriority" = 1; // if _KTHREAD.Priority >= KiRebalanceMinPriority (or current _KPRCB.IdleState has 0x08 set, means that processor is soft parked), its scheduling group has CPU time available & _KTHREAD.Affinity allows an idle CPU in _KSCHEDULER_SUBNODE.IdleNonParkedCpuSet, KiQueueReadyThread continues through KiEnterDeferredReadyState/KiDeferredReadyThread/KiDeferredReadySingleThread for processor selection 
                                 // otherwise KiAddThreadToReadyQueue uses the current CPU
                                 // default uses all threads (prio 1-31) excluding zero page thread
     "ReservedCpuSets" = 0; // KiReservedCpuSets
