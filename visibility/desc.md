@@ -46,12 +46,9 @@ typedef struct {
 
 Whenever the same settings are available in `ShellState`, but also have their own value in `Explorer\Advanced`, the state in `Advanced` seems to be used, changing a setting via e.g. explorer causes both values to get edited:
 
-```c
-// IconsOnly = 1
-ShellState	REG_BINARY	24 00 00 00 3e 20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 13 00 00 00 00 00 00 00 52 00 00 00			36
-
-// IconsOnly = 0
-ShellState	REG_BINARY	24 00 00 00 3e 20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 13 00 00 00 00 00 00 00 42 00 00 00			36
+```powershell
+ShellState	REG_BINARY	24 00 00 00 3e 20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 13 00 00 00 00 00 00 00 52 00 00 00			36 # IconsOnly = 1
+ShellState	REG_BINARY	24 00 00 00 3e 20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 13 00 00 00 00 00 00 00 42 00 00 00			36 # IconsOnly = 0
 ```
 
 Means whenever modifying the value manually, the related value in `Explorer\Advanced` must also be changed.
