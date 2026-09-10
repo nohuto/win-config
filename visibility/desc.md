@@ -66,7 +66,7 @@ Means whenever modifying the value manually, the related value in `Explorer\Adva
 | `0x14` | 4 | `iSortDirection` | `1` ascending, `-1` descending |
 | `0x18` | 4 | `version` | Unused |
 | `0x1C` | 4 | `uNotUsed` | Unused |
-| `0x20` | 4 | Secondary flags | Bits `0-6` below, bits `7-15` spare and bits `16-31` padding |
+| `0x20` | 4 | Secondary flags | Bits `0-6` below, bits `7-15` fSpareFlags & bits `16-31` padding |
 
 All members within the primary & secondary flags are bools.
 
