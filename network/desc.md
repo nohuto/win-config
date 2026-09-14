@@ -89,9 +89,11 @@ Some additional info about HTTP request methods you may want to know:
 
 I personally use [AdGuard](https://adguard-dns.io/), since it's possible to add custom blocklists/user rules (and it supports all lists of Hagezi while [NextDNS](https://my.nextdns.io/) only supports the main ones), while [NextDNS](https://my.nextdns.io/) only provides a specific set of blocklists and doesn't allow custom rules (there're also several other reasons why I wouldn't use their private DNS at the moment, e.g.: their TIF isn't public ([and many other ones](https://github.com/nextdns/metadata))), they didn't solve issues which got reported months ago (), they use lists that aren't actively maintained by default (they also don't update [obselete links](https://github.com/nextdns/blocklists/tree/main/blocklists), causing 10 empty blocklists), they don't look into their GitHub issues (e.g. nextdns/blocklists). Use 'Configuration Profile' instead of downloading the app, you can configure the profile using the links below.
 
-## Blocklist Manager
+## [Blocklist Manager](https://github.com/nohuto/win-config/blob/main/network/assets/Blocklist-Manger.ps1)
 
-This is an old project of mine ([preview video]()), which lets you select one or more blocklists (hosts or URLs, for e.g. UBO). The hosts file is a local DNS override used to block domains or redirect websites (`C:\Windows\System32\drivers\etc\hosts`).
+This is an old project of mine ([preview video](https://github.com/nohuto/win-config/blob/main/network/assets/blocklist-mgr/blocklist-mgr.mp4)), which lets you select one or more blocklists (hosts or URLs, for e.g. UBO). The hosts file is a local DNS override used to block domains or redirect websites (`C:\Windows\System32\drivers\etc\hosts`).
+
+- Download: [Blocklist-Manager.ps1](https://github.com/nohuto/win-config/blob/main/network/assets/Blocklist-Manger.ps1)
 
 Examples:
 
