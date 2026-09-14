@@ -94,7 +94,7 @@ All members within the primary & secondary flags are bools.
 | Bit | Member | Meaning | `Explorer\Advanced` Value |
 | --- | --- | --- | --- |
 | 0 | `fSepProcess` | Launch folder windows in a separate process | `SeparateProcess` |
-| 1 | `fStartPanelOn` | Use the Windows XP style Start menu | - |
+| 1 | `fStartPanelOn` | Use the Windows XP style start menu | - |
 | 2 | `fShowStartPage` | Unused | - |
 | 3 | `fAutoCheckSelect` | Use check boxes to select items | `AutoCheckSelect` |
 | 4 | `fIconsOnly` | Always show icons, never thumbnails | `IconsOnly` |

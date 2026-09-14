@@ -89,6 +89,57 @@ Some additional info about HTTP request methods you may want to know:
 
 I personally use [AdGuard](https://adguard-dns.io/), since it's possible to add custom blocklists/user rules (and it supports all lists of Hagezi while [NextDNS](https://my.nextdns.io/) only supports the main ones), while [NextDNS](https://my.nextdns.io/) only provides a specific set of blocklists and doesn't allow custom rules (there're also several other reasons why I wouldn't use their private DNS at the moment, e.g.: their TIF isn't public ([and many other ones](https://github.com/nextdns/metadata))), they didn't solve issues which got reported months ago (), they use lists that aren't actively maintained by default (they also don't update [obselete links](https://github.com/nextdns/blocklists/tree/main/blocklists), causing 10 empty blocklists), they don't look into their GitHub issues (e.g. nextdns/blocklists). Use 'Configuration Profile' instead of downloading the app, you can configure the profile using the links below.
 
+## Blocklist Manager
+
+This is an old project of mine ([preview video]()), which lets you select one or more blocklists (hosts or URLs, for e.g. UBO). The hosts file is a local DNS override used to block domains or redirect websites (`C:\Windows\System32\drivers\etc\hosts`).
+
+Examples:
+
+```
+0.0.0.0 ads.com -> non routable address
+127.0.0.1 ads.com -> loopback address
+
+||ads.com^ -> filter (browser)
+@@||ads.com^ -> exception
+```
+
+First numbers (IP address) is where the domain will be directed to, the second (domain name) is the site, which is getting redirected (blocked). 
+
+- [`0.0.0.0`](https://en.wikipedia.org/wiki/0.0.0.0) blocks/drops the request instantly - making them "unreachable" (known as being faster than `127.0.01`, but may be incompatible on some systems)
+- [`127.0.0.1`](https://en.wikipedia.org/wiki/localhost) redirects the domain to the localhost (your computer) - called "*loopback address*"
+- [`||ads.com^`](https://adblockplus.org/filter-cheatsheet?DE_EXCEPTION=1) blocks the domain - wouldn't block `http://domain.com/redirect/http://ads.com/` -> can't be used within the hosts file
+⠀
+You should never use all blocklists, as it slows down your system by a lot (and also caused apps to not run as expected anymore). Applying all lists won't give you a better browsing experience, rather try to use at least lists as possible (or use the default preset). Using big lists system wide (hosts file) is also not recommended, if you're planning to use a big list, do that via e.g. uBO (even if the list is compatible with the hosts file).
+
+My suggestion is to choose a specific provider instead of using lists from different ones (if they're meant to block the same things). As you might see, I would choose hagezi at the moment. It's also recommended to apply e.g. 'Native Microsoft' seperately (without 'Pro', 'TIF', etc. so it gets written into the hosts file).
+
+### Issues after importing multiple lists
+
+Open `cmd` and paste `del /f /q C:\Windows\System32\drivers\etc\hosts` into it, if it shows that the DNS client used it, flush your DNS cache (`ipconfig /flushdns`). If this didn't help, boot into safemode (`bcdedit /set safeboot minimal`) & remove the hosts file. This may be needed, if importing too many lists.
+
+The hosts file is empty by default (only comments).
+
+### GUI Buttons
+
+The presets are just examples, use lists from the vendor you prefer.
+
+| Button | Description |
+| --- | --- |
+| `Minimal` | Preset which can be used by anyone. |
+| `Default` | Default preset, uses Pro/TIF without adding the extra lists that aren't included in them. |
+| `Maximum` | Aggressive blocking, uses Pro++, TIF and all additional security related lists which aren't included in them (doesn't apply any protections for children). |
+| `Import` | Imports the currently selected lists into the `hosts` file (if compatible). |
+| `Copy Links` | Copies URLs of all selected lists. Add these links to the custom filter lists:<br>![](https://github.com/nohuto/blocklist-mgr/blob/main/images/ubolinks.png?raw=true) |
+| `Restore` | Imports the backup from: `C:\Windows\System32\drivers\etc\hosts.noverse`. |
+| `Open File` | Opens the file: `C:\Windows\System32\drivers\etc\hosts`. |
+
+### Additional Features
+
+- Click on the category name (blue) to open the source link
+- Adjust the window size, to increase the size of the hosts/log box
+- `hosts` preview refreshes itself automatically
+- You can edit the hosts file via the panel in the GUI (doesn't create a backup)
+
 # Enable Network Offloads
 
 Since all topics below are well documented by MS, I won't add much details. Click on the title links for more information on each topic. Note that the main option disables PM protocol offloads, all other offload features are used.
