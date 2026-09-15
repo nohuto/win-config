@@ -131,7 +131,7 @@ The presets are just examples, use lists from the vendor you prefer.
 | `Default` | Default preset, uses Pro/TIF without adding the extra lists that aren't included in them. |
 | `Maximum` | Aggressive blocking, uses Pro++, TIF and all additional security related lists which aren't included in them (doesn't apply any protections for children). |
 | `Import` | Imports the currently selected lists into the `hosts` file (if compatible). |
-| `Copy Links` | Copies URLs of all selected lists. Add these links to the custom filter lists:<br>![](https://github.com/nohuto/blocklist-mgr/blob/main/images/ubolinks.png?raw=true) |
+| `Copy Links` | Copies URLs of all selected lists. Add these links to the custom filter lists:<br>![](https://github.com/nohuto/win-config/blob/main/network/assets/blocklist-mgr/ubolinks.png?raw=true) |
 | `Restore` | Imports the backup from: `C:\Windows\System32\drivers\etc\hosts.noverse`. |
 | `Open File` | Opens the file: `C:\Windows\System32\drivers\etc\hosts`. |
 
