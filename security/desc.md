@@ -512,8 +512,8 @@ Disabling UAC stops the prompts for administrative permissions, allowing program
 >
 > — Windows Internals, [E7, P1: 'UAC'](https://github.com/nohuto/Windows-Books/releases/download/7th-Edition/Windows-Internals-E7-P1.pdf)
 
-![](https://github.com/nohuto/win-config/blob/main/system/images/uac-registry-values.png?raw=true)
-![](https://github.com/nohuto/win-config/blob/main/system/images/uac-options.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/security/images/uac-registry-values.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/security/images/uac-options.png?raw=true)
 
 ## [Registry Values](https://learn.microsoft.com/en-us/windows/security/application-security/application-control/user-account-control/settings-and-configuration?tabs=reg)
 
