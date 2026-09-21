@@ -512,93 +512,107 @@ Disabling UAC stops the prompts for administrative permissions, allowing program
 >
 > — Windows Internals, [E7, P1: 'UAC'](https://github.com/nohuto/Windows-Books/releases/download/7th-Edition/Windows-Internals-E7-P1.pdf)
 
-**Table 7-18** UAC options
-| Slider Position | Attempts to change Windows settings | Attempts to install software or run a program requiring elevation | Remarks |
-| --- | --- | --- | --- |
-| Highest position (`Always Notify`) | A UAC elevation prompt appears on the Secure Desktop. | A UAC elevation prompt appears on the Secure Desktop. | This was the Windows Vista behavior. |
-| Second position | UAC elevation occurs automatically with no prompt or notification. | A UAC elevation prompt appears on the Secure Desktop. | Windows default setting. |
-| Third position | UAC elevation occurs automatically with no prompt or notification. | A UAC elevation prompt appears on the user's normal desktop. | Not recommended. |
-| Lowest position (`Never Notify`) | UAC is turned off for administrative users. | UAC is turned off for administrative users. | Not recommended. |
-
-**Table 7-19** UAC registry values
-| Slider Position | ConsentPromptBehaviorAdmin | ConsentPromptBehaviorUser | EnableLUA | PromptOnSecureDesktop |
-| --- | --- | --- | --- | --- |
-| Highest position (`Always Notify`) | `2` (display AAC UAC elevation prompt) | `3` (display OTS UAC elevation prompt) | `1` (enabled) | `1` (enabled) |
-| Second position | `5` (display AAC UAC elevation prompt, except for changes to Windows settings) | `3` | `1` | `1` |
-| Third position | `5` | `3` | `1` | `0` (disabled; UAC prompt appears on user's normal desktop) |
-| Lowest position (`Never Notify`) | `0` | `3` | `0` (disabled; logins to administrative accounts do not create a restricted admin access token) | `0` |
-
-Read more about UAC/file virtualization/(auto-)elevation in [Windows Internals E7, P1 - P.722f. 'User Account Control and virtualization'](https://github.com/nohuto/windows-books/releases/download/7th-Edition/Windows-Internals-E7-P1.pdf).
+![](https://github.com/nohuto/win-config/blob/main/system/images/uac-registry-values.png?raw=true)
+![](https://github.com/nohuto/win-config/blob/main/system/images/uac-options.png?raw=true)
 
 ## [Registry Values](https://learn.microsoft.com/en-us/windows/security/application-security/application-control/user-account-control/settings-and-configuration?tabs=reg)
 
-Value: `FilterAdministratorToken`
+All of them are under `HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System`.
 
-| Value        | Meaning                                                                                                                                          |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `0x00000000` | Only the built-in administrator account (RID 500) should be placed into Full Token mode.                                                         |
-| `0x00000001` | Only the built-in administrator account (RID 500) is placed into Admin Approval Mode. Approval is required when performing administrative tasks. |
+### FilterAdministratorToken
 
-Value: `ConsentPromptBehaviorAdmin`
+Admin Approval Mode for the built-in Administrator account.
 
-| Value        | Meaning                                                                                                              |
-| ------------ | -------------------------------------------------------------------------------------------------------------------- |
-| `0x00000000` | Allows the admin to perform operations that require elevation without consent or credentials.                        |
-| `0x00000001` | Prompts for username and password on the secure desktop when elevation is required.                                  |
-| `0x00000002` | Prompts the admin to Permit or Deny an elevation request (secure desktop). Removes the need to re-enter credentials. |
-| `0x00000003` | Prompts for credentials (admin username/password) when elevation is required.                                        |
-| `0x00000004` | Prompts the admin to Permit or Deny elevation (non-secure desktop).                                                  |
-| `0x00000005` | Default: Prompts admin to Permit or Deny elevation for non-Windows binaries on the secure desktop.                   |
+| Value | Meaning |
+| --- | --- |
+| `0x00000001` (`Enabled`) | The built-in Administrator account uses Admin Approval Mode. By default, any operation that requires elevation of privilege prompts the user to prove the operation. |
+| `0x00000000` (`Disabled`) | The built-in Administrator account runs all applications with full administrative privilege (default). |
 
-Value: `ConsentPromptBehaviorUser`
+### EnableUIADesktopToggle
 
-| Value        | Meaning                                                                       |
-| ------------ | ----------------------------------------------------------------------------- |
-| `0x00000000` | Any operation requiring elevation fails for standard users.                   |
-| `0x00000001` | Standard users are prompted for an admin's credentials to elevate privileges. |
-| `0x00000003` | Display OTS UAC elevation prompt |
+Allow UIAccess applications to prompt for elevation without using the secure desktop.
 
-Value: `EnableInstallerDetection`
+| Value | Meaning |
+| --- | --- |
+| `0x00000001` (`Enabled`) | UIA programs, including Remote Assistance, automatically disable the secure desktop for elevation prompts. If you don't disable the **Switch to the secure desktop when prompting for elevation** policy setting, the prompts appear on the interactive user's desktop instead of the secure desktop. This setting allows the remote administrator to provide the appropriate credentials for elevation. This policy setting doesn't change the behavior of the UAC elevation prompt for administrators. If you plan to enable this policy setting, you should also review the effect of the **Behavior of the elevation prompt for standard users** policy setting; if configured as **Automatically deny elevation requests**, elevation requests aren't presented to the user. |
+| `0x00000000` (`Disabled`) | The secure desktop can be disabled only by the user of the interactive desktop or by disabling the **Switch to the secure desktop when prompting for elevation** policy setting (default). |
 
-| Value        | Meaning                                                            |
-| ------------ | ------------------------------------------------------------------ |
-| `0x00000000` | Disables automatic detection of installers that require elevation. |
-| `0x00000001` | Enables heuristic detection of installers needing elevation.       |
+### ConsentPromptBehaviorAdmin
 
-Value: `ValidateAdminCodeSignatures`
+Behavior of the elevation prompt for administrators in Admin Approval Mode.
 
-| Value        | Meaning                                                                        |
-| ------------ | ------------------------------------------------------------------------------ |
-| `0x00000000` | Does not enforce cryptographic signatures on elevated apps.                    |
-| `0x00000001` | Enforces cryptographic signatures on any interactive app requesting elevation. |
+| Value | Meaning |
+| --- | --- |
+| `0x00000000` (`Elevate without prompting`) | Allows privileged accounts to perform an operation that requires elevation without requiring consent or credentials. Use this option only in the most constrained environments. |
+| `0x00000001` (`Prompt for credentials on the secure desktop`) | When an operation requires elevation of privilege, the user is prompted on the secure desktop to enter a privileged user name and password. If the user enters valid credentials, the operation continues with the user's highest available privilege. |
+| `0x00000002` (`Prompt for consent on the secure desktop`) | When an operation requires elevation of privilege, the user is prompted on the secure desktop to select either Permit or Deny. If the user selects Permit, the operation continues with the user's highest available privilege. |
+| `0x00000003` (`Prompt for credentials`) | When an operation requires elevation of privilege, the user is prompted to enter an administrative user name and password. If the user enters valid credentials, the operation continues with the applicable privilege. |
+| `0x00000004` (`Prompt for consent`) | When an operation requires elevation of privilege, the user is prompted to select either Permit or Deny. If the user selects Permit, the operation continues with the user's highest available privilege. |
+| `0x00000005` (`Prompt for consent for non-Windows binaries`) | When an operation for a non-Microsoft application requires elevation of privilege, the user is prompted on the secure desktop to select either Permit or Deny. If the user selects Permit, the operation continues with the user's highest available privilege (default). |
 
-Value: `EnableLUA`
+### ConsentPromptBehaviorUser
 
-| Value        | Meaning                                                                             |
-| ------------ | ----------------------------------------------------------------------------------- |
-| `0x00000000` | Disables the "Administrator in Admin Approval Mode" user type and all UAC policies ("*logins to administrative accounts do not create a restricted admin access token*"). |
-| `0x00000001` | Enables the "Administrator in Admin Approval Mode" and activates all UAC policies.  |
+Behavior of the elevation prompt for standard users.
 
-Value: `PromptOnSecureDesktop`
-| Option | Description |
-| ---- | ---- |
-| `UAC: Disable completely` | Turns UAC off, disables LUA and virtualization, and removes consent prompts entirely. Highest compatibility risk and lowest protection. |
-| `UAC: Windows default (prompt, secure desktop)` | Restores the normal Windows UAC behavior with prompts on the secure desktop. |
-| `UAC: Always notify` | Prompts on every administrative change with the most protective prompt behavior. |
-| `UAC: Notify apps only (no desktop dimming)` | Keeps app elevation prompts but does not switch to the secure desktop. |
-| `UAC: Elevate without prompting (admins)` | Keeps LUA on for administrators but removes the admin consent prompt. Lower friction, weaker protection. |
+| Value | Meaning |
+| --- | --- |
+| `0x00000000` (`Automatically deny elevation requests`) | When an operation requires elevation of privilege, a configurable access denied error message is displayed. An enterprise that is running desktops as standard user might choose this setting to reduce help desk calls. |
+| `0x00000001` (`Prompt for credentials on the secure desktop`) | When an operation requires elevation of privilege, the user is prompted on the secure desktop to enter a different user name and password. If the user enters valid credentials, the operation continues with the applicable privilege. |
+| `0x00000003` (`Prompt for credentials`) | When an operation requires elevation of privilege, the user is prompted to enter an administrative user name and password. If the user enters valid credentials, the operation continues with the applicable privilege (default). |
 
-| Value        | Meaning                                                                        |
-| ------------ | ------------------------------------------------------------------------------ |
-| `0x00000000` | Disables secure desktop prompting - prompts appear on the interactive desktop. |
-| `0x00000001` | Forces all UAC prompts to occur on the secure desktop.                         |
+### EnableInstallerDetection
 
-Value: `EnableVirtualization`
+Detect application installations and prompt for elevation.
 
-| Value        | Meaning                                                                                       |
-| ------------ | --------------------------------------------------------------------------------------------- |
-| `0x00000000` | Disables data redirection for interactive processes.                                          |
-| `0x00000001` | Enables file and registry redirection for legacy apps to allow writes in user-writable paths. |
+| Value | Meaning |
+| --- | --- |
+| `0x00000001` (`Enabled`) | When an app installation package is detected that requires elevation of privilege, the user is prompted to enter an administrative user name and password. If the user enters valid credentials, the operation continues with the applicable privilege (default for home edition only). |
+| `0x00000000` (`Disabled`) | App installation packages aren't detected and prompted for elevation. Enterprises that are running standard user desktops and use delegated installation technologies, such as Microsoft Intune, should disable this policy setting. In this case, installer detection is unnecessary (default). |
+
+### ValidateAdminCodeSignatures
+
+Only elevate executables that are signed and validated.
+
+| Value | Meaning |
+| --- | --- |
+| `0x00000001` (`Enabled`) | Enforces the certificate certification path validation for a given executable file before it's permitted to run. |
+| `0x00000000` (`Disabled`) | Doesn't enforce the certificate certification path validation before a given executable file is permitted to run (default). |
+
+### EnableSecureUIAPaths
+
+Only elevate UIAccess applications that are installed in secure locations.
+
+| Value | Meaning |
+| --- | --- |
+| `0x00000001` (`Enabled`) | If an app resides in a secure location in the file system, it runs only with UIAccess integrity (default). |
+| `0x00000000` (`Disabled`) | An app runs with UIAccess integrity even if it doesn't reside in a secure location in the file system. |
+
+### EnableLUA
+
+Run all administrators in Admin Approval Mode.
+
+| Value | Meaning |
+| --- | --- |
+| `0x00000001` (`Enabled`) | Admin Approval Mode is enabled. This policy must be enabled and related UAC settings configured. The policy allows the built-in Administrator account and members of the Administrators group to run in Admin Approval Mode (default). |
+| `0x00000000` (`Disabled`) | Admin Approval Mode and all related UAC policy settings are disabled. If this policy setting is disabled, Windows Security notifies you that the overall security of the operating system is reduced. |
+
+### PromptOnSecureDesktop
+
+Switch to the secure desktop when prompting for elevation.
+
+| Value | Meaning |
+| --- | --- |
+| `0x00000001` (`Enabled`) | All elevation requests go to the secure desktop regardless of prompt behavior policy settings for administrators and standard users (default). |
+| `0x00000000` (`Disabled`) | All elevation requests go to the interactive user's desktop. Prompt behavior policy settings for administrators and standard users are used. |
+
+### EnableVirtualization
+
+Virtualize file and registry write failures to per-user locations.
+
+| Value | Meaning |
+| --- | --- |
+| `0x00000001` (`Enabled`) | App write failures are redirected at run time to defined user locations for both the file system and registry (default). |
+| `0x00000000` (`Disabled`) | Apps that write data to protected locations fail. |
 
 # PS Execution Policy
 
