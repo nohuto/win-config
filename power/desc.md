@@ -1520,7 +1520,7 @@ Everything listed below is based on personal findings, mistakes may exist.
 
 `PowerThrottlingOff` is one of nine `_PPM_PERF_QOS_DISABLE_REASON`, changing it to nonzero would set bit 8 in six of seven QoS classes, consumers of that bitmask only check whenever its `!= 0`, so it doesn't matter which reason is set.
 
-If PPM QoS is disabled, six of seven (excluding *High*) classes follow the class above them (all *High*).
+If PPM QoS is disabled via `PpmPerfQosDisableGroupPolicy`, six of seven (excluding *High*) classes follow *High*.
 
 `MaxFrequency`, `MaxPerformance`, `MinPerformance`, `PerfAutonomousMode`, `PerfAutonomousWindow`, `PerfBoostMode`, `PerfEnergyPreference`, `PerfLatencyHint`, `LatencyHintEpp` (other ones are scheduling settings) are in `QosPolicies[class]`, built by `PpmPerfCalculateQosClassPolicies`. All of these aren't used whenever PPM QoS (of the class) is unsupported, means that they'll follow the settings of their parent class (which is *High* if all six are unsupported) for them, which are the current power plan settings (`PpmCurrentProfile`). They get parents differently than expected, heres how I understood it:
 
