@@ -1546,32 +1546,32 @@ fffff806`62023538  00000006 00000004 00000003
 >
 > *Each QoS level supports the following configuration settings:*
 >
-> *- [MaxFrequency](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-maxfrequency.md)*
-> *- [MaxPerformance](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-maxperformance.md)*
-> *- [MinPerformance](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-minperformance.md)*
-> *- [PerfAutonomousMode](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-perfautonomousmode.md)*
-> *- [PerfAutonomousWindow](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-perfautonomouswindow.md)*
-> *- [PerfBoostMode](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-perfboostmode.md)*
-> *- [PerfEnergyPreference](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-perfenergypreference.md)*
-> *- [PerfLatencyHint](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-perflatencyhint.md)*
-> *- [LatencyHintEpp](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-latencyhintepp.md)*
-> *- [SchedulingPolicy](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/configuration-for-hetero-power-scheduling-schedulingpolicy.md)*
-> *- [ShortSchedulingPolicy](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/configuration-for-hetero-power-scheduling-shortschedulingpolicy.md)*
-> *- [LongThreadArchClassLowerThreshold](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/configuration-for-hetero-power-scheduling-longthreadarchclasslowerthreshold.md)*
-> *- [LongThreadArchClassUpperThreshold](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/configuration-for-hetero-power-scheduling-longthreadarchclassupperthreshold.md)*
-> *- [ShortThreadArchClassLowerThreshold](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/configuration-for-hetero-power-scheduling-shortthreadarchclasslowerthreshold.md)*
-> *- [ShortThreadArchClassUpperThreshold](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/configuration-for-hetero-power-scheduling-shortthreadarchclassupperthreshold.md)*
+> *- [MaxFrequency](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-maxfrequency.md)*  
+> *- [MaxPerformance](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-maxperformance.md)*  
+> *- [MinPerformance](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-minperformance.md)*  
+> *- [PerfAutonomousMode](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-perfautonomousmode.md)*  
+> *- [PerfAutonomousWindow](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-perfautonomouswindow.md)*  
+> *- [PerfBoostMode](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-perfboostmode.md)*  
+> *- [PerfEnergyPreference](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-perfenergypreference.md)*  
+> *- [PerfLatencyHint](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-perflatencyhint.md)*  
+> *- [LatencyHintEpp](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-latencyhintepp.md)*  
+> *- [SchedulingPolicy](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/configuration-for-hetero-power-scheduling-schedulingpolicy.md)*  
+> *- [ShortSchedulingPolicy](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/configuration-for-hetero-power-scheduling-shortschedulingpolicy.md)*  
+> *- [LongThreadArchClassLowerThreshold](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/configuration-for-hetero-power-scheduling-longthreadarchclasslowerthreshold.md)*  
+> *- [LongThreadArchClassUpperThreshold](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/configuration-for-hetero-power-scheduling-longthreadarchclassupperthreshold.md)*  
+> *- [ShortThreadArchClassLowerThreshold](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/configuration-for-hetero-power-scheduling-shortthreadarchclasslowerthreshold.md)*  
+> *- [ShortThreadArchClassUpperThreshold](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/configuration-for-hetero-power-scheduling-shortthreadarchclassupperthreshold.md)*  
 >
 > *On systems with processors with heterogeneous architecture, the configuration settings for efficiency class 1 cores use a similar naming convention.*
 >
 > *The common parameters have the suffix "1" to indicate efficiency class.*
 >
-> *- [MaxFrequency1](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-maxfrequency.md)*
-> *- [MaxPerformance1](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-maxperformance.md)*
-> *- [MinPerformance1](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-minperformance.md)*
-> *- [PerfEnergyPreference1](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-perfenergypreference.md)*
-> *- [PerfLatencyHint1](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-perflatencyhint.md)*
-> *- [LatencyHintEpp1](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-latencyhintepp.md)*
+> *- [MaxFrequency1](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-maxfrequency.md)*  
+> *- [MaxPerformance1](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-maxperformance.md)*  
+> *- [MinPerformance1](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-minperformance.md)*  
+> *- [PerfEnergyPreference1](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-perfenergypreference.md)*  
+> *- [PerfLatencyHint1](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-perflatencyhint.md)*  
+> *- [LatencyHintEpp1](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-latencyhintepp.md)*  
 >
 > — Microsoft, [Processor power management options](https://learn.microsoft.com/en-us/windows-hardware/customize/power-settings/configure-processor-power-management-options#quality-of-service)
 
