@@ -1518,6 +1518,27 @@ Everything listed below is based on personal findings, mistakes may exist.
 
 ### PowerThrottlingOff
 
+See [kernel-values/#cmcontrolvector](https://noverse.dev/docs/win-config/system/kernel-values/#cmcontrolvector) for details on what the comments mean.
+
+```asm
+; KeyPath = HKLM\SYSTEM\CurrentControlSet\Control\Power\PowerThrottling
+; ValueName = PowerThrottlingOff
+; Destination = PpmPerfQosGroupPolicyDisable
+; Length/Type/Flags = 0
+
+INIT:0000000140BA3300                 dq offset aPowerPowerthro ; "Power\PowerThrottling"
+INIT:0000000140BA3308                 dq offset aPowerthrottlin ; "PowerThrottlingOff"
+INIT:0000000140BA3310                 dq offset PpmPerfQosGroupPolicyDisable
+INIT:0000000140BA3318                 dq 3 dup(0)
+```
+
+```c
+lkd> dd nt!PpmPerfQosGroupPolicyDisable L1
+fffff806`1491ed24  00000000 // default
+```
+
+The value is read as a bool, so all nonzero data are the same.
+
 `PowerThrottlingOff` is one of nine `_PPM_PERF_QOS_DISABLE_REASON`, changing it to nonzero would set bit 8 in six of seven QoS classes, consumers of that bitmask only check whenever its `!= 0`, so it doesn't matter which reason is set.
 
 If PPM QoS is disabled via `PpmPerfQosDisableGroupPolicy`, six of seven (excluding *High*) classes follow *High*.
@@ -1574,36 +1595,6 @@ fffff806`62023538  00000006 00000004 00000003
 > *- [LatencyHintEpp1](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/options-for-perf-state-engine-latencyhintepp.md)*  
 >
 > — Microsoft, [Processor power management options](https://learn.microsoft.com/en-us/windows-hardware/customize/power-settings/configure-processor-power-management-options#quality-of-service)
-
-```c
-"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerThrottling";
-    "PowerThrottlingOff" = 0; // PpmPerfQosGroupPolicyDisable
-```
-
-The value is read as a bool, so all nonzero data are the same.
-
-#### CmControlVector
-
-See [kernel-values/#cmcontrolvector](https://noverse.dev/docs/win-config/system/kernel-values/#cmcontrolvector) for details on what the comments mean.
-
-```asm
-; KeyPath = HKLM\SYSTEM\CurrentControlSet\Control\Power\PowerThrottling
-; ValueName = PowerThrottlingOff
-; Destination = PpmPerfQosGroupPolicyDisable
-; Length/Type/Flags = 0
-
-INIT:0000000140BA3300                 dq offset aPowerPowerthro ; "Power\PowerThrottling"
-INIT:0000000140BA3308                 dq offset aPowerthrottlin ; "PowerThrottlingOff"
-INIT:0000000140BA3310                 dq offset PpmPerfQosGroupPolicyDisable
-INIT:0000000140BA3318                 dq 3 dup(0)
-```
-
-The value was `0` for this capture:
-
-```c
-lkd> dd nt!PpmPerfQosGroupPolicyDisable L1
-fffff806`1491ed24  00000000
-```
 
 #### PopInitializeHeteroProcessors
 
