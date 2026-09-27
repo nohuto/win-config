@@ -1700,8 +1700,8 @@ Some additional notes on the provider, I might extend that section soon.
 | 100 | 1 | `Scheduler_Priority_Change` | `ProcessID`, `ThreadID`, `Priority`, `TaskIndex` |
 | 101 | 2 | `Scheduler_Wakeup` | `Reason` |
 | 102 | 3 | `Scheduler_Sleep` | `Reason`, `Duration` |
-| 104 | 5 | `Service_Start` | — |
-| 105 | 6 | `Service_Stop` | — |
+| 104 | 5 | `Service_Start` | - |
+| 105 | 6 | `Service_Stop` | - |
 | 106 | 7 | `Thread_Join` | `ThreadID`, `MediumPriority`, `LowPriority`, `UberLowPriority`, `TaskName`, `TaskIndex`, `Category`, `Flags` |
 | 107 | 8 | `Thread_Leave` | `ThreadID`, `OriginalBasePriority` |
 | 111 | 12 | `TaskIndex_Yield` | `TaskIndex`, `Duration`, `PreDuration` |
@@ -1904,7 +1904,7 @@ MMCSS sets the priority of client threads depending on their scheduling category
 
 > "*The main mechanism behind MMCSS boosts the priority of threads inside a registered process to the priority level matching their scheduling category and relative priority within this category for a guaranteed period. It then lowers those threads to the exhausted category so that other, non-multimedia threads on the system can also get a chance to execute.*"
 >
-> *As discussed, changing the relative thread priorities within a process does not usually make sense, and no tool allows this because only developers understand the importance of the various threads in their programs. On the other hand, because applications must manually register with MMCSS and provide it with information about what kind of thread this is, MMCSS does have the necessary data to change these relative thread priorities—and developers are well aware that this will happen.*
+> *As discussed, changing the relative thread priorities within a process does not usually make sense, and no tool allows this because only developers understand the importance of the various threads in their programs. On the other hand, because applications must manually register with MMCSS and provide it with information about what kind of thread this is, MMCSS does have the necessary data to change these relative thread priorities, and developers are well aware that this will happen.*
 >
 > — Windows Internals, [E7, P1: 'Priority boosts for multimedia applications and games'](https://github.com/nohuto/Windows-Books/releases/download/7th-Edition/Windows-Internals-E7-P1.pdf)
 
@@ -5382,7 +5382,7 @@ Based on pseudocode of [`dxgkrnl.sys`](https://github.com/nohuto/decompiled-pseu
     "ForceBddFallbackOnly" = 0; // REG_DWORD (bool), 25H2
     "MiracastDefaultRtspPort" = 7236; // REG_DWORD, 0 = 7236
     "PlatformSupportMiracast" = 0; // REG_DWORD (bool)
-                                   // "Miracast enables seamless display of multimedia content — including high-resolution pictures, high-definition video content, live television shows and sports, and other copy-protected premium content — between Wi-Fi devices, even if a Wi-Fi network is not available."
+                                   // "Miracast enables seamless display of multimedia content - including high-resolution pictures, high-definition video content, live television shows and sports, and other copy-protected premium content - between Wi-Fi devices, even if a Wi-Fi network is not available."
                                    // https://learn.microsoft.com/en-us/windows-hardware/drivers/display/wireless-displays--miracast-
     "SupportMultipleIntegratedDisplays" = 0; // REG_DWORD (bool)
     "SuspendAdapterTimerPeriod" = 500000; // REG_DWORD
