@@ -1149,9 +1149,9 @@ nt!_KTHREAD
 
 # MMCSS Values
 
-Everything below is based on the 11-23H2 mmcss driver pseudocode (see [diff](https://noverse.dev/diff?kind=pseudocode&left=11-23H2&right=11-25H2&module=mmcss&name=CiConfigInitialize.c&mode=side-by-side) if you want to see changes on newer builds)/ WPR ([`Microsoft-Windows-MMCSS` provider]()). 
+Everything below is based on the 11-23H2 mmcss driver pseudocode (see [diff](https://noverse.dev/diff?kind=pseudocode&left=11-23H2&right=11-25H2&module=mmcss&name=CiConfigInitialize.c&mode=side-by-side) if you want to see changes on newer builds)/ WPR ([`Microsoft-Windows-MMCSS` provider](https://noverse.dev/docs/win-config/system/mmcss-values/#microsoft-windows-mmcss)). 
 
-See [mmcss-functions.txt]() for a list of all named functions within the MMCSS driver. I guess `Cs` = 'Class Scheduler'? The `i` at the end in such prefixes stands for 'Internal'.
+See [mmcss-functions.txt](https://github.com/nohuto/win-config/blob/main/system/assets/mmcss-functions.txt) for a list of all named functions within the MMCSS driver. I guess `Cs` = 'Class Scheduler'? The `i` at the end in such prefixes stands for 'Internal'.
 
 > "*The Multimedia Class Scheduler service (MMCSS) enables multimedia applications to ensure that their time-sensitive processing receives prioritized access to CPU resources. This service enables multimedia applications to utilize as much of the CPU as possible without denying CPU resources to lower-priority applications.*"
 >
