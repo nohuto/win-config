@@ -1149,7 +1149,9 @@ nt!_KTHREAD
 
 # MMCSS Values
 
-Everything below is based on the 11-23H2 mmcss driver pseudocode (see [diff](https://noverse.dev/diff?kind=pseudocode&left=11-23H2&right=11-25H2&module=mmcss&name=CiConfigInitialize.c&mode=side-by-side) if you want to see changes on newer builds)/ WPR (`Microsoft-Windows-MMCSS` provider).
+Everything below is based on the 11-23H2 mmcss driver pseudocode (see [diff](https://noverse.dev/diff?kind=pseudocode&left=11-23H2&right=11-25H2&module=mmcss&name=CiConfigInitialize.c&mode=side-by-side) if you want to see changes on newer builds)/ WPR ([`Microsoft-Windows-MMCSS` provider]()). 
+
+See [mmcss-functions.txt]() for a list of all named functions within the MMCSS driver. I guess `Cs` = 'Class Scheduler'? The `i` at the end in such prefixes stands for 'Internal'.
 
 > "*The Multimedia Class Scheduler service (MMCSS) enables multimedia applications to ensure that their time-sensitive processing receives prioritized access to CPU resources. This service enables multimedia applications to utilize as much of the CPU as possible without denying CPU resources to lower-priority applications.*"
 >
@@ -1689,28 +1691,27 @@ if ( !CiSchedulerDisallowLazyMode )
 
 For `DeepSleep`, `0xFFFFFFFF` is a kind of placeholder written into the `Scheduler_Sleep.Duration` field, [`CiSchedulerDeepSleep`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/mmcss/CiSchedulerDeepSleep.c) calls `KeWaitForSingleObject` with a null timeout and continues to sleep until a scheduler wakeup happens.
 
-```xml
-<bitMap name="wakeupReasonMap">
-  <map value="0x1" message="$(string.map_wakeupReasonMapNewThread)"/>
-  <map value="0x2" message="$(string.map_wakeupReasonMapProcessResume)"/>
-  <map value="0x4" message="$(string.map_wakeupReasonMapProcessSuspend)"/>
-  <map value="0x8" message="$(string.map_wakeupReasonMapExit)"/>
-  <map value="0x10" message="$(string.map_wakeupReasonMapInternalDeadline)"/>
-  <map value="0x20" message="$(string.map_wakeupReasonMapYieldDeadline)"/>
-  <map value="0x80" message="$(string.map_wakeupReasonMapNoClientThreads)"/>
-  <map value="0x8000" message="$(string.map_wakeupReasonMapDeepSleep)"/>
-</bitMap>
-<valueMap name="sleepReasonMap">
-  <map value="0x0" message="$(string.map_sleepReasonMapSleepResponsiveness)"/>
-  <map value="0x1" message="$(string.map_sleepReasonMapRealtime)"/>
-  <map value="0x2" message="$(string.map_sleepReasonMapSleepRealtimeLazy)"/>
-  <map value="0x3" message="$(string.map_sleepReasonMapIdleDetection)"/>
-  <map value="0x4" message="$(string.map_sleepReasonMapIdleDetectionLazy)"/>
-  <map value="0x5" message="$(string.map_sleepReasonMapDeepSleep)"/>
-</valueMap>
-```
+#### Microsoft-Windows-MMCSS
 
-- [Manifests-Win10-18990/Microsoft-Windows-MMCSS.xml](https://github.com/repnz/etw-providers-docs/blob/master/Manifests-Win10-18990/Microsoft-Windows-MMCSS.xml)
+Some additional notes on the provider, I might extend that section soon.
+
+| Task ID | Event ID | Task | Fields |
+| --- | --- | --- | --- |
+| 100 | 1 | `Scheduler_Priority_Change` | `ProcessID`, `ThreadID`, `Priority`, `TaskIndex` |
+| 101 | 2 | `Scheduler_Wakeup` | `Reason` |
+| 102 | 3 | `Scheduler_Sleep` | `Reason`, `Duration` |
+| 104 | 5 | `Service_Start` | — |
+| 105 | 6 | `Service_Stop` | — |
+| 106 | 7 | `Thread_Join` | `ThreadID`, `MediumPriority`, `LowPriority`, `UberLowPriority`, `TaskName`, `TaskIndex`, `Category`, `Flags` |
+| 107 | 8 | `Thread_Leave` | `ThreadID`, `OriginalBasePriority` |
+| 111 | 12 | `TaskIndex_Yield` | `TaskIndex`, `Duration`, `PreDuration` |
+| 112 | 13 | `TaskIndex_YieldCancel` | `TaskIndex` |
+| 113 | 14 | `Set_MultimediaMode` | `TaskIndex`, `ThreadTag` |
+| 114 | 15 | `TaskIndex_DeadlineExpired` | `TaskIndex` |
+| 115 | 16 | `TurboEngaged` | `TurboEngaged` |
+| 116 | 17, 18 | `ThreadBuffering (Start/Stop)` | `ThreadID` |
+| 117 | 19 | `TaskIndex_PreDeadlineExpired` | `TaskIndex` |
+| 118 | 20 | `Thread_SetChars` | `TaskIndex`, `TaskName1`, `TaskName2` |
 
 ## IdleDetectionCycles
 
