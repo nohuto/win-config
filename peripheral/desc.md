@@ -660,7 +660,7 @@ The vendor ID, product ID, and revision number values are obtained from the [USB
 \Registry\Machine\SYSTEM\ControlSet001\Control\usbflags\<vvvvpppprrrr> : osvc
 ```
 
-`IgnoreHWSerNum<vvvvpppp>` exists in [`\Registry\Machine\SYSTEM\ControlSet001\Control\usbflags`](https://github.com/nohuto/regkit/blob/main/records/USB-Flags.txt) too.
+`IgnoreHWSerNum<vvvvpppp>` exists in [`\Registry\Machine\SYSTEM\ControlSet001\Control\usbflags`](https://github.com/nohuto/regkit/blob/main/assets/records/USB-Flags.txt) too.
 
 ### RegistryMachin_* Keys
 
@@ -936,7 +936,7 @@ rundll32.exe	RegSetValue	HKCU\Keyboard Layout\Toggle\Layout Hotkey	Type: REG_SZ,
 
 # Audio Values
 
-You can find all mentioned functions in [decompiled-pseudocode/11-23H2/audiosrv](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/audiosrv)/[decompiled-pseudocode/11-23H2/audiodg](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/audiodg)/[decompiled-pseudocode/11-23H2/AudioSrvPolicyManager](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/AudioSrvPolicyManager), everything below is currently based on xrefs of `RegGetValueW`. Since the function names often already tell a lot, I've written them down where they're from. See a boot capture of `CurrentVersion\\Audio` key [here](https://github.com/nohuto/regkit/blob/main/records/Audio.txt).
+You can find all mentioned functions in [decompiled-pseudocode/11-23H2/audiosrv](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/audiosrv)/[decompiled-pseudocode/11-23H2/audiodg](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/audiodg)/[decompiled-pseudocode/11-23H2/AudioSrvPolicyManager](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/AudioSrvPolicyManager), everything below is currently based on xrefs of `RegGetValueW`. Since the function names often already tell a lot, I've written them down where they're from. See a boot capture of `CurrentVersion\\Audio` key [here](https://github.com/nohuto/regkit/blob/main/assets/records/Audio.txt).
 
 The titles below tell what binary I've the values from.
 
@@ -1090,7 +1090,7 @@ Most values are read via `ReadMultiSzRegistryValueAndCompareId` using the device
 
 [Database-engine/database-file-operations](https://learn.microsoft.com/en-us/troubleshoot/sql/database-engine/database-file-operations/troubleshoot-os-4kb-disk-sector-size?tabs=registry-editor#resolution-steps-for-disk-sector-size-errors-in-sql-server) validates that `ForcedPhysicalSectorSizeInBytes` is a Multi-String value, which confirms a part of my assumption, but I'm still not 100% sure about the rest. Feel free to correct me.
 
-See [GetRegistrySettings23H2.c](https://github.com/nohuto/win-config/tree/main/peripheral/assets/stornvme/GetRegistrySettings23H2.c), [GetRegistrySettings24H2.c](https://github.com/nohuto/win-config/tree/main/peripheral/assets/stornvme/GetRegistrySettings24H2.c), [stornvmeGetDynamicRegistrySettings26H1.c](https://github.com/nohuto/win-config/tree/main/peripheral/assets/stornvme/stornvmeGetDynamicRegistrySettings26H1.c), and [GetRegistrySettingsForSpecificKey26H1.c](https://github.com/nohuto/win-config/tree/main/peripheral/assets/stornvme/GetRegistrySettingsForSpecificKey26H1.c) for details.
+See [GetRegistrySettings23H2.c](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/stornvme/GetRegistrySettings.c), [GetRegistrySettings24H2.c](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-24H2/stornvme/GetRegistrySettings.c), [stornvmeGetDynamicRegistrySettings26H1.c](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-26H1/stornvme/GetDynamicRegistrySettings.c), and [GetRegistrySettingsForSpecificKey26H1.c](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-26H1/stornvme/GetRegistrySettingsForSpecificKey.c) for details.
 
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Services\\stornvme\\Parameters\\Device";
@@ -1183,7 +1183,7 @@ See [GetRegistrySettings23H2.c](https://github.com/nohuto/win-config/tree/main/p
 
 # StorPort Values
 
-This currently includes all values from [`storport.sys`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/storport) (in relation to that StorPort key, this binary also has some PnP values/other single values, see [pnp-device-values/#default-data](https://noverse.dev/docs/win-config/power/pnp-device-values/#default-data)), see [DllInitialize](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/storport/DllInitialize.c) & [sub_1C0042F20](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/storport/sub_1C0042F20.c) functions. More details on StorPort topic/values may be added soon.
+This currently includes all values from [`storport.sys`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/storport) (in relation to that StorPort key, this binary also has some PnP values/other single values, see [pnp-device-values/#default-data](https://noverse.dev/docs/win-config/power/pnp-device-values/#default-data)), see [DllInitialize](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/storport/DllInitialize.c) & [sub_1C0042F20](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/storport/sub_1C0042F20.c) functions. More details on StorPort topic/values may be added soon.
 
 Values that include `(bool)` as comment accept range `0-4294967295` but any nonzero has the same behaviour as `1`.
 

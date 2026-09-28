@@ -3049,7 +3049,7 @@ Example (screenshot APIs don't capture the overlay color which is why I've used 
 
 ### [RenderThreadTimeoutMilliseconds](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/dwmcore/_dynamic_initializer_for__CCommonRegistryData--RenderThreadTimeoutMilliseconds__.c)
 
-It looks like a diagnostic threshold only, which controls when DWM may write the TraceLogging event `SinceWatchdogTimerStarted` (provider `Microsoft.Windows.Dwm.DwmCore`/`{1BF43430-9464-4B83-B7FB-E2638876AEEF}`). Since the default is `5000ms` I guess this is intended to be used as a kind of "compositor thread hang" event? The value [gets read](https://github.com/nohuto/regkit/blob/main/records/Windows-Dwm.txt) but as said, this event should normally not happen & the provider shouldn't run by default (don't see this as my final answer, just as an possible description).
+It looks like a diagnostic threshold only, which controls when DWM may write the TraceLogging event `SinceWatchdogTimerStarted` (provider `Microsoft.Windows.Dwm.DwmCore`/`{1BF43430-9464-4B83-B7FB-E2638876AEEF}`). Since the default is `5000ms` I guess this is intended to be used as a kind of "compositor thread hang" event? The value [gets read](https://github.com/nohuto/regkit/blob/main/assets/records/Windows-Dwm.txt) but as said, this event should normally not happen & the provider shouldn't run by default (don't see this as my final answer, just as an possible description).
 
 The related thread gets created by [`CConnection::StartCompositionThread`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/dwmcore/-StartCompositionThread@CConnection@@AEAAJH@Z.c), which sets it's description to `DWM Compositor Thread`. The time is from the end of the previous [`CPartitionVerticalBlankScheduler::WaitForWork`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/dwmcore/-WaitForWork@CPartitionVerticalBlankScheduler@@AEAAXXZ.c) call to the start of the next one.
 
@@ -3927,7 +3927,7 @@ VOID KeBugCheckEx(
 );
 ```
 
-##### [TIMER_OR_DPC_INVALID](https://github.com/nohuto/windows-driver-docs/blob/staging/windows-driver-docs-pr/debugger/bug-check-0xc7--timer-or-dpc-invalid.md)
+##### [TIMER_OR_DPC_INVALID](https://github.com/MicrosoftDocs/windows-driver-docs/blob/staging/windows-driver-docs-pr/debugger/bug-check-0xc7--timer-or-dpc-invalid.md)
 
 *The `TIMER_OR_DPC_INVALID` bug check has a value of `0x000000C7`. This is issued if a kernel timer or deferred procedure call (DPC) is found somewhere in memory where it is not permitted. This condition is usually caused by a driver failing to cancel a timer or DPC before freeing the memory where it resides.*
 
@@ -4071,7 +4071,7 @@ lkd> dt nt!_KPRCB ffffd981f4fb2180 ThreadDpcEnable
 >
 > — Microsoft, [Introduction to threaded DPCs](https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/introduction-to-threaded-dpcs)
 
-![](https://github.com/nohuto/windbg-notes/blob/main/assets/irql-levels.png?raw=true)
+![](https://github.com/nohuto/windbg-notes/blob/main/images/irql-levels.png?raw=true)
 
 [`KiInitializeProcessor`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KiInitializeProcessor.c) initializes per processor threaded DPC:
 
@@ -5240,7 +5240,7 @@ messageFileName:  %SystemRoot%\system32\PsmServiceExtHost.dll
 
 ## Registry Values
 
-Based on pseudocode of [`dxgkrnl.sys`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/dxgkrnl)/[`dxgmms2.sys`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/dxgmms2) of 23H2/25H2 as they differ at some point, see [records/Graphics-Drivers.txt](https://github.com/nohuto/regkit/blob/main/records/Graphics-Drivers.txt) for values that get read on boot ([boot capture guide](https://noverse.dev/docs/regkit/guides/wpr-wpa/)). Unless written otherwise, `REG_DWORD` ones accept the full range (`0-4294967295`), same for `REG_QWORD` (`0-18446744073709551615`).
+Based on pseudocode of [`dxgkrnl.sys`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/dxgkrnl)/[`dxgmms2.sys`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/dxgmms2) of 23H2/25H2 as they differ at some point, see [records/Graphics-Drivers.txt](https://github.com/nohuto/regkit/blob/main/assets/records/Graphics-Drivers.txt) for values that get read on boot ([boot capture guide](https://noverse.dev/docs/regkit/guides/wpr-wpa/)). Unless written otherwise, `REG_DWORD` ones accept the full range (`0-4294967295`), same for `REG_QWORD` (`0-18446744073709551615`).
 
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers"
@@ -8511,7 +8511,7 @@ Small documentation on several values the option applies, see links below for mo
 
 ### Registry Values
 
-This list isn't complete yet, see [FileSystem](https://github.com/nohuto/regkit/blob/main/records/FileSystem.txt) for all values that get read on boot ([boot capture guide](https://noverse.dev/docs/regkit/guides/wpr-wpa/)).
+This list isn't complete yet, see [FileSystem](https://github.com/nohuto/regkit/blob/main/assets/records/FileSystem.txt) for all values that get read on boot ([boot capture guide](https://noverse.dev/docs/regkit/guides/wpr-wpa/)).
 
 | Value | Description |
 | ----- | ------------ |

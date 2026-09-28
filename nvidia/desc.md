@@ -8,7 +8,7 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08
 
 The tool loads all value names including their bit definitions, making it easy for you to understand what the data of `1431655765` truely does. After selecting an option, it updates the `dec`, `hex`, `bin` data and displays the bit positions. If you want to use the value, you can add it with the `Reg Add` button, which searches for the correct key.
 
-It adds all values to the [`Display`](https://learn.microsoft.com/en-us/windows-hardware/drivers/install/system-defined-device-setup-classes-available-to-vendors#device-categories-and-class-values) class key. There are values with the same names in the [`nvlddmkm\*`](https://github.com/nohuto/wpr-reg-records/blob/main/records/nvlddmkm.txt) key, but those won't get added via the tool. I may add a second section for `nvlddmkm` key values.
+It adds all values to the [`Display`](https://learn.microsoft.com/en-us/windows-hardware/drivers/install/system-defined-device-setup-classes-available-to-vendors#device-categories-and-class-values) class key. There are values with the same names in the [`nvlddmkm\*`](https://github.com/nohuto/regkit/blob/main/assets/records/nvlddmkm.txt) key, but those won't get added via the tool. I may add a second section for `nvlddmkm` key values.
 
 ```
 \Registry\Machine\SYSTEM\ControlSet001\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000 : RmProfilingAdminOnly
@@ -19,7 +19,7 @@ The calculator uses an converted `.json` version of the official NVIDIA resource
 
 - [Preview](https://github.com/user-attachments/assets/91b241ef-5e8e-4859-8957-d3b54dc52b0e)
 
-The tool currently has a selection of `967` values ([`nvvalues.txt`](https://github.com/nohuto/bitmask-calc/blob/main/nvvalues.txt)). It works with my own `.json` converted bitfield definitions. This doesn't mean that all of them are configurable or used by your system. See [list of values](https://github.com/nohuto/wpr-reg-records/blob/main/records/NVIDIA-DispGUID.txt), which got read on my system while boot.
+The tool currently has a selection of `967` values ([`nvvalues.txt`](https://github.com/nohuto/bitmask-calc/blob/main/nvvalues.txt)). It works with my own `.json` converted bitfield definitions. This doesn't mean that all of them are configurable or used by your system. See [list of values](https://github.com/nohuto/regkit/blob/main/assets/records/NVIDIA-DispGUID.txt), which got read on my system while boot.
 
 ## GUI Buttons
 
@@ -1074,7 +1074,7 @@ I'd suggest you don't change this option and just use it for information only.
 
 The `\Registry\Machine\SYSTEM\ControlSet001\Services\nvlddmkm\State` hive is the driver's persistent state store, not the DRS/NVAPI profile database. In tree it is used for driver owned data like the `State\DisplayDatabase` subtree and other persisted blobs (for example HDCP SRM and TDR timing records), accessed via `NvDriverRegKeyPersistentState`. This information is based on `nvlRegistry.h`, `RegistryKeys.cpp`, `displayDb.h`, `displayMgr.cpp`, `nvlTdr.cpp` (ignore it if you don't know what I mean by file names) if I understood the references correctly. Adding the values to the key doesn't affect the state in NVPI.
 
-Values read under `\Registry\Machine\SYSTEM\ControlSet001\Services\nvlddmkm\State`, see [nvlddmkm.txt](https://github.com/nohuto/regkit/blob/main/records/nvlddmkm.txt). These are the only hex ID style values which got read on boot (may differ for you if different driver) and I doubt that these have any affect, this is for documentation reasons only.
+Values read under `\Registry\Machine\SYSTEM\ControlSet001\Services\nvlddmkm\State`, see [nvlddmkm.txt](https://github.com/nohuto/regkit/blob/main/assets/records/nvlddmkm.txt). These are the only hex ID style values which got read on boot (may differ for you if different driver) and I doubt that these have any affect, this is for documentation reasons only.
 
 ## 0x11112255 (WKS_SCANOUT_COMPOSITION_CONTROL)
 
