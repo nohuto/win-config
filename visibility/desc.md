@@ -1392,6 +1392,52 @@ IconFont    Type: REG_BINARY, Length: 92, Data: E5 FF FF FF 00 00 00 00 00 00 00
 - `MouseHoverTime` controls how long the mouse must stay still over something before Windows treats it as a hover.
 - `MenuShowDelay` controls the menu hover delay, mainly how long shell menus wait before opening a submenu while the pointer is on a menu entry.
 
+### msd_test
+
+Small app to test how much time it took to open a popup menu, works by moving the pointer onto a submenu item, then measuring from the menus `WM_MOUSEMOVE` in `WH_MSGFILTER` to the submenus `WM_INITMENUPOPUP`, via `QueryPerformanceCounter`.
+
+You can either download the prebuild [binary](), or build it yourself from [source]() whenever you want to test it on your own.
+
+```powershell
+cmake -S . -B build
+cmake --build build --config Release
+
+./build/Release/msd_test --help
+usage: msd_test [--tries 1-1000] [--delay 0-60000] [--use-spi]
+```
+
+`--tries` has a default of 10, if not overriding (`SPI_SETMENUSHOWDELAY`) the delay via `--delay`, it uses your `MenuShowDelay` data by default.
+
+#### Results
+
+As shown in the section below, using a data of `0` is the same as using a data of `10`:
+
+```powershell
+$ .\msd_test --tries 50 --delay 0
+delay=0ms source=arg tries=50/50 avg=16.81ms
+
+$ .\msd_test --tries 50 --delay 10
+delay=10ms source=arg tries=50/50 avg=14.72ms
+
+$ .\msd_test --tries 50 --delay 20
+delay=20ms source=arg tries=50/50 avg=29.03ms
+
+$ .\msd_test --tries 50 --delay 30
+delay=30ms source=arg tries=50/50 avg=30.24ms
+
+$ .\msd_test --tries 50 --delay 40
+delay=40ms source=arg tries=50/50 avg=46.85ms
+
+$ .\msd_test --tries 50 --delay 50
+delay=50ms source=arg tries=50/50 avg=60.16ms
+
+$ .\msd_test --tries 50 --delay 100
+delay=100ms source=arg tries=50/50 avg=107.00ms
+
+$ .\msd_test --tries 50 --delay 400
+delay=400ms source=arg tries=50/50 avg=401.97ms
+```
+
 ### CMenuToolbarBase::_SetTimer
 
 [`SPI_GETMENUSHOWDELAY`](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-systemparametersinfoa):
@@ -1453,7 +1499,7 @@ if ( v4 < 2000 )
 return SetTimer(this[2], v2, v4, 0LL); // v4 = uElapse
 ```
 
-`v4` is the final value passed to [`SetTimer`](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-settimer) as `uElapse`, which can be used as maximum I guess (as the part above doesn't show any max clamp) values below `USER_TIMER_MINIMUM` (`10 ms`) are increased to `10 ms`, values above `USER_TIMER_MAXIMUM` (`0x7FFFFFFF`, `~24.8 days`) are lowered to that maximum. Obviously, that's just my current interpretation, and I don't claim that it's the truth.
+`v4` is passed to [`SetTimer`](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-settimer) as `uElapse`, MS shows that `SetTimer` clamps values below `USER_TIMER_MINIMUM` (`10 ms`) to `10 ms` & values above `USER_TIMER_MAXIMUM` (`0x7FFFFFFF`, ~24.8 days) to that maximum. Means for `CMenuToolbarBase::_SetTimer` shown above, using `MenuShowDelay` with `0` can't request a timer interval shorter than `10 ms`.
 
 The normal menu hover timers use `MenuShowDelay`, some menu timers ignore or extend it, `32771` & `32777` use at least `2 seconds`, `32776` can use at least `2 seconds` after multiplying the value by `5`, `32778` is fixed to `60 seconds`, `32779` uses double click time instead.
 
