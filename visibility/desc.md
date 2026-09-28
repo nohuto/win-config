@@ -1796,7 +1796,7 @@ Since `powershell.exe` has default color of white (foreground) and blue (backgro
 | Yellow | `1110` | `14` |
 | White | `1111` | `15` |
 
-Calculate it on your own, by using [bitmask-calc](https://noverse.dev/#bitmask) - e.g. set bit `1-3` and `7`, to get `Yellow` (foreground) and `DarkGray` (background).
+Calculate it on your own, by using [bitmask-calc](https://noverse.dev/terminal#bitmask) - e.g. set bit `1-3` and `7`, to get `Yellow` (foreground) and `DarkGray` (background).
 
 ## Miscellaneous Notes
 

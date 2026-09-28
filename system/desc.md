@@ -14,7 +14,7 @@ INIT:0000000140BA3E58                 dq 3 dup(0)
 
 See '[CmControlVector](https://noverse.dev/docs/win-config/system/kernel-values/#cmcontrolvector)' if you don't understand the comments.
 
-Use my [minimal (32 bit) bitmask calculator](https://noverse.dev/#bitmask) whenever you want to get/read hex/dec values.
+Use my [minimal (32 bit) bitmask calculator](https://noverse.dev/terminal#bitmask) whenever you want to get/read hex/dec values.
 
 ## KiUpdateRunTime Quantum Expiration
 
@@ -443,7 +443,7 @@ I'll use WPR below to capture the boost, if you're not familiar with WPA/MXA, yo
 
 You can also see if a [context switch](https://noverse.dev/docs/windbg-notes/threads/thread-scheduling/context-switching/) was caused by `WrQuantumEnd` via '*Processes and Threads - CS Reason*', but note that there've to be two threads with the same priority & processor, otherwise the thread will just get another quantum without a context switch. In the example below I've created two threads with the same priority/affinity using [CPUStress](https://github.com/zodiacon/CPUStress), but as you can see none ever needed more than its quantum in the 10sec record (FG/BG 36QU was used here).
 
-See '[Thread States](https://noverse.dev/docs/windbg-notes/threads/thread-scheduling/thread-states/)' for more details on the topic & a example on how [`WrQuantumEnd`](https://noverse.dev/docs/windbg-notes/threads/thread-scheduling/thread-states/#wrquantumend) works, and when the `WrQuantumEnd` reason is used (beside `CycleTime >= QuantumTarget`).
+See '[Thread States](https://noverse.dev/docs/windbg-notes/threads/thread-scheduling/thread-states/)' for more details on the topic & a example on how [`WrQuantumEnd`](https://noverse.dev/docs/windbg-notes/threads/thread-scheduling/context-switching/#wrquantumend) works, and when the `WrQuantumEnd` reason is used (beside `CycleTime >= QuantumTarget`).
 
 ![](https://github.com/nohuto/win-config/blob/main/system/images/WrQuantumEnd-23H2.png?raw=true)
 
@@ -3180,7 +3180,7 @@ aRegistryMachin_33 = "\\Registry\\Machine\\SYSTEM\\CurrentControlSet\\Control\\P
 
 ## CmControlVector
 
-CM = configuration manager, it loads & manages registry hives, inserts the `\REGISTRY` key object into the namespace and more. See regkits '[Registry fundamentals](https://noverse.dev/docs/regkit/overview/#registry-fundamentals)' documentation for more information on the topic.
+CM = configuration manager, it loads & manages registry hives, inserts the `\REGISTRY` key object into the namespace and more. See regkits '[Registry fundamentals](https://noverse.dev/docs/regkit/registry-internals/registry-fundamentals/)' documentation for more information on the topic.
 
 `CmControlVector` is a table used by [`CmpGetSystemControlValues`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/CmpGetSystemControlValues.c) while early CM init. Each entry is `0x30` bytes (six pointers), this is just a simple way to imagine each block:
 
@@ -4951,7 +4951,7 @@ Game Mode can request CPU set allocation and apply CPU set restrictions and defa
 
 I've tried to see differences between on/off within Overwatch/CS2, but `GetProcessDefaultCpuSets` returned `DefaultCpuSetCount=0` even while Game Mode was active. Other games I tested were Forza Horizon 5/Cyberpunk 2077 which don't register with Game Mode at all.
 
-During registration ([9 - Apply Resource Policies](https://noverse.dev/docs/win-config/system/game-mode/#9---apply-resource-policies)), [`RmpGameModeAcquireCpuSetAllocation`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/PsmServiceExtHost/-RmpGameModeAcquireCpuSetAllocation@@YAJPEAU_RM_GAME_MODE_CONTEXT@@PEAU_RM_GAME_MODE_RECIPIENT_P.c) asks the CPU set manager for a valid allocation, the CPU set manager chooses the actual CPU sets from the request and current system CPU set state, then [`RmpCpuSetManagerApplySystemAllowedMask`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/PsmServiceExtHost/-RmpCpuSetManagerApplySystemAllowedMask@@YAJPEAU_RM_CPU_SET_MANAGER@@@Z.c) can reduce the CPU sets available to general system activity. [`RmpGameModeTryApplyCpuSetAllocation`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/PsmServiceExtHost/-RmpGameModeTryApplyCpuSetAllocation@@YAJPEAU_RM_GAME_MODE_CONTEXT@@PEAU_RM_GAME_MODE_RECIPIENT_.c) then applies that allocation to the registered process.
+During registration ([Apply Resource Policies](https://noverse.dev/docs/win-config/system/game-mode/#apply-resource-policies)), [`RmpGameModeAcquireCpuSetAllocation`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/PsmServiceExtHost/-RmpGameModeAcquireCpuSetAllocation@@YAJPEAU_RM_GAME_MODE_CONTEXT@@PEAU_RM_GAME_MODE_RECIPIENT_P.c) asks the CPU set manager for a valid allocation, the CPU set manager chooses the actual CPU sets from the request and current system CPU set state, then [`RmpCpuSetManagerApplySystemAllowedMask`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/PsmServiceExtHost/-RmpCpuSetManagerApplySystemAllowedMask@@YAJPEAU_RM_CPU_SET_MANAGER@@@Z.c) can reduce the CPU sets available to general system activity. [`RmpGameModeTryApplyCpuSetAllocation`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/PsmServiceExtHost/-RmpGameModeTryApplyCpuSetAllocation@@YAJPEAU_RM_GAME_MODE_CONTEXT@@PEAU_RM_GAME_MODE_RECIPIENT_.c) then applies that allocation to the registered process.
 
 The final calls are [`RmpSystemSetProcessDefaultCpuSets`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/PsmServiceExtHost/-RmpSystemSetProcessDefaultCpuSets@@YAJPEAXPEA_K@Z.c) (preferred selection), [`RmpSystemSetProcessConstrainedCpuSets`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/PsmServiceExtHost/-RmpSystemSetProcessConstrainedCpuSets@@YAJPEAXE@Z.c) (limit to selected CPU sets), [`RmpSystemSetProcessAllowedCpuSets`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/PsmServiceExtHost/-RmpSystemSetProcessAllowedCpuSets@@YAJPEAXPEA_K@Z.c) (updated when the allocation changes).
 
@@ -5057,7 +5057,7 @@ if ( (unsigned int)result > 8 )
   *v34 = v35; // invalid yield falls back to HKCU value
 ```
 
-The service validates the final request in [`RmpGameModeIsResourceRequestValid`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/PsmServiceExtHost/-RmpGameModeIsResourceRequestValid@@YAEPEAU_RM_SERVICE_GLOBALS@@PEAU_RM_GAME_MODE_RESOURCE_REQUE.c) with ranges listed in [7 - Validate in the Service](https://noverse.dev/docs/win-config/system/game-mode/#7---validate-in-the-service). The actual graphics update is in [`RmpGameModeTryApplyGraphicsPriority`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/PsmServiceExtHost/-RmpGameModeTryApplyGraphicsPriority@@YAJPEAU_RM_GAME_MODE_CONTEXT@@PEAU_RM_GAME_MODE_RECIPIENT_.c), Game Mode saves the original graphics settings during initialization, applies the Game Mode values while active, and restores the saved values when Game Mode is removed.
+The service validates the final request in [`RmpGameModeIsResourceRequestValid`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/PsmServiceExtHost/-RmpGameModeIsResourceRequestValid@@YAEPEAU_RM_SERVICE_GLOBALS@@PEAU_RM_GAME_MODE_RESOURCE_REQUE.c) with ranges listed in [Validate in the Service](https://noverse.dev/docs/win-config/system/game-mode/#validate-in-the-service). The actual graphics update is in [`RmpGameModeTryApplyGraphicsPriority`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/PsmServiceExtHost/-RmpGameModeTryApplyGraphicsPriority@@YAJPEAU_RM_GAME_MODE_CONTEXT@@PEAU_RM_GAME_MODE_RECIPIENT_.c), Game Mode saves the original graphics settings during initialization, applies the Game Mode values while active, and restores the saved values when Game Mode is removed.
 
 ```c
 // RmpGameModeTryApplyGraphicsPriority
@@ -6499,7 +6499,7 @@ See '[Thread Activity](https://noverse.dev/docs/windbg-notes/threads/examining-t
     StartedComponents & 0x200 // MemoryCompression started by SysMain
 ```
 
-`0x200` = bit `9`, you can use my [bitmask calculator](https://noverse.dev/#bitmask) to see whenever that bit is set in your current `StartedComponents` data, example:
+`0x200` = bit `9`, you can use my [bitmask calculator](https://noverse.dev/terminal#bitmask) to see whenever that bit is set in your current `StartedComponents` data, example:
 
 ![](https://github.com/nohuto/win-config/blob/main/system/images/StartedComponents.png?raw=true)
 
@@ -6691,7 +6691,7 @@ fffff803`1bd1d1c8  00000000
     StartedComponents & 0x100 // PageCombining started by SysMain
 ```
 
-`0x100` = bit `8`, you can use my [bitmask calculator](https://noverse.dev/#bitmask) to see whenever that bit is set in your current `StartedComponents` data, example:
+`0x100` = bit `8`, you can use my [bitmask calculator](https://noverse.dev/terminal#bitmask) to see whenever that bit is set in your current `StartedComponents` data, example:
 
 ![](https://github.com/nohuto/win-config/blob/main/system/images/StartedComponents.png?raw=true)
 
