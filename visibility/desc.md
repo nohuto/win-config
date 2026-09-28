@@ -1396,7 +1396,7 @@ IconFont    Type: REG_BINARY, Length: 92, Data: E5 FF FF FF 00 00 00 00 00 00 00
 
 Small app to test how much time it took to open a popup menu, works by moving the pointer onto a submenu item, then measuring from the menus `WM_MOUSEMOVE` in `WH_MSGFILTER` to the submenus `WM_INITMENUPOPUP`, via `QueryPerformanceCounter`.
 
-You can either download the prebuild [binary](), or build it yourself from [source]() whenever you want to test it on your own.
+You can either download the prebuild [binary](https://github.com/nohuto/win-config/blob/main/visibility/assets/msd_test.exe), or build it yourself from [source](https://github.com/nohuto/win-config/tree/main/visibility/assets/msd_test) whenever you want to test it on your own.
 
 ```powershell
 cmake -S . -B build
