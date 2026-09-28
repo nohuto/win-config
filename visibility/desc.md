@@ -888,7 +888,7 @@ cmake -S . -B build
 cmake --build build --config Release
 
 ./build/Release/msd_test --help
-usage: msd_test [--tries 1-1000] [--delay 0-60000] [--use-spi]
+usage: msd_test [--tries 1-1000] [--delay 0-60000]
 ```
 
 `--tries` has a default of 10, if not overriding (`SPI_SETMENUSHOWDELAY`) the delay via `--delay`, it uses your `MenuShowDelay` data by default.
