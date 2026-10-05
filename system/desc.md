@@ -258,7 +258,7 @@ lkd> dd PsPrioritySeparation L1
 fffff804`1a31ec7c  00000000 // 0x18 (00)
 
 lkd> dd PsPrioritySeparation L1
-fffff801`2611ec7c  00000001 // 0x19 (01)https://x.com/TweakingTruth
+fffff801`2611ec7c  00000001 // 0x19 (01)
 
 lkd> dd PsPrioritySeparation L1
 fffff802`6b91ec7c  00000002 // 0x1A (10)
@@ -458,7 +458,7 @@ This is just a "extreme" example of what it could cause, using two thread with m
 You can practically also look at it via WinDbg, but rather use WPR.
 
 ```c
-// 0xA1
+// 0x2A
 lkd> !process 0 4 CPUSTRES.exe
 PROCESS ffffb9878e2023c0
     SessionId: 1  Cid: 1c98    Peb: 004dc000  ParentCid: 0e64
@@ -808,7 +808,7 @@ lkd> dd KiCyclesPerClockQuantum L1
 fffff805`4591d0d4  01260cb1
 ```
 
-`/10` converts the clock interval from 100ns units to ms (cycles per microsecond) & `/3` converts one clock interval into one QU, the output should be then the same as the `KiCyclesPerClockQuantum` read.
+`/10` converts the clock interval from 100ns units to microseconds, `/3` converts that into cycles per QU, and the output should then match the `KiCyclesPerClockQuantum` read.
 
 #### Quantum Exceptions
 
@@ -952,7 +952,7 @@ Means with the `clock interval / 18` unit, the table now is:
 
 See '[Duration Captures, 6/18 QU, 25H2](https://noverse.dev/docs/win-config/system/priority-separation/#618-qu-25h2)' for a capture showing that threads use their `BamQosLevel` to get the QU, instead of the 6 (BG)/18 (FG) QU.
 
-`BamQosLevel` doesn't use the `PspVariableQuantums`/`PspFixedQuantums` tables, these're still getting filled by the threads stored `QuantumReset`. When `ShortThreadQuantum` and variable quantums are used, [`KiQueryQuantumReset`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-24H2/ntoskrnl/KiQueryQuantumReset.c) (exists since 24H2) can instead return a QoS reset (fixed quantums set `KiVariableQuantumEnabled` to `0` and won't use that override, see '[18 QU, 25H2](https://noverse.dev/docs/win-config/system/priority-separation/#18-qu-25h2)' capture). `_KTHREAD.BamQosLevel` is at `0x204`, which is the `a1 + 516` byte read below.
+`BamQosLevel` override doesn't use the `PspVariableQuantums`/`PspFixedQuantums` tables, those still fill `PspForegroundQuantum`, which [`PspComputeQuantum`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-24H2/ntoskrnl/PspComputeQuantum.c) uses to get the stored quantum reset (except for idle class & job scheduling class). When `ShortThreadQuantum` and variable quantums are used, [`KiQueryQuantumReset`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-24H2/ntoskrnl/KiQueryQuantumReset.c) (exists since 24H2) can instead return a QoS reset (fixed quantums set `KiVariableQuantumEnabled` to `0` and won't use that override, see '[18 QU, 25H2](https://noverse.dev/docs/win-config/system/priority-separation/#18-qu-25h2)' capture). `_KTHREAD.BamQosLevel` is at `0x204`, which is the `a1 + 516` byte read below.
 
 ```c
 // KiQueryQuantumReset
@@ -1274,7 +1274,6 @@ Then use the `DriverStart` address + RVA:
 
 ```c
 lkd> dd 0xfffff801`890e82F8 L1
-fffff801`3aee82f8  0000000a // 10
 ```
 
 ## NetworkThrottlingIndex
@@ -2559,7 +2558,7 @@ if ( KiEnableClockTimerPerCpuTickScheduling && KiClockTimerPerCpu )
   KiClockTimerPerCpuTickScheduling = KiEnableClockTimerPerCpuTickScheduling == 1; // override
 ```
 
-[`KeClockInterruptNotify`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KeClockInterruptNotify.c) has a branch for `KiClockTimerPerCpuTickScheduling && !KiSerializeTimerExpiration` (means `SerializeTimerExpiration = 2` & `EnablePerCpuClockTickScheduling = 1`), but I haven't looked into what it's used for yet.
+[`KeClockInterruptNotify`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KeClockInterruptNotify.c) has a branch for `KiClockTimerPerCpuTickScheduling && !KiSerializeTimerExpiration` (means `SerializeTimerExpiration = 0` on non AOAC platforms, or >= 2 & `EnablePerCpuClockTickScheduling = 1`), but I haven't looked into what it's used for yet.
 
 ## Structures
 
@@ -3322,7 +3321,7 @@ This includes details on several `HKLM\\SYSTEM\\CurrentControlSet\\Control\\Sess
 | Prefix | Component |
 | --- | --- |
 | `Alpcp` | Advanced Local Procedure Calls |
-| `Cc` | Common Cache |
+| `Cc` | Cache Manager |
 | `Cm` / `Cmp` | Configuration manager |
 | `Dbgk` | Debugging Framework for user mode |
 | `Ex` / `Exp` | Executive support routines |
@@ -3422,7 +3421,7 @@ Everything listed below is based on personal findings, mistakes may exist.
     "ObTracePermanent" = 0; // ObpTracePermanent
     "ObTracePoolTags" = 0; // ObpTracePoolTagsBuffer / ObpTracePoolTagsLength
     "ObTraceProcessName" = 0; // ObpTraceProcessNameBuffer / ObpTraceProcessNameLength
-    "ObUnsecureGlobalNames" = 6619246; // ObpUnsecureGlobalNamesBuffer / ObpUnsecureGlobalNamesLength
+    "ObUnsecureGlobalNames" = ?; // ObpUnsecureGlobalNamesBuffer / ObpUnsecureGlobalNamesLength (ObpIsUnsecureName)
     "PassiveWatchdogTimeout" = 300; // KiPassiveWatchdogTimeout
     "PerfIsoEnabled" = 0; // KiPerfIsoEnabled, cache isolation aware processor placement for threads whose scheduling group KSCB has RankBias set, range 0-64dec
     "PoCleanShutdownFlags" = 0; // PopShutdownCleanly
@@ -3535,12 +3534,11 @@ Everything listed below is based on personal findings, mistakes may exist.
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management";
     "AllocationPreference" = 0;
     "AllowUserHotPatchWithoutVbs" = 0;
-    "CacheUnmapBehindLengthInMB" = 8388608; // CcUnmapBehindLength
+    "CacheUnmapBehindLengthInMB" = 8; // MB, range 1-128
     "CustomDTPDenominator" = 8; // CcClientDTPDenominator
     "DeadlockRecursionDepthLimit" = 0; // ViRecursionDepthLimitFromRegistry
     "DeadlockSearchNodesLimit" = 0; // ViSearchedNodesLimitFromRegistry
-    "DifPluginConfigData" = 635710207; // DifPluginConfigData
-    "DifPluginConfigDataLength" = 1276097421; // DifPluginConfigDataLength
+    "DifPluginConfigData" = ?; // 24H2 VfInitBootDriversLoaded copies DifPluginConfigData using DifPluginConfigDataLength?
     "DisableCacheTelemetry" = 2; // CcDisableTelemetryRegKeyAtInit
     "DisablePageCombining" = 0;
     "DisablePagingExecutive" = 0;
@@ -3583,8 +3581,7 @@ Everything listed below is based on personal findings, mistakes may exist.
     "TrackPtes" = 0;
     "VerifierDifPoolTags" = 0; // DifpPoolTags
     "VerifierDifPoolTagsSizeBytes" = 4294967295; // DifpPoolTagsSizeBytes
-    "VerifierFaultApplications" = 0; // VerifierFaultApplicationsBuffer
-    "VerifierFaultApplicationsSize" = 4294967295; // VerifierFaultApplicationsBufferSize
+    "VerifierFaultApplications" = ?;
     "VerifierFaultBootMinutes" = 8; // VfFaultInjectionBootMinutes
     "VerifierFaultProbability" = 600; // VfFaultInjectionProbability
     "VerifierFaultTags" = 0; // VerifierFaultTagsBuffer
@@ -3605,10 +3602,8 @@ Everything listed below is based on personal findings, mistakes may exist.
     "VerifierTriageContext" = 0; // VfTriageContext
     "VerifyBTSBufferSize" = 0; // ViVerifyBTSBufferSize
     "VerifyDriverLevel" = 4294967295; // MmVerifyDriverLevel
-    "VerifyDrivers" = 3905129288; // MmVerifyDriverBuffer
-    "VerifyDriversLength" = 1207968387; // MmVerifyDriverBufferLength
-    "VerifyDriversSuppress" = 276138824; // VfXdvSuppressDriversBuffer
-    "VerifyDriversSuppressLength" = 3482011648; // VfXdvSuppressDriversBufferLength
+    "VerifyDrivers" = ?;
+    "VerifyDriversSuppress" = ?;
     "VerifyMode" = 4; // VfVerifyMode
     "VerifyTriage" = 4294967295; // ViVerifyTriage
     "VerifyTriageRules" = 0; // ViVerifyTriageRules
@@ -5125,7 +5120,7 @@ if ( a1 )
 return NtUpdateWnfStateData(&WNF_SEB_GAME_MODE, &v2, 8LL, 0LL, 0LL, 0, 0);
 ```
 
-When enabled, WNF uses low value `3`, when disabled, it uses low value `1`. The high value stays `0xFFFFFFFF` in both cases. The GameMode profile has one processor override `Minimum processor state` = `100%` for AC/DC (note that you won't see the changes via powercfg, as these are profile values not a scheme).
+When enabled, WNF uses low value `3`, when disabled, it uses low value `1`. The high value stays `0xFFFFFFFF` in both cases.
 
 You can use [`gm_effects`](https://noverse.dev/docs/win-config/system/game-mode#gm_effects) to see what value is set.
 
@@ -7793,7 +7788,7 @@ Note that this doesn't show default states, instead it shows several options and
     "\\25000033"; "Element" = 0000000000000000; // REG_BINARY, perfmem = 0 - BcdOSLoaderInteger_PerformaceDataMemory (integer)
     "\\25000031"; "Element" = 8000000000000000; // REG_BINARY, removememory = 128 - The amount of memory the system should ignore.
     "\\25000021"; "Element" = 0100000000000000; // REG_BINARY, pae = 1 (forceenable), Default = 0000000000000000, ForceDisable = 0200000000000000 - If this value is not specified, the default is PaePolicyDefault which follows the rule "enable PAE if hot-pluggable memory is above 4GB"
-    "\\25000020"; "Element" = 0000000000000000; // REG_BINARY, nx = 0 (OptIn, NX off by default), OptOut = 0100000000000000 (NX on by default), AlwaysOff = 0200000000000000, AlwaysOn = 0300000000000000 - If this value is not specified, the default is NxPolicyAlwaysOff.
+    "\\25000020"; "Element" = 0000000000000000; // REG_BINARY, nx = 0 (OptIn = DEP for Windows components & opted in 32-bit apps), OptOut = 0100000000000000 (DEP for all 32-bit apps except exemptions), AlwaysOff = 0200000000000000, AlwaysOn = 0300000000000000 - If this value is not specified, the default is NxPolicyAlwaysOff.
     "\\23000003"; "Element" = {resume}; // REG_SZ, resumeobject = {resume} - The default boot environment application to load if the user does not select one.
     "\\22000053"; "Element" = \EFI\Microsoft\Boot\EVStore.dat; // REG_SZ, evstore = \EFI\Microsoft\Boot\EVStore.dat
     "\\22000041"; "Element" = recovery message; // REG_SZ, fverecoverymessage = recovery message
@@ -9288,6 +9283,8 @@ Changes the size of text, apps, and other items. Note that on laptops the defaul
 
 ### SystemSettings Captures
 
+This seems to be dependend on what the default scaling, means for some `0` might be `150%`.
+
 ```c
 // 100%
 HKLM\System\CurrentControlSet\Control\GraphicsDrivers\ScaleFactors\<MONITORID>\DpiValue	Type: REG_DWORD, Length: 4, Data: 0
@@ -9357,7 +9354,7 @@ Windows Internals says that the default of `WaitToKillServiceTimeout` is `20000`
 "HKCU\\Control Panel\\Desktop";
     "WaitToKillTimeout" = 5000; // REG_SZ (ms), time CSRSS waits for a console control handler/process to exit before showing the hung program screen
     "HungAppTimeout" = 5000; // REG_SZ (ms), time CSRSS waits for a GUI thread/process to exit after shutdown messages before seeing it as hung
-    "AutoEndTasks" = 0; // REG_SZ (ms), 1 disables the 'Hung program' screen
+    "AutoEndTasks" = 0; // REG_SZ,  1 disables the 'Hung program' screen
 ```
 
 ## [Windows Internals](https://github.com/nohuto/Windows-Books/releases/download/7th-Edition/Windows-Internals-E7-P2.pdf)

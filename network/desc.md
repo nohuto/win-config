@@ -2,10 +2,10 @@
 
 If you're wondering what `Family`/`Malware`/`Extended` etc. behind the provider names mean, see '[Mullvad](https://mullvad.net/en/help/dns-over-https-and-dns-over-tls#specifications)', '[Quad9](https://docs.quad9.net/services/)', '[AdGuard](https://adguard-dns.io/kb/general/dns-providers/)', '[Cloudflare](https://developers.cloudflare.com/1.1.1.1/setup/)' for details.
 
-The DNS server get's applied via registry (captured while applying it via the settings):
+The DNS server is applied via registry (captured while applying it via the settings):
 ```c
 HKLM\System\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\{NetID}\NameServer  Type: REG_SZ, Length: 24, Data: 194.242.2.5
-HKLM\System\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\{NetID}\DohInterfaceSettings\Doh\194.242.2.5\DohTemplate  Type: ad.net/dns-query
+HKLM\System\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\{NetID}\DohInterfaceSettings\Doh\194.242.2.5\DohTemplate  Type: REG_SZ, Data: https://extended.dns.mullvad.net/dns-query
 HKLM\System\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\{NetID}\DohInterfaceSettings\Doh\194.242.2.5\DohFlags  Type: REG_QWORD, Length: 8, Data: 2
 ```
 
@@ -64,14 +64,12 @@ DNS (domain name system) is the phonebook of the internet, which means that it t
 
 The **recursive resolver** sends requests to the other three nameservers (root -> TLD -> authoritative), if there's no cached data. It saves the data from the authoritative nameserver so the resolver can skip the requests and send back the IP from the domain to the client. If you're not using any specific DNS server, you're using the resolver from your ISP.
 
-The resolver firstly queries a [**root nameserver**](https://root-servers.org/), which returns the [TLD](https://www.iana.org/domains/root/db) (extension or last segment) -> e.g. `.com`, `.org`, `.net` & more. The root servers are managed by [ICANN](https://www.icann.org/resources/pages/what-2012-02-25-en). If the extension e.g. ends with `.org`, the root server would direct to the `.org` TLD nameserver.
+The resolver first queries a [**root nameserver**](https://root-servers.org/), which returns a referral to the [TLD](https://www.iana.org/domains/root/db) (extension or last segment), e.g. `.com`, `.org`, `.net`. If the extension ends with `.org`, the root server directs the resolver to the `.org` TLD nameservers.
 
-The **TLD nameserver** includes data for domain names, it redirects to the authoritative nameserver, after the correct TLD nameserver was found. They are managed from [IANA](https://www.iana.org/domains/root/db), which splits the TLDs into two groups, generic/gTLD (sTLD and uTLD - sponsored & unsponsored, ngTLD counts as gTLD) and county code/ccTLD.
-
-Types of TLDs:  
+The **TLD nameserver** provides referrals to a domain's authoritative nameservers, types of TLDs:  
 - **gTLD** -> Generic, common domain names like `.com`, `.org`
 - **ccTLD** -> Country code TLDs, like `.us`, `.de`, `.uk` etc.
-- [**sTLD**](https://icannwiki.org/index.php?title=Sponsored_Top_level_Domain#List_of_Sponsored_Top_Level_Domains) -> Sponsored by private organizations, reserved for these groups: `.mil`, `.app`, `.gov`
+- **sTLD** -> Sponsored domains serving defined communities, like [`.gov`](https://www.iana.org/domains/root/db/gov.html) and [`.edu`](https://www.iana.org/domains/root/db/edu.html)
 - [**ARPA**](https://www.iana.org/domains/arpa) -> Infrastructural TLD, only contains `.arpa`. Used for reversed DNS lookups, you won't use it
 - **ngTLD** -> New gTLD, used for branding, niches, etc.: `.shop`, `.online`, `.tech`
 - **Reserved TLD** -> Used for testing, they cannot be used: `.localhost`, `.example`
@@ -107,7 +105,7 @@ Examples:
 
 First numbers (IP address) is where the domain will be directed to, the second (domain name) is the site, which is getting redirected (blocked). 
 
-- [`0.0.0.0`](https://en.wikipedia.org/wiki/0.0.0.0) blocks/drops the request instantly - making them "unreachable" (known as being faster than `127.0.01`, but may be incompatible on some systems)
+- [`0.0.0.0`](https://en.wikipedia.org/wiki/0.0.0.0) blocks/drops the request instantly - making them "unreachable" (known as being faster than `127.0.0.1`, but may be incompatible on some systems)
 - [`127.0.0.1`](https://en.wikipedia.org/wiki/localhost) redirects the domain to the localhost (your computer) - called "*loopback address*"
 - [`||ads.com^`](https://adblockplus.org/filter-cheatsheet?DE_EXCEPTION=1) blocks the domain - wouldn't block `http://domain.com/redirect/http://ads.com/` -> can't be used within the hosts file
 ⠀
@@ -478,7 +476,7 @@ HKLM\System\CurrentControlSet\Services\LanmanServer\Parameters\enablesecuritysig
 
 ### Prefer AES-256 SMB Ciphers
 
-Specifies the encryption ciphers used by the SMB client and the preferred order, the suboption uses `AES_256_GCM`/`AES_256_CCM`. Windows automatically uses the most advanced cipher available. 3.1.1 still uses `AES-128-GCM` by default unless you explicitly prefer AES-256-capable ciphers.
+Specifies the supported SMB encryption ciphers and their preference order, the suboption restricts both client and server to `AES_256_GCM`/`AES_256_CCM`, so the peer must support one of those ciphers.
 
 ```powershell
 Set-SmbClientConfiguration -EncryptionCiphers "AES_256_GCM, AES_256_CCM"
@@ -513,7 +511,7 @@ HKLM\System\CurrentControlSet\Services\LanmanServer\Parameters\AutoShareWks	Type
 
 ### Force Encryption
 
-Encryption is enabled by default, some users reported slow read and write speeds. Disabling the encryption (`$false`) may improve it, otherwise leave it enabled for your own security. The last command prevents clients that do not support SMB encryption from connecting to encrypted shares.
+It can add additional processing, so measure throughput on your hardware, since some reported slow read/write speeds.
 
 ```powershell
 Set-SmbServerConfiguration -EncryptData $true
@@ -1674,7 +1672,7 @@ HKR, "", *VMQVlanFiltering, %REG_SZ%, "1"
 
 # Disable FEC
 
-[FEC](https://edc.intel.com/content/www/us/en/design/products/ethernet/adapters-and-devices-user-guide/forward-error-correction-fec-mode/) (forwarded error correction) improves link stability, but increases latency. Many high quality optics, direct attach cables, and backplane channels provide a stable link without FEC.
+[FEC](https://edc.intel.com/content/www/us/en/design/products/ethernet/adapters-and-devices-user-guide/forward-error-correction-fec-mode/) (forward error correction) improves link stability, but increases latency. Many high quality optics, direct attach cables, and backplane channels provide a stable link without FEC.
 
 `Auto FEC`: Sets the FEC Mode based on the capabilities of the attached cable.  
 `CL108 RS-FEC`: Selects only RS-FEC ability and request capabilities.  

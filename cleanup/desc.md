@@ -194,7 +194,7 @@ Paths removed:
 
 # Clipboard History
 
-Currently clears the in memory buffer via `echo. | clip`. [`clip`](https://github.com/nohuto/windowsserverdocs/blob/main/WindowsServerDocs/administration/windows-commands/clip.md) saves thatever it gets into the clipboard, and [`echo.`](https://github.com/nohuto/windowsserverdocs/blob/main/WindowsServerDocs/administration/windows-commands/echo.md#examples) = blank line.
+The option currently replaces the current clipboard content with a blank line via `echo. | clip`.
 
 See your current clipboard content via:
 ```powershell

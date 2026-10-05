@@ -761,7 +761,7 @@ The relevant 4 bit field uses `0` = default/not configured, `1` = force on, and 
 
 | Mitigation | Use case | Enabling mechanism |
 | --- | --- | --- |
-| SEH Overwrite Protection (SEHOP) | Validates structured exception handler chains so overwritten handlers cannot redirect exception dispatch. It mainly applies to 32-bit and WoW64 processes. | Set through `SetProcessDEPPolicy` or the SEHOP process-creation mitigation flag. |
+| SEH Overwrite Protection (SEHOP) | Validates structured exception handler chains so overwritten handlers cannot redirect exception dispatch. It mainly applies to 32-bit and WoW64 processes. | Set through SEHOP process creation mitigation flag or [process mitigation options](https://learn.microsoft.com/en-us/windows/security/operating-system-security/device-management/override-mitigation-options-for-app-related-security-policies) |
 
 ## Validate Heap Integrity
 
@@ -986,7 +986,7 @@ Example paths:
 
 # Disable VBS (HVCI)
 
-[VBS](https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/oem-vbs) won't work if Hyper-V is disabled. HVCI = hypervisor-protected code integrity.
+[VBS](https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/oem-vbs) won't work if the Windows hypervisor is disabled (via e.g. disabling `hypervisorlaunchtype`). HVCI = hypervisor-protected code integrity.
 
 Hypervisor-Based Code Integrity (HVCI) and Kernel-Mode Code Integrity (KMCI) power `Device Guard`, LSA (Lsass.exe) and isolated LSA (LsaIso.exe) power [`Credential Guard`](https://learn.microsoft.com/en-us/windows/security/identity-protection/credential-guard/).
 
@@ -1129,7 +1129,7 @@ gi * -Stream "Zone.Identifier" -ErrorAction SilentlyContinue
 `1` – Local intranet (internal network)
 `2` – Trusted sites
 `3` – Internet (mostly web downloads)
-`4` – Untrusted / Restricted sites (flagged as dangerous by smartscreen)
+`4` – Restricted sites ([`URLZONE_UNTRUSTED`](https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms537175(v=vs.85)))
 
 ## Unblock-File
 
