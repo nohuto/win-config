@@ -1,75 +1,3 @@
-# RegKit
-
-## Table of Content
-
-- [Differences to Native RegEdit](https://github.com/nohuto/regkit#differences-to-native-regedit)
-- [Theme Presets](https://github.com/nohuto/regkit#theme-presets)
-- [Icon Sets](https://github.com/nohuto/regkit#icon-sets)
-  - [Previews](https://github.com/nohuto/regkit#previews)
-- [Icon Meanings](https://github.com/nohuto/regkit#icon-meanings)
-  - [Symlink Icon](https://github.com/nohuto/regkit#symlink-icon-)
-  - [Database Icon](https://github.com/nohuto/regkit#database-icon-)
-  - [Simulated Key Icon](https://github.com/nohuto/regkit#simulated-key-icon-)
-- [Bit Definitions](https://github.com/nohuto/regkit#bit-definitions)
-- [Trace Menu](https://github.com/nohuto/regkit#trace-menu)
-- [Default Menu](https://github.com/nohuto/regkit#default-menu)
-- [Rights and Elevation](https://github.com/nohuto/regkit#rights-and-elevation)
-- [Keyboard Shortcuts](https://github.com/nohuto/regkit#keyboard-shortcuts)
-- [Command Line](https://github.com/nohuto/regkit#command-line)
-- [Registry Fundamentals](https://noverse.dev/docs/regkit/registry-internals/registry-fundamentals/)
-  - [Root Keys & `\REGISTRY`](https://noverse.dev/docs/regkit/registry-internals/registry-fundamentals/#root-keys--registry)
-  - [`\REGISTRY` Only Keys](https://noverse.dev/docs/regkit/registry-internals/registry-fundamentals/#registry-only-keys)
-  - [Value Types](https://noverse.dev/docs/regkit/registry-internals/registry-fundamentals/#value-types)
-  - [Key Handles](https://noverse.dev/docs/regkit/registry-internals/registry-fundamentals/#key-handles)
-  - [Predefined Keys](https://noverse.dev/docs/regkit/registry-internals/registry-fundamentals/#predefined-keys)
-  - [Hives & On-Disk Files](https://noverse.dev/docs/regkit/registry-internals/registry-fundamentals/#hives--on-disk-files)
-
-More info can be found in the repo: https://github.com/nohuto/regkit
-
-# NVFetch
-
-Used to be my personal [`neofetch`](https://github.com/dylanaraps/neofetch)/[`fastfetch`](https://github.com/fastfetch-cli/fastfetch) replacement with more details. Some arguments will probably also get added like `ids`, so it doesn't display the serial numbers and miscellaneous HWIDs by default.
-
-![](https://github.com/nohuto/win-config/blob/main/misc/images/nvfetch.png?raw=true)
-
-> https://github.com/nohuto/nvfetch
-
-It currently gets most of the information using the [`Get-CimInstance`](https://learn.microsoft.com/en-us/powershell/module/cimcmdlets/get-ciminstance?view=powershell-7.5) cmdlet and [`nvidia-smi`](https://docs.nvidia.com/deploy/nvidia-smi/index.html) for NVIDIA GPUs.
-```powershell
-nvidia-smi -q
-```
-[`nvfetch-win32cimv2.txt`](https://github.com/nohuto/win-config/blob/main/misc/assets/nvfetch-win32cimv2.txt) shows class names in the `root\CIMV2` namespace, filtered with `Win32*`.
-
-| **Category** | **Query** | **Fields/Description** |
-| ---- | ---- | ---- |
-| **OS** | `Win32_OperatingSystem` | `Caption` - OS name, `OSArchitecture` - Architecture (32-bit or 64-bit), `Version` - OS version |
-| **Time Zone** | `Get-TimeZone` | `DisplayName` - Name of the current time zone |
-| **Uptime** | `Win32_OperatingSystem` | `LastBootUpTime` - Last system boot time |
-| **Display** | `Win32_VideoController`, `WmiMonitorID`, `WmiMonitorBasicDisplayParams`, `WmiMonitorConnectionParams` | `Name` - Display name, `Resolution` - Screen resolution, `Refresh Rate` - Monitor refresh rate, `Size (inch)` - Monitor size in inches, `External/Internal` - Whether external or internal monitor |
-| **BIOS** | `Win32_BIOS` | `Manufacturer` - BIOS manufacturer, `SMBIOSBIOSVersion` - BIOS version, `ReleaseDate` - BIOS release date |
-| **Motherboard** | `Win32_BaseBoard` | `Product` - Motherboard product, `Manufacturer` - Manufacturer of the motherboard |
-| **CPU** | `Win32_Processor` | `Name` - Processor name, `SocketDesignation` - Socket type, `MaxClockSpeed` - Maximum clock speed in MHz |
-| **GPU** | If `nvidia-smi` is present: `gc nvidia-smi` | `Name` - GPU name, `Core Clock` - GPU core clock speed, `Memory Clock` - GPU memory clock speed, `VRAM` - VRAM size, `BPP` - Bits per pixel, `Performance State` - State (e.g., P0 to P12) |
-| | If `nvidia-smi` isn't present (AMD): `Win32_VideoController` | `Name` - GPU name, `Caption` - GPU caption, `CurrentBitsPerPixel` - Bits per pixel, `qwMemorySize` - VRAM size |
-| **RAM** | `Win32_PhysicalMemory` | `Capacity` - Total memory size, `ConfiguredClockSpeed` - Memory clock speed, `Manufacturer` - RAM manufacturer |
-| **Drive** | `Win32_DiskDrive`, `Win32_LogicalDisk` | For `drive0` & `C:\`: `Size` - Total size, `FreeSpace` - Free space, `FileSystem` - Type of file system (e.g., NTFS, FAT32) |
-| **Network** | `Win32_NetworkAdapterConfiguration` | `Description` - Network adapter description, `IPAddress` - IP address, `DHCPEnabled` - Whether DHCP is enabled |
-| **HWIDs** | UUID | `Win32_ComputerSystemProduct` - `UUID` - Unique system identifier (UUID) |
-| | Motherboard SN | `Win32_BaseBoard` - `SerialNumber` - Motherboard serial number |
-| | CPU ID | `Win32_Processor` - `ProcessorId` - Processor ID |
-| | RAM SNs | `Win32_PhysicalMemory` - `SerialNumber` - RAM serial number |
-| | Drive0 SN | `Win32_DiskDrive`/`Win32_PhysicalMedia` - `SerialNumber` - Drive serial number |
-| | GPU UUID | `nvidia-smi` - `--query-gpu=uuid` - GPU UUID if `nvidia-smi` is available |
-
-A valid argument is the color name, default is `Blue`. It changes the color of the ASCII logo. Change it by simply adding a valid color name:
-```powershell
-nvfetch # Uses 'Blue'
-
-nvfetch yellow
-nvfetch red
-```
-Valid colors: `Black`, `Blue`, `Cyan`, `DarkBlue`, `DarkCyan`, `DarkGray`, `DarkGreen`, `DarkMagenta`, `DarkRed`, `DarkYellow`, `Gray`, `Green`, `Magenta`, `Red`, `White`, `Yellow`.
-
 # Explorer Blur
 
 Installs [ExplorerBlurMica](https://github.com/Maplespe/ExplorerBlurMica), which adds a background blur/acrylic/mica effect effect to the explorer:
@@ -322,6 +250,50 @@ Enable `Theme support` (dark mode) and disable `Check for updates automatically`
 ```powershell
 (gc "$env:appdata\SystemInformer\settings.xml") -replace '(?<=<setting name="ProcessHacker\.UpdateChecker\.PromptStart">)\d(?=</setting>)','0' -replace '(?<=<setting name="EnableThemeSupport">)\d(?=</setting>)','1' | sc "$appdata\SystemInformer\settings.xml"
 ```
+
+# NVFetch
+
+Used to be my personal [`neofetch`](https://github.com/dylanaraps/neofetch)/[`fastfetch`](https://github.com/fastfetch-cli/fastfetch) replacement with more details. Some arguments will probably also get added like `ids`, so it doesn't display the serial numbers and miscellaneous HWIDs by default.
+
+![](https://github.com/nohuto/win-config/blob/main/misc/images/nvfetch.png?raw=true)
+
+> https://github.com/nohuto/nvfetch
+
+It currently gets most of the information using the [`Get-CimInstance`](https://learn.microsoft.com/en-us/powershell/module/cimcmdlets/get-ciminstance?view=powershell-7.5) cmdlet and [`nvidia-smi`](https://docs.nvidia.com/deploy/nvidia-smi/index.html) for NVIDIA GPUs.
+```powershell
+nvidia-smi -q
+```
+[`nvfetch-win32cimv2.txt`](https://github.com/nohuto/win-config/blob/main/misc/assets/nvfetch-win32cimv2.txt) shows class names in the `root\CIMV2` namespace, filtered with `Win32*`.
+
+| **Category** | **Query** | **Fields/Description** |
+| ---- | ---- | ---- |
+| **OS** | `Win32_OperatingSystem` | `Caption` - OS name, `OSArchitecture` - Architecture (32-bit or 64-bit), `Version` - OS version |
+| **Time Zone** | `Get-TimeZone` | `DisplayName` - Name of the current time zone |
+| **Uptime** | `Win32_OperatingSystem` | `LastBootUpTime` - Last system boot time |
+| **Display** | `Win32_VideoController`, `WmiMonitorID`, `WmiMonitorBasicDisplayParams`, `WmiMonitorConnectionParams` | `Name` - Display name, `Resolution` - Screen resolution, `Refresh Rate` - Monitor refresh rate, `Size (inch)` - Monitor size in inches, `External/Internal` - Whether external or internal monitor |
+| **BIOS** | `Win32_BIOS` | `Manufacturer` - BIOS manufacturer, `SMBIOSBIOSVersion` - BIOS version, `ReleaseDate` - BIOS release date |
+| **Motherboard** | `Win32_BaseBoard` | `Product` - Motherboard product, `Manufacturer` - Manufacturer of the motherboard |
+| **CPU** | `Win32_Processor` | `Name` - Processor name, `SocketDesignation` - Socket type, `MaxClockSpeed` - Maximum clock speed in MHz |
+| **GPU** | If `nvidia-smi` is present: `gc nvidia-smi` | `Name` - GPU name, `Core Clock` - GPU core clock speed, `Memory Clock` - GPU memory clock speed, `VRAM` - VRAM size, `BPP` - Bits per pixel, `Performance State` - State (e.g., P0 to P12) |
+| | If `nvidia-smi` isn't present (AMD): `Win32_VideoController` | `Name` - GPU name, `Caption` - GPU caption, `CurrentBitsPerPixel` - Bits per pixel, `qwMemorySize` - VRAM size |
+| **RAM** | `Win32_PhysicalMemory` | `Capacity` - Total memory size, `ConfiguredClockSpeed` - Memory clock speed, `Manufacturer` - RAM manufacturer |
+| **Drive** | `Win32_DiskDrive`, `Win32_LogicalDisk` | For `drive0` & `C:\`: `Size` - Total size, `FreeSpace` - Free space, `FileSystem` - Type of file system (e.g., NTFS, FAT32) |
+| **Network** | `Win32_NetworkAdapterConfiguration` | `Description` - Network adapter description, `IPAddress` - IP address, `DHCPEnabled` - Whether DHCP is enabled |
+| **HWIDs** | UUID | `Win32_ComputerSystemProduct` - `UUID` - Unique system identifier (UUID) |
+| | Motherboard SN | `Win32_BaseBoard` - `SerialNumber` - Motherboard serial number |
+| | CPU ID | `Win32_Processor` - `ProcessorId` - Processor ID |
+| | RAM SNs | `Win32_PhysicalMemory` - `SerialNumber` - RAM serial number |
+| | Drive0 SN | `Win32_DiskDrive`/`Win32_PhysicalMedia` - `SerialNumber` - Drive serial number |
+| | GPU UUID | `nvidia-smi` - `--query-gpu=uuid` - GPU UUID if `nvidia-smi` is available |
+
+A valid argument is the color name, default is `Blue`. It changes the color of the ASCII logo. Change it by simply adding a valid color name:
+```powershell
+nvfetch # Uses 'Blue'
+
+nvfetch yellow
+nvfetch red
+```
+Valid colors: `Black`, `Blue`, `Cyan`, `DarkBlue`, `DarkCyan`, `DarkGray`, `DarkGreen`, `DarkMagenta`, `DarkRed`, `DarkYellow`, `Gray`, `Green`, `Magenta`, `Red`, `White`, `Yellow`.
 
 # 7-Zip Settings
 
