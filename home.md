@@ -4,7 +4,7 @@ Note that this is a powerful and highly customizable tool, so you shouldn't go t
 
 Also note that many options have suboptions that aren't always included in the main option. You can use these to customize the settings if you don't like the default behavior.
 
-External scripts, and project docs include [`App Tools`](https://github.com/nohuto/app-guides), [`Game Tools`](https://github.com/nohuto/game-tools), [`Component Manager`](https://github.com/nohuto/comp-mgr), [`Blocklist Manager`](https://github.com/nohuto/blocklist-mgr), [`Bitmask Calculator`](https://github.com/nohuto/bitmask-calc), [`RegKit`](https://github.com/nohuto/regkit), [`NVFetch`](https://github.com/nohuto/nvfetch), [`NvAPI CLI`](https://github.com/nohuto/nvapi-cli), and [`ADMX Parser`](https://github.com/nohuto/admx-parser).
+External scripts, and project docs include [`App Tools`](https://github.com/nohuto/app-guides), [`Game Tools`](https://github.com/nohuto/game-tools), [`Component Manager`](https://github.com/nohuto/comp-mgr), [`Blocklist Manager`](https://github.com/nohuto/win-config/blob/main/network/assets/scripts/Blocklist-Manger.ps1), [`Bitmask Calculator`](https://github.com/nohuto/bitmask-calc), [`RegKit`](https://github.com/nohuto/regkit), [`NVFetch`](https://github.com/nohuto/nvfetch), [`NvAPI CLI`](https://github.com/nohuto/nvapi-cli), and [`ADMX Parser`](https://github.com/nohuto/admx-parser).
 
 ## Tool Settings
 

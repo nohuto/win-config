@@ -8,7 +8,7 @@ Note that is my current interpretation, don't see this as my final answer nor as
 
 ### Defaults / Ranges
 
-All four values are stored as small records on [`CMouseSensor`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kbase/--0CMouseSensor%40%40IEAA%40XZ.c) (name, current value, minimum, maximum).
+All four values are stored as small records on [`CMouseSensor`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kbase/--0CMouseSensor@@IEAA@XZ.c) (name, current value, minimum, maximum).
 
 | Value | Default | Range | Meaning |
 | --- | --- | --- | --- |
@@ -61,7 +61,7 @@ durationQpc = 10000000 * 8 / 1000 // 80,000 ticks
 
 ### Reading / Updating Values
 
-The values are reread through [`ReadRawMouseThrottlingThresholds`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kbase/ReadRawMouseThrottlingThresholds.c), which is the function that finds the session `CMouseSensor` and calls [`CMouseSensor::ReadRawMouseThrottlingThresholds`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kbase/-ReadRawMouseThrottlingThresholds@CMouseSensor@@QEAAXPEAU_UNICODE_STRING@@@Z.c). Each value is accepted only if it's inside it's range, so invalid values are ignored. [`GetRawMouseThrottlingThresholds`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kbase/GetRawMouseThrottlingThresholds.c) copies the current values for callers like [`ThrottleRawMouseInputToBackgroundListener`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kfull/-ThrottleRawMouseInputToBackgroundListener%40%40YA_NPEAUtagPROCESS_HID_TABLE%40%40PEAXPEBUtagRAWMOUSE%40%40_.c), or returns defaults if no sensor exists.
+The values are reread through [`ReadRawMouseThrottlingThresholds`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kbase/ReadRawMouseThrottlingThresholds.c), which is the function that finds the session `CMouseSensor` and calls [`CMouseSensor::ReadRawMouseThrottlingThresholds`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kbase/-ReadRawMouseThrottlingThresholds@CMouseSensor@@QEAAXPEAU_UNICODE_STRING@@@Z.c). Each value is accepted only if it's inside it's range, so invalid values are ignored. [`GetRawMouseThrottlingThresholds`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kbase/GetRawMouseThrottlingThresholds.c) copies the current values for callers like [`ThrottleRawMouseInputToBackgroundListener`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kfull/-ThrottleRawMouseInputToBackgroundListener@@YA_NPEAUtagPROCESS_HID_TABLE@@PEAXPEBUtagRAWMOUSE@@_.c), or returns defaults if no sensor exists.
 
 ```c
 // CMouseSensor::ReadRawMouseThrottlingThresholds
@@ -75,7 +75,7 @@ lambda_39f407e4fe10312c322b3b59a6fe001c_::operator()((__int64 **)&v3, (__int64)t
 *((_QWORD *)this + 184) = gliQpcFreq.QuadPart * (unsigned __int64)*((unsigned int *)this + 360) / 0x3E8; // Leeway ms -> QPC ticks
 ```
 
-[_lambda_39f407e4fe10312c322b3b59a6fe001c_--operator().c](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kbase/_lambda_39f407e4fe10312c322b3b59a6fe001c_--operator().c)
+[_lambda_39f407e4fe10312c322b3b59a6fe001c_--operator().c](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kbase/_lambda_39f407e4fe10312c322b3b59a6fe001c_--operator%28%29.c)
 
 ```c
 // _lambda_39f407e4fe10312c322b3b59a6fe001c_--operator()
@@ -180,9 +180,9 @@ Duration = 20ms ~= 50Hz
 
 ### riflags
 
-[`riflags`](https://github.com/nohuto/win-config/blob/main/peripheral/assets/riflags.exe) checks current raw input registrations, it injects [`riprobe.dll`](https://github.com/nohuto/win-config/blob/main/peripheral/assets/riprobe.dll) into each running process, calls `GetRegisteredRawInputDevices` there, then unloads the probe again.
+[`riflags`](https://github.com/nohuto/utils/releases/download/0.1.0/riflags.zip) checks current raw input registrations, it injects `riprobe.dll` into each running process, calls `GetRegisteredRawInputDevices` there, then unloads the probe again.
 
-You can either use the prebuild binary ([riflags.exe](https://github.com/nohuto/win-config/blob/main/peripheral/assets/riflags.exe), [riprobe.dll](https://github.com/nohuto/win-config/blob/main/peripheral/assets/riprobe.dll)) or build it yourself from [source](https://github.com/nohuto/win-config/tree/main/peripheral/assets/riflags) via:
+Download and extract [riflags.zip](https://github.com/nohuto/utils/releases/download/0.1.0/riflags.zip), keeping `riflags.exe` & `riprobe.dll` in the same folder, or build it yourself from [source](https://github.com/nohuto/utils/tree/main/riflags) via:
 
 ```powershell
 cmake -S . -B build
@@ -206,7 +206,7 @@ I've builds two small raw mouse listeners for comparing the two registration mod
 - `ri_0100.exe` registers with `0x0100` ([`RIDEV_INPUTSINK`](https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-rawinputdevice)), thats's the normal background raw mouse listener
 - `ri_8100.exe` registers with `0x8100`, that uses the `0x800` raw input flag, so `RawMouseThrottleForced = 0` should let this case bypass throttling
 
-Again, you can either use the prebuild binary ([ri_0100.exe](https://github.com/nohuto/win-config/blob/main/peripheral/assets/ri_0100.exe), [ri_8100.exe](https://github.com/nohuto/win-config/blob/main/peripheral/assets/ri_8100.exe)) or build it yourself from [source](https://github.com/nohuto/win-config/tree/main/peripheral/assets/ri_flagtest) via:
+Again, you can either use the prebuild binary ([ri_0100.exe](https://github.com/nohuto/utils/releases/download/0.1.0/ri_0100.exe), [ri_8100.exe](https://github.com/nohuto/utils/releases/download/0.1.0/ri_8100.exe)) or build it yourself from [source](https://github.com/nohuto/utils/tree/main/ri_flagtest) via:
 
 ```powershell
 cmake -S . -B build
@@ -297,7 +297,7 @@ The structure is `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\MMDevices\Audio
 - `Render` = Playback
 - `Capture` = Recording
 
-You can use [`dumpAudioFormats.ps1`](https://github.com/nohuto/win-config/blob/main/peripheral/assets/dumpAudioFormats.ps1) to read the values listed below from `Render`/`Capture` endpoints & output the sample rate, channel count, bit depth, block align, and byte-rate consistency for each 48 byte `WAVEFORMATEXTENSIBLE` data.
+You can use [`dumpAudioFormats.ps1`](https://github.com/nohuto/win-config/blob/main/peripheral/assets/scripts/dumpAudioFormats.ps1) to read the values listed below from `Render`/`Capture` endpoints & output the sample rate, channel count, bit depth, block align, and byte-rate consistency for each 48 byte `WAVEFORMATEXTENSIBLE` data.
 
 ## Registry Values
 
@@ -470,10 +470,10 @@ Disabling spatial sound via these values would gray out the option in the device
 
 ![](https://github.com/nohuto/win-config/blob/main/peripheral/images/spatialsystemsettings.png?raw=true)
 
-- [BlockSpatialAudioRegistryGates](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/audiosrv/BlockSpatialAudioRegistryGates.c)
-- [IsSpatialComboEndpointDeterminationDisabled](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/audiosrv/IsSpatialComboEndpointDeterminationDisabled.c)
-- [GetSpatialAudioLicenseGracePeriodInMs](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/audiosrv/-GetSpatialAudioLicenseGracePeriodInMs@AtmosCheck@@CAHXZ.c)
-- [IsMultiUserSKU](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/audiosrv/-IsMultiUserSKU@@YA_NXZ.c)
+- [BlockSpatialAudioRegistryGates](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/audiosrv/BlockSpatialAudioRegistryGates.c)
+- [IsSpatialComboEndpointDeterminationDisabled](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/audiosrv/IsSpatialComboEndpointDeterminationDisabled.c)
+- [GetSpatialAudioLicenseGracePeriodInMs](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/audiosrv/-GetSpatialAudioLicenseGracePeriodInMs@AtmosCheck@@CAHXZ.c)
+- [IsMultiUserSKU](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/audiosrv/-IsMultiUserSKU@@YA_NXZ.c)
 
 ## Mono/Stereo Audio
 
@@ -522,7 +522,7 @@ Value names in [`HUBREG_QueryUsbflagsValuesForDevice.c`](https://github.com/nohu
 
 For values with "any nonzero" comment, the code treats the DWORD as a boolean, means any nonzero value is equivalent to `1`. Default data is unknown for most values as the driver code only reads the registry and handles fallbacks.
 
-The value type isn't enforced, so both `REG_DWORD` and `REG_BINARY` should work if they're a 4 byte nonzero value (that's my current assumption). I would personally use `REG_BINARY` instead of `REG_DWORD` for now, as for example `osvc`, `IgnoreHWSerNum`, `ResetOnResume` are `REG_BINARY` ([usb-device-specific-registry-settings.md](https://github.com/nohuto/windows-driver-docs/blob/staging/windows-driver-docs-pr/usbcon/usb-device-specific-registry-settings.md)).
+The value type isn't enforced, so both `REG_DWORD` and `REG_BINARY` should work if they're a 4 byte nonzero value (that's my current assumption). I would personally use `REG_BINARY` instead of `REG_DWORD` for now, as for example `osvc`, `IgnoreHWSerNum`, `ResetOnResume` are `REG_BINARY` ([usb-device-specific-registry-settings.md](https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/usb-device-specific-registry-settings)).
 
 Everything listed below is based on personal findings, mistakes may exist.
 
@@ -583,7 +583,7 @@ Everything listed below is based on personal findings, mistakes may exist.
 
 ### USB_DEVICE_HACKS
 
-You can use [`!usb3kd.device_info`](https://github.com/nohuto/windows-driver-docs/blob/staging/windows-driver-docs-pr/debuggercmds/-usb3kd-device-info.md) to get more information on a USB device in the USB 3.0 tree, example:
+You can use [`!usb3kd.device_info`](https://learn.microsoft.com/en-us/windows-hardware/drivers/debuggercmds/-usb3kd-device-info) to get more information on a USB device in the USB 3.0 tree, example:
 
 ```c
 lkd> !usb3.usb_tree
@@ -639,18 +639,18 @@ lkd> dt USBHUB3!_USB_DEVICE_HACKS
    +0x000 ResetOnErrorInD2Resume : Pos 27, 1 Bit
 ```
 
-### [Subkey Structure](https://github.com/nohuto/windows-driver-docs/blob/staging/windows-driver-docs-pr/usbcon/usb-device-specific-registry-settings.md)
+### [Subkey Structure](https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/usb-device-specific-registry-settings)
 
 The subkeys in `usbflags` always have a length of 12, build in such a structure `vvvvpppprrrr`:
 - **vvvv** is a 4-digit hexadecimal number that identifies the vendor
 - **pppp** is a 4-digit hexadecimal number that identifies the product
 - **rrrr** is a 4-digit hexadecimal number that contains the revision number of the device
 
-The vendor ID, product ID, and revision number values are obtained from the [USB device descriptor](https://github.com/nohuto/windows-driver-docs/blob/staging/windows-driver-docs-pr/usbcon/usb-device-descriptors.md). The USB_DEVICE_DESCRIPTOR structure describes a device descriptor.
+The vendor ID, product ID, and revision number values are obtained from the [USB device descriptor](https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/usb-device-descriptors). The USB_DEVICE_DESCRIPTOR structure describes a device descriptor.
 
 | Registry entry | Description | Possible values |
 |---|---|---|
-| **osvc**<br><br>REG_BINARY | Indicates whether the operating system queried the device for [Microsoft-defined USB descriptors](https://github.com/nohuto/windows-driver-docs/blob/staging/windows-driver-docs-pr/usbcon/microsoft-defined-usb-descriptors.md). If the previously attempted OS descriptor query was successful, the value contains the vendor code from the OS string descriptor. | <ul><li>0x0000: The device didn't provide a valid response to the Microsoft OS string descriptor request.</li><li>0x01xx: The device provided a valid response to the Microsoft OS string descriptor request, where xx is the **bVendorCode** contained in the response.</li></ul> |
+| **osvc**<br><br>REG_BINARY | Indicates whether the operating system queried the device for [Microsoft-defined USB descriptors](https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/microsoft-defined-usb-descriptors). If the previously attempted OS descriptor query was successful, the value contains the vendor code from the OS string descriptor. | <ul><li>0x0000: The device didn't provide a valid response to the Microsoft OS string descriptor request.</li><li>0x01xx: The device provided a valid response to the Microsoft OS string descriptor request, where xx is the **bVendorCode** contained in the response.</li></ul> |
 | **IgnoreHWSerNum**<br><br>REG_BINARY | Indicates whether the USB driver stack must ignore the serial number of the device. | <ul><li>0x00: The setting is disabled.</li><li>0x01: Forces the USB driver stack to ignore the serial number of the device. Therefore, the device instance is tied to the port to which the device is attached.</li></ul> |
 | **ResetOnResume**<br><br>REG_BINARY | Indicates whether the USB driver stack must reset the device when the port resumes from a sleep cycle. | <ul><li>0x0000: The setting is disabled.</li><li>0x0001: Forces the USB driver stack to reset a device on port resume.</li></ul> |
 
@@ -1240,7 +1240,7 @@ Values that include `(bool)` as comment accept range `0-4294967295` but any nonz
 // miscellaneous values from storport driver
 
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Storage";
-    "StorageD3InModernStandby" = 4294967295; // REG_DWORD, 0 = Disable D3 support, 1 = Enable D3 support - https://noverse.dev/docs/win-config/power/power-values/#suboptions
+    "StorageD3InModernStandby" = 4294967295; // REG_DWORD, 0 = Disable D3 support, 1 = Enable D3 support - https://noverse.dev/docs/win-config/power/power-values/#storaged3inmodernstandby
 
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Storage\\StorageTelemetry";
     "DeviceDumpLevel" = 2; // REG_DWORD, range 0-4294967295
@@ -1291,7 +1291,7 @@ float __fastcall CDuckingManager::GetdBFromUserPreference(int a1)
 
 Fun fact: the `Reduce the volume of other sounds by 80%` audio ducking option isn't accurate at all (it's ~87%).
 
-- [LoadUserSettings](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/AudioSrvPolicyManager/-LoadUserSettings@@YAXPEAVTSSession@@PEAUHKEY__@@@Z.c)
+- [LoadUserSettings](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/AudioSrvPolicyManager/-LoadUserSettings@@YAXPEAVTSSession@@PEAUHKEY__@@@Z.c)
 
 ### MMSYS Capture
 
@@ -1497,9 +1497,9 @@ Everything listed below is based on personal findings. Mistakes may exist, some 
 "HKCU\Software\Microsoft\Touchpad\TouchpadDesiredVisibility","Length: 16"
 ```
 
-- [peripheral/assets | touch-twinui.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/touch-twinui.c)
-- [peripheral/assets | touch-InitializeInputSettingsGlobals.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/touch-InitializeInputSettingsGlobals.c)
-- [peripheral/assets | touch-IsTouchDisabled.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/touch-IsTouchDisabled.c)
+- [peripheral/assets/pseudocode | touch-twinui.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/pseudocode/touch-twinui.c)
+- [peripheral/assets/pseudocode | touch-InitializeInputSettingsGlobals.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/pseudocode/touch-InitializeInputSettingsGlobals.c)
+- [peripheral/assets/pseudocode | touch-IsTouchDisabled.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/pseudocode/touch-IsTouchDisabled.c)
 
 ```
 TabletModeActivated
@@ -1649,7 +1649,7 @@ See '[PnP Device Values](https://noverse.dev/docs/win-config/power/pnp-device-va
 
 ### WakeOnInputDeviceTypes
 
-[`WakeOnInputDeviceTypes`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kbase/-UpdateWakeOnInputDeviceTypesFromRegistry%40CInputGlobals%40%40QEAAXXZ.c) (`\Registry\Machine\SYSTEM\INPUT`) probably handles wake on input behavior for all input devices, each bit represents a input device type?
+[`WakeOnInputDeviceTypes`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kbase/-UpdateWakeOnInputDeviceTypesFromRegistry@CInputGlobals@@QEAAXXZ.c) (`\Registry\Machine\SYSTEM\INPUT`) probably handles wake on input behavior for all input devices, each bit represents a input device type?
 
 ## query_flag
 

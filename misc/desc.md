@@ -263,7 +263,7 @@ It currently gets most of the information using the [`Get-CimInstance`](https://
 ```powershell
 nvidia-smi -q
 ```
-[`nvfetch-win32cimv2.txt`](https://github.com/nohuto/win-config/blob/main/misc/assets/nvfetch-win32cimv2.txt) shows class names in the `root\CIMV2` namespace, filtered with `Win32*`.
+[`nvfetch-win32cimv2.txt`](https://github.com/nohuto/win-config/blob/main/misc/assets/reference/nvfetch-win32cimv2.txt) shows class names in the `root\CIMV2` namespace, filtered with `Win32*`.
 
 | **Category** | **Query** | **Fields/Description** |
 | ---- | ---- | ---- |
@@ -431,8 +431,8 @@ SHA512("")
 
 If using win-config, then the toggle automates the (un)installation.
 
-- [`HashGen.ps1`](https://github.com/nohuto/win-config/blob/main/misc/assets/HashGen.ps1) accepts an optional `-Algorithm` parameter (`All`, `MD5`, `SHA1`, `SHA256`, `SHA384`, `SHA512`, `MACTripleDES`, `RIPEMD160`). By default it runs every available algorithm, but you can target a specific hash when invoking it manually. 
-- [`Add-CM.ps1`](https://github.com/nohuto/win-config/blob/main/misc/assets/Add-CM.ps1) will add a `Hashes` cascaded option to the context menu of any file/folder (if selecting a folder all files within the folder and every subfolder will get used). `HashGen.ps1` gets used from your `Downloads` folder if present, otherwise `Add-CM.ps1` automatically downloads the latest copy from GitHub. `Add-CM.ps1` copies `HashGen.ps1` into `%LOCALAPPDATA%\Noverse` and adds a *Hashes* entry for files and folders.
+- [`HashGen.ps1`](https://github.com/nohuto/win-config/blob/main/misc/assets/scripts/HashGen.ps1) accepts an optional `-Algorithm` parameter (`All`, `MD5`, `SHA1`, `SHA256`, `SHA384`, `SHA512`, `MACTripleDES`, `RIPEMD160`). By default it runs every available algorithm, but you can target a specific hash when invoking it manually. 
+- [`Add-CM.ps1`](https://github.com/nohuto/win-config/blob/main/misc/assets/scripts/Add-CM.ps1) will add a `Hashes` cascaded option to the context menu of any file/folder (if selecting a folder all files within the folder and every subfolder will get used). `HashGen.ps1` gets used from your `Downloads` folder if present, otherwise `Add-CM.ps1` automatically downloads the latest copy from GitHub. `Add-CM.ps1` copies `HashGen.ps1` into `%LOCALAPPDATA%\Noverse` and adds a *Hashes* entry for files and folders.
 
 ## Uninstallation
 

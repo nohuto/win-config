@@ -87,11 +87,11 @@ Some additional info about HTTP request methods you may want to know:
 
 I personally use [AdGuard](https://adguard-dns.io/), since it's possible to add custom blocklists/user rules (and it supports all lists of Hagezi while [NextDNS](https://my.nextdns.io/) only supports the main ones), while [NextDNS](https://my.nextdns.io/) only provides a specific set of blocklists and doesn't allow custom rules (there're also several other reasons why I wouldn't use their private DNS at the moment, e.g.: their TIF isn't public ([and many other ones](https://github.com/nextdns/metadata))), they didn't solve issues which got reported months ago (), they use lists that aren't actively maintained by default (they also don't update [obselete links](https://github.com/nextdns/blocklists/tree/main/blocklists), causing 10 empty blocklists), they don't look into their GitHub issues (e.g. nextdns/blocklists). Use 'Configuration Profile' instead of downloading the app, you can configure the profile using the links below.
 
-## [Blocklist Manager](https://github.com/nohuto/win-config/blob/main/network/assets/Blocklist-Manger.ps1)
+## [Blocklist Manager](https://github.com/nohuto/win-config/blob/main/network/assets/scripts/Blocklist-Manger.ps1)
 
-This is an old project of mine ([preview video](https://github.com/nohuto/win-config/blob/main/network/assets/blocklist-mgr/blocklist-mgr.mp4)), which lets you select one or more blocklists (hosts or URLs, for e.g. UBO). The hosts file is a local DNS override used to block domains or redirect websites (`C:\Windows\System32\drivers\etc\hosts`).
+This is an old project of mine ([preview video](https://github.com/nohuto/win-config/blob/main/network/videos/blocklist-mgr/blocklist-mgr.mp4)), which lets you select one or more blocklists (hosts or URLs, for e.g. UBO). The hosts file is a local DNS override used to block domains or redirect websites (`C:\Windows\System32\drivers\etc\hosts`).
 
-- Download: [Blocklist-Manager.ps1](https://github.com/nohuto/win-config/blob/main/network/assets/Blocklist-Manger.ps1)
+- Download: [Blocklist-Manager.ps1](https://github.com/nohuto/win-config/blob/main/network/assets/scripts/Blocklist-Manger.ps1)
 
 Examples:
 
@@ -129,7 +129,7 @@ The presets are just examples, use lists from the vendor you prefer.
 | `Default` | Default preset, uses Pro/TIF without adding the extra lists that aren't included in them. |
 | `Maximum` | Aggressive blocking, uses Pro++, TIF and all additional security related lists which aren't included in them (doesn't apply any protections for children). |
 | `Import` | Imports the currently selected lists into the `hosts` file (if compatible). |
-| `Copy Links` | Copies URLs of all selected lists. Add these links to the custom filter lists:<br>![](https://github.com/nohuto/win-config/blob/main/network/assets/blocklist-mgr/ubolinks.png?raw=true) |
+| `Copy Links` | Copies URLs of all selected lists. Add these links to the custom filter lists:<br>![](https://github.com/nohuto/win-config/blob/main/network/images/blocklist-mgr/ubolinks.png?raw=true) |
 | `Restore` | Imports the backup from: `C:\Windows\System32\drivers\etc\hosts.noverse`. |
 | `Open File` | Opens the file: `C:\Windows\System32\drivers\etc\hosts`. |
 
@@ -284,7 +284,7 @@ typedef struct _NDIS_OFFLOAD_PARAMETERS {
 
 ## Registry Values
 
-See [task offload registry values](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/using-registry-values-to-enable-and-disable-task-offloading), [network device INF keywords](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/standardized-inf-keywords-for-network-devices), [RSC INF keywords](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/standardized-inf-keywords-for-rsc), [URO](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/udp-rsc-offload), [NVGRE task offload keywords](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/standardized-inf-keywords-for-nvgre-task-offload), [connection offload registry values](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/using-registry-values-to-enable-and-disable-connection-offloading), [power management keywords](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/standardized-inf-keywords-for-power-management), [network/assets/intel-nic](https://github.com/nohuto/win-config/tree/main/network/assets/intel-nic).
+See [task offload registry values](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/using-registry-values-to-enable-and-disable-task-offloading), [network device INF keywords](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/standardized-inf-keywords-for-network-devices), [RSC INF keywords](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/standardized-inf-keywords-for-rsc), [URO](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/udp-rsc-offload), [NVGRE task offload keywords](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/standardized-inf-keywords-for-nvgre-task-offload), [connection offload registry values](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/using-registry-values-to-enable-and-disable-connection-offloading), [power management keywords](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/standardized-inf-keywords-for-power-management), [network/assets/pseudocode/intel-nic](https://github.com/nohuto/win-config/tree/main/network/assets/pseudocode/intel-nic).
 
 ```c
 "HKLM\\System\\CurrentControlSet\\Services\\TCPIP\\Parameters";
@@ -751,7 +751,7 @@ RegistryKey<unsigned char>::Initialize(
 )
 ```
 
-- [network/assets | networkdisc-DataCenterBridgingConfiguration.c](https://github.com/nohuto/win-config/blob/main/network/assets/networkdisc-DataCenterBridgingConfiguration.c)
+- [network/assets/pseudocode | networkdisc-DataCenterBridgingConfiguration.c](https://github.com/nohuto/win-config/blob/main/network/assets/pseudocode/networkdisc-DataCenterBridgingConfiguration.c)
 
 ## [Windows Policies](https://noverse.dev/policies)
 
@@ -891,7 +891,7 @@ Once these capabilities are shared, they agree on the highest common speed and p
 
 NDIS is the network "port" driver, and vendor miniport drivers interpret adapter specific settings. `*SpeedDuplex` is a miniport defined advanced property, unsupported values are ignored or treated as auto negotiation by the driver.
 
-See [network/assets/intel-nic](https://github.com/nohuto/win-config/tree/main/network/assets/intel-nic) for reference.
+See [network/assets/pseudocode/intel-nic](https://github.com/nohuto/win-config/tree/main/network/assets/pseudocode/intel-nic) for reference.
 
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4D36E972-E325-11CE-BFC1-08002bE10318}\\00XX";
@@ -985,7 +985,7 @@ See links below for a detailed documentation.
 
 `PassivePollPeriod` is set to `15` by default = Runs passive probe every 15 seconds. `MaxActiveProbes` to `0` (unlimited) = breaks connection status. If disabling active probes, but leaving passive probes enabled, enable `Enable Passive Mode`.
 
-- [network/assets | probing-NcsiConfigData.c](https://github.com/nohuto/win-config/blob/main/network/assets/probing-NcsiConfigData.c)
+- [network/assets/pseudocode | probing-NcsiConfigData.c](https://github.com/nohuto/win-config/blob/main/network/assets/pseudocode/probing-NcsiConfigData.c)
 
 ## [Windows Policies](https://noverse.dev/policies)
 
@@ -1044,7 +1044,7 @@ if ( !v17[0] )
     g_donotUseRoaming = 0, // default
 ```
 
-- [network/assets | vpn-NlmGetCostedNetworkSettings.c](https://github.com/nohuto/win-config/blob/main/network/assets/vpn-NlmGetCostedNetworkSettings.c)
+- [network/assets/pseudocode | vpn-NlmGetCostedNetworkSettings.c](https://github.com/nohuto/win-config/blob/main/network/assets/pseudocode/vpn-NlmGetCostedNetworkSettings.c)
 
 # Disable NetBIOS/mDNS/LLMNR
 
@@ -1158,7 +1158,7 @@ powercfg /devicequery wake_armed
 
 ## Registry Values
 
-See [network/assets/intel-nic](https://github.com/nohuto/win-config/tree/main/network/assets/intel-nic) for reference.
+See [network/assets/pseudocode/intel-nic](https://github.com/nohuto/win-config/tree/main/network/assets/pseudocode/intel-nic) for reference.
 
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4D36E972-E325-11CE-BFC1-08002bE10318}\\00XX";
@@ -1442,7 +1442,7 @@ Enables strict argument validation for upper layer testing. Set along with the R
 
 ### RssReadRegistryParameters
 
-[`RSS::RssReadRegistryParameters`](https://github.com/nohuto/win-config/blob/main/network/assets/intel-nic/RSS_RssReadRegistryParameters.c) shows miscellaneous values which are related to RSS, see [intelnet6x.c](https://github.com/nohuto/win-config/blob/main/power/assets/intelnet6x.c) for reference:
+[`RSS::RssReadRegistryParameters`](https://github.com/nohuto/win-config/blob/main/network/assets/pseudocode/intel-nic/RSS_RssReadRegistryParameters.c) shows miscellaneous values which are related to RSS, see [intelnet6x.c](https://github.com/nohuto/win-config/blob/main/power/assets/pseudocode/intelnet6x.c) for reference:
 ```c
 void __fastcall RSS::RssReadRegistryParameters(RSS *this, struct ADAPTER_CONTEXT *a2, void *a3)
 {
@@ -1516,7 +1516,7 @@ A sending station (computer or network switch) may be transmitting data faster t
 >
 > — Intel, [Flow Control](https://edc.intel.com/content/www/us/en/design/products/ethernet/adapters-and-devices-user-guide/flow-control/)
 
-See [network/assets/intel-nic](https://github.com/nohuto/win-config/tree/main/network/assets/intel-nic) for reference.
+See [network/assets/pseudocode/intel-nic](https://github.com/nohuto/win-config/tree/main/network/assets/pseudocode/intel-nic) for reference.
 
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4D36E972-E325-11CE-BFC1-08002bE10318}\\00XX";
@@ -1566,13 +1566,13 @@ HKR, Ndi\params\*JumboPacket,	Default,	0, "0"
 
 # Disable VMQ
 
-[VMQ](https://github.com/nohuto/windows-driver-docs/blob/staging/windows-driver-docs-pr/network/virtual-machine-queue-architecture.md) is a scaling networking technology for the Hyper-V switch. Without VMQ the networking performance of the Hyper-V switch bound to this network adapter may be reduced. VMQ offloads packet processing to NIC hardware queues, with each queue tied to a specific VM. This increases throughput, spreads work across CPU cores, lowers host CPU use, and scales effectively as more VMs are added on Hyper-V.
+[VMQ](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/virtual-machine-queue-architecture) is a scaling networking technology for the Hyper-V switch. Without VMQ the networking performance of the Hyper-V switch bound to this network adapter may be reduced. VMQ offloads packet processing to NIC hardware queues, with each queue tied to a specific VM. This increases throughput, spreads work across CPU cores, lowers host CPU use, and scales effectively as more VMs are added on Hyper-V.
 
 It depends on your adapter/driver if VMQ is enabled/disabled by default:
 
-## [Registry Values](https://github.com/nohuto/windows-driver-docs/blob/staging/windows-driver-docs-pr/network/standardized-inf-keywords-for-vmq.md)
+## [Registry Values](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/standardized-inf-keywords-for-vmq)
 
-See [network/assets/intel-nic](https://github.com/nohuto/win-config/tree/main/network/assets/intel-nic) for reference.
+See [network/assets/pseudocode/intel-nic](https://github.com/nohuto/win-config/tree/main/network/assets/pseudocode/intel-nic) for reference.
 
 ```c
 // Intel
@@ -1619,7 +1619,7 @@ It depends on your adapter/driver if SR-IOV is enabled/disabled by default:
 
 ## [Registry Values](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/standardized-inf-keywords-for-sr-iov)
 
-See [network/assets/intel-nic](https://github.com/nohuto/win-config/tree/main/network/assets/intel-nic) for reference.
+See [network/assets/pseudocode/intel-nic](https://github.com/nohuto/win-config/tree/main/network/assets/pseudocode/intel-nic) for reference.
 
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4D36E972-E325-11CE-BFC1-08002bE10318}\\00XX";
@@ -1681,7 +1681,7 @@ HKR, "", *VMQVlanFiltering, %REG_SZ%, "1"
 
 ## Registry Values
 
-See [network/assets/intel-nic](https://github.com/nohuto/win-config/tree/main/network/assets/intel-nic) for reference.
+See [network/assets/pseudocode/intel-nic](https://github.com/nohuto/win-config/tree/main/network/assets/pseudocode/intel-nic) for reference.
 
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4D36E972-E325-11CE-BFC1-08002bE10318}\\00XX";

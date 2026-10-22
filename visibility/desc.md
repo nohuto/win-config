@@ -549,7 +549,7 @@ This is a collection of some wallpapers that I've found over time. Added for peo
 
 Windows reduces the quality of JPEG images you set as the desktop background to `85%` by default, you can set it to `100%` via the suboption.
 
-### [TranscodeImage](https://github.com/nohuto/win-config/blob/main/system/assets/jpeg-TranscodeImage.c)
+### [TranscodeImage](https://github.com/nohuto/win-config/blob/main/system/assets/pseudocode/jpeg-TranscodeImage.c)
 
 ```c
 if ( (int)SHRegGetDWORD(
@@ -679,7 +679,7 @@ mov rax, 0; ret // result = 0
 
 ![](https://github.com/nohuto/win-config/blob/main/visibility/images/angular.png?raw=true)
 
-## [GetEffectiveCornerStyle](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/uDWM/-GetEffectiveCornerStyle%40CTopLevelWindow%40%40AEAA-AW4CORNER_STYLE%40%40XZ.c)
+## [GetEffectiveCornerStyle](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/uDWM/-GetEffectiveCornerStyle@CTopLevelWindow@@AEAA-AW4CORNER_STYLE@@XZ.c)
 
 That function calculates the effective corner mode, its callers include border/shadow/radius.
 ```c
@@ -885,7 +885,7 @@ Anything written as "- *text*" behind the linked name equals the source where th
 
 Small app to test how much time it took to open a popup menu, works by moving the pointer onto a submenu item, then measuring from the menus `WM_MOUSEMOVE` in `WH_MSGFILTER` to the submenus `WM_INITMENUPOPUP`, via `QueryPerformanceCounter`.
 
-You can either download the prebuild [binary](https://github.com/nohuto/win-config/blob/main/visibility/assets/msd_test.exe), or build it yourself from [source](https://github.com/nohuto/win-config/tree/main/visibility/assets/msd_test) whenever you want to test it on your own.
+You can either download the prebuild [binary](https://github.com/nohuto/utils/releases/download/0.1.0/msd_test.exe), or build it yourself from [source](https://github.com/nohuto/utils/tree/main/msd_test) whenever you want to test it on your own.
 
 ```powershell
 cmake -S . -B build
@@ -1476,7 +1476,7 @@ Edit text sizes via [`TextScaleFactor`](https://learn.microsoft.com/en-us/uwp/ap
   }
 ```
 
-- [visibility/assets | textsize-TextScaleDialogTemplate.c](https://github.com/nohuto/win-config/blob/main/visibility/assets/textsize-TextScaleDialogTemplate.c)
+- [visibility/assets/pseudocode | textsize-TextScaleDialogTemplate.c](https://github.com/nohuto/win-config/blob/main/visibility/assets/pseudocode/textsize-TextScaleDialogTemplate.c)
 
 Applying changes via `Accessibility > Text size`:
 ```c
@@ -1589,7 +1589,7 @@ Value gets calculated with:
 -15*75 = -1125 // default
 ```
 
-I created a small [tool](https://github.com/nohuto/win-config/blob/main/visibility/assets/iconSpacing.ps1) for fun, since it's a lot easier to quickly change and test the different icon spacing. You've to log out after applying, otherwise it won't update instantly (the images show vertical `75px` & `100px` difference). I personally use `110px Horizonzal - 60px Vertical` for a more vertical compact view and more space horizontally (see suboption).
+I created a small [tool](https://github.com/nohuto/win-config/blob/main/visibility/assets/scripts/iconSpacing.ps1) for fun, since it's a lot easier to quickly change and test the different icon spacing. You've to log out after applying, otherwise it won't update instantly (the images show vertical `75px` & `100px` difference). I personally use `110px Horizonzal - 60px Vertical` for a more vertical compact view and more space horizontally (see suboption).
 
 ### `75px`
 

@@ -20,9 +20,9 @@ Use my [minimal (32 bit) bitmask calculator](https://noverse.dev/terminal#bitmas
 
 Using `disabledynamictick` can cause the issue while [per CPU clock tick scheduling](https://noverse.dev/docs/win-config/system/timer-expiration/#enablepercpuclocktickscheduling) is enabled. As shown in the '[ClockTickIdleEstimateFix (24H2+)](https://noverse.dev/docs/win-config/system/priority-separation/#clocktickidleestimatefix-24h2)' section, 24/25H2 have a new function which seems to try to fix the issue.
 
-Before a processor enters idle ([`PpmIdleExecuteTransition`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/PpmIdleExecuteTransition.c)), Windows can stop its clock timer. After the processor leaves idle, [`KeResumeClockTimerFromIdle`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KeResumeClockTimerFromIdle.c) usually programs the timer again, but with `disabledynamictick` (`KiDynamicTickDisableReason`) set, that function returns before doing so (unless something else programs the counter that means no `KeClockInterruptNotify`).
+Before a processor enters idle ([`PpmIdleExecuteTransition`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/PpmIdleExecuteTransition.c)), Windows can stop its clock timer. After the processor leaves idle, [`KeResumeClockTimerFromIdle`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KeResumeClockTimerFromIdle.c) usually programs the timer again, but with `disabledynamictick` (`KiDynamicTickDisableReason`) set, that function returns before doing so (unless something else programs the counter that means no `KeClockInterruptNotify`).
 
-Means that stopped timer no longer sends the clock interrupt used to call [`KiUpdateRunTime`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KiUpdateRunTime.c), so the running threads `CycleTime >= QuantumTarget` check isn't reached and `KPRCB.QuantumEnd` isn't set.
+Means that stopped timer no longer sends the clock interrupt used to call [`KiUpdateRunTime`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KiUpdateRunTime.c), so the running threads `CycleTime >= QuantumTarget` check isn't reached and `KPRCB.QuantumEnd` isn't set.
 
 ### ClockTickIdleEstimateFix (24H2+)
 
@@ -34,7 +34,7 @@ Means that stopped timer no longer sends the clock interrupt used to call [`KiUp
 CurrentPrcb->ClockTimerState.ClockTimerEntries[1].TypeFlags |= 3u; // KClockTimerKTimerExpirationPseudoHr
 ```
 
-Depending on the state of the feature, [`KiSetClockTimerKTimerDeadlines`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-25H2/ntoskrnl/KiSetClockTimerKTimerDeadlines.c) programs `KClockTimerKTimerExpirationPseudoHr`:
+Depending on the state of the feature, [`KiSetClockTimerKTimerDeadlines`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ntoskrnl/KiSetClockTimerKTimerDeadlines.c) programs `KClockTimerKTimerExpirationPseudoHr`:
 
 ```c
 // KiSetClockTimerKTimerDeadlines (25H2)
@@ -52,7 +52,7 @@ lkd> .printf "state=%x direct=%u enabled=%u\n", @$t0, ((@$t0 >> 1) & 1), (@$t0 &
 state=47 direct=1 enabled=1
 ```
 
-With the feature enabled, `KClockTimerKTimerExpirationPseudoHr` has low bits `1`, so [`KePrepareClockTimerForIdle`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-25H2/ntoskrnl/KePrepareClockTimerForIdle.c) keeps/rearms the timer (its clock interrupts reach `KiUpdateRunTime`), which also explains why the issue doesn't appear the same way on 25H2 as on 23H2.
+With the feature enabled, `KClockTimerKTimerExpirationPseudoHr` has low bits `1`, so [`KePrepareClockTimerForIdle`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ntoskrnl/KePrepareClockTimerForIdle.c) keeps/rearms the timer (its clock interrupts reach `KiUpdateRunTime`), which also explains why the issue doesn't appear the same way on 25H2 as on 23H2.
 
 ![](https://github.com/nohuto/win-config/blob/main/system/images/ps-clocktickidleestimatefix-25h2.png?raw=true)
 
@@ -82,7 +82,7 @@ This is just to prove that when disabling per CPU clock tick scheduling, the iss
 
 ### QuantumTarget & Expiration
 
-[`KeInitializeClock`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KeInitializeClock.c) sets `KiDynamicTickDisableReason` = `1` if the BCD settings include `DISABLEDYNAMICTICK`, see [Timer Expiration, KiDynamicTickDisableReason](https://noverse.dev/docs/win-config/system/timer-expiration/#kidynamictickdisablereason) for more details on the global.
+[`KeInitializeClock`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KeInitializeClock.c) sets `KiDynamicTickDisableReason` = `1` if the BCD settings include `DISABLEDYNAMICTICK`, see [Timer Expiration, KiDynamicTickDisableReason](https://noverse.dev/docs/win-config/system/timer-expiration/#kidynamictickdisablereason) for more details on the global.
 
 ```c
 // KeInitializeClock (23H2)
@@ -96,7 +96,7 @@ lkd> db nt!KiDynamicTickDisableReason L1
 fffff806`6d71d300  01                                               .
 ```
 
-[`KiSetQuantumTargetThread`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KiSetQuantumTargetThread.c) stores an absolute cycle target:
+[`KiSetQuantumTargetThread`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KiSetQuantumTargetThread.c) stores an absolute cycle target:
 
 ```c
 // KiSetQuantumTargetThread (23H2)
@@ -105,7 +105,7 @@ v15 = v8 + KiCyclesPerClockQuantum * (unsigned int)*(unsigned __int8 *)(a1 + 651
 *(_QWORD *)(a1 + 32) = v15;
 ```
 
-XREFs (in 23/25H2) show that only [`KeClockInterruptNotify`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KeClockInterruptNotify.c) & [`KiUpdateTime`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KiUpdateTime.c) call `KiUpdateRunTime`, which programs `KClockTimerQuantumEnd` (`ClockTimerEntries[3]`), checks the current threads accumulated cycles and requests a dispatch interrupt when the target is reached:
+XREFs (in 23/25H2) show that only [`KeClockInterruptNotify`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KeClockInterruptNotify.c) & [`KiUpdateTime`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KiUpdateTime.c) call `KiUpdateRunTime`, which programs `KClockTimerQuantumEnd` (`ClockTimerEntries[3]`), checks the current threads accumulated cycles and requests a dispatch interrupt when the target is reached:
 
 ```c
 // KiUpdateRunTime (25H2)
@@ -127,9 +127,9 @@ The idle function shown below only treats entries whose low bits equal `1` as wa
 
 ### ClockTimer not Rearmed
 
-Before the processor enters idle, 23H2 uses [`KePrepareNonClockOwnerForIdle`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KePrepareNonClockOwnerForIdle.c) in per CPU scheduling, while 25H2 uses [`KePrepareClockTimerForIdle`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-25H2/ntoskrnl/KePrepareClockTimerForIdle.c).
+Before the processor enters idle, 23H2 uses [`KePrepareNonClockOwnerForIdle`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KePrepareNonClockOwnerForIdle.c) in per CPU scheduling, while 25H2 uses [`KePrepareClockTimerForIdle`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ntoskrnl/KePrepareClockTimerForIdle.c).
 
-If per CPU clock tick scheduling are disabled, `KiUpdateRunTime` doesn't program `KClockTimerQuantumEnd` & the clock owner uses [`KiForwardTick`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KiForwardTick.c) to send ticks to the other processors, so their quantum checks don't depend on that per CPU timer being rearmed (see '[Per CPU Clock Tick Scheduling Disabled](https://noverse.dev/docs/win-config/system/priority-separation/#per-cpu-clock-tick-scheduling-disabled)' capture).
+If per CPU clock tick scheduling are disabled, `KiUpdateRunTime` doesn't program `KClockTimerQuantumEnd` & the clock owner uses [`KiForwardTick`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KiForwardTick.c) to send ticks to the other processors, so their quantum checks don't depend on that per CPU timer being rearmed (see '[Per CPU Clock Tick Scheduling Disabled](https://noverse.dev/docs/win-config/system/priority-separation/#per-cpu-clock-tick-scheduling-disabled)' capture).
 
 You can see whether per CPU scheduling is used via ([Timer Expiration, EnablePerCpuClockTickScheduling](https://noverse.dev/docs/win-config/system/timer-expiration/#enablepercpuclocktickscheduling) for more details):
 
@@ -171,7 +171,7 @@ while ( (v8->TypeFlags & 3) != 1 )
 }
 ```
 
-As shown above `KClockTimerQuantumEnd` has low bits `3`, so the function skips it. If no other entry needs to wake the processor, the function stops the hardware timer and clears `ClockActive`/`ClockOwner`. When the processor leaves idle, [`KeResumeClockTimerFromIdle`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-25H2/ntoskrnl/KeResumeClockTimerFromIdle.c) checks `KiDynamicTickDisableReason` before it calls [`KiSetClockTimer`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-25H2/ntoskrnl/KiSetClockTimer.c):
+As shown above `KClockTimerQuantumEnd` has low bits `3`, so the function skips it. If no other entry needs to wake the processor, the function stops the hardware timer and clears `ClockActive`/`ClockOwner`. When the processor leaves idle, [`KeResumeClockTimerFromIdle`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ntoskrnl/KeResumeClockTimerFromIdle.c) checks `KiDynamicTickDisableReason` before it calls [`KiSetClockTimer`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ntoskrnl/KiSetClockTimer.c):
 
 ```c
 // KeResumeClockTimerFromIdle (25H2)
@@ -194,7 +194,7 @@ KiSetClockTimer(
 
 ### WrQuantumEnd & WrDispatchInt
 
-[`KiDispatchInterrupt`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-25H2/ntoskrnl/KiDispatchInterrupt.c) reads the quantum flag first, if its set, it calls [`KiQuantumEnd`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-25H2/ntoskrnl/KiQuantumEnd.c). Its separate `NextThread` branch stores reason `31`:
+[`KiDispatchInterrupt`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ntoskrnl/KiDispatchInterrupt.c) reads the quantum flag first, if its set, it calls [`KiQuantumEnd`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ntoskrnl/KiQuantumEnd.c). Its separate `NextThread` branch stores reason `31`:
 
 ```c
 // KiDispatchInterrupt (25H2)
@@ -235,7 +235,7 @@ As everything below will reference to that function at some point, I'll quickly 
 
 ## PsPrioritySeparation (`1:0`)
 
-The priority applies to dynamic priorities below the RT (real time) range and is capped at priority `15`, disabling dynamic priority boosts for a thread/process would also prevent this FG boost. The quantum unit change is obviously only visible when the variable table is used, as all three in a fixed table are the same, so changing the low bits doesn't change its quantum. [`PsChangeQuantumTable`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/PsChangeQuantumTable.c) clamps the field and saves it in `PsPrioritySeparation`:
+The priority applies to dynamic priorities below the RT (real time) range and is capped at priority `15`, disabling dynamic priority boosts for a thread/process would also prevent this FG boost. The quantum unit change is obviously only visible when the variable table is used, as all three in a fixed table are the same, so changing the low bits doesn't change its quantum. [`PsChangeQuantumTable`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/PsChangeQuantumTable.c) clamps the field and saves it in `PsPrioritySeparation`:
 
 ```c
 // PsChangeQuantumTable
@@ -361,7 +361,7 @@ HKLM\SYSTEM\CurrentControlSet\Control\ProductOptions : ProductType
 
 ### FG Priority Boost
 
-[`KiApplyForegroundBoostThread`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KiApplyForegroundBoostThread.c) shows the calculation, add `PsPrioritySeparation` to the base priority & cap the dynamic priority at `15`.
+[`KiApplyForegroundBoostThread`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KiApplyForegroundBoostThread.c) shows the calculation, add `PsPrioritySeparation` to the base priority & cap the dynamic priority at `15`.
 
 ```c
 // KiApplyForegroundBoostThread
@@ -371,7 +371,7 @@ if ( v10 >= 16 )
   v10 = 15;
 ```
 
-The same separation is included in the priority when [`KiDeferredReadySingleThread`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KiDeferredReadySingleThread.c) readies a FG thread after a wait:
+The same separation is included in the priority when [`KiDeferredReadySingleThread`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KiDeferredReadySingleThread.c) readies a FG thread after a wait:
 
 ```c
 // KiDeferredReadySingleThread
@@ -382,7 +382,7 @@ v35 += (char)PsPrioritySeparation; // add PsPrioritySeparation to the priority
 
 #### ForceForegroundBoostDecay
 
-Controls whether dynamic priority decay can remove the FG priority boost added by `PsPrioritySeparation`, changing it to `1` allows scheduler functions such as [`KiQuantumEnd`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-24H2/ntoskrnl/KiQuantumEnd.c) to remove that boost during priority decay. If the process is still FG (and the thread can still get dynamic priority boosts), [`KiTryScheduleNextForegroundBoost`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-24H2/ntoskrnl/KiTryScheduleNextForegroundBoost.c) schedules the boost to be applied again (leaving the FG obviously removes the boost no matter what the value is set to).
+Controls whether dynamic priority decay can remove the FG priority boost added by `PsPrioritySeparation`, changing it to `1` allows scheduler functions such as [`KiQuantumEnd`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-24H2/ntoskrnl/KiQuantumEnd.c) to remove that boost during priority decay. If the process is still FG (and the thread can still get dynamic priority boosts), [`KiTryScheduleNextForegroundBoost`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-24H2/ntoskrnl/KiTryScheduleNextForegroundBoost.c) schedules the boost to be applied again (leaving the FG obviously removes the boost no matter what the value is set to).
 
 ```asm
 INIT:0000000140BA67E0                 dq offset aSessionManager_5 ; "Session Manager\\Kernel"
@@ -581,7 +581,7 @@ This is also a practical example of "*BG (background) processes use index `0`, F
 
 ### Variable/Fixed Quantum (`3:2`)
 
-[`PsChangeQuantumTable`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/PsChangeQuantumTable.c) uses the variable table for `01` and the fixed table for `10`. You can imagine the difference between them like that ([process.c](https://doxygen.reactos.org/d2/d9f/ntoskrnl_2ps_2process_8c_source.html#l00031)):
+[`PsChangeQuantumTable`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/PsChangeQuantumTable.c) uses the variable table for `01` and the fixed table for `10`. You can imagine the difference between them like that ([process.c](https://doxygen.reactos.org/d2/d9f/ntoskrnl_2ps_2process_8c_source.html#l00031)):
 
 ```c
 /* Fixed quantum table */
@@ -734,7 +734,7 @@ MM_SYSTEMSIZE MmSystemSize;
 
 ### Quantum Units (23H2)
 
-Without the 24H2 `ShortThreadQuantum` function, one QU is one third of the maximum clock interval. [`KeInitSystem`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KeInitSystem.c) calculates the related processor cycle count:
+Without the 24H2 `ShortThreadQuantum` function, one QU is one third of the maximum clock interval. [`KeInitSystem`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KeInitSystem.c) calculates the related processor cycle count:
 
 ```c
 // KeInitSystem
@@ -812,7 +812,7 @@ fffff805`4591d0d4  01260cb1
 
 #### Quantum Exceptions
 
-Most processes get their reset from the selected three entries in `PspForegroundQuantum`, but [`PspComputeQuantum`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/PspComputeQuantum.c) has two exceptions, first are processes the *Idle* priority class (not the system Idle thread) which always get `6` QU. 
+Most processes get their reset from the selected three entries in `PspForegroundQuantum`, but [`PspComputeQuantum`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/PspComputeQuantum.c) has two exceptions, first are processes the *Idle* priority class (not the system Idle thread) which always get `6` QU. 
 
 The other exception is for processes in a job when long + fixed is used, which select one of ten resets from `PspJobSchedulingClasses` instead of `PspForegroundQuantum`, means as every job gets class 5 (`36QU`) during `NtCreateJobObject`, processes within jobs get the same QU as FG/BG threads, but the class can be changed via `SetInformationJobObject` (classes above `5` require `SeIncreaseBasePriorityPrivilege`).
 
@@ -882,7 +882,7 @@ CHAR PspJobSchedulingClasses[PSP_JOB_SCHEDULING_CLASSES] =
 
 ### ShortThreadQuantum (24H2+)
 
-In 24H2+, [`KiInitializeVelocity`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-24H2/ntoskrnl/KiInitializeVelocity.c) calls the `Feature_ShortThreadQuantum__private_ReportDeviceUsage` helper and then sets bit `0x40000` in `KiVelocityFlags` (without conditions):
+In 24H2+, [`KiInitializeVelocity`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-24H2/ntoskrnl/KiInitializeVelocity.c) calls the `Feature_ShortThreadQuantum__private_ReportDeviceUsage` helper and then sets bit `0x40000` in `KiVelocityFlags` (without conditions):
 
 ```c
 // KiInitializeVelocity
@@ -895,7 +895,7 @@ lkd> ? dwo(nt!KiVelocityFlags) & 0x40000 // 25H2
 Evaluate expression: 262144 = 00000000`00040000 // 0x40000 = ShortThreadQuantum used
 ```
 
-With that flag, [`KeInitSystem`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-24H2/ntoskrnl/KeInitSystem.c) divides the older quantum unit by another six:
+With that flag, [`KeInitSystem`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-24H2/ntoskrnl/KeInitSystem.c) divides the older quantum unit by another six:
 
 ```c
 // KeInitSystem
@@ -906,7 +906,7 @@ if ( (KiVelocityFlags & 0x40000) != 0 )
 }
 ```
 
-It also causes [`KeInitializeClock`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-24H2/ntoskrnl/KeInitializeClock.c) to set `KeQuantumEndTimerIncrement` (doesn't exist in 23H2) to `1.740 ms`:
+It also causes [`KeInitializeClock`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-24H2/ntoskrnl/KeInitializeClock.c) to set `KeQuantumEndTimerIncrement` (doesn't exist in 23H2) to `1.740 ms`:
 
 ```c
 // KeInitializeClock
@@ -918,7 +918,7 @@ KiTimeUpdateTryAcquireTickLock = 1;
 KeQuantumEndTimerIncrement = v6;
 ```
 
-Clock interrupts call [`KiUpdateRunTime`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-24H2/ntoskrnl/KiUpdateRunTime.c), which checks the running threads quantum, 23H2 uses the normal clock interval (`KeMaximumIncrement`, up to `15.625 ms`), 24H2 caps the requested quantum end clock interrupt interval (`KeQuantumEndTimerIncrement`) at `1.740 ms` (which isn't good).
+Clock interrupts call [`KiUpdateRunTime`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-24H2/ntoskrnl/KiUpdateRunTime.c), which checks the running threads quantum, 23H2 uses the normal clock interval (`KeMaximumIncrement`, up to `15.625 ms`), 24H2 caps the requested quantum end clock interrupt interval (`KeQuantumEndTimerIncrement`) at `1.740 ms` (which isn't good).
 
 ```asm
 PAGE:0000000140B3D09C PspVariableQuantums_With_ShortQuantum dd 4240402h
@@ -952,7 +952,7 @@ Means with the `clock interval / 18` unit, the table now is:
 
 See '[Duration Captures, 6/18 QU, 25H2](https://noverse.dev/docs/win-config/system/priority-separation/#618-qu-25h2)' for a capture showing that threads use their `BamQosLevel` to get the QU, instead of the 6 (BG)/18 (FG) QU.
 
-`BamQosLevel` override doesn't use the `PspVariableQuantums`/`PspFixedQuantums` tables, those still fill `PspForegroundQuantum`, which [`PspComputeQuantum`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-24H2/ntoskrnl/PspComputeQuantum.c) uses to get the stored quantum reset (except for idle class & job scheduling class). When `ShortThreadQuantum` and variable quantums are used, [`KiQueryQuantumReset`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-24H2/ntoskrnl/KiQueryQuantumReset.c) (exists since 24H2) can instead return a QoS reset (fixed quantums set `KiVariableQuantumEnabled` to `0` and won't use that override, see '[18 QU, 25H2](https://noverse.dev/docs/win-config/system/priority-separation/#18-qu-25h2)' capture). `_KTHREAD.BamQosLevel` is at `0x204`, which is the `a1 + 516` byte read below.
+`BamQosLevel` override doesn't use the `PspVariableQuantums`/`PspFixedQuantums` tables, those still fill `PspForegroundQuantum`, which [`PspComputeQuantum`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-24H2/ntoskrnl/PspComputeQuantum.c) uses to get the stored quantum reset (except for idle class & job scheduling class). When `ShortThreadQuantum` and variable quantums are used, [`KiQueryQuantumReset`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-24H2/ntoskrnl/KiQueryQuantumReset.c) (exists since 24H2) can instead return a QoS reset (fixed quantums set `KiVariableQuantumEnabled` to `0` and won't use that override, see '[18 QU, 25H2](https://noverse.dev/docs/win-config/system/priority-separation/#18-qu-25h2)' capture). `_KTHREAD.BamQosLevel` is at `0x204`, which is the `a1 + 516` byte read below.
 
 ```c
 // KiQueryQuantumReset
@@ -1151,7 +1151,7 @@ nt!_KTHREAD
 
 Everything below is based on the 11-23H2 mmcss driver pseudocode (see [diff](https://noverse.dev/diff?kind=pseudocode&left=11-23H2&right=11-25H2&module=mmcss&name=CiConfigInitialize.c&mode=side-by-side) if you want to see changes on newer builds)/ WPR ([`Microsoft-Windows-MMCSS` provider](https://noverse.dev/docs/win-config/system/mmcss-values/#microsoft-windows-mmcss)). 
 
-See [mmcss-functions.txt](https://github.com/nohuto/win-config/blob/main/system/assets/mmcss-functions.txt) for a list of all named functions within the MMCSS driver. I guess `Cs` = 'Class Scheduler'? The `i` at the end in such prefixes stands for 'Internal'.
+See [mmcss-functions.txt](https://github.com/nohuto/win-config/blob/main/system/assets/reference/mmcss-functions.txt) for a list of all named functions within the MMCSS driver. I guess `Cs` = 'Class Scheduler'? The `i` at the end in such prefixes stands for 'Internal'.
 
 > "*The Multimedia Class Scheduler service (MMCSS) enables multimedia applications to ensure that their time-sensitive processing receives prioritized access to CPU resources. This service enables multimedia applications to utilize as much of the CPU as possible without denying CPU resources to lower-priority applications.*"
 >
@@ -1282,7 +1282,7 @@ lkd> dd 0xfffff801`890e82F8 L1
 
 ![](https://github.com/nohuto/windbg-notes/blob/main/images/irql-levels.png?raw=true)
 
-Miniport drivers use [`NdisMIndicateReceiveNetBufferLists`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ndis/NdisMIndicateReceiveNetBufferLists.c) to indicate received network data, its [`NetBufferList` argument](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ndis/nf-ndis-ndismindicatereceivenetbufferlists) points to a linked list of NBLs, and `NumberOfNetBufferLists` gives the number of NBLs in that list. Each [NBL contains a linked list of `NET_BUFFER` structures](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/net-buffer-list-structure) & each [`NET_BUFFER`](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/nbl/ns-nbl-net_buffer) represents one network packet, with its data stored in buffers.
+Miniport drivers use [`NdisMIndicateReceiveNetBufferLists`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ndis/NdisMIndicateReceiveNetBufferLists.c) to indicate received network data, its [`NetBufferList` argument](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ndis/nf-ndis-ndismindicatereceivenetbufferlists) points to a linked list of NBLs, and `NumberOfNetBufferLists` gives the number of NBLs in that list. Each [NBL contains a linked list of `NET_BUFFER` structures](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/net-buffer-list-structure) & each [`NET_BUFFER`](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/nbl/ns-nbl-net_buffer) represents one network packet, with its data stored in buffers.
 
 ```c
 union _SLIST_HEADER// Size=0x10 (Id=223)
@@ -1364,13 +1364,13 @@ else
 }
 ```
 
-[`CsInitialize`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/mmcss/CsInitialize.c) allocates the NDIS work item and opens `\Device\Ndis` only when the value isn't `4294967295` and `SystemResponsiveness != 100`.
+[`CsInitialize`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/mmcss/CsInitialize.c) allocates the NDIS work item and opens `\Device\Ndis` only when the value isn't `4294967295` and `SystemResponsiveness != 100`.
 
 ### Throttle State
 
-Only scheduled threads whose task use a `Scheduling Category` of `Medium` or `High` are included in `CiScheduledThreadCount`. [`CiThreadIncrementScheduledCount`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/mmcss/CiThreadIncrementScheduledCount.c) and [`CiThreadDecrementScheduledCount`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/mmcss/CiThreadDecrementScheduledCount.c) update this count and call [`CiNdisUpdateThrottleState`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/mmcss/CiNdisUpdateThrottleState.c) when it changes from `0` to `1`/from `1` to `0`. When the work item runs, [`CiNdisThrottle`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/mmcss/CiNdisThrottle.c) sends `NetworkThrottlingIndex` when the count is nonzero, or `4294967295` when the count is zero.
+Only scheduled threads whose task use a `Scheduling Category` of `Medium` or `High` are included in `CiScheduledThreadCount`. [`CiThreadIncrementScheduledCount`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/mmcss/CiThreadIncrementScheduledCount.c) and [`CiThreadDecrementScheduledCount`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/mmcss/CiThreadDecrementScheduledCount.c) update this count and call [`CiNdisUpdateThrottleState`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/mmcss/CiNdisUpdateThrottleState.c) when it changes from `0` to `1`/from `1` to `0`. When the work item runs, [`CiNdisThrottle`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/mmcss/CiNdisThrottle.c) sends `NetworkThrottlingIndex` when the count is nonzero, or `4294967295` when the count is zero.
 
-[`CiNdisThrottle`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/mmcss/CiNdisThrottle.c) sends the request to the previously opened `\Device\Ndis` handle using [`ZwDeviceIoControlFile`](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntddk/nf-ntddk-zwdeviceiocontrolfile).
+[`CiNdisThrottle`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/mmcss/CiNdisThrottle.c) sends the request to the previously opened `\Device\Ndis` handle using [`ZwDeviceIoControlFile`](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntddk/nf-ntddk-zwdeviceiocontrolfile).
 
 ```c
 // CiNdisThrottle
@@ -1413,7 +1413,7 @@ When the [IOCTL](https://learn.microsoft.com/en-us/windows-hardware/drivers/kern
 
 ### NDIS Request
 
-[`ndisHandlePnPRequest`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ndis/-ndisHandlePnPRequest@@_Y2PAGENPNP@@AJPEAU_IRP@@@Z.c) receives [IOCTL](https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/introduction-to-i-o-control-codes) `0x170040`, which requires 16 input bytes, `Type = 1`, `Size = 16`, and a nonzero `MaxNblsToIndicate` (`Period` must also be nonzero unless `MaxNblsToIndicate = 0xFFFFFFFF`). That input is then passed to [`ndisConfigurePeriodicReceives`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ndis/-ndisConfigurePeriodicReceives@@YAXPEAU_NDIS_SET_RECEIVE_RATE@@@Z.c).
+[`ndisHandlePnPRequest`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ndis/-ndisHandlePnPRequest@@_Y2PAGENPNP@@AJPEAU_IRP@@@Z.c) receives [IOCTL](https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/introduction-to-i-o-control-codes) `0x170040`, which requires 16 input bytes, `Type = 1`, `Size = 16`, and a nonzero `MaxNblsToIndicate` (`Period` must also be nonzero unless `MaxNblsToIndicate = 0xFFFFFFFF`). That input is then passed to [`ndisConfigurePeriodicReceives`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ndis/-ndisConfigurePeriodicReceives@@YAXPEAU_NDIS_SET_RECEIVE_RATE@@@Z.c).
 
 > "*`MaxNblsToIndicate`*
 >
@@ -1423,7 +1423,7 @@ When the [IOCTL](https://learn.microsoft.com/en-us/windows-hardware/drivers/kern
 
 When MMCSS sends `1-70`, NDIS stores it as the MMCSS maximum and saves `Period = -1` (NDIS headers define `4294967295` as `NDIS_INDICATE_ALL_NBLS`, means when using it, MMCSS maximum is set to `4294967295` and `Period` gets cleared).
 
-The NDIS maximum starts at 64 NBLs as [`ndisMInitializeAdapter`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ndis/-ndisMInitializeAdapter@@YAHPEAU_NDIS_M_DRIVER_BLOCK@@PEAU_NDIS_MINIPORT_BLOCK@@PEAU_NDIS_WRAPPE.c) basically hard codes every per processor table index to `6` (`64`), which can also be read:
+The NDIS maximum starts at 64 NBLs as [`ndisMInitializeAdapter`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ndis/-ndisMInitializeAdapter@@YAHPEAU_NDIS_M_DRIVER_BLOCK@@PEAU_NDIS_MINIPORT_BLOCK@@PEAU_NDIS_WRAPPE.c) basically hard codes every per processor table index to `6` (`64`), which can also be read:
 
 ```c
 lkd> dq ffffb605cc5fa030+ce0 L1 // _NDIS_MINIPORT_BLOCK PeriodicReceivesNblCountIndex
@@ -1442,7 +1442,7 @@ for ( i = 0; i < v20; *(_DWORD *)((char *)a2->PeriodicReceivesNblCountIndex + v2
   v22 = i++ << 12;
 ```
 
-[`ndisPeriodicReceivesLearning`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ndis/-ndisPeriodicReceivesLearning@@YAXPEAU_NDIS_MINIPORT_BLOCK@@KPEAT_LARGE_INTEGER@@@Z.c) can change the current processors RST index using for example the number of received NBLs, the RST values are stored in `ndis!ndisPeriodicReceivesNblCounts`:
+[`ndisPeriodicReceivesLearning`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ndis/-ndisPeriodicReceivesLearning@@YAXPEAU_NDIS_MINIPORT_BLOCK@@KPEAT_LARGE_INTEGER@@@Z.c) can change the current processors RST index using for example the number of received NBLs, the RST values are stored in `ndis!ndisPeriodicReceivesNblCounts`:
 
 ```c
 lkd> dd ndis!ndisPeriodicReceivesNblCounts Lb
@@ -1451,14 +1451,14 @@ fffff801`78dbb6e0  00000010 00000020 00000040 00000080 // 16, 32, 64, 128
 fffff801`78dbb6f0  00000100 00000200 00000400 // 256, 512, 1024
 ```
 
-[`ndisMiniportDpc`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ndis/ndisMiniportDpc.c) passes the result to an miniport as `MaxNblsToIndicate` in [`NDIS_RECEIVE_THROTTLE_PARAMETERS`](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ndis/ns-ndis-_ndis_receive_throttle_parameters), an MMCSS maximum of `10` would limit the values (`4294967295` obviously doesn't):
+[`ndisMiniportDpc`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ndis/ndisMiniportDpc.c) passes the result to an miniport as `MaxNblsToIndicate` in [`NDIS_RECEIVE_THROTTLE_PARAMETERS`](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ndis/ns-ndis-_ndis_receive_throttle_parameters), an MMCSS maximum of `10` would limit the values (`4294967295` obviously doesn't):
 
 ```c
 RST values: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024
 With max: 1, 2, 4, 8, 10, 10, 10, 10, 10, 10, 10
 ```
 
-Note that this only works whenever your miniport supports NDIS [RST (receive side throttle)](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/receive-side-throttle-in-ndis-6-20), if not, NDIS can't pass that structure to it (fallback uses [`ndisMIndicateReceiveNblsWithThrottling`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ndis/-ndisMIndicateReceiveNblsWithThrottling@@YAXPEAXPEAU_NET_BUFFER_LIST@@KKK@Z.c), haven't looked into that yet)..
+Note that this only works whenever your miniport supports NDIS [RST (receive side throttle)](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/receive-side-throttle-in-ndis-6-20), if not, NDIS can't pass that structure to it (fallback uses [`ndisMIndicateReceiveNblsWithThrottling`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ndis/-ndisMIndicateReceiveNblsWithThrottling@@YAXPEAXPEAU_NET_BUFFER_LIST@@KKK@Z.c), haven't looked into that yet)..
 
 > "*NDIS 6.20 introduces receive-side throttle (RST) enhancements to reduce the possibility of disruptions during media playback in multimedia applications. RST support is mandatory for NDIS 6.20 and later drivers.*
 >
@@ -1466,7 +1466,7 @@ Note that this only works whenever your miniport supports NDIS [RST (receive sid
 >
 > — Microsoft, [Receive Side Throttle in NDIS 6.20](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/receive-side-throttle-in-ndis-6-20)
 
-This also explains why `ndis.sys` DPC execution times can be higher with `4294967295`, as with a maximum of `10` (and RST being supported), [`ndisInterruptDpc`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ndis/ndisInterruptDpc.c) adds the miniport callback to a per processor NDIS receive worker queue and returns. [`ndisReceiveWorkerThread`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ndis/ndisReceiveWorkerThread.c) would then later run the callback at `DISPATCH_LEVEL` with `MaxNblsToIndicate = 10`. Using `4294967295`, would cause NDIS to remove the MMCSS maximum and may run the callback before the current `ndisInterruptDpc` returns, means the callback work is included in that DPCs measured execution time.
+This also explains why `ndis.sys` DPC execution times can be higher with `4294967295`, as with a maximum of `10` (and RST being supported), [`ndisInterruptDpc`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ndis/ndisInterruptDpc.c) adds the miniport callback to a per processor NDIS receive worker queue and returns. [`ndisReceiveWorkerThread`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ndis/ndisReceiveWorkerThread.c) would then later run the callback at `DISPATCH_LEVEL` with `MaxNblsToIndicate = 10`. Using `4294967295`, would cause NDIS to remove the MMCSS maximum and may run the callback before the current `ndisInterruptDpc` returns, means the callback work is included in that DPCs measured execution time.
 
 ### WinDbg
 
@@ -1907,13 +1907,13 @@ MMCSS sets the priority of client threads depending on their scheduling category
 >
 > — Windows Internals, [E7, P1: 'Priority boosts for multimedia applications and games'](https://github.com/nohuto/Windows-Books/releases/download/7th-Edition/Windows-Internals-E7-P1.pdf)
 
-[`mmcss_task`](https://github.com/nohuto/win-config/blob/main/system/assets/mmcss_task) calls [`AvSetMmThreadCharacteristicsW`](https://learn.microsoft.com/en-us/windows/win32/api/avrt/nf-avrt-avsetmmthreadcharacteristicsw) for the used MMCSS task, optionally calls [`AvSetMmThreadPriority`](https://learn.microsoft.com/en-us/windows/win32/api/avrt/nf-avrt-avsetmmthreadpriority), then keeps the thread busy (loop), this also means that the examples below make it easy to see the changes, but when capturing Spotify/audiodg it won't look the same.
+[`mmcss_task`](https://github.com/nohuto/utils/tree/main/mmcss_task) calls [`AvSetMmThreadCharacteristicsW`](https://learn.microsoft.com/en-us/windows/win32/api/avrt/nf-avrt-avsetmmthreadcharacteristicsw) for the used MMCSS task, optionally calls [`AvSetMmThreadPriority`](https://learn.microsoft.com/en-us/windows/win32/api/avrt/nf-avrt-avsetmmthreadpriority), then keeps the thread busy (loop), this also means that the examples below make it easy to see the changes, but when capturing Spotify/audiodg it won't look the same.
 
 This follows the `EXPERIMENT: MMCSS priority boosting` guide of [Windows Internals E7, P1](https://github.com/nohuto/Windows-Books/releases/download/7th-Edition/Windows-Internals-E7-P1.pdf), but uses `mmcss_task` instead of Media Player/CPUSTRES.
 
 Perfmon has a minumum sample rate of 1 second which isn't optimal for looking at priority switches, as the default MMCSS scheduler period is `10 ms` (`SchedulerPeriod = 100000`, means one PerfMon point can cover ~100 MMCSS cycles), which is why I used WPA & MXA to show examples. You can still use it but don't use the graph as "accurate priority changes".
 
-1. Download [mmcss_task](https://github.com/nohuto/win-config/blob/main/system/assets/mmcss_task.exe), or build it yourself from [source](https://github.com/nohuto/win-config/blob/main/system/assets/mmcss_task):
+1. Download [mmcss_task](https://github.com/nohuto/utils/releases/download/0.1.0/mmcss_task.exe), or build it yourself from [source](https://github.com/nohuto/utils/tree/main/mmcss_task):
 
 ```powershell
 cmake -S . -B build
@@ -2116,7 +2116,7 @@ To read the current value, use:
 dd nt!KiSerializeTimerExpiration L1
 ```
 
-`SerializeTimerExpiration` gets read in [`KeInitializeTimerTable`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KeInitializeTimerTable.c):
+`SerializeTimerExpiration` gets read in [`KeInitializeTimerTable`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KeInitializeTimerTable.c):
 
 ```c
 // KeInitializeTimerTable
@@ -2135,7 +2135,7 @@ if ( !*(_DWORD *)(a1 + 36) ) // CPU 0
 }
 ```
 
-The callback used for the auto default gets set in [`HalpSetPlatformFlags`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/HalpSetPlatformFlags.c):
+The callback used for the auto default gets set in [`HalpSetPlatformFlags`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/HalpSetPlatformFlags.c):
 
 ```c
 // HalpSetPlatformFlags
@@ -2145,7 +2145,7 @@ if ( (*(_DWORD *)(a1 + 112) & 0x200000) != 0 ) // 0x200000 = bit 21
   HalpPlatformFlags |= 8u; // HAL flag set from FADT bit 21
 ```
 
-[`HalpAcpiAoacCapable`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/HalpAcpiAoacCapable.c) returns `(HalpPlatformFlags & 8) != 0`, which is FADT flag bit 21:
+[`HalpAcpiAoacCapable`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/HalpAcpiAoacCapable.c) returns `(HalpPlatformFlags & 8) != 0`, which is FADT flag bit 21:
 
 > "*LOW_POWER_S0_IDLE_CAPABLE*
 > *Bit offset 21. Indicates that the platform supports low-power idle states within the ACPI S0 system power state that are more energy efficient than any Sx sleep state. If this flag is set, Windows won't try to sleep and resume, but will instead use platform idle states and connected standby.*"
@@ -2154,7 +2154,7 @@ if ( (*(_DWORD *)(a1 + 112) & 0x200000) != 0 ) // 0x200000 = bit 21
 
 ### ActiveTimerTable
 
-Serialized expiration uses CPU 0 timer table (`KiProcessorBlock[0]`) instead of the current processors timer table ([`KiTimerExpirationDpc`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KiTimerExpirationDpc.c) & [`KiCheckForTimerExpiration`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KiCheckForTimerExpiration.c) work the same), non serialized uses the current PRCB timer table.
+Serialized expiration uses CPU 0 timer table (`KiProcessorBlock[0]`) instead of the current processors timer table ([`KiTimerExpirationDpc`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KiTimerExpirationDpc.c) & [`KiCheckForTimerExpiration`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KiCheckForTimerExpiration.c) work the same), non serialized uses the current PRCB timer table.
 
 ```c
 // KiSelectActiveTimerTable
@@ -2260,7 +2260,7 @@ lkd> dx ((nt!_KPRCB**)&nt!KiProcessorBlock)[1]->ClockOwner
 
 ![](https://github.com/nohuto/win-config/blob/main/system/images/dyntick.png?raw=true)
 
-[`KePrepareClockTimerForIdle`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KePrepareClockTimerForIdle.c) is that idle part:
+[`KePrepareClockTimerForIdle`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KePrepareClockTimerForIdle.c) is that idle part:
 
 ```c
 // KePrepareClockTimerForIdle
@@ -2311,7 +2311,7 @@ KiClockTimerNextTickTime = InterruptTimePrecise + v25; // global next tick due t
 CurrentPrcb->ClockTimerState.NextTickDueTime = InterruptTimePrecise + v25; // per PRCB next tick due time
 ```
 
-When the system leaves that idle state, [`KeResumeClockTimerFromIdle`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KeResumeClockTimerFromIdle.c) resumes clock handling, if per CPU clock timers are supported (`KiClockTimerPerCpu`), this can make the selected CPU the clock owner:
+When the system leaves that idle state, [`KeResumeClockTimerFromIdle`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KeResumeClockTimerFromIdle.c) resumes clock handling, if per CPU clock timers are supported (`KiClockTimerPerCpu`), this can make the selected CPU the clock owner:
 
 ```c
 // KeResumeClockTimerFromIdle
@@ -2531,7 +2531,7 @@ dd nt!KiEnableClockTimerPerCpuTickScheduling L1 // registry value
 
 ### KiClockTimerPerCpu
 
-`KiClockTimerPerCpu` is set whenever [`HalpTimerGetClockConfiguration`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/HalpTimerGetClockConfiguration.c) returns flag `0x4` (can't really tell yet what requirement that has, related to `HalpClockTimer` flag `0x1`?):
+`KiClockTimerPerCpu` is set whenever [`HalpTimerGetClockConfiguration`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/HalpTimerGetClockConfiguration.c) returns flag `0x4` (can't really tell yet what requirement that has, related to `HalpClockTimer` flag `0x1`?):
 
 ```c
 // KeInitializeClock
@@ -2547,7 +2547,7 @@ if ( !(_BYTE)KiDynamicTickDisableReason && (v23 & 8) == 0 )
   KiDynamicTickDisableReason = 2;
 ```
 
-[`KeInitializeClock`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KeInitializeClock.c) only checks `KiEnableClockTimerPerCpuTickScheduling` when `KiClockTimerPerCpu` is already true:
+[`KeInitializeClock`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KeInitializeClock.c) only checks `KiEnableClockTimerPerCpuTickScheduling` when `KiClockTimerPerCpu` is already true:
 
 ```c
 // KeInitializeClock
@@ -2558,7 +2558,7 @@ if ( KiEnableClockTimerPerCpuTickScheduling && KiClockTimerPerCpu )
   KiClockTimerPerCpuTickScheduling = KiEnableClockTimerPerCpuTickScheduling == 1; // override
 ```
 
-[`KeClockInterruptNotify`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KeClockInterruptNotify.c) has a branch for `KiClockTimerPerCpuTickScheduling && !KiSerializeTimerExpiration` (means `SerializeTimerExpiration = 0` on non AOAC platforms, or >= 2 & `EnablePerCpuClockTickScheduling = 1`), but I haven't looked into what it's used for yet.
+[`KeClockInterruptNotify`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KeClockInterruptNotify.c) has a branch for `KiClockTimerPerCpuTickScheduling && !KiSerializeTimerExpiration` (means `SerializeTimerExpiration = 0` on non AOAC platforms, or >= 2 & `EnablePerCpuClockTickScheduling = 1`), but I haven't looked into what it's used for yet.
 
 ## Structures
 
@@ -2941,7 +2941,7 @@ if ( v32 - *((_QWORD *)v34 + 5) > v33 ) // current composition QPC time - cached
 
 #### Examples
 
-You can see the differences by moving a blurry window above a animation, for example. I used a simple [rotating dot](https://github.com/nohuto/win-config/blob/main/system/assets/rotatingdot.html).
+You can see the differences by moving a blurry window above a animation, for example. I used a simple [rotating dot](https://github.com/nohuto/win-config/blob/main/system/assets/demos/rotatingdot.html).
 
 ##### 1000ms
 
@@ -2987,7 +2987,7 @@ brave.exe[4584]:
 | `5` | Disable MPO ([`COverlayContext::OverlaysEnabled`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/dwmcore/-OverlaysEnabled@COverlayContext@@AEBA_NXZ.c) returns false & [`COverlayContext::IsCompatibleOutputScaling`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/dwmcore/-IsCompatibleOutputScaling@COverlayContext@@AEAA_NAEBVCMILMatrix@@@Z.c) returns 0 for one "*CompatibleOutputScaling*") |
 | `>=6` | Would go into `>=4` part in [`COverlayContext::CheckMultiPlaneOverlaySupport`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/dwmcore/-CheckMultiPlaneOverlaySupport@COverlayContext@@CA_NAEBV-$span@PEAVCOverlayContext@@$0-0@gsl@@AE.c), but only exactly `4` has the this force success case? Using `6` does allow MPO + uses the "*OverlayColor*", so it's the same as `1-3` after all.  |
 
-#### [GetSwapChainOverlayColor](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/dwmcore/-GetSwapChainOverlayColor%40CDrawingContext%40%40AEBA-AU_D3DCOLORVALUE%40%40PEAVISwapChainRealization%40%40PEB.c)
+#### [GetSwapChainOverlayColor](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/dwmcore/-GetSwapChainOverlayColor@CDrawingContext@@AEBA-AU_D3DCOLORVALUE@@PEAVISwapChainRealization@@PEB.c)
 
 The mentioned "*OverlayColor*" are overlay debug rectrangles from DWM, there are 4 different colors that DWM can use (red, yellow, orange, cyan). These colors aren't related to present modes, and I can't really tell their actual meaning yet, here's my current findings:
 
@@ -3181,7 +3181,7 @@ aRegistryMachin_33 = "\\Registry\\Machine\\SYSTEM\\CurrentControlSet\\Control\\P
 
 CM = configuration manager, it loads & manages registry hives, inserts the `\REGISTRY` key object into the namespace and more. See regkits '[Registry fundamentals](https://noverse.dev/docs/regkit/registry-internals/registry-fundamentals/)' documentation for more information on the topic.
 
-`CmControlVector` is a table used by [`CmpGetSystemControlValues`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/CmpGetSystemControlValues.c) while early CM init. Each entry is `0x30` bytes (six pointers), this is just a simple way to imagine each block:
+`CmControlVector` is a table used by [`CmpGetSystemControlValues`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/CmpGetSystemControlValues.c) while early CM init. Each entry is `0x30` bytes (six pointers), this is just a simple way to imagine each block:
 
 ```c
 struct CM_CONTROL_VECTOR_ENTRY {
@@ -3768,7 +3768,7 @@ if ( qword_1C00124C8 )
 
 #### DisplayPPMFlags
 
-Most masks below are the same for `amdppm`/`intelppm`, the labels are from [`DisplayPPMFlags`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/amdppm/DisplayPPMFlags.c) WPP metadata extracted via [`tracepdb`](https://learn.microsoft.com/en-us/windows-hardware/drivers/devtest/tracepdb).
+Most masks below are the same for `amdppm`/`intelppm`, the labels are from [`DisplayPPMFlags`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/amdppm/DisplayPPMFlags.c) WPP metadata extracted via [`tracepdb`](https://learn.microsoft.com/en-us/windows-hardware/drivers/devtest/tracepdb).
 
 | Mask | `DisplayPPMFlags` label |
 | --- | --- |
@@ -3810,10 +3810,10 @@ Additional masks I found that aren't in `DisplayPPMFlags`:
 
 | Mask | Meaning |
 | --- | --- |
-| [`0x0000000000800000`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/amdppm/InitAcpiProcessorDomains.c) | ACPI processor domain init |
-| [`0x00000010FF300000`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/amdppm/ValidatePerfDomainSymmetry.c) | performance domain validation/registration |
-| [`0x0000800000000000`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/amdppm/EmiInit.c) | EMI init |
-| [`0x0001000000000000`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/intelppm/InitDriver.c) | Energy counter init (not used by `amdppm`?) |
+| [`0x0000000000800000`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/amdppm/InitAcpiProcessorDomains.c) | ACPI processor domain init |
+| [`0x00000010FF300000`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/amdppm/ValidatePerfDomainSymmetry.c) | performance domain validation/registration |
+| [`0x0000800000000000`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/amdppm/EmiInit.c) | EMI init |
+| [`0x0001000000000000`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/intelppm/InitDriver.c) | Energy counter init (not used by `amdppm`?) |
 
 #### tracepdb
 
@@ -3823,7 +3823,7 @@ Short explanation of how to get the `DisplayPPMFlags` labels:
 .\tracepdb.exe -f "C:\Symbols\amdppm.pdb\0728D8E84177E8B0FCF8B265B1C92A591\amdppm.pdb" -p "$env:USERPROFILE\Desktop\tmf" -v
 ```
 
-In [`DisplayPPMFlags`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/amdppm/DisplayPPMFlags.c) you can see the many masks + GUIDs + hex numbers, example:
+In [`DisplayPPMFlags`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/amdppm/DisplayPPMFlags.c) you can see the many masks + GUIDs + hex numbers, example:
 
 ```c
 if ( a2 < 5u
@@ -3879,9 +3879,9 @@ INIT:0000000140BA1A80                 dq offset KeTimerCheckFlags
 INIT:0000000140BA1A88                 align 20h
 ```
 
-`KeTimerCheckFlags` is used by [KeCheckForTimer](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KeCheckForTimer.c), only bit `0` seems to be meaningful, means any value with that bit set should behave like `1`.
+`KeTimerCheckFlags` is used by [KeCheckForTimer](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KeCheckForTimer.c), only bit `0` seems to be meaningful, means any value with that bit set should behave like `1`.
 
-#### [KeCheckForTimer](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KeCheckForTimer.c)
+#### [KeCheckForTimer](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KeCheckForTimer.c)
 
 That function checks active timer tables for a timer object/DPC object/DPC routine related to the memory range being checked.
 
@@ -3910,7 +3910,7 @@ if ( v18 >= BugCheckParameter3 && v18 < BugCheckParameter4 )
   KeBugCheckEx(0xC7u, 2uLL, v18, BugCheckParameter3, BugCheckParameter4); // DPC routine (parameter 1 = 0x2)
 ```
 
-The second argument to `KeBugCheckEx` = parameter 1 in the `0xC7` ([`TIMER_OR_DPC_INVALID`](https://github.com/nohuto/windows-driver-docs/blob/staging/windows-driver-docs-pr/debugger/bug-check-0xc7--timer-or-dpc-invalid.md)) bugcheck.
+The second argument to `KeBugCheckEx` = parameter 1 in the `0xC7` ([`TIMER_OR_DPC_INVALID`](https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0xc7--timer-or-dpc-invalid)) bugcheck.
 
 ```cpp
 VOID KeBugCheckEx(
@@ -3937,7 +3937,7 @@ VOID KeBugCheckEx(
 
 ##### Callers
 
-Pool free checks (in [ExpFreePoolChecks](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/ExpFreePoolChecks.c) & [ExFreeHeapPool](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/ExFreeHeapPool.c)) call [KeCheckForTimer](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KeCheckForTimer.c) (only when `ExpPoolFlags & 1` is set?):
+Pool free checks (in [ExpFreePoolChecks](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/ExpFreePoolChecks.c) & [ExFreeHeapPool](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/ExFreeHeapPool.c)) call [KeCheckForTimer](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KeCheckForTimer.c) (only when `ExpPoolFlags & 1` is set?):
 
 ```c
 // ExpFreePoolChecks / ExFreeHeapPool
@@ -3946,7 +3946,7 @@ if ( (ExpPoolFlags & 1) != 0 )
   KeCheckForTimer(BugCheckParameter3);
 ```
 
-[VfMiscKeInitializeTimerEx_Entry](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/VfMiscKeInitializeTimerEx_Entry.c) calls [KeCheckForTimer](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/KeCheckForTimer.c) for the timer object range ([only until `11-23H2`](https://noverse.dev/diff?kind=pseudocode&left=11-23H2&right=11-25H2&module=ntoskrnl&name=KeCheckForTimer.c&mode=side-by-side), builds above use [ViMiscValidateSynchronizationObject](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-25H2/ntoskrnl/ViMiscValidateSynchronizationObject.c)).
+[VfMiscKeInitializeTimerEx_Entry](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/VfMiscKeInitializeTimerEx_Entry.c) calls [KeCheckForTimer](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/KeCheckForTimer.c) for the timer object range ([only until `11-23H2`](https://noverse.dev/diff?kind=pseudocode&left=11-23H2&right=11-25H2&module=ntoskrnl&name=KeCheckForTimer.c&mode=side-by-side), builds above use [ViMiscValidateSynchronizationObject](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ntoskrnl/ViMiscValidateSynchronizationObject.c)).
 
 ```c
 // VfMiscKeInitializeTimerEx_Entry (23H2)
@@ -3988,7 +3988,7 @@ if ( (ExpPoolFlags & 4) != 0 )
   ExpCheckForResource(BugCheckParameter3, a3); // ResourceCheckFlags (ERESOURCE check)
 ```
 
-[ExpCheckForResource](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntoskrnl/ExpCheckForResource.c) checks whether the freed range contains an `ERESOURCE` still linked in `ExpSystemResourcesList`, means `ExDeleteResourceLite` wasn't called before freeing its memory.
+[ExpCheckForResource](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/ExpCheckForResource.c) checks whether the freed range contains an `ERESOURCE` still linked in `ExpSystemResourcesList`, means `ExDeleteResourceLite` wasn't called before freeing its memory.
 
 ```c
 // ExpCheckForResource
@@ -4413,7 +4413,7 @@ if ( (int)NtQueryWnfStateData(&WNF_RM_GAME_MODE_ACTIVE, 0LL, 0LL, &v6, &v4, &v5)
 
 ## gm_effects
 
-I've created [`gm_effects.exe`](https://github.com/nohuto/win-config/blob/main/system/assets/gm_effects.exe), which reads the current foreground PID, active Game Mode PID, process default CPU sets (and CPU set IDs), and the Game Mode power profile WNF low value. You can either use the prebuild binary, or build it yourself from [source](https://github.com/nohuto/win-config/blob/main/system/assets/gm_effects):
+I've created [`gm_effects.exe`](https://github.com/nohuto/utils/releases/download/0.1.0/gm_effects.exe), which reads the current foreground PID, active Game Mode PID, process default CPU sets (and CPU set IDs), and the Game Mode power profile WNF low value. You can either use the prebuild binary, or build it yourself from [source](https://github.com/nohuto/utils/tree/main/gm_effects):
 
 ```powershell
 cmake -S . -B build
@@ -5097,11 +5097,11 @@ Microsoft documents `GameMode` as a processor power management profile that OEMs
 > "*The power profiles are used by the power processor engine to adapt the performance and parking algorithm on various system use cases.*"
 > "*GameMode profile is enabled when the 'Game Mode' setting toggle is turned on and the user is playing a game.*"
 >
-> — Microsoft, [Processor power management options](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/configure-processor-power-management-options.md#power-profiles)
+> — Microsoft, [Processor power management options](https://github.com/nohuto/win-config/blob/main/power/assets/reference/power-settings/configure-processor-power-management-options.md#power-profiles)
 
 > "*Power profiles provide system wide configuration of processor power management, impacting all running workloads equally.*"
 >
-> — Microsoft, [Processor power management options](https://github.com/nohuto/win-config/blob/main/power/assets/power-settings/configure-processor-power-management-options.md#quality-of-service)
+> — Microsoft, [Processor power management options](https://github.com/nohuto/win-config/blob/main/power/assets/reference/power-settings/configure-processor-power-management-options.md#quality-of-service)
 
 ```c
 // RmpGameModeTryApplyPowerProfile
@@ -6164,7 +6164,7 @@ HwQueueStagingList::ProcessHwQueue(this, (HwQueueStagingList *)((char *)v18 - 17
 
 ## query_hwsch
 
-`query_hwsch` calls `D3DKMTQueryAdapterInfo` (`KMTQAITYPE_WDDM_2_9_CAPS`/`KMTQAITYPE_WDDM_3_0_CAPS`) to get the `DriverSupportState`/`Enabled` bits, you can either use the [prebuild binary](https://github.com/nohuto/win-config/blob/main/system/assets/query_hwsch.exe), or build it yourself from [source](https://github.com/nohuto/win-config/tree/main/system/assets/query_hwsch):
+`query_hwsch` calls `D3DKMTQueryAdapterInfo` (`KMTQAITYPE_WDDM_2_9_CAPS`/`KMTQAITYPE_WDDM_3_0_CAPS`) to get the `DriverSupportState`/`Enabled` bits, you can either use the [prebuild binary](https://github.com/nohuto/utils/releases/download/0.1.0/query_hwsch.exe), or build it yourself from [source](https://github.com/nohuto/utils/tree/main/query_hwsch):
 
 ```powershell
 cmake -S . -B build
@@ -6209,13 +6209,13 @@ Changing it to Segment Heap for a game won't impact FPS, rather read '[W10 Segme
 
 ## heapType GUI
 
-[`heapType.ps1`](https://github.com/nohuto/win-config/blob/main/system/assets/heapType.ps1) is a small GUI for the values (read everything below/above before using it):
+[`heapType.ps1`](https://github.com/nohuto/win-config/blob/main/system/assets/scripts/heapType.ps1) is a small GUI for the values (read everything below/above before using it):
 
 ![](https://github.com/nohuto/win-config/blob/main/system/images/heapType.png?raw=true)
 
 ## heap_dump
 
-[`heap_dump.exe`](https://github.com/nohuto/win-config/blob/main/system/assets/heap_dump.exe) queries all running processes and lists their heaps as `NT Heap`/`NT Heap (LFH)`/`Segment Heap`. You can either use the [prebuilt binary](https://github.com/nohuto/win-config/blob/main/system/assets/heap_dump.exe), or build it yourself from [source](https://github.com/nohuto/win-config/blob/main/system/assets/heap_dump):
+[`heap_dump.exe`](https://github.com/nohuto/utils/releases/download/0.1.0/heap_dump.exe) queries all running processes and lists their heaps as `NT Heap`/`NT Heap (LFH)`/`Segment Heap`. You can either use the [prebuilt binary](https://github.com/nohuto/utils/releases/download/0.1.0/heap_dump.exe), or build it yourself from [source](https://github.com/nohuto/utils/tree/main/heap_dump):
 
 ```powershell
 cmake -S . -B build
@@ -6293,7 +6293,7 @@ if ( v9 >= 0xFD0000 )
 >
 > — Microsoft, [RTL_HEAP_PARAMETERS](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-rtl_heap_parameters)
 
-[`PAGE_SIZE` = `4096`](https://github.com/nohuto/decompiled-pseudocode/tree/main/11-23H2/ntdll/RtlpExtendHeap.c) bytes, so `PAGE_SIZE * 2` = `8192`.
+[`PAGE_SIZE` = `4096`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntdll/RtlpExtendHeap.c) bytes, so `PAGE_SIZE * 2` = `8192`.
 
 ```c
 // RtlpExtendHeap
@@ -6466,7 +6466,7 @@ __int64 IsDesktopHeapLoggingOn(void)
 
 `DesktopHeapLogging` seems to have a fallback of `0`, but the value exists by default and is set to `1`. Means deleting it/setting it to `0` should do the same.
 
-- [system/assets | IsDesktopHeapLoggingOn.c](https://github.com/nohuto/win-config/blob/main/system/assets/IsDesktopHeapLoggingOn.c)
+- [decompiled-pseudocode | IsDesktopHeapLoggingOn.c](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kbase/-IsDesktopHeapLoggingOn@@YAHXZ.c)
 
 # Memory Compression
 
@@ -6739,7 +6739,7 @@ I personally recommend using only the main option. This includes disabling telem
 
 ## Service/Driver Table
 
-You can dump all kind of information (including information like type, required privileges, failure actions, triggers, thread/handle count, KM/UM time etc. which the normal `services.msc` or any other programs won't show) using my [dumpServicesDrivers.ps1](https://github.com/nohuto/win-config/blob/main/system/assets/dumpServicesDrivers.ps1) script (which I also used for creating the tables below, see [services.txt](https://github.com/nohuto/win-config/blob/main/system/assets/services.txt)/[drivers.txt](https://github.com/nohuto/win-config/blob/main/system/assets/drivers.txt)), I've commented out some fields by default, edit the file if you want to see them.
+You can dump all kind of information (including information like type, required privileges, failure actions, triggers, thread/handle count, KM/UM time etc. which the normal `services.msc` or any other programs won't show) using my [dumpServicesDrivers.ps1](https://github.com/nohuto/win-config/blob/main/system/assets/scripts/dumpServicesDrivers.ps1) script (which I also used for creating the tables below, see [services.txt](https://github.com/nohuto/win-config/blob/main/system/assets/reference/services.txt)/[drivers.txt](https://github.com/nohuto/win-config/blob/main/system/assets/reference/drivers.txt)), I've commented out some fields by default, edit the file if you want to see them.
 
 The suboptions probably overlap the documentation. If so, you can open the [page on my website](https://github.com/nohuto/win-config/blob/main/system/desc.md#disable-servicesdrivers) instead.
 
@@ -7419,7 +7419,7 @@ The `EnableSuperfetch` value has no effect whenever this service is disabled, `E
 
 # Disable Scheduled Tasks
 
-This list was created using my small [`ScheduledTasksList.ps1`](https://github.com/nohuto/win-config/blob/main/system/assets/ScheduledTasksList.ps1) parser which displays name, path, description, principals, settings, triggers, actions if given.
+This list was created using my small [`ScheduledTasksList.ps1`](https://github.com/nohuto/win-config/blob/main/system/assets/scripts/ScheduledTasksList.ps1) parser which displays name, path, description, principals, settings, triggers, actions if given.
 
 ## Scheduled Tasks Table
 
@@ -8042,7 +8042,7 @@ Note that this doesn't show default states, instead it shows several options and
 
 ## Pseudocode Notes
 
-Notes on several features in relation of [HalpMiscGetParameters](https://github.com/nohuto/win-config/blob/main/system/assets/bcdedit-HalpMiscGetParameters.c).
+Notes on several features in relation of [HalpMiscGetParameters](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ntoskrnl/HalpMiscGetParameters.c).
 
 ```c
 lkd> db HalpInterruptX2ApicPolicy l1
@@ -8335,7 +8335,7 @@ Since `BackupReminderToastCount` isn't a well known value, I've done quick resea
 "TwoMinutes" = 0x47868C00; // Seconds: 120, 2 minutes, LastTimeBackupReminderNotify
 ```
 
-See [system/assets | noti-CLowDiskSpaceUI_CanShowStorageSenseToast.c](https://github.com/nohuto/win-config/blob/main/system/assets/noti-CLowDiskSpaceUI_CanShowStorageSenseToast.c) for used pseudocode. Note that I added my chosen values to the `Disable Low Disk Space Checks` suboption for safety reasons.
+See [system/assets/pseudocode | noti-CLowDiskSpaceUI_CanShowStorageSenseToast.c](https://github.com/nohuto/win-config/blob/main/system/assets/pseudocode/noti-CLowDiskSpaceUI_CanShowStorageSenseToast.c) for used pseudocode. Note that I added my chosen values to the `Disable Low Disk Space Checks` suboption for safety reasons.
 
 ```c
 "HKCU\\Control Panel\\Accessibility";
@@ -8528,7 +8528,7 @@ This list isn't complete yet, see [FileSystem](https://github.com/nohuto/regkit/
 | `SymlinkXToXEvaluation` | 0 = x->x symlinks not followed, 1 = resolved (X = Local/Remote). Symlinksare shortcuts or references that point to a file or folder in another location, like a portal. They're not duplicates, just pointers. File at: `C:\Projects\Game\assets\logo.png`, Symlink: `C:\Users\YourName\Desktop\logo.png`. |
 | `Win31FileSystem` | 0 = standard modern FAT behavior (long filenames, richer timestamps), 1 = legacy Windows 3.1–compatible mode with stricter 8.3 naming and older timestamp semantics. |
 
-- [system/assets | filesystem-NtfsUpdateDynamicRegistrySettings.c](https://github.com/nohuto/win-config/blob/main/system/assets/filesystem-NtfsUpdateDynamicRegistrySettings.c)
+- [system/assets/pseudocode | filesystem-NtfsUpdateDynamicRegistrySettings.c](https://github.com/nohuto/win-config/blob/main/system/assets/pseudocode/filesystem-NtfsUpdateDynamicRegistrySettings.c)
 
 ## [Windows Policies](https://noverse.dev/policies)
 
@@ -8719,7 +8719,7 @@ Based on `SystemSettings > Accessibility`, not complete yet.
   // Disabled
   HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize\EnableTransparency	Type: REG_DWORD, Length: 4, Data: 0
 
-  // Animation effects (https://noverse.dev/docs/win-config/visibility/optimize-visual-effects/#userpreferencesmask)
+  // Animation effects (https://noverse.dev/docs/win-config/visibility/minimal-visual-effects/#userpreferencesmask)
   // Enabled
   HKCU\Control Panel\Desktop\UserPreferencesMask	Type: REG_BINARY, Length: 8, Data: 92 12 07 80 10 00 00 00
   HKCU\Control Panel\Desktop\UserPreferencesMask	Type: REG_BINARY, Length: 8, Data: 96 12 07 80 10 00 00 00

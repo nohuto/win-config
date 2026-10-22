@@ -26,7 +26,7 @@ Prevents sending information about your computer to Microsoft by disabling gener
 
 See policy explanations below for more details.
 
-It's also recommended to apply the '[Microsoft (Windows, Office, MSN)](https://github.com/hagezi/dns-blocklists#native)' blocklist ([Windows 11 connection endpoints for non-Enterprise editions](https://learn.microsoft.com/en-us/windows/privacy/windows-11-endpoints-non-enterprise-editions#windows-11-pro)) via the hosts file (you can use [blocklist-mgr](https://github.com/nohuto/blocklist-mgr) for that), or if you've a private DNS server, add that list to it.
+It's also recommended to apply the '[Microsoft (Windows, Office, MSN)](https://github.com/hagezi/dns-blocklists#native)' blocklist ([Windows 11 connection endpoints for non-Enterprise editions](https://learn.microsoft.com/en-us/windows/privacy/windows-11-endpoints-non-enterprise-editions#windows-11-pro)) via the hosts file (you can use [blocklist-mgr](https://github.com/nohuto/win-config/blob/main/network/assets/scripts/Blocklist-Manger.ps1) for that), or if you've a private DNS server, add that list to it.
 
 ## DiagnosticDataSettings Values
 
@@ -189,7 +189,7 @@ if ( !RegQueryValueExW(hKey[0], "TimeStampInterval", 0LL, 0LL, (LPBYTE)&v4, &cbD
 
 `TimeStampInterval` under `HKLM\Software\Policies\Microsoft\Windows NT\Reliability` is in seconds, the value under `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Reliability` is read as minutes and multiplied by 60.
 
-- [privacy/assets | timestamp-OsEventsTimestampInterval.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/timestamp-OsEventsTimestampInterval.c)
+- [privacy/assets/pseudocode | timestamp-OsEventsTimestampInterval.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/timestamp-OsEventsTimestampInterval.c)
 
 ### Crash Dumps
 
@@ -213,8 +213,8 @@ There're two values named [`CrashDumpEnabled.New`](https://github.com/nohuto/reg
 \Registry\Machine\SYSTEM\ControlSet001\Control\CrashControl : CrashDumpEnabled.Old
 ```
 
-- [privacy/assets | crashdmp.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/crashdmp.c)
-- [privacy/assets | crashdmp-SecureDump_PrepareForInit.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/crashdmp-SecureDump_PrepareForInit.c)
+- [privacy/assets/pseudocode | crashdmp.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/crashdmp.c)
+- [decompiled-pseudocode | SecureDump_PrepareForInit.c](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ntoskrnl/SecureDump_PrepareForInit.c)
 
 ## Miscellaneous Notes
 
@@ -276,7 +276,7 @@ Related to [PCIe advanced error reporting](https://learn.microsoft.com/en-us/win
 ```
 Default is `0`, non zero would enable the behaviour? The value doesn't exist by default.
 
-- [privacy/assets | wer-PciGetSystemWideHackFlagsFromRegistry.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/wer-PciGetSystemWideHackFlagsFromRegistry.c)
+- [privacy/assets/pseudocode | wer-PciGetSystemWideHackFlagsFromRegistry.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/wer-PciGetSystemWideHackFlagsFromRegistry.c)
 
 ```
 \Registry\Machine\SYSTEM\ControlSet001\Control\StorPort : TelemetryErrorDataEnabled
@@ -390,7 +390,7 @@ Disables all kind of suggestions, in start, text suggestions (multilingual...), 
 
 ### SubscribedContent IDs
 
-Since the `SubscribedContent-*` values aren't documented literally anywhere I've tried to get some information to see which exist and what they do. You can find information on them in `ContentDeliveryManager.Utilities.dll`, see [contentdelivery.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/contentdelivery.c) for asm snippets that include these information.
+Since the `SubscribedContent-*` values aren't documented literally anywhere I've tried to get some information to see which exist and what they do. You can find information on them in `ContentDeliveryManager.Utilities.dll`, see [contentdelivery.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/contentdelivery.c) for asm snippets that include these information.
 
 | Feature | IDs | Practical meaning |
 |---|---|---|
@@ -471,7 +471,7 @@ Disables automatic network traffic on the settings page and prevents automatic d
 | `1`	Enabled | Force enable auto-update over metered connection. |
 | `65535` (Default)	Not configured | User's choice. |
 
-- [privacy/assets | maps.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/maps.c)
+- [privacy/assets/pseudocode | maps.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/maps.c)
 
 ## moshostcore Snippets
 
@@ -576,7 +576,7 @@ L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CDP\\SettingsPage",
 L"WifiLastDisabledNearShare",
 ```
 
-- [privacy/assets | crossdev-SharedExperiencesSingleton.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/crossdev-SharedExperiencesSingleton.c)
+- [privacy/assets/pseudocode | crossdev-SharedExperiencesSingleton.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/crossdev-SharedExperiencesSingleton.c)
 
 ## [Windows Policies](https://noverse.dev/policies)
 
@@ -905,8 +905,8 @@ GameDVR is a built-in gameplay capture (Xbox Game Bar) for clips/screenshots, wi
     "SelectedCameraId" // REG_SZ
 ```
 
-- [privacy/assets | gamebar-WindowsMediaCaptureIAppCaptureSettings.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/gamebar-WindowsMediaCaptureIAppCaptureSettings.c) (`HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR`)
-- [privacy/assets | gamebar-WindowsMediaCaptureIAppBroadcastGlobalSettings.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/gamebar-WindowsMediaCaptureIAppBroadcastGlobalSettings.c) (`HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\AppBroadcast\\GlobalSettings`)
+- [privacy/assets/pseudocode | gamebar-WindowsMediaCaptureIAppCaptureSettings.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/gamebar-WindowsMediaCaptureIAppCaptureSettings.c) (`HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR`)
+- [privacy/assets/pseudocode | gamebar-WindowsMediaCaptureIAppBroadcastGlobalSettings.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/gamebar-WindowsMediaCaptureIAppBroadcastGlobalSettings.c) (`HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\AppBroadcast\\GlobalSettings`)
 - [settings/settings-windows-11.md#gaming-game-bar-game-mode-gaming-shortcuts](https://github.com/MicrosoftDocs/windows-dev-docs/blob/docs/hub/apps/develop/settings/settings-windows-11.md#gaming-game-bar-game-mode-gaming-shortcuts)
 
 ### Game Bar Precense Writer
@@ -934,7 +934,7 @@ Disables app access to your location, locating your system will be disabled, geo
 "svchost.exe","RegSetValue","HKCU\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location\ShowGlobalPrompts","Type: REG_DWORD, Length: 4, Data: 1"
 ```
 
-- [privacy/assets | locationaccess-LocationApi.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/locationaccess-LocationApi.c)
+- [privacy/assets/pseudocode | locationaccess-LocationApi.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/locationaccess-LocationApi.c)
 
 ---
 
@@ -967,7 +967,7 @@ Blocks apps/system from using hardware sensors such as ambient light, orientatio
 | `SensrSvc` | Monitors various sensors in order to expose data and adapt to system and user state. If this service is stopped or disabled, the display brightness will not adapt to lighting conditions. Stopping this service may affect other system functionality and features as well. | Win32 Share Process (32) | - | C:\Windows\system32\svchost.exe -k LocalServiceAndNoImpersonation -p |
 | `SensorService` | A service for sensors that manages different sensors' functionality. Manages Simple Device Orientation (SDO) and History for sensors. Loads the SDO sensor that reports device orientation changes. If this service is stopped or disabled, the SDO sensor will not be loaded and so auto-rotation will not occur. History collection from Sensors will also be stopped. | Win32 Share Process (32) | - | C:\Windows\system32\svchost.exe -k LocalSystemNetworkRestricted -p |
 
-No other [services](https://github.com/nohuto/win-config/blob/main/system/assets/services.txt)/[drivers](https://github.com/nohuto/win-config/blob/main/system/assets/drivers.txt) depend on these three services.
+No other [services](https://github.com/nohuto/win-config/blob/main/system/assets/reference/services.txt)/[drivers](https://github.com/nohuto/win-config/blob/main/system/assets/reference/drivers.txt) depend on these three services.
 
 ## [Windows Policies](https://noverse.dev/policies)
 
@@ -1262,8 +1262,8 @@ wevtutil sl Microsoft-Windows-UserModePowerService/Diagnostic /e:false
 svchost.exe	RegSetValue	HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-UserModePowerService/Diagnostic\Enabled	Type: REG_DWORD, Length: 4, Data: 0
 ```
 
-- [privacy/assets | sleepstudy-FxLibraryGlobalsQueryRegistrySettings.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/sleepstudy-FxLibraryGlobalsQueryRegistrySettings.c)
-- [privacy/assets | sleepstudy-PoFxInitPowerManagement.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/sleepstudy-PoFxInitPowerManagement.c)
+- [decompiled-pseudocode | FxLibraryGlobalsQueryRegistrySettings.c](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/Wdf01000/FxLibraryGlobalsQueryRegistrySettings.c)
+- [decompiled-pseudocode | PoFxInitPowerManagement.c](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ntoskrnl/PoFxInitPowerManagement.c)
 
 ## Miscellaenous Notes
 
