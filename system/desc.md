@@ -4784,7 +4784,7 @@ v14 = RmGameModeUnregisterProcess(v13); // remove process
 
 The service also watches process lifetime with a threadpool wait. When the process terminates, paired auxiliary processes are cleared and the process is removed from Game Mode service state ([`RmpGameModeRecipientProcessTerminationCallback`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/PsmServiceExtHost/-RmpGameModeRecipientProcessTerminationCallback@@YAXPEAU_TP_CALLBACK_INSTANCE@@PEAXPEAU_TP_WAIT@.c)). Input focus changes queue the same policy worker so the active Game Mode state can move to another registered primary process ([`RmpSystemNotificationInputFocusChangeCallback`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/PsmServiceExtHost/-RmpSystemNotificationInputFocusChangeCallback@@YAJU_WNF_STATE_NAME@@KPEAU_WNF_TYPE_ID@@PEAXPEBX.c)).
 
-This can be validated using [`gm_effects`](https://noverse.dev/docs/win-config/system/game-mode#gm_effects) with the `--pid` argument, so you enable Game Mode, start the game, use `--pid` with the PID of the game, move the game to FG/BG. By doing so you'll see that the state changes.
+This can be validated using [`gm_effects`](https://noverse.dev/docs/win-config/system/game-mode/#gm_effects) with the `--pid` argument, so you enable Game Mode, start the game, use `--pid` with the PID of the game, move the game to FG/BG. By doing so you'll see that the state changes.
 
 ```ini
 ; not in FG
@@ -5122,7 +5122,7 @@ return NtUpdateWnfStateData(&WNF_SEB_GAME_MODE, &v2, 8LL, 0LL, 0LL, 0, 0);
 
 When enabled, WNF uses low value `3`, when disabled, it uses low value `1`. The high value stays `0xFFFFFFFF` in both cases.
 
-You can use [`gm_effects`](https://noverse.dev/docs/win-config/system/game-mode#gm_effects) to see what value is set.
+You can use [`gm_effects`](https://noverse.dev/docs/win-config/system/game-mode/#gm_effects) to see what value is set.
 
 [`BroadcastDVRComponent::IsUsingPowerProfile`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/twinui-pcshell/-IsUsingPowerProfile@BroadcastDVRComponent@@AEAA_NAEBU_GUID@@@Z.c) checks whether the active power scheme is `GUID_MIN_POWER_SAVINGS` (High Performance), the request builder uses that result as "already using a performance plan". In the default cases, it asks the service for the GameMode power profile only when the current plan isn't High Performance (`GUID_MIN_POWER_SAVINGS` has `PROCTHROTTLEMIN`/`PROCTHROTTLEMIN1` at `100` by default).
 
@@ -5221,7 +5221,7 @@ else
 - [GPU policy](https://noverse.dev/docs/win-config/system/game-mode/#gpu-scheduler--gpu-memory-budget) should only be noticeable if the system has GPU scheduling (`D3DKMTSetYieldPercentage`, means when there's a lot of GPU work in the background, see '[GPU yield percentage](https://noverse.dev/docs/win-config/system/game-mode/#gpu-scheduler--gpu-memory-budget)' description?) or GPU memory issues (if VRAM is kind of used while background processes need GPU memory, e.g. high quality captures?).
 - [Game Mode power profile](https://noverse.dev/docs/win-config/system/game-mode/#game-mode-power-profile-wnf-state) doesn't seem to have any effect when the active scheme is already `GUID_MIN_POWER_SAVINGS` or a modified version of that scheme (must be GUID of `GUID_MIN_POWER_SAVINGS`, so not a copied version of it).
 
-FPS testing isn't a good way to decide whether Game Mode has any benefits for you, rather check whether the game registers with Game Mode at all, whether the game already sets priority class correctly itself, whether CPU sets are applied, and if they are applied, which CPU set IDs are used. Use [gm_effects](https://noverse.dev/docs/win-config/system/game-mode#gm_effects)/WPR (see below, I'll add more on it soon to see if it's actually useful, since wevtutil doesn't show events)/SI for it.
+FPS testing isn't a good way to decide whether Game Mode has any benefits for you, rather check whether the game registers with Game Mode at all, whether the game already sets priority class correctly itself, whether CPU sets are applied, and if they are applied, which CPU set IDs are used. Use [gm_effects](https://noverse.dev/docs/win-config/system/game-mode/#gm_effects)/WPR (see below, I'll add more on it soon to see if it's actually useful, since wevtutil doesn't show events)/SI for it.
 
 ```powershell
 Provider: Microsoft.Windows.ResourceManager
