@@ -11,7 +11,7 @@ Use to notify the OS whether the platform guarantees that lid notifications are 
 ## Aliases and setting visibility
 
 - **Windows provisioning path:**`Common\Power\Controls\LidNotificationsAreReliable`
-- **Description:** Not applicable; this page documents a power control rather than a power setting GUID.
+- **Description:** Not applicable. This page documents a power control, not a power setting GUID.
 - **Hidden setting:** Yes
 
 ## Values

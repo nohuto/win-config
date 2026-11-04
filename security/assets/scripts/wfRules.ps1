@@ -290,8 +290,8 @@ function set-blockedprofiles {
 }
 
 function set-outboundprofiles {
-  if ($PSCmdlet.ShouldProcess('Domain, Private, Public firewall profiles', 'Allow outbound and block inbound')) {
-    Set-NetFirewallProfile -Profile Domain,Private,Public -Enabled True -DefaultInboundAction Block -DefaultOutboundAction Allow -NotifyOnListen False -AllowInboundRules False -AllowLocalFirewallRules True -AllowLocalIPsecRules True -AllowUnicastResponseToMulticast False -EnableStealthModeForIPsec True -LogFileName '%SystemRoot%\System32\LogFiles\Firewall\pfirewall.log' -LogMaxSizeKilobytes 16384 -LogBlocked True -LogIgnored True
+  if ($PSCmdlet.ShouldProcess('Domain, Private, Public firewall profiles', 'Allow outbound connections')) {
+    Set-NetFirewallProfile -Profile Domain,Private,Public -DefaultOutboundAction Allow
   }
 }
 

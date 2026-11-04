@@ -15,7 +15,7 @@ When these conditions are met, the system is expected to remain in a low-power s
 ## Aliases and setting visibility
 
 - **Windows provisioning path:**`Common\Power\Controls\EnableInputSuppression`
-- **Description:** Not applicable; this page documents a power control rather than a power setting GUID.
+- **Description:** Not applicable. This page documents a power control, not a power setting GUID.
 - **Hidden setting:** Yes
 
 ## Values

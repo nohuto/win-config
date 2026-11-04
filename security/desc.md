@@ -1125,11 +1125,11 @@ gi * -Stream "Zone.Identifier" -ErrorAction SilentlyContinue
 ## ZoneID Data
 
 **ZoneID** (`HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Zones`) - number indicating the security zone the file came from:
-`0` – Local machine
-`1` – Local intranet (internal network)
-`2` – Trusted sites
-`3` – Internet (mostly web downloads)
-`4` – Restricted sites ([`URLZONE_UNTRUSTED`](https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms537175(v=vs.85)))
+`0` - Local machine
+`1` - Local intranet (internal network)
+`2` - Trusted sites
+`3` - Internet (mostly web downloads)
+`4` - Restricted sites ([`URLZONE_UNTRUSTED`](https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms537175(v=vs.85)))
 
 ## Unblock-File
 
