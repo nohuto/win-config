@@ -465,6 +465,10 @@ This is a collection of some wallpapers that I've found over time. Added for peo
 
 ![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Mountains.png?raw=true)
 
+### Mountains Art
+
+![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Mountains-Art.png?raw=true)
+
 ### Mountains Sunset
 
 ![](https://github.com/nohuto/win-config/blob/main/visibility/images/wallpaper/Mountains-Sunset.png?raw=true)
