@@ -551,5 +551,4 @@ foreach ($btnprops in $buttonsb) {
 
 refreshhosts
 [WinAPI]::ShowWindow((gps -Id $PID).MainWindowHandle, 0)
-$nvmain.Add_FormClosed({ Stop-Process -Id $PID })
 [Windows.Forms.Application]::Run($nvmain)
