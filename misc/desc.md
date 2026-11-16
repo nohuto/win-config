@@ -1,6 +1,6 @@
 # Explorer Blur
 
-Installs [ExplorerBlurMica](https://github.com/Maplespe/ExplorerBlurMica), which adds a background blur/acrylic/mica effect effect to the explorer:
+Installs [ExplorerBlurMica](https://github.com/Maplespe/ExplorerBlurMica), which adds a background blur/acrylic/mica effect to the explorer:
 
 ![](https://github.com/nohuto/win-config/blob/main/misc/images/explorerblur.png?raw=true)
 
@@ -17,7 +17,7 @@ Open `%LOCALAPPDATA%\Noverse\ExplorerBlur\Release` - `config.ini`:
 ; 3 = Blur(Clear) 
 ; 4 =MicaAlt
 ; Blur is only available up to W11 22h2, Blur (Clear) is available in both W10 and W11, Mica is only available in W11.
-effect=1
+effect=2
 
 ; Clear the background of the address bar.
 clearAddress=true
@@ -35,10 +35,10 @@ showLine=true
 [light]
 ; The system color scheme is the color in Light mode.
 ; RGBA component of background blend color
-r=220
-g=220
-b=220
-a=160
+r=255
+g=255
+b=255
+a=200
 [dark]
 ; The system color scheme is the color in Dark mode.
 r=0
