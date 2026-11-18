@@ -5,7 +5,7 @@
 Download location:
 
 ```powershell
-$env:appdata\Noverse
+$env:localappdata\Noverse
 ```
 
 Shortcut location:

@@ -1,5 +1,74 @@
 # Congestion Provider
 
+WinConfig applies it via the NSI store ([`NsiSetAllParameters`](https://ntdoc.m417z.com/nsisetallparameters), [`NsiSetAllPersistentParametersWithMask`](NsiSetAllPersistentParametersWithMask)):
+
+```c
+/**
+ * The NsiSetAllParameters routine creates, updates, deletes or flushes an NSI object instance by writing its whole read-write
+ * row. This is how iphlpapi implements CreateIpForwardEntry2/DeleteIpForwardEntry2, CreateIpNetEntry/DeleteIpNetEntry,
+ * AddIPAddress/DeleteIPAddress, SetIpInterfaceEntry, FlushIpNetTable and SetTcpEntry (closing a TCP connection).
+ *
+ * \param[in] Store The NSI store to update (NsiPersistent, NsiActive or NsiBoth).
+ * \param[in] Action The set action (NSI_SET_ACTION): NsiSetDefault to update an existing instance, NsiSetCreateOnly,
+ *        NsiSetCreateOrSet, NsiSetDelete, NsiSetReset (flush), NsiSetClear, or the reference-counted
+ *        NsiSetCreateOrSetWithReference/NsiSetDeleteWithReference (used by EnableRouter/UnenableRouter).
+ * \param[in] ModuleId A pointer to the NPI module identifier.
+ * \param[in] ObjectId The identifier of the NSI object.
+ * \param[in] Key Optional pointer to the key identifying the object instance (e.g. The interface LUID, or LUID + address).
+ * \param[in] KeySize The size of the key in bytes.
+ * \param[in] ReadWriteBuffer Optional read-write row to write. Usually NULL for NsiSetDelete and NsiSetReset.
+ * \param[in] ReadWriteBufferSize The size of ReadWriteBuffer in bytes.
+ * \return A Win32 error code. ERROR_SUCCESS on success.
+ * \remarks Uses IOCTL 0x120013 with a 0x48-byte request. For example,
+ *          InternalSetIpInterfaceEntry: NsiSetAllParameters(NsiActive, NsiSetDefault, ModuleId, 7, &Luid, 8, &RwRow, 240).
+ */
+NTSYSAPI
+ULONG
+NTAPI
+NsiSetAllParameters(
+    _In_ NSI_STORE Store,
+    _In_ NSI_SET_ACTION Action,
+    _In_ PNPI_MODULEID ModuleId,
+    _In_ NSI_OBJECT_ID ObjectId,
+    _In_reads_bytes_opt_(KeySize) PVOID Key,
+    _In_ ULONG KeySize,
+    _In_reads_bytes_opt_(ReadWriteBufferSize) PVOID ReadWriteBuffer,
+    _In_ ULONG ReadWriteBufferSize
+    );
+````
+```c
+/**
+ * The NsiSetAllPersistentParametersWithMask routine writes the persisted (registry-backed) configuration of one NSI object
+ * instance, merging only the fields selected by the mask, e.g. SetIpInterfaceEntry persisting changed interface settings.
+ *
+ * \param[in] Action The set action (NSI_SET_ACTION): NsiSetDefault to update an existing instance, NsiSetCreateOnly,
+ *        NsiSetCreateOrSet, NsiSetDelete, NsiSetReset (flush), NsiSetClear, or the reference-counted
+ *        NsiSetCreateOrSetWithReference/NsiSetDeleteWithReference (used by EnableRouter/UnenableRouter).
+ *        netio.sys validates the value (NsiSetReset and NsiSetClear are handled specially); iphlpapi passes NsiSetCreateOrSet.
+ * \param[in] ModuleId A pointer to the NPI module identifier.
+ * \param[in] ObjectId The identifier of the NSI object.
+ * \param[in] Key A pointer to the key identifying the object instance.
+ * \param[in] KeySize The size of the key in bytes.
+ * \param[in] ParameterData Optional buffer containing the row to persist.
+ * \param[in] ParameterMask Optional field mask (same size as ParameterData; 0xFF bytes select the fields to persist).
+ * \param[in] ParameterDataSize The size of ParameterData and of ParameterMask in bytes.
+ * \return A Win32 error code. ERROR_SUCCESS on success.
+ */
+NTSYSAPI
+ULONG
+NTAPI
+NsiSetAllPersistentParametersWithMask(
+    _In_ NSI_SET_ACTION Action,
+    _In_ PNPI_MODULEID ModuleId,
+    _In_ NSI_OBJECT_ID ObjectId,
+    _In_reads_bytes_(KeySize) PVOID Key,
+    _In_ ULONG KeySize,
+    _In_reads_bytes_opt_(ParameterDataSize) PVOID ParameterData,
+    _In_reads_bytes_opt_(ParameterDataSize) PVOID ParameterMask,
+    _In_ ULONG ParameterDataSize
+    );
+```
+
 ## Congestion and when it happens
 
 See [TCP Congestion Control, RFC 5681](https://datatracker.ietf.org/doc/rfc5681/) for details.
