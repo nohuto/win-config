@@ -1,17 +1,11 @@
-# Noverse Windows Configuration
+# WinConfig
 
-You can find the documentation on my website (this repository is the source):
+You can find the documentation on my website (this repo is the source):
+
 - https://noverse.dev/docs/win-config
-
-For changelogs, concepts, and other project updates, join the Discord server:
-- https://discord.noverse.dev
 
 ## Product
 
 See details about the tool here:
+
 - https://noverse.dev/product
-
-## Other Projects
-
-You can find all of my other projects here:
-- https://noverse.dev/projects

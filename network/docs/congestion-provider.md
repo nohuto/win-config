@@ -1,5 +1,7 @@
 # Congestion Provider
 
+See [TCP Congestion Control, RFC 5681](https://datatracker.ietf.org/doc/rfc5681/) for other details.
+
 WinConfig applies it via the NSI store ([`NsiSetAllParameters`](https://ntdoc.m417z.com/nsisetallparameters), [`NsiSetAllPersistentParametersWithMask`](NsiSetAllPersistentParametersWithMask)):
 
 ```c
@@ -68,10 +70,6 @@ NsiSetAllPersistentParametersWithMask(
     _In_ ULONG ParameterDataSize
     );
 ```
-
-## Congestion and when it happens
-
-See [TCP Congestion Control, RFC 5681](https://datatracker.ietf.org/doc/rfc5681/) for details.
 
 ## SettingName Table
 
