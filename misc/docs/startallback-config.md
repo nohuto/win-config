@@ -1,0 +1,195 @@
+# StartAllBack Config
+
+Installation:
+```powershell
+winget install StartIsBack.StartAllBack --scope machine
+```
+
+Disable Windows search via [`System > Disable Windows Search`](https://github.com/nohuto/win-config/blob/main/system/desc.md#disable-windows-search)
+
+All `StartAllBackCfg.exe` settings, which I currently use:
+
+![](https://github.com/nohuto/win-config/blob/main/misc/images/startallback.png?raw=true)
+
+All values `StartAllBack` reads that are located in `HKCU\Software\StartIsBack` (after clicking on `Properties`):
+```powershell
+"HKCU\Software\StartIsBack\CompactMenus","Length: 16"
+"HKCU\Software\StartIsBack\Language","Length: 12"
+"HKCU\Software\StartIsBack\Disabled","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\AlterStyle","Length: 12"
+"HKCU\Software\StartIsBack\AlterStyle","Type: REG_SZ, Length: 2, Data: "
+"HKCU\Software\StartIsBack\Start_LargeAllAppsIcons","Length: 12"
+"HKCU\Software\StartIsBack\Start_LargeAllAppsIcons","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\AllProgramsFlyout","Length: 12"
+"HKCU\Software\StartIsBack\AllProgramsFlyout","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\StartMetroAppsFolder","Length: 12"
+"HKCU\Software\StartIsBack\StartMetroAppsFolder","Type: REG_DWORD, Length: 4, Data: 1"
+"HKCU\Software\StartIsBack\Start_SortOverride","Length: 12"
+"HKCU\Software\StartIsBack\Start_SortOverride","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\Start_NotifyNewApps","Length: 12"
+"HKCU\Software\StartIsBack\Start_NotifyNewApps","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\Start_AutoCascade","Length: 12"
+"HKCU\Software\StartIsBack\Start_AutoCascade","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\Start_LargeSearchIcons","Length: 12"
+"HKCU\Software\StartIsBack\Start_LargeSearchIcons","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\Start_AskCortana","Length: 12"
+"HKCU\Software\StartIsBack\Start_AskCortana","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\HideUserFrame","Length: 12"
+"HKCU\Software\StartIsBack\HideUserFrame","Type: REG_DWORD, Length: 4, Data: 1"
+"HKCU\Software\StartIsBack\Start_RightPaneIcons","Length: 12"
+"HKCU\Software\StartIsBack\Start_RightPaneIcons","Type: REG_DWORD, Length: 4, Data: 2"
+"HKCU\Software\StartIsBack\Start_ShowUser","Length: 12"
+"HKCU\Software\StartIsBack\Start_ShowMyDocs","Length: 12"
+"HKCU\Software\StartIsBack\Start_ShowMyDocs","Type: REG_DWORD, Length: 4, Data: 1"
+"HKCU\Software\StartIsBack\Start_ShowMyPics","Length: 12"
+"HKCU\Software\StartIsBack\Start_ShowMyPics","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\Start_ShowMyMusic","Length: 12"
+"HKCU\Software\StartIsBack\Start_ShowMyMusic","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\Start_ShowVideos","Length: 12"
+"HKCU\Software\StartIsBack\Start_ShowDownloads","Length: 12"
+"HKCU\Software\StartIsBack\Start_ShowDownloads","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\Start_ShowSkyDrive","Length: 12"
+"HKCU\Software\StartIsBack\StartMenuFavorites","Length: 12"
+"HKCU\Software\StartIsBack\Start_ShowRecentDocs","Length: 12"
+"HKCU\Software\StartIsBack\Start_ShowRecentDocs","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\Start_ShowNetPlaces","Length: 12"
+"HKCU\Software\StartIsBack\Start_ShowNetPlaces","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\Start_ShowNetConn","Length: 12"
+"HKCU\Software\StartIsBack\Start_ShowNetConn","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\Start_ShowMyComputer","Length: 12"
+"HKCU\Software\StartIsBack\Start_ShowMyComputer","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\Start_ShowControlPanel","Length: 12"
+"HKCU\Software\StartIsBack\Start_ShowControlPanel","Type: REG_DWORD, Length: 4, Data: 2"
+"HKCU\Software\StartIsBack\Start_ShowPCSettings","Length: 12"
+"HKCU\Software\StartIsBack\Start_ShowPCSettings","Type: REG_DWORD, Length: 4, Data: 1"
+"HKCU\Software\StartIsBack\Start_AdminToolsRoot","Length: 12"
+"HKCU\Software\StartIsBack\Start_ShowPrinters","Length: 12"
+"HKCU\Software\StartIsBack\Start_ShowPrinters","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\Start_ShowSetProgramAccessAndDefaults","Length: 12"
+"HKCU\Software\StartIsBack\Start_ShowSetProgramAccessAndDefaults","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\Start_ShowTerminal","Length: 12"
+"HKCU\Software\StartIsBack\Start_ShowCommandPrompt","Length: 12"
+"HKCU\Software\StartIsBack\Start_ShowCommandPrompt","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\Start_ShowRun","Length: 12"
+"HKCU\Software\StartIsBack\Start_ShowRun","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\WinkeyFunction","Length: 16"
+"HKCU\Software\StartIsBack\Start_MinMFU","Type: REG_DWORD, Length: 4, Data: 13"
+"HKCU\Software\StartIsBack\Start_LargeMFUIcons","Type: REG_DWORD, Length: 4, Data: 1"
+"HKCU\Software\StartIsBack\TaskbarStyle","Length: 12"
+"HKCU\Software\StartIsBack\TaskbarStyle","Type: REG_SZ, Length: 32, Data: Plain8.msstyles"
+"HKCU\Software\StartIsBack\OrbBitmap","Length: 12"
+"HKCU\Software\StartIsBack\LegacyTaskbar","Length: 16"
+"HKCU\Software\StartIsBack\TaskbarSpacierIcons","Type: REG_DWORD, Length: 4, Data: 4294967295"
+"HKCU\Software\StartIsBack\TaskbarLargerIcons","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\TaskbarOneSegment","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\TaskbarCenterIcons","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\FatTaskbar","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\TaskbarGrouping","Type: REG_DWORD, Length: 4, Data: 1"
+"HKCU\Software\StartIsBack\TaskbarTranslucentEffect","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\FrameStyle","Type: REG_DWORD, Length: 4, Data: 1"
+"HKCU\Software\StartIsBack\NavBarGlass","Type: REG_DWORD, Length: 4, Data: 1"
+"HKCU\Software\StartIsBack\OldSearch","Length: 16"
+"HKCU\Software\StartIsBack\DriveGrouping","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\NoXAMLMenus","Type: REG_DWORD, Length: 4, Data: 1"
+"HKCU\Software\StartIsBack\BottomDetails","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\RestyleControls","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\UndeadControlPanel","Type: REG_DWORD, Length: 4, Data: 1"
+"HKCU\Software\StartIsBack\RestyleIcons","Type: REG_DWORD, Length: 4, Data: 1"
+"HKCU\Software\StartIsBack\StartMenuColor","Length: 16"
+"HKCU\Software\StartIsBack\StartMenuAlpha","Length: 16"
+"HKCU\Software\StartIsBack\StartMenuBlur","Length: 16"
+"HKCU\Software\StartIsBack\TaskbarColor","Length: 16"
+"HKCU\Software\StartIsBack\TaskbarAlpha","Length: 16"
+"HKCU\Software\StartIsBack\TaskbarBlur","Length: 16"
+"HKCU\Software\StartIsBack\DarkMagic","Length: 16"
+"HKCU\Software\StartIsBack\DarkMagic\Unround","Length: 16"
+"HKCU\Software\StartIsBack\SysTrayStyle","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\SysTrayLocation","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\SysTrayMicrophone","Type: REG_DWORD, Length: 4, Data: 1"
+"HKCU\Software\StartIsBack\SysTrayVolume","Type: REG_DWORD, Length: 4, Data: 1"
+"HKCU\Software\StartIsBack\SysTrayNetwork","Type: REG_DWORD, Length: 4, Data: 1"
+"HKCU\Software\StartIsBack\SysTrayPower","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\SysTrayInputSwitch","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\TaskbarControlCenter","Type: REG_DWORD, Length: 4, Data: 0"
+"HKCU\Software\StartIsBack\SysTraySpacierIcons","Type: REG_DWORD, Length: 4, Data: 1"
+"HKCU\Software\StartIsBack\MinimalSecondarySysTray","Length: 16"
+"HKCU\Software\StartIsBack\DarkMagicDLL","Length: 16"
+"HKCU\Software\StartIsBack\NoDarkRun","Length: 16"
+"HKCU\Software\StartIsBack\JumpListBorder","Length: 16"
+```
+
+## SAB Activation
+
+**This is for educational purposes only.**
+
+Disassemble `StartAllBackX64.dll`, jump to `StartAllBackX64_102` > Edit > Patch program > Change byte
+
+From:
+```asm
+mov [rsp+8], rbx
+push rbp
+push rsi
+push rdi
+lea rbp, [rsp-90h]
+```
+`48 89 5C 24 08 55 56 57 48 8D AC 24 70 FF FF FF`
+
+To:
+```asm
+mov dword ptr [ecx], 1
+mov eax, 1
+ret
+nop
+```
+`67 C7 01 01 00 00 00 B8 01 00 00 00 C3 90 90 90`
+
+Edit > Patch program > Apply patches to input file.
+
+This causes skipping `ActivationData` and returning result `1`:
+```c
+// before patch
+__int64 StartAllBackX64_102()
+{
+  __int64 result; // rax
+  unsigned int v1; // ebx
+  HKEY v2; // rdi
+  BYTE Data[128]; // [rsp+30h] [rbp-D0h] BYREF
+  CHAR String1[112]; // [rsp+B0h] [rbp-50h] BYREF
+  CHAR Buf2[128]; // [rsp+120h] [rbp+20h] BYREF
+  DWORD cbData; // [rsp+1B8h] [rbp+B8h] BYREF
+  HKEY hKey; // [rsp+1C0h] [rbp+C0h] BYREF
+
+  result = StartAllBackX64_103(Buf2);
+  v1 = 0;
+  v2 = (HKEY)result;
+  if ( result )
+  {
+    memset(Data, 0, sizeof(Data));
+    cbData = 128;
+    RegOpenKeyExA(v2, "Software\\StartIsBack\\License", 0, 0x101u, &hKey);
+    lstrcpyA(String1, "ActivationData");
+    if ( RegQueryValueExA(hKey, String1, 0LL, 0LL, Data, &cbData) )
+    {
+      RegCloseKey(hKey);
+    }
+    else
+    {
+      RegCloseKey(hKey);
+      return (unsigned __int8)sub_180001E8C(Data, Buf2);
+    }
+    return v1;
+  }
+  return result;
+}
+
+// after patch
+__int64 __fastcall StartAllBackX64_102(_DWORD *a1)
+{
+  __int64 result; // rax
+
+  result = 1LL;
+  *a1 = 1;
+  return result;
+}
+```
+
