@@ -122,7 +122,7 @@ INIT:0000000140BA3898                 dq 0
 ```
 
 ```asm
-; KeyPath = HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management
+; KeyPath = HKLM\SYSTEM\CurrentControSet\Control\Session Manager\Memory Management
 ; ValueName = VerifyDrivers
 ; Destination = MmVerifyDriverBuffer
 ; Length = MmVerifyDriverBufferLength

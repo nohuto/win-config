@@ -2,7 +2,7 @@
 
 See [TCP Congestion Control, RFC 5681](https://datatracker.ietf.org/doc/rfc5681/) for other details.
 
-WinConfig applies it via the NSI store ([`NsiSetAllParameters`](https://ntdoc.m417z.com/nsisetallparameters), [`NsiSetAllPersistentParametersWithMask`](NsiSetAllPersistentParametersWithMask)):
+WinConfig applies it via the NSI store ([`NsiSetAllParameters`](https://ntdoc.m417z.com/nsisetallparameters), [`NsiSetAllPersistentParametersWithMask`](https://ntdoc.m417z.com/nsisetallpersistentparameterswithmask)):
 
 ```c
 /**
