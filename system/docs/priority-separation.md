@@ -384,6 +384,8 @@ v35 += (char)PsPrioritySeparation; // add PsPrioritySeparation to the priority
 
 Controls whether dynamic priority decay can remove the FG priority boost added by `PsPrioritySeparation`, changing it to `1` allows scheduler functions such as [`KiQuantumEnd`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-24H2/ntoskrnl/KiQuantumEnd.c) to remove that boost during priority decay. If the process is still FG (and the thread can still get dynamic priority boosts), [`KiTryScheduleNextForegroundBoost`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-24H2/ntoskrnl/KiTryScheduleNextForegroundBoost.c) schedules the boost to be applied again (leaving the FG obviously removes the boost no matter what the value is set to).
 
+This seems to also be a part of priority anti starvation, I might add more details soon. 
+
 ```asm
 INIT:0000000140BA67E0                 dq offset aSessionManager_5 ; "Session Manager\\Kernel"
 INIT:0000000140BA67E8                 dq offset aForceforegroun ; "ForceForegroundBoostDecay"

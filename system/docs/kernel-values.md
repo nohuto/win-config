@@ -168,9 +168,9 @@ Everything listed below is based on personal findings, mistakes may exist.
     "AdjustDpcThreshold" = 20; // KiAdjustDpcThreshold, per CPU countdown value. When it reaches 1, it's reloaded and current DPC queue depth is incremented up to DpcQueueDepth ("number of clock ticks before DpcQueueDepth is incremented if DPCs are not pending")
     "AlwaysTrackIoBoosting" = 0; // PspAlwaysTrackIoBoosting enabling forces IO-boost tracking part in PsBoostThreadIoEx
     "AmdTprLowerInterruptDelayConfig" = 0; // KiAmdTprLowerInterruptDelayConfig
-    "BoostingPeriodMultiplier" = 3; // KiNormalPriorityBoostingPeriodMultiplier clamped to 1-20 and used as multiplier in 'NormalPriority AntiStarvation' scheduling parts
+    "BoostingPeriodMultiplier" = 3; // 1-20, boost duration in clock quantums, KiNormalPriorityBoostingPeriodMultiplier
     "BugCheckUnexpectedInterrupts" = 0; // KiBugCheckUnexpectedInterrupts
-    "CacheAwareScheduling" = 47; // KiCacheAwareScheduling
+    "CacheAwareScheduling" = 47; // bitmask,  KiCacheAwareScheduling
     "CacheErrataOverride" = 0; // KiTLBCOverride
     "CacheIsoBitmap" = 0; // KiCacheIsoBitmap
     "DebuggerIsStallOwner" = 0; // KiDebuggerIsStallOwner (KiSetDebuggerOwner)
@@ -249,12 +249,12 @@ Everything listed below is based on personal findings, mistakes may exist.
     "PerfIsoEnabled" = 0; // KiPerfIsoEnabled, cache isolation aware processor placement for threads whose scheduling group KSCB has RankBias set, range 0-64dec
     "PoCleanShutdownFlags" = 0; // PopShutdownCleanly
     "PowerOffFrozenProcessors" = 1; // KiPowerOffFrozenProcessors, seems unused (but initialized), was probably used to "power off" processors that are frozen (see windbg !frozen)
-    "ReadyTimeTicks" = 6; // KiNormalPriorityBoostReadyTimeTicks
+    "ReadyTimeTicks" = 6; // 6-70, ticks a thread has to be ready before it gets boosted, KiNormalPriorityBoostReadyTimeTicks
     "RebalanceMinPriority" = 1; // if _KTHREAD.Priority >= KiRebalanceMinPriority (or current _KPRCB.IdleState has 0x08 set, means that processor is soft parked), its scheduling group has CPU time available & _KTHREAD.Affinity allows an idle CPU in _KSCHEDULER_SUBNODE.IdleNonParkedCpuSet, KiQueueReadyThread continues through KiEnterDeferredReadyState/KiDeferredReadyThread/KiDeferredReadySingleThread for processor selection 
                                 // otherwise KiAddThreadToReadyQueue uses the current CPU
                                 // default uses all threads (prio 1-31) excluding zero page thread
     "ReservedCpuSets" = 0; // KiReservedCpuSets
-    "ScanLatencyTicks" = 7; // KiNormalPriorityBoostScanLatencyTicks
+    "ScanLatencyTicks" = 7; // 7-70, ticks between two scans, KiNormalPriorityBoostScanLatencyTicks
     "SchedulerAssistThreadFlagOverride" = 0; // KiSchedulerAssistThreadFlagOverride
     "SeAllowAllApplicationAceRemoval" = 0; // SepAllowAllApplicationAceRemoval
     "SeAllowSessionImpersonationCapability" = 0; // SepAllowSessionImpersonationCap
@@ -267,7 +267,7 @@ Everything listed below is based on personal findings, mistakes may exist.
     "SeTokenSingletonAttributesConfig" = 3; // SepTokenSingletonAttributesConfig
     "SplitLargeCaches" = 0; // KiSplitLargeCaches
     "ThreadDpcEnable" = 1; // KeThreadDpcEnable
-    "ThreadReadyCount" = 1; // KiNormalPriorityBoostMaximumThreadReadyCount
+    "ThreadReadyCount" = 1; // 1-10, threads boosted per scan, KiNormalPriorityBoostMaximumThreadReadyCount
     "TimerCheckFlags" = 1; // REG_DWORD, KeTimerCheckFlags
     "VerifierDpcScalingFactor" = 1; // KeVerifierDpcScalingFactor
     "VirtualHeteroHysteresis" = 4294967295; // PpmPerfQosTransitionHysteresisOverride
@@ -958,6 +958,67 @@ lkd> dx -id 0,0,ffffdc09a24ca080 -r1 (*((ntkrnlmp!_KDPC_DATA *)0xfffff806684ef4f
 
 ![](https://github.com/nohuto/win-config/blob/main/system/images/threaddpcenable1.png?raw=true)
 ![](https://github.com/nohuto/win-config/blob/main/system/images/threaddpcenable2.png?raw=true)
+
+## ReservedCpuSets
+
+Removes processors from the system allowed CPU sets, threads without an explicit CPU set or affinity no longer get scheduled on them. [`KiInitializeReservedCpuSets`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ntoskrnl/KiInitializeReservedCpuSets.c) reads it at boot (`KeInitSystem`), it has to be `REG_BINARY` with a length thats a multiple of 8, one 64 bit processor mask per group (max 32 groups):
+
+```c
+// KiInitializeReservedCpuSets
+
+ValueName.Buffer = L"ReservedCpuSets";
+v8[0] = 9699474LL;
+*(_QWORD *)&ValueName.Length = 2097182LL;
+memset_0(&KiReservedCpuSets, 0, 0x100uLL); // clear KiReservedCpuSets
+
+result = ZwOpenKey(&KeyHandle, 1u, &ObjectAttributes);
+if ( result >= 0 )
+{
+  result = ZwQueryValueKey(
+             KeyHandle,
+             &ValueName,
+             KeyValuePartialInformation,
+             KeyValueInformation,
+             0x110u,
+             &ResultLength);
+  if ( result >= 0 && v12 == 3 && (v13 & 7) == 0 ) // v12 = type (BINARY), v13 = data length
+  {
+    result = KiValidateCpuSetMasks((__int64)Src, v13 >> 3); // one 64 bit mask per group
+    if ( result >= 0 )
+    {
+      if ( v2 >= 0x20 || (v0 = v2) != 0 )
+        memmove(&KiReservedCpuSets, Src, 8LL * v0); // max 32 groups
+      for ( i = 0; i < 2; ++i )
+        result = KeModifySystemAllowedCpuSets(0, 0, v3, i, Length); // recalc system allowed CPU sets
+```
+
+[`KiModifySystemAllowedCpuSetsWithLock`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ntoskrnl/KiModifySystemAllowedCpuSetsWithLock.c) then masks the reserved processors out of every group:
+
+```c
+// KiModifySystemAllowedCpuSetsWithLock
+
+v21 = ~*(_QWORD *)&v18[(_QWORD)v5] & v9; // ~KiReservedCpuSets[group] & requested set
+if ( (unsigned __int16)v15 >= **(_WORD **)KiSystemCpuPartition )
+  v22 = 0LL;
+else
+  v22 = *(_QWORD *)(*(_QWORD *)KiSystemCpuPartition + 8LL * (unsigned __int16)v15 + 8);
+v9 = v22 & v21;
+KiSystemAllowedCpuSets[v16 + v6] = v9; // what threads without explicit CPU sets can use
+```
+
+[`KiValidateCpuSetMasks`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ntoskrnl/KiValidateCpuSetMasks.c) only rejects masks with more groups than `KiMaximumGroups` or bits of inactive processors (`STATUS_INVALID_PARAMETER_1`):
+
+```c
+// KiValidateCpuSetMasks
+
+if ( a2 > (unsigned __int16)KiMaximumGroups )
+  return 3221225903LL; // 0xC00000EF
+for ( i = 0LL; (unsigned int)i < a2; i = (unsigned int)(i + 1) )
+{
+  if ( (~KeActiveProcessors.Bitmap[i] & *(_QWORD *)(a1 + 8 * i)) != 0 ) // bit from inactive proc
+    return 3221225903LL;
+}
+```
 
 ## RegistryMachin_* Keys
 
