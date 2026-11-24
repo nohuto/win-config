@@ -10,15 +10,25 @@
    - **EDR Block Mode** means Microsoft Defender Antivirus is running and [Endpoint detection and response (EDR) in block mode](https://learn.microsoft.com/en-us/defender-endpoint/edr-in-block-mode), a capability in Microsoft Defender for Endpoint, is enabled. Check the **ForceDefenderPassiveMode** registry key. If its value is 0, it's running in normal mode; otherwise, it's running in passive mode.
    - **SxS Passive Mode** means Microsoft Defender Antivirus is running alongside another antivirus/anti-malware product, and [limited periodic scanning is used](https://learn.microsoft.com/en-us/defender-endpoint/limited-periodic-scanning-microsoft-defender-antivirus).
 
+## Tamper Protection
+
+Turn *Tamper Protection* off first (Windows Security > Virus & threat protection > Manage settings), only the Windows Security app can change it, as changes are otherwise ignored.
+
+> "*Enabled: Tamper protection is turned on, and the following tamper-protected settings can't be changed: Virus and threat protection remains enabled. Real-time protection remains turned on. Behavior monitoring remains turned on. Antivirus protection, including IOfficeAntivirus (IOAV), remains enabled. Cloud protection remains enabled. [...] Attempts to modify Microsoft Defender Antivirus settings through the registry are blocked.*
+>
+> *When tamper protection is turned on, changes made through a management tool, including Group Policy, might appear to succeed, but tamper protection blocks the changes.*"
+>
+> — Microsoft, [Tamper protection overview](https://learn.microsoft.com/en-us/defender-endpoint/tamper-protection-overview)
+
 ## Privacy Preset (`Configured`)
 
-This is my preset which keeps Defender enabled but turning off privacy sensitive (cloud/reporting...) parts:
+Keeps Defender enabled and turns off the privacy sensitive parts (cloud, reporting):
 - Defender core AV enabled
 - Real-time / on-access / IOAV / behavior monitoring enabled
 - PUA set to `Block`
 - MAPS reporting disabled
 - sample submission set to `Never send`
-- Block at First Sight disabled
+- Block at First Sight inactive
 - extended cloud check disabled
 - cloud block level left at default
 - Network Protection disabled
@@ -26,8 +36,8 @@ This is my preset which keeps Defender enabled but turning off privacy sensitive
 - SmartScreen disabled
 - Email scanning disabled
 - Enhanced Phishing Protection disabled
-- [Defender core telemetry](https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-core-service-overview) disabled (`DisableCoreServiceTelemetry` = true: "*The Microsoft Defender Core service doesn't collect telemetry from Microsoft Defender Antivirus and other Defender software. Disabling this setting can impact Microsoft's ability to quickly recognize and address problems, such as slow performance and false positives*")
-- [Defender core ECS integration](https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-core-service-overview) disabled (ECS = Experimentation and Configuration Service)
+- [Defender core telemetry](https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-core-service-overview) disabled, `DisableCoreService1DSTelemetry = 1`: "*The Microsoft Defender Core service doesn't collect telemetry from Microsoft Defender Antivirus and other Defender software. Disabling this setting can impact Microsoft's ability to quickly recognize and address problems, such as slow performance and false positives*"
+- Defender core ECS integration disabled, `DisableCoreServiceECSIntegration = 1` (ECS = Experimentation and Configuration Service): "*The Microsoft Defender core service doesn't use ECS to deliver fixes for Microsoft Defender Antivirus and other Defender software.*"
 
 If using [`native.winoffice.txt`](https://github.com/hagezi/dns-blocklists/blob/main/adblock/native.winoffice.txt) ECS won't function properly, since it [has to receive payload](https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-core-service-configurations-and-experimentation) from:
 
@@ -47,9 +57,7 @@ If using [`native.winoffice.txt`](https://github.com/hagezi/dns-blocklists/blob/
 
 | Policy | Key Path | Value Name |
 | --- | --- | --- |
-| [Configure Windows Defender SmartScreen](https://noverse.dev/policies?p=MicrosoftEdge*AllowSmartScreen) | `HKLM\Software\Policies\Microsoft\MicrosoftEdge\PhishingFilter`<br>`HKCU\Software\Policies\Microsoft\MicrosoftEdge\PhishingFilter` | `EnabledV9` |
 | [Configure Windows Defender SmartScreen](https://noverse.dev/policies?p=SmartScreen*ShellConfigureSmartScreen) | `HKLM\Software\Policies\Microsoft\Windows\System` | `EnableSmartScreen`<br>`ShellSmartScreenLevel` |
-| [Configure Windows Defender SmartScreen](https://noverse.dev/policies?p=SmartScreen*EdgeConfigureSmartScreen) | `HKLM\Software\Policies\Microsoft\Edge`<br>`HKCU\Software\Policies\Microsoft\Edge` | `SmartScreenEnabled` |
 | [Service Enabled](https://noverse.dev/policies?p=WebThreatDefense*ServiceEnabled) | `HKLM\Software\Policies\Microsoft\Windows\WTDS\Components` | `ServiceEnabled` |
 | [Notify Malicious](https://noverse.dev/policies?p=WebThreatDefense*NotifyMalicious) | `HKLM\Software\Policies\Microsoft\Windows\WTDS\Components` | `NotifyMalicious` |
 | [Notify Password Reuse](https://noverse.dev/policies?p=WebThreatDefense*NotifyPasswordReuse) | `HKLM\Software\Policies\Microsoft\Windows\WTDS\Components` | `NotifyPasswordReuse` |
@@ -62,7 +70,6 @@ If using [`native.winoffice.txt`](https://github.com/hagezi/dns-blocklists/blob/
 | [Turn off real-time protection](https://noverse.dev/policies?p=WindowsDefender*DisableRealtimeMonitoring) | `HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time Protection` | `DisableRealtimeMonitoring` |
 | [Turn on process scanning whenever real-time protection is enabled](https://noverse.dev/policies?p=WindowsDefender*RealtimeProtection_DisableScanOnRealtimeEnable) | `HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time Protection` | `DisableScanOnRealtimeEnable` |
 | [Turn on raw volume write notifications](https://noverse.dev/policies?p=WindowsDefender*RealtimeProtection_DisableRawWriteNotification) | `HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time Protection` | `DisableRawWriteNotification` |
-| [Configure Watson events](https://noverse.dev/policies?p=WindowsDefender*Reporting_DisablegenericrePorts) | `HKLM\Software\Policies\Microsoft\Windows Defender\Reporting` | `DisableGenericRePorts` |
 | [Turn off enhanced notifications](https://noverse.dev/policies?p=WindowsDefender*Reporting_DisableEnhancedNotifications) | `HKLM\Software\Policies\Microsoft\Windows Defender\Reporting` | `DisableEnhancedNotifications` |
 | [Turn on e-mail scanning](https://noverse.dev/policies?p=WindowsDefender*Scan_DisableEmailScanning) | `HKLM\Software\Policies\Microsoft\Windows Defender\Scan` | `DisableEmailScanning` |
 | [This settings controls whether Network Protection is allowed to be configured into block or audit mode on Windows Server.](https://noverse.dev/policies?p=WindowsDefender*AllowNetworkProtectionOnWinServer) | `HKLM\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection` | `AllowNetworkProtectionOnWinServer` |
@@ -88,7 +95,7 @@ If you want to completely remove Windows Defender for a specific reason, use DIS
 
 Obviously, you need to change the `mount` path before running it.
 
-```powershell
+```batch
 @echo off
 setlocal
 
@@ -201,8 +208,6 @@ HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WTDS\Components\NotifyUnsafeApp	T
 HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WTDS\Components\CaptureThreatWindow	Type: REG_DWORD
 
 // Potentially unwanted app blocking - 0 = Off, 1 = On
-HKLM\SOFTWARE\Microsoft\Windows Defender\PUAProtection	Type: REG_DWORD
-HKCU\Software\Microsoft\Edge\SmartScreenPuaEnabled\(Default)	Type: REG_DWORD
 HKLM\SOFTWARE\Microsoft\Windows Defender\PUAProtection	Type: REG_DWORD
 HKCU\Software\Microsoft\Edge\SmartScreenPuaEnabled\(Default)	Type: REG_DWORD
 
