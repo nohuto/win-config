@@ -65,6 +65,8 @@ if ( v18 )
 v3 += 6; // next entry
 ```
 
+See [cmcontrolvector-23h2.tsv](https://github.com/nohuto/win-config/blob/main/system/assets/reference/cmcontrolvector-23h2.tsv) & [cmcontrolvector-25h2.tsv](https://github.com/nohuto/win-config/blob/main/system/assets/reference/cmcontrolvector-25h2.tsv) for tables with key, value, global, init value.
+
 ### Examples
 
 ```asm

@@ -1,8 +1,11 @@
 # Deny App Access
 
-Denies the access for everything, only leaving the microphone enabled. See JSON content below for details. Note `Deny 'User Info Access'` = prevents users from managing the ability to allow apps (not desktop apps) to access the user name, account picture, and domain information - this option doesn't get applied via the main option.
+Denies the access for everything, only leaving the microphone enabled. Note `Deny 'User Info Access'` = prevents users from managing the ability to allow apps (not desktop apps) to access the user name, account picture, and domain information.
+
+"Text and image generation" (`systemAIModels`, `LetAppsAccessSystemAIModels`) & "Passkeys" (`passkeys`, `passkeysEnumeration`) only exist on 24H2+, `CapabilityAccessManager.dll` has the names (23H2 e.g. doesn't).
 
 Adding the `Deny` data in `HKLM` is probably enough, but the keys also exist in `HKCU` - Windows only edits it in `HKLM`, examples:
+
 ```c
 // Notifications
 svchost.exe	RegSetValue	HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\userNotificationListener\Value	Type: REG_SZ, Length: 10, Data: Deny

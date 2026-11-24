@@ -19,7 +19,6 @@ This list was created using my small [`ScheduledTasksList.ps1`](https://github.c
 
 | Task | Description | Action Command |
 | --- | --- | --- |
-| `\Microsoft\Windows\ErrorDetails\EnableErrorDetailsUpdate` | - | - |
 | `\Microsoft\Windows\Windows Error Reporting\QueueReporting` | Windows Error Reporting task to process queued reports. | `%windir%\system32\wermgr.exe -upload` |
 
 ### Offline Files

@@ -1,0 +1,568 @@
+key	value	global	initial_u32	length_ptr	type_ptr
+Session Manager	ProtectionMode	ObpProtectionMode	0		
+Session Manager	ObjectSecurityMode	ObpObjectSecurityMode	1		
+LSA	AuditBaseDirectories	ObpAuditBaseDirectories	0		
+LSA	AuditBaseObjects	ObpAuditBaseObjects	0		
+LSA\audit	ProcessAccessesToAudit	SepProcessAccessesToAudit	0		
+TimeZoneInformation	ActiveTimeBias	PspTimeZoneStateBuffer+0x1b4+0x1b4	0		
+TimeZoneInformation	Bias	ExpAltTimeZoneBias	0		
+TimeZoneInformation	RealTimeIsUniversal	ExpRealTimeIsUniversal	0		
+Session Manager	GlobalFlag	CmNtGlobalFlag	0		
+Session Manager	GlobalFlag2	CmNtGlobalFlag2	0		
+Session Manager	SkipRegistryInit	CmNtSkipRegistryInit	0		
+Session Manager	CWDIllegalInDLLSearch	PspCurDirDevicesSkippedForDlls	0		
+Session Manager\Quota System	ApplicationBlockedMessageLimit	PspJobNoWakeChargeLimit	50		
+Session Manager\Quota System	SystemBlockedMessageLimit	PspSystemNoWakeChargeLimit	200		
+Session Manager\Memory Management	PagedPoolQuota	PspDefaultResourceLimits+0x4+0x4	0		
+Session Manager\Memory Management	NonPagedPoolQuota	PspDefaultResourceLimits	0		
+Session Manager\Memory Management	PagingFileQuota	PspDefaultResourceLimits+0x8+0x8	0		
+Session Manager\Memory Management	WorkingSetPagesQuota	PspDefaultResourceLimits+0xc+0xc	0		
+Session Manager\Memory Management	AllocationPreference	MmRegistryState+0x20+0x20	0		
+Session Manager\Memory Management	Mirroring	MmRegistryState+0x14+0x14	0		
+Session Manager\Memory Management	MoveImages	MmRegistryState	1		
+Session Manager\Memory Management	LargePageDrivers	MmLargePageDriverBuffer	0	140d81158	
+Session Manager\Memory Management	LowMemoryThreshold	MmRegistryState+0x50+0x50	0		
+Session Manager\Memory Management	HighMemoryThreshold	MmRegistryState+0x58+0x58	0		
+Session Manager\Memory Management	DisablePageCombining	MmRegistryState+0x8+0x8	0		
+Session Manager\Memory Management	DisablePagingExecutive	MmRegistryState+0x4+0x4	0		
+Session Manager\Memory Management	EnableCooling	MmRegistryState+0x18+0x18	0		
+Session Manager\Memory Management	ModifiedWriteMaximum	MmRegistryState+0x1c+0x1c	0		
+Session Manager\Memory Management	PoolTagSmallTableSize	PoolTrackTableSize	0		
+Session Manager\Memory Management	PoolForceFullDecommit	PoolForceFullDecommit	0		
+Session Manager\Memory Management	PoolTag	MmSpecialPoolTag	0		
+Session Manager\Memory Management	PoolTagOverruns	MmSpecialPoolCatchOverruns	1		
+Session Manager\Memory Management	ProtectNonPagedPool	MmProtectFreedNonPagedPool	0		
+Session Manager\Memory Management	TrackLockedPages	MmTrackLockedPages	0		
+Session Manager\Memory Management	TrackPtes	MmRegistryState+0xc+0xc	0		
+Session Manager\Memory Management	PageValidationAction	MmPageValidationAction	0		
+Session Manager\Memory Management	PageValidationFrequency	MmPageValidationFrequency	0		
+Session Manager\Memory Management	ForceValidateIo	MmRegistryState+0x10+0x10	0		
+Session Manager\Memory Management	PhysicalMemoryMapperEnforcementMode	MmRegistryState+0x6c+0x6c	0		
+Session Manager\Memory Management	VerifierOptions	VfOptionFlags	0		
+Session Manager\Memory Management	VerifierTipDisable	VerifierTipDisable	0		
+Session Manager\Memory Management	VerifierNewRuleWorkaround	VerifierNewRuleWorkaround	0		
+Session Manager\Memory Management	VerifierIrpStackTraces	IovIrpTracesLength	16384		
+Session Manager\Memory Management	VerifierHandleTraces	VfHandleTracingEntries	16384		
+Session Manager\Memory Management	VerifierIrpTimeout	VfWdIrpTimeoutMsec	0		
+Session Manager\Memory Management	VerifyDriverLevel	MmVerifyDriverLevel	4294967295		
+Session Manager\Memory Management	VerifyDrivers	MmVerifyDriverBuffer	0	140d81150	
+Session Manager\Memory Management	VerifierSettingState	VfRuleClasses	0	140c0cf1c	
+Session Manager\Memory Management	XdvVerifierOptions	VfFlightOptions	0		
+Session Manager\Memory Management	VerifyMode	VfVerifyMode	4294967295		
+Session Manager\Memory Management	VerifyTriage	ViVerifyTriage	4294967295		
+Session Manager\Memory Management	VerifyTriageRules	ViVerifyTriageRules	0	140d67020	
+Session Manager\Memory Management	VerifierFaultProbability	VfFaultInjectionProbability	600		
+Session Manager\Memory Management	VerifierFaultBootMinutes	VfFaultInjectionBootMinutes	8		
+Session Manager\Memory Management	VerifierFaultApplications	VerifierFaultApplicationsBuffer	0	140c0cf14	
+Session Manager\Memory Management	VerifierFaultTags	VerifierFaultTagsBuffer	0	140c0cf18	
+Session Manager\Memory Management	VerifierDifPoolTags	DifpPoolTags	0	140c0cf28	
+Session Manager\Memory Management	VerifierRandomTargets	VfRandomVerifiedDrivers	0		
+Session Manager\Memory Management	VerifierTipLimitDenominator	DifiPluginControlDenominator	0		
+Session Manager\Memory Management	VerifierTipLimitNumerator	DifiPluginControlNumerator	0		
+Session Manager\Memory Management	VerifierTipSparseness	DifiPluginControlSparseness	0		
+Session Manager\Memory Management	VerifierTriageContext	VfTriageContext	0		
+Session Manager\Memory Management	XdvTipTag	CarTipTag	0		
+Session Manager\Memory Management	XdvVerifierOptions	CarXdvOptions	0		
+Session Manager\Memory Management	VerifyBTSBufferSize	ViVerifyBTSBufferSize	0		
+Session Manager\Memory Management	VerifyDriversSuppress	VfXdvSuppressDriversBuffer	0	140d81154	
+Session Manager\Memory Management	VerifierPoolTracesLength	VfPoolTracesLength	0		
+Session Manager\Memory Management	DeadlockRecursionDepthLimit	ViRecursionDepthLimitFromRegistry	0		
+Session Manager\Memory Management	DeadlockSearchNodesLimit	ViSearchedNodesLimitFromRegistry	0		
+Session Manager\Memory Management	MinimumStackCommitInBytes	MmRegistryState+0x28+0x28	0		
+Session Manager\Memory Management	WorkingSetSwapSharedPages	PspOutSwapSharedPages	0		
+Session Manager\Memory Management	VmPauseOutswapSizeCapMB	VmPauseOutswapSizeCapMB	512		
+Session Manager\Memory Management	DisableCacheTelemetry	CcDisableTelemetryRegKeyAtInit	2		
+Session Manager\Memory Management	RemoteFileDirtyPageThreshold	CcRemoteFileDPInlineFlushThreshold	1310720		
+Session Manager\Memory Management	MaxLazyWritePages	CcMaxLazyWritePagesOverride	0		
+Session Manager\Memory Management	EnablePerVolumeLazyWriter	CcEnablePerVolumeLazyWriterOverride	2		
+Session Manager\Memory Management	EnableAsyncLazywrite	CcEnableAsyncLazywriteOverride	2		
+Session Manager\Memory Management	EnableAsyncLazywriteMulti	CcEnableAsyncLazywriteMultiOverride	2		
+Session Manager\Memory Management	CacheUnmapBehindLengthInMB	CcUnmapBehindLength	8		
+Session Manager\Memory Management	TopBottomDPTEqual	CcAzure_TopBottomDPTEqual	0		
+Session Manager\Memory Management	LazyWriterPercentageOfNumProcs	CcAzure_LazyWriterPercentageOfNumProcs	0		
+Session Manager\Memory Management	LargeWriteSize	CcAzure_LargeWriteSize	0		
+Session Manager\Memory Management	SoftThrottleLargeWriteAtPct	CcAzure_SoftThrottleLargeWriteAtPct	0		
+Session Manager\Memory Management	SoftThrottleDelayInMs	CcAzure_SoftThrottleDelayInMs	0		
+Session Manager\Memory Management	SimulateCommitSavings	MmRegistryState+0x60+0x60	0		
+Session Manager\Memory Management	KernelPadSectionsOverride	MmRegistryState+0x68+0x68	0		
+Session Manager\Memory Management	AllowUserHotPatchWithoutVbs	MmRegistryState+0x70+0x70	0		
+Session Manager\Memory Management	SpecialPurposeMemoryStartPage	MmSpecialPurposeMemoryStartPage	0	140c0cfd0	
+Session Manager\Memory Management	SpecialPurposeMemoryPages	MmSpecialPurposeMemoryPages	0		
+Session Manager\Executive	AdditionalCriticalWorkerThreads	ExpAdditionalCriticalWorkerThreads	0		
+Session Manager\Executive	AdditionalDelayedWorkerThreads	ExpAdditionalDelayedWorkerThreads	0		
+Session Manager\Executive	MaximumKernelWorkerThreads	ExpMaximumKernelWorkerThreads	4096		
+Session Manager\Executive	WorkerThreadTimeoutInSeconds	ExpWorkerThreadTimeoutInSeconds	600		
+Session Manager\Executive	KernelWorkerTestFlags	ExpWorkerQueueTestFlags	0		
+Session Manager\Executive	WorkerFactoryThreadCreationTimeout	ExpWorkerFactoryThreadCreationTimeoutInSeconds	10		
+Session Manager\Executive	WorkerFactoryThreadIdleTimeout	ExpWorkerFactoryThreadIdleTimeoutInSeconds	67		
+Session Manager\Executive	ForceEnableMutantAutoboost	ExpForceEnableMutantAutoboost	0		
+Session Manager\Kernel	DPCTimeout	KeDpcTimeoutMs	20000		
+Session Manager\Kernel	DpcSoftTimeout	KeDpcSoftTimeoutMs	20000		
+Session Manager\Kernel	DpcCumulativeSoftTimeout	KeDpcCumulativeSoftTimeoutMs	120000		
+Session Manager\Kernel	DpcWatchdogPeriod	KeDpcWatchdogPeriodMs	120000		
+Session Manager\Kernel	DpcWatchdogProfileOffset	KeDpcWatchdogProfileOffsetMs	0		
+Session Manager\Kernel	DpcWatchdogProfileBufferSizeBytes	KeDpcWatchdogProfileBufferSizeBytes	4294967295		
+Session Manager\Kernel	DpcWatchdogProfileSingleDpcThreshold	KeDpcWatchdogProfileSingleDpcThresholdMs	4294967295		
+Session Manager\Kernel	DpcWatchdogProfileCumulativeDpcThreshold	KeDpcWatchdogProfileCumulativeDpcThresholdMs	4294967295		
+Session Manager\Kernel	VerifierDpcScalingFactor	KeVerifierDpcScalingFactor	1		
+Session Manager\Kernel	ThreadDpcEnable	KeThreadDpcEnable	1		
+Session Manager\Kernel	DpcQueueDepth	KiMaximumDpcQueueDepth	4		
+Session Manager\Kernel	MinimumDpcRate	KiMinimumDpcRate	3		
+Session Manager\Kernel	MaximumSharedReadyQueueSize	KiMaximumSharedReadyQueueSize	260		
+Session Manager\Kernel	AdjustDpcThreshold	KiAdjustDpcThreshold	20		
+Session Manager\Kernel	PassiveWatchdogTimeout	KiPassiveWatchdogTimeout	300		
+Session Manager\Kernel	SchedulerAssistThreadFlagOverride	KiSchedulerAssistThreadFlagOverride	0		
+Session Manager\Kernel	SerializeTimerExpiration	KiSerializeTimerExpiration	1		
+Session Manager\Kernel	GlobalTimerResolutionRequests	KiGlobalTimerResolutionRequests	0		
+Session Manager\Kernel	DisableLowQosTimerResolution	KeDisableLowQosTimerResolution	4294902017		
+Session Manager\Kernel	EnablePerCpuClockTickScheduling	KiEnableClockTimerPerCpuTickScheduling	0		
+Session Manager\Kernel	DisableTsx	KiDisableTsx	0		
+Session Manager\Kernel	VpThreadSystemWorkPriority	KiVpThreadSystemWorkPriority	30		
+Session Manager\Kernel	PerfIsoEnabled	KiPerfIsoEnabled	0		
+Session Manager\Kernel	CacheIsoBitmap	KiCacheIsoBitmap	0		
+Session Manager\Kernel	IdealDpcRate	KiIdealDpcRate	20		
+Session Manager\Kernel	CacheErrataOverride	KiTLBCOverride	0		
+Session Manager\Kernel	MaxDynamicTickDuration	KiMaxDynamicTickDuration	4294967295	140d1d440	
+Session Manager\Kernel	DisableExceptionChainValidation	PspSehValidationPolicy	2		
+Session Manager\Kernel	MitigationOptions	PspSystemMitigationOptions	0	140d1d0bc	
+Session Manager\Kernel	MitigationAuditOptions	PspSystemMitigationAuditOptions	0	140d1d0dc	
+Session Manager\Kernel	DisableControlFlowGuardExportSuppression	PspDisableControlFlowGuardExportSuppression	0		
+Session Manager\Kernel	DisableControlFlowGuardXfg	MmDisableControlFlowGuardXfgOverride	0		
+Session Manager\Kernel	ForceIdleGracePeriod	KiForceIdleGracePeriodInSec	5		
+Session Manager\Kernel	HotpatchTestMode	KeHotpatchTestMode	0		
+Session Manager\Kernel\RNG	RNGAuxiliarySeed	ExpRNGAuxiliarySeed	0		
+Session Manager\Kernel	ObTracePoolTags	ObpTracePoolTagsBuffer	0	140c0ce98	
+Session Manager\Kernel	ObTraceProcessName	ObpTraceProcessNameBuffer	0	140c0ce9c	
+Session Manager\Kernel	ObTracePermanent	ObpTracePermanent	0		
+Session Manager\Kernel	PoCleanShutdownFlags	PopShutdownCleanly	0		
+Session Manager\Kernel	ObUnsecureGlobalNames	ObpUnsecureGlobalNamesBuffer	0	140c0ce90	
+Session Manager\Kernel	TimerCheckFlags	KeTimerCheckFlags	1		
+Session Manager\Kernel	SplitLargeCaches	KiSplitLargeCaches	0		
+Session Manager\Kernel	AlwaysTrackIoBoosting	PspAlwaysTrackIoBoosting	0		
+Session Manager\Power	SleepStudyDisabled	PopSleepStudyDisabled	0		
+Session Manager\Power	SleepStudyDeviceAccountingLevel	PopSleepStudyDeviceAccountingLevel	4		
+Session Manager\Power	WatchdogSleepTimeout	PopWatchdogSleepTimeout	600		
+Power	PowerDumpControlGlobalState	PopDumpControlGlobalState	1		
+Session Manager\Power	WatchdogResumeTimeout	PopWatchdogResumeTimeout	600		
+Session Manager\Power	IdleScanInterval	PopIdleScanInterval	4294967295		
+Session Manager\Power	FlushPolicy	PopFlushPolicy	0		
+Session Manager\Power	Win32CalloutWatchdogBugcheckEnabled	PopWin32CalloutWatchdogBugcheckEnabled	0		
+Session Manager\Power	SkipTickOverride	PopSkipTickPolicy	1		
+Power	MaximumFrequencyOverride	PpmFrequencyOverride	0		
+Power	HibernateEnabledDefault	PopHiberEnabledDefaultReg	4294967295		
+Power\ForceHibernateDisabled	Policy	PopHiberForceDisabledReg	0		
+Power\ForceHibernateDisabled	GuardedHost	PopHiberForceDisabledReg+0x4+0x4	0		
+Power	HibernateBootOptimizationEnabled	PopHiberBootOptimizationEnabledReg	0		
+Power	HiberFileTypeDefault	PopHiberFileTypeDefaultReg	4294967295		
+Power\HiberFileBucket	Percent1GBFull	PopHiberFileBucket+0x10+0x10	40		
+Power\HiberFileBucket	Percent1GBReduced	PopHiberFileBucket+0xc+0xc	20		
+Power\HiberFileBucket	Percent2GBFull	PopHiberFileBucket+0x28+0x28	40		
+Power\HiberFileBucket	Percent2GBReduced	PopHiberFileBucket+0x24+0x24	20		
+Power\HiberFileBucket	Percent4GBFull	PopHiberFileBucket+0x40+0x40	40		
+Power\HiberFileBucket	Percent4GBReduced	PopHiberFileBucket+0x3c+0x3c	20		
+Power\HiberFileBucket	Percent8GBFull	PopHiberFileBucket+0x58+0x58	40		
+Power\HiberFileBucket	Percent8GBReduced	PopHiberFileBucket+0x54+0x54	20		
+Power\HiberFileBucket	Percent16GBFull	PopHiberFileBucket+0x70+0x70	40		
+Power\HiberFileBucket	Percent16GBReduced	PopHiberFileBucket+0x6c+0x6c	20		
+Power\HiberFileBucket	Percent32GBFull	PopHiberFileBucket+0x88+0x88	40		
+Power\HiberFileBucket	Percent32GBReduced	PopHiberFileBucket+0x84+0x84	20		
+Power\HiberFileBucket	PercentUnlimitedFull	PopHiberFileBucket+0xa0+0xa0	40		
+Power\HiberFileBucket	PercentUnlimitedReduced	PopHiberFileBucket+0x9c+0x9c	20		
+Power	HiberbootEnabled	PopHiberbootEnabledReg	0		
+Power	HibernateChecksummingEnabled	PopHiberChecksummingEnabledReg	1		
+Power	EnableMinimalHiberFile	PopEnableMinimalHiberFile	0		
+Power	ForceMinimalHiberFile	PopForceMinimalHiberFile	0		
+Power	ThermalPollingMode	PopThermalPollingMode	0		
+Power	ThermalTelemetryVerbosity	PopThermalTelemetryVerbosity	1		
+Power	SmartUserPresenceGracePeriod	PopSmartUserPresenceGracePeriod	1800		
+Power	SmartUserPresenceWakeOffset	PopSmartUserPresenceWakeOffset	300		
+Power	SmartUserPresenceCheckTimeout	PopSmartUserPresenceCheckTimeout	10800		
+Power	SmartUserPresenceAction	PopSmartUserPresenceAction	0		
+Power	DozeDeferralMaxSeconds	PopDozeDeferralMaxSeconds	259200		
+Power	DozeDeferralChecksToIgnore	PopDozeDeferralChecksToIgnore	0		
+Power	Win32kCalloutWatchdogTimeoutSeconds	PopWin32kCalloutWatchdogTimeoutSeconds	30		
+Power	PdcIdlePhaseDefaultWatchdogTimeoutSeconds	PopPdcIdlePhaseDefaultWatchdogTimeoutSeconds	30		
+Power	FxAccountingTelemetryDisabled	PopDiagFxAccountingTelemetryDisabled	0		
+Power	PowerActionSuspendWatchdogTimeoutDefault	PopPowerActionTransitioningWatchdogTimeoutDefault	600		
+Power	PowerActionResumeWatchdogTimeoutDefault	PopPowerActionResumingWatchdogTimeoutDefault	300		
+Power	PreSleepNotificationSeconds	PopPreSleepNotificationSeconds	300		
+Power	MSDisabled	PopModernStandbyDisabled	0		
+Power	PlatformRoleOverride	PopPlatformRoleOverride	4294967295		
+Power	PlatformAoAcOverride	PopPlatformAoAcOverride	4294967295		
+Power	PerfBoostAtGuaranteed	PpmPerfBoostAtGuaranteed	0		
+Power	IpiLastClockOwnerDisable	PpmIpiLastClockOwnerDisable	0		
+Power	MfBufferingThreshold	PpmMfBufferingThreshold	0		
+Power	MfOverridesDisabled	PpmMfOverridesDisabled	1		
+Power	LatencyToleranceDefault	PpmLatencyToleranceLimit	100000		
+Power	LatencyToleranceVSyncEnabled	PpmLatencyToleranceLimit+0x4+0x4	13001		
+Power	LatencyToleranceFSVP	PpmLatencyToleranceLimit+0x8+0x8	20000		
+Power	LatencyToleranceIdleResiliency	PpmLatencyToleranceLimit+0xc+0xc	1500000		
+Power	PerfIdealAggressiveIncreasePolicyThreshold	PpmPerfIdealAggressiveIncreaseThreshold	90		
+Power	PerfSingleStepSize	PpmPerfSingleStepSize	5		
+Power	PerfCalculateActualUtilization	PpmPerfCalculateActualUtilization	1		
+Power	PerfArtificialDomain	PpmPerfArtificialDomainSetting	4294967295		
+Power	MultiparkGranularity	PpmParkMultiparkGranularity	8		
+Power	Class1InitialUnparkCount	PpmParkInitialClass1UnParkCount	0		
+Power	HighPerfDurationBoot	PpmHighPerfDuration	90000		
+Power	HighPerfDurationCSExit	PpmHighPerfDuration+0x4+0x4	5000		
+Power	HighPerfDurationSxExit	PpmHighPerfDuration+0x8+0x8	90000		
+Power	IdleDurationExpirationTimeout	PpmIdleDurationExpirationTimeoutMs	4		
+Power	DisableIdleStatesAtBoot	PpmIdleDisableStatesAtBoot	4294967295		
+Power	HeterogeneousPpmImplementation	PpmHeteroImplementationGeneration	1		
+Power	BootHeteroPolicyOverride	PpmPerfBootHeteroPolicyOverrideEnabled	1		
+Power	HeteroMultiCoreClassesEnabled	PpmHeteroMultiCoreClassesRegValue	4294967295		
+Power	HeteroMultiClassParkingEnabled	PpmHeteroMultiClassParkingRegValue	4294967295		
+Power	AlwaysComputeQosHints	PpmPerfAlwaysComputeQosEnabled	0		
+Power	EnforceDisconnectedStandby	PopEnforceDisconnectedStandby	0		
+Power	UserBatteryDischargeEstimator	PopDisableBatteryDischargeEstimator	0		
+Power	UserBatteryChargeEstimator	PopUserBatteryChargingEstimator	0		
+Power	StandbyConnectivityGracePeriod	PopStandbyConnectivityGracePeriod	0		
+Power	HeteroFavoredCoreRotationTimeoutMs	PpmHeteroFavoredCoreRotationTimeoutMs	30000		
+Power	HeteroHgsPlusDisabled	PpmHeteroHgsThreadDisabled	0		
+Power	PpmPerfCheckCountVersion	PpmPerfCheckCountVersion	1		
+Power	ManualDimTimeout	PopAdaptiveManualDimTimeout	0		
+Power	SuppressResumePrompt	PopSuppressResumePrompt	0		
+Power	EventProcessorEnabled	PopEventProcessorEnabled	0		
+Power	PdcOneWayEntry	PopPowerAggregatorOneWayEntry	0		
+Power	PromoteHibernateToShutdown	PopPromoteHibernateToShutdown	0		
+Power	CoalescingTimerInterval	PopCoalescingTimerInterval	1500		
+Power	CoalescingFlushInterval	PopCoalescingFlushInterval	60		
+Power	EnableInputSuppression	PopEnableInputSuppressionOverride	4294967295		
+Power	IgnoreLidStateForInputSuppression	PopLidStateForInputSuppressionOverride	4294967295		
+Power	EnablePowerButtonSuppression	PopEnablePowerButtonSuppressionOverride	4294967295		
+Power	ActiveIdleTimeout	PopFxActiveIdleTimeout	1000		
+Power	ActiveIdleThreshold	PopFxActiveIdleThreshold	500		
+Power	ActiveIdleLevel	PopFxActiveIdleLevel	1		
+Power	DirectedFxDefaultTimeout	PopFxDirectedFxDefaultTimeout	120		
+Power	IdleStateTimeout	PopPepIdleStateTimeout	500		
+Power	WatchdogWorkOrderTimeout	PopFxWatchdogWorkOrderTimeout	300000		
+Power	DripsCallbackInterval	PopDripsCallbackInterval	35		
+Power	DripsWatchdogDebounceInterval	PopDripsWatchdogDebounceInterval	120		
+Power	DripsWatchdogTimeout	PopDripsWatchdogTimeout	300		
+Power	DripsWatchdogAction	PopDripsWatchdogAction	198		
+Power	DirectedDripsOverride	PopDirectedDripsOverride	4294967295		
+Power	DirectedDripsTimeout	PopDirectedDripsTimeout	300		
+Power	DirectedDripsDebounceInterval	PopDirectedDripsDebounceInterval	120		
+Power	DirectedDripsAction	PopDirectedDripsAction	3		
+Power	DirectedDripsWaitWakeTimeout	PopDirectedDripsWaitWakeTimeoutSeconds	5		
+Power	DirectedDripsSurprisePowerOnTimeout	PopDirectedDripsSurprisePowerOnTimeoutSeconds	5		
+Power	DirectedDripsDfxEnforcementPolicy	PopDirectedDripsDfxEnforcementPolicy	1		
+Power	SleepstudyAccountingEnabled	SleepstudyHelperAccountingEnabled	1		
+Power	DisableVsyncLatencyUpdate	PpmDisableVsyncLatencyUpdate	0		
+Power	ExitLatencyCheckEnabled	PpmExitLatencyCheckEnabled	1		
+Power	EnergyEstimationEnabled	PopEnergyEstimationEnabled	0		
+Power	CheckPowerSourceAfterRtcWakeTime	PopCheckPowerSourceAfterRtcWakeTime	30		
+Power	DripsSwHwDivergenceThreshold	PopDripsSwHwDivergenceThreshold	270		
+Power	DripsSwHwDivergenceEnableLiveDump	PopDripsSwHwDivergenceEnableLiveDump	0		
+Power	IgnoreCsComplianceCheck	PopIgnoreCsComplianceCheck	0		
+Power	PerfQueryOnDevicePowerChanges	PopFxPerfQueryOnDevicePowerChanges	0		
+Power	EnforceConsoleLockScreenTimeout	PopEnforceConsoleLockScreenTimeout	0		
+Power	DeepIoCoalescingEnabled	PopDeepIoCoalescingEnabled	0		
+Power	AllowSystemRequiredPowerRequests	PopPowerRequestConvertSystemToExecution	1		
+Power	AllowAudioToEnableExecutionRequiredPowerRequests	PopPowerRequestActiveAudioEnablesExecutionRequired	1		
+Power	TtmEnabled	TtmpEnabled	0		
+Power	ProximityEscapeMsec	TtmpProximityEscapeMsec	0		
+Power	TimerRebaseThresholdOnDripsExit	KiTimerRebaseThresholdOnDripsExit	60		
+Power	FxRuntimeLogNumberEntries	PopFxRuntimeLogNumberEntries	64		
+Power	CheckpointSystemSleep	PopCheckpointSystemSleepEnabledReg	0		
+Power\ModernSleep	EnabledActions	PopAggressiveStandbyActionsRegValue	0		
+Power\ModernSleep	EnableDsNetRefresh	PopEnableDsNetRefresh	0		
+Power\PowerThrottling	PowerThrottlingOff	PpmPerfQosGroupPolicyDisable	0		
+Power	IdleProcessorsRequireQosManagement	PpmPerfQosManageIdleProcessors	4294967295		
+Power	CheckpointSystemSleepSimulateFlags	PopCheckpointSystemSleepSimulateFlags	0		
+Power	SkipHibernateMemoryMapValidation	PopEnableHibernateMemoryMapValidationOverride	4294967295		
+Power	PoFxSystemIrpWaitForReportDevicePowered	PopPoFxSystemIrpWaitForReportDevicePoweredReg	0		
+Power	DisableDisplayBurstOnPowerSourceChange	PopDisableDisplayBurstOnPowerSourceChange	0		
+Power	DisableInboxPepGeneratedConstraints	PopDisableInboxPepGeneratedConstraintsOverride	4294967295		
+Session Manager\Kernel	ObCaseInsensitive	ObpCaseInsensitive	1		
+Session Manager\I/O System	LargeIrpStackLocations	IopLargeIrpStackLocations	0		
+Session Manager\I/O System	MediumIrpStackLocations	IopMediumIrpStackLocations	0		
+Session Manager\I/O System	IoBlockLegacyFsFilters	IopBlockLegacyFsFilters	0		
+Session Manager\I/O System	IoCaseInsensitive	IopCaseInsensitive	1		
+Session Manager\I/O System	RequireDeviceAccessCheck	IopRequireDeviceAccessCheck	1		
+Session Manager\I/O System	IoFailZeroAccessCreate	IopFailZeroAccessCreate	1		
+Session Manager\I/O System	IoEnableSessionZeroAccessCheck	IopSessionZeroAccessCheckEnabled	0		
+Session Manager\I/O System	IoAllowLoadCrashDumpDriver	IopAllowLoadCrashDumpDriver	0		
+Session Manager\I/O System	IoIrpCompletionTimeoutInSeconds	IopIrpCompletionTimeoutInSeconds	0		
+QoS	StorageBaseIOSize	IopDiskIoAttributionBaseIoSize	8192		
+Session Manager\I/O System	DisableDiskCounters	PsDisableDiskCounters	0		
+Session Manager	ResourceTimeoutCount	ExResourceTimeoutCount	0		
+Session Manager	ResourceCheckFlags	ExResourceCheckFlags	3		
+Session Manager	ResourceEnforceOwnerTransfer	ExpResourceEnforceOwnerTransfer	0		
+Session Manager	CriticalSectionTimeout	MmRegistryState+0x24+0x24	2592000		
+Session Manager	HeapSegmentReserve	MmRegistryState+0x48+0x48	1048576		
+Session Manager	HeapSegmentCommit	MmRegistryState+0x40+0x40	8192		
+Session Manager	HeapDeCommitTotalFreeThreshold	MmRegistryState+0x38+0x38	65536		
+Session Manager	HeapDeCommitFreeBlockThreshold	MmRegistryState+0x30+0x30	4096		
+ProductOptions	ProductType	MmRegistryState+0x2c+0x2c	0		
+Terminal Server	TSAppCompat	ExpMultiUserTS	0		
+ProductOptions	ProductSuite	CmSuiteBuffer	0	140d8118c	140d81170
+ProductOptions	ProductPolicy	ExpHostBootLicensingData	0	140d9c9c0	140d9c9c4
+Windows	CSDVersion	CmNtCSDVersion	0		
+Windows	CSDReleaseType	CmNtCSDReleaseType	0		
+Windows	CSDBuildNumber	CmNtSpBuildNumber	0		
+Nls\Language	Default	CmDefaultLanguageId	0	140d81160	140d81164
+Nls\Language	InstallLanguage	CmInstallUILanguageId	0	140d8116c	140d81168
+	RegistrySizeLimit	CmRegistrySizeLimit	0	140d53100	140d53104
+Session Manager\Configuration Manager	FastBoot	CmFastBoot	1		
+Session Manager\Configuration Manager	SelfHealingEnabled	CmSelfHeal	1		
+Session Manager\Configuration Manager	RegistryLazyFlushInterval	CmpLazyFlushIntervalInSeconds	60		
+Session Manager\Configuration Manager	RegistryLazyReconcileInterval	CmpLazyReconcileIntervalInSeconds	3600		
+Session Manager\Configuration Manager	RegistryLazyLocalizeInterval	CmpLazyLocalizeIntervalInSeconds	60		
+Session Manager\Configuration Manager	RegistryLazyFlushBootDelay	CmpEnableLazyFlushBootDelayInterval	60		
+Session Manager\Configuration Manager	RegistryLogFileSizeCap	CmpLogFileSizeCap	0		
+Session Manager\Configuration Manager	RegistryReorganizationLimit	CmpReorganizeLimit	1048576		
+Session Manager\Configuration Manager	RegistryReorganizationLimitDays	CmpReorganizeDelayDays	7		
+Session Manager\Configuration Manager	RegistryFlushGlobalFlags	CmpGlobalFlushControlFlags	0		
+Session Manager\Configuration Manager	VirtualizationEnabled	CmVEEnabled	1		
+Session Manager\Configuration Manager	DelayCloseSize	CmpDelayedCloseSize	2048		
+Session Manager\Configuration Manager	FreezeThawTimeoutInSeconds	CmFreezeThawTimeoutInSeconds	60		
+Session Manager\Configuration Manager	SystemHiveLimitSize	CmSystemHiveLimitSize	0		
+Session Manager\Configuration Manager	EnablePeriodicBackup	CmpDoIdleProcessing	0		
+Session Manager\Configuration Manager	VolatileBoot	CmpVolatileBoot	0		
+Session Manager\Configuration Manager	BugcheckRecoveryEnabled	CmBugcheckRecoveryEnabled	0		
+Session Manager\Configuration Manager\LastKnownGood	Enabled	CmpLKGEnabled	0		
+StateSeparation\Policy	Enabled	CmStateSeparationEnabled	0		
+StateSeparation\Policy	DevelopmentMode	CmStateSeparationDevMode	0		
+StateSeparation\Policy	AllHivesVolatile	CmStateSeparationAllHivesVolatile	0		
+Session Manager	PowerPolicySimulate	PopSimulate	0		
+Session Manager\Executive	MaxTimeSeparationBeforeCorrect	ExpMaxTimeSeperationBeforeCorrect	60		
+PriorityControl	Win32PrioritySeparation	PsRawPrioritySeparation	2		
+Session Manager	Debugger Retries	KdpContext	0		
+Session Manager	DebuggerMaxModuleMsgs	DbgkpMaxModuleMsgs	0		
+Session Manager\Debug Print Filter	WIN2000	Kd_WIN2000_Mask	1		
+Session Manager\Debug Print Filter	SYSTEM	Kd_SYSTEM_Mask	0		
+Session Manager\Debug Print Filter	SMSS	Kd_SMSS_Mask	0		
+Session Manager\Debug Print Filter	SETUP	Kd_SETUP_Mask	0		
+Session Manager\Debug Print Filter	NTFS	Kd_NTFS_Mask	0		
+Session Manager\Debug Print Filter	FSTUB	Kd_FSTUB_Mask	0		
+Session Manager\Debug Print Filter	CRASHDUMP	Kd_CRASHDUMP_Mask	0		
+Session Manager\Debug Print Filter	CDAUDIO	Kd_CDAUDIO_Mask	0		
+Session Manager\Debug Print Filter	CDROM	Kd_CDROM_Mask	0		
+Session Manager\Debug Print Filter	CLASSPNP	Kd_CLASSPNP_Mask	0		
+Session Manager\Debug Print Filter	DISK	Kd_DISK_Mask	0		
+Session Manager\Debug Print Filter	REDBOOK	Kd_REDBOOK_Mask	0		
+Session Manager\Debug Print Filter	STORPROP	Kd_STORPROP_Mask	0		
+Session Manager\Debug Print Filter	SCSIPORT	Kd_SCSIPORT_Mask	0		
+Session Manager\Debug Print Filter	SCSIMINIPORT	Kd_SCSIMINIPORT_Mask	0		
+Session Manager\Debug Print Filter	CONFIG	Kd_CONFIG_Mask	0		
+Session Manager\Debug Print Filter	I8042PRT	Kd_I8042PRT_Mask	0		
+Session Manager\Debug Print Filter	SERMOUSE	Kd_SERMOUSE_Mask	0		
+Session Manager\Debug Print Filter	LSERMOUS	Kd_LSERMOUS_Mask	0		
+Session Manager\Debug Print Filter	KBDHID	Kd_KBDHID_Mask	0		
+Session Manager\Debug Print Filter	MOUHID	Kd_MOUHID_Mask	0		
+Session Manager\Debug Print Filter	KBDCLASS	Kd_KBDCLASS_Mask	0		
+Session Manager\Debug Print Filter	MOUCLASS	Kd_MOUCLASS_Mask	0		
+Session Manager\Debug Print Filter	TWOTRACK	Kd_TWOTRACK_Mask	0		
+Session Manager\Debug Print Filter	WMILIB	Kd_WMILIB_Mask	0		
+Session Manager\Debug Print Filter	ACPI	Kd_ACPI_Mask	0		
+Session Manager\Debug Print Filter	AMLI	Kd_AMLI_Mask	0		
+Session Manager\Debug Print Filter	HALIA64	Kd_HALIA64_Mask	0		
+Session Manager\Debug Print Filter	VIDEO	Kd_VIDEO_Mask	0		
+Session Manager\Debug Print Filter	SVCHOST	Kd_SVCHOST_Mask	0		
+Session Manager\Debug Print Filter	VIDEOPRT	Kd_VIDEOPRT_Mask	0		
+Session Manager\Debug Print Filter	TCPIP	Kd_TCPIP_Mask	0		
+Session Manager\Debug Print Filter	DMSYNTH	Kd_DMSYNTH_Mask	0		
+Session Manager\Debug Print Filter	NTOSPNP	Kd_NTOSPNP_Mask	0		
+Session Manager\Debug Print Filter	FASTFAT	Kd_FASTFAT_Mask	0		
+Session Manager\Debug Print Filter	SAMSS	Kd_SAMSS_Mask	0		
+Session Manager\Debug Print Filter	PNPMGR	Kd_PNPMGR_Mask	0		
+Session Manager\Debug Print Filter	NETAPI	Kd_NETAPI_Mask	0		
+Session Manager\Debug Print Filter	SCSERVER	Kd_SCSERVER_Mask	0		
+Session Manager\Debug Print Filter	SCCLIENT	Kd_SCCLIENT_Mask	0		
+Session Manager\Debug Print Filter	SERIAL	Kd_SERIAL_Mask	0		
+Session Manager\Debug Print Filter	SERENUM	Kd_SERENUM_Mask	0		
+Session Manager\Debug Print Filter	UHCD	Kd_UHCD_Mask	0		
+Session Manager\Debug Print Filter	RPCPROXY	Kd_RPCPROXY_Mask	0		
+Session Manager\Debug Print Filter	AUTOCHK	Kd_AUTOCHK_Mask	0		
+Session Manager\Debug Print Filter	DCOMSS	Kd_DCOMSS_Mask	0		
+Session Manager\Debug Print Filter	UNIMODEM	Kd_UNIMODEM_Mask	0		
+Session Manager\Debug Print Filter	SIS	Kd_SIS_Mask	0		
+Session Manager\Debug Print Filter	FLTMGR	Kd_FLTMGR_Mask	0		
+Session Manager\Debug Print Filter	WMICORE	Kd_WMICORE_Mask	0		
+Session Manager\Debug Print Filter	BURNENG	Kd_BURNENG_Mask	0		
+Session Manager\Debug Print Filter	IMAPI	Kd_IMAPI_Mask	0		
+Session Manager\Debug Print Filter	SXS	Kd_SXS_Mask	0		
+Session Manager\Debug Print Filter	FUSION	Kd_FUSION_Mask	0		
+Session Manager\Debug Print Filter	IDLETASK	Kd_IDLETASK_Mask	0		
+Session Manager\Debug Print Filter	SOFTPCI	Kd_SOFTPCI_Mask	0		
+Session Manager\Debug Print Filter	TAPE	Kd_TAPE_Mask	0		
+Session Manager\Debug Print Filter	MCHGR	Kd_MCHGR_Mask	0		
+Session Manager\Debug Print Filter	IDEP	Kd_IDEP_Mask	0		
+Session Manager\Debug Print Filter	PCIIDE	Kd_PCIIDE_Mask	0		
+Session Manager\Debug Print Filter	FLOPPY	Kd_FLOPPY_Mask	0		
+Session Manager\Debug Print Filter	FDC	Kd_FDC_Mask	0		
+Session Manager\Debug Print Filter	TERMSRV	Kd_TERMSRV_Mask	0		
+Session Manager\Debug Print Filter	W32TIME	Kd_W32TIME_Mask	0		
+Session Manager\Debug Print Filter	PREFETCHER	Kd_PREFETCHER_Mask	0		
+Session Manager\Debug Print Filter	RSFILTER	Kd_RSFILTER_Mask	0		
+Session Manager\Debug Print Filter	FCPORT	Kd_FCPORT_Mask	0		
+Session Manager\Debug Print Filter	PCI	Kd_PCI_Mask	0		
+Session Manager\Debug Print Filter	DMIO	Kd_DMIO_Mask	0		
+Session Manager\Debug Print Filter	DMCONFIG	Kd_DMCONFIG_Mask	0		
+Session Manager\Debug Print Filter	DMADMIN	Kd_DMADMIN_Mask	0		
+Session Manager\Debug Print Filter	WSOCKTRANSPORT	Kd_WSOCKTRANSPORT_Mask	0		
+Session Manager\Debug Print Filter	VSS	Kd_VSS_Mask	0		
+Session Manager\Debug Print Filter	PNPMEM	Kd_PNPMEM_Mask	0		
+Session Manager\Debug Print Filter	PROCESSOR	Kd_PROCESSOR_Mask	0		
+Session Manager\Debug Print Filter	DMSERVER	Kd_DMSERVER_Mask	0		
+Session Manager\Debug Print Filter	SR	Kd_SR_Mask	0		
+Session Manager\Debug Print Filter	INFINIBAND	Kd_INFINIBAND_Mask	0		
+Session Manager\Debug Print Filter	IHVDRIVER	Kd_IHVDRIVER_Mask	0		
+Session Manager\Debug Print Filter	IHVVIDEO	Kd_IHVVIDEO_Mask	0		
+Session Manager\Debug Print Filter	IHVAUDIO	Kd_IHVAUDIO_Mask	0		
+Session Manager\Debug Print Filter	IHVNETWORK	Kd_IHVNETWORK_Mask	0		
+Session Manager\Debug Print Filter	IHVSTREAMING	Kd_IHVSTREAMING_Mask	0		
+Session Manager\Debug Print Filter	IHVBUS	Kd_IHVBUS_Mask	0		
+Session Manager\Debug Print Filter	HPS	Kd_HPS_Mask	0		
+Session Manager\Debug Print Filter	RTLTHREADPOOL	Kd_RTLTHREADPOOL_Mask	0		
+Session Manager\Debug Print Filter	LDR	Kd_LDR_Mask	0		
+Session Manager\Debug Print Filter	TCPIP6	Kd_TCPIP6_Mask	0		
+Session Manager\Debug Print Filter	ISAPNP	Kd_ISAPNP_Mask	0		
+Session Manager\Debug Print Filter	SHPC	Kd_SHPC_Mask	0		
+Session Manager\Debug Print Filter	STORPORT	Kd_STORPORT_Mask	0		
+Session Manager\Debug Print Filter	STORMINIPORT	Kd_STORMINIPORT_Mask	0		
+Session Manager\Debug Print Filter	PRINTSPOOLER	Kd_PRINTSPOOLER_Mask	0		
+Session Manager\Debug Print Filter	VSSDYNDISK	Kd_VSSDYNDISK_Mask	0		
+Session Manager\Debug Print Filter	VERIFIER	Kd_VERIFIER_Mask	0		
+Session Manager\Debug Print Filter	VDS	Kd_VDS_Mask	0		
+Session Manager\Debug Print Filter	VDSBAS	Kd_VDSBAS_Mask	0		
+Session Manager\Debug Print Filter	VDSDYN	Kd_VDSDYN_Mask	0		
+Session Manager\Debug Print Filter	VDSDYNDR	Kd_VDSDYNDR_Mask	0		
+Session Manager\Debug Print Filter	VDSLDR	Kd_VDSLDR_Mask	0		
+Session Manager\Debug Print Filter	VDSUTIL	Kd_VDSUTIL_Mask	0		
+Session Manager\Debug Print Filter	DFRGIFC	Kd_DFRGIFC_Mask	0		
+Session Manager\Debug Print Filter	DEFAULT	Kd_DEFAULT_Mask	0		
+Session Manager\Debug Print Filter	MM	Kd_MM_Mask	0		
+Session Manager\Debug Print Filter	DFSC	Kd_DFSC_Mask	0		
+Session Manager\Debug Print Filter	WOW64	Kd_WOW64_Mask	0		
+Session Manager\Debug Print Filter	ALPC	Kd_ALPC_Mask	0		
+Session Manager\Debug Print Filter	WDI	Kd_WDI_Mask	0		
+Session Manager\Debug Print Filter	PERFLIB	Kd_PERFLIB_Mask	0		
+Session Manager\Debug Print Filter	KTM	Kd_KTM_Mask	0		
+Session Manager\Debug Print Filter	IOSTRESS	Kd_IOSTRESS_Mask	0		
+Session Manager\Debug Print Filter	HEAP	Kd_HEAP_Mask	0		
+Session Manager\Debug Print Filter	WHEA	Kd_WHEA_Mask	0		
+Session Manager\Debug Print Filter	USERGDI	Kd_USERGDI_Mask	0		
+Session Manager\Debug Print Filter	MMCSS	Kd_MMCSS_Mask	0		
+Session Manager\Debug Print Filter	TPM	Kd_TPM_Mask	0		
+Session Manager\Debug Print Filter	THREADORDER	Kd_THREADORDER_Mask	0		
+Session Manager\Debug Print Filter	ENVIRON	Kd_ENVIRON_Mask	0		
+Session Manager\Debug Print Filter	EMS	Kd_EMS_Mask	0		
+Session Manager\Debug Print Filter	WDT	Kd_WDT_Mask	0		
+Session Manager\Debug Print Filter	FVEVOL	Kd_FVEVOL_Mask	0		
+Session Manager\Debug Print Filter	NDIS	Kd_NDIS_Mask	0		
+Session Manager\Debug Print Filter	NVCTRACE	Kd_NVCTRACE_Mask	0		
+Session Manager\Debug Print Filter	LUAFV	Kd_LUAFV_Mask	0		
+Session Manager\Debug Print Filter	APPCOMPAT	Kd_APPCOMPAT_Mask	0		
+Session Manager\Debug Print Filter	USBSTOR	Kd_USBSTOR_Mask	0		
+Session Manager\Debug Print Filter	SBP2PORT	Kd_SBP2PORT_Mask	0		
+Session Manager\Debug Print Filter	COVERAGE	Kd_COVERAGE_Mask	0		
+Session Manager\Debug Print Filter	CACHEMGR	Kd_CACHEMGR_Mask	0		
+Session Manager\Debug Print Filter	MOUNTMGR	Kd_MOUNTMGR_Mask	0		
+Session Manager\Debug Print Filter	CFR	Kd_CFR_Mask	0		
+Session Manager\Debug Print Filter	TXF	Kd_TXF_Mask	0		
+Session Manager\Debug Print Filter	KSECDD	Kd_KSECDD_Mask	0		
+Session Manager\Debug Print Filter	FLTREGRESS	Kd_FLTREGRESS_Mask	0		
+Session Manager\Debug Print Filter	MPIO	Kd_MPIO_Mask	0		
+Session Manager\Debug Print Filter	MSDSM	Kd_MSDSM_Mask	0		
+Session Manager\Debug Print Filter	UDFS	Kd_UDFS_Mask	0		
+Session Manager\Debug Print Filter	PSHED	Kd_PSHED_Mask	0		
+Session Manager\Debug Print Filter	STORVSP	Kd_STORVSP_Mask	0		
+Session Manager\Debug Print Filter	LSASS	Kd_LSASS_Mask	0		
+Session Manager\Debug Print Filter	SSPICLI	Kd_SSPICLI_Mask	0		
+Session Manager\Debug Print Filter	CNG	Kd_CNG_Mask	0		
+Session Manager\Debug Print Filter	EXFAT	Kd_EXFAT_Mask	0		
+Session Manager\Debug Print Filter	FILETRACE	Kd_FILETRACE_Mask	0		
+Session Manager\Debug Print Filter	XSAVE	Kd_XSAVE_Mask	0		
+Session Manager\Debug Print Filter	SE	Kd_SE_Mask	0		
+Session Manager\Debug Print Filter	DRIVEEXTENDER	Kd_DRIVEEXTENDER_Mask	0		
+Session Manager\Debug Print Filter	POWER	Kd_POWER_Mask	0		
+Session Manager\Debug Print Filter	CRASHDUMPXHCI	Kd_CRASHDUMPXHCI_Mask	0		
+Session Manager\Debug Print Filter	GPIO	Kd_GPIO_Mask	0		
+Session Manager\Debug Print Filter	REFS	Kd_REFS_Mask	0		
+Session Manager\Debug Print Filter	WER	Kd_WER_Mask	0		
+Session Manager\Debug Print Filter	CAPIMG	Kd_CAPIMG_Mask	0		
+Session Manager\Debug Print Filter	VPCI	Kd_VPCI_Mask	0		
+Session Manager\Debug Print Filter	STORAGECLASSMEMORY	Kd_STORAGECLASSMEMORY_Mask	0		
+Session Manager\Debug Print Filter	FSLIB	Kd_FSLIB_Mask	0		
+WHEA	SingleBitEccErrorThreshold	WheapSingleBitEccErrorThreshold	4294967295		
+WHEA	MaxCorrectedMCEOutstanding	WheapMaxCorrectedMCEOutstanding	4294967295		
+WHEA\Policy	DisableOffline	WheaRegPolicyDisableOffline	4294967295		
+WHEA\Policy	MemPersistOffline	WheaRegPolicyMemPersistOffline	4294967295		
+WHEA\Policy	MemPfaDisable	WheaRegPolicyMemPfaDisable	4294967295		
+WHEA\Policy	MemPfaPageCount	WheaRegPolicyMemPfaPageCount	4294967295		
+WHEA\Policy	MemPfaThreshold	WheaRegPolicyMemPfaThreshold	4294967295		
+WHEA\Policy	MemPfaTimeout	WheaRegPolicyMemPfaTimeout	4294967295		
+WHEA\Policy	IgnoreDummyWrite	WheaRegPolicyIgnoreDummyWrite	4294967295		
+WHEA\Policy	RestoreCmciEnabled	WheapRegPolicyRestoreCmciEnabled	4294967295		
+WHEA\Policy	RestoreCmciMaxAttempts	WheapRegPolicyRestoreCmciMaxAttempts	4294967295		
+WHEA\Policy	RestoreCmciErrorLimit	WheapRegPolicyRestoreCmciErrorLimit	4294967295		
+WHEA\Policy	CMCThresholdCount	WheapRegPolicyCmciThresholdCount	4294967295		
+WHEA\Policy	CMCThresholdSeconds	WheapRegPolicyCmciThresholdTime	4294967295		
+WHEA\Policy	CMCPollingLimit	WheapRegPolicyCmciThresholdPollCount	4294967295		
+WHEA\Policy	PendingPageListSz	WheapRegPolicyPendingPageListSz	4294967295		
+WHEA\Policy	BadPageListMaxSize	WheaRegPolicyBadPageListMaxSize	4294967295		
+WHEA\Policy	BadPageListLocation	WheaRegPolicyBadPageListLocation	4294967295		
+WHEA\Policy	NotifyAllOfflines	WheaRegPolicyNotifyAllOfflines	4294967295		
+WMI\Trace	ProfileInterval	EtwpProfileInterval	10000		
+WMI\Trace	MemInfoInterval	EtwpMemInfoInterval	500		
+WMI\Trace	StackCaptureTimeout	EtwpStackCaptureTimeout	400		
+WMI\Trace	CoverageEntryCount	EtwpCoverageEntryCount	4096		
+WMI\Trace	CoverageFlushPeriod	EtwpCoverageFlushPeriod	300000		
+WMI\Trace	CoverageResetPeriod	EtwpCoverageResetPeriod	86400000		
+EmbeddedNT\Executive	KernelOnlyConfiguration	PsEmbeddedNTMask	0		
+CrashControl	AutoReboot	IopAutoReboot	0		
+Session Manager\Executive	TickcountRolloverDelay	InitTickRolloverDelay	0	140d8117c	140d81178
+Session Manager	AlpcMessageLog	AlpcpMessageLogEnabled	0		
+Session Manager	AlpcWakePolicy	AlpcpWakePolicyDefault	1		
+Session Manager\Executive	CoverageMaxPagedPool	ExCovMaxPagedPoolToUse	4194304		
+Session Manager	ImageExecutionOptions	ViImageExecutionOptions	0		
+ValidationRunlevels	Global	CmGlobalValidationRunlevel	0		
+Session Manager\Kernel	BugCheckUnexpectedInterrupts	KiBugCheckUnexpectedInterrupts	0		
+Session Manager\Kernel	DebuggerIsStallOwner	KiDebuggerIsStallOwner	0		
+Session Manager\Kernel	DebugPollInterval	KiDebugPollInterval	2000		
+Session Manager\Kernel	PowerOffFrozenProcessors	KiPowerOffFrozenProcessors	1		
+Session Manager\Kernel	DisableLightWeightSuspend	KiDisableLightWeightSuspend	0		
+Session Manager	ErrorPortStartTimeout	DbgkErrorPortStartTimeout	15000		
+Session Manager	ErrorPortCommTimeout	DbgkErrorPortCommTimeout	10000		
+Session Manager\Kernel	ObObjectSecurityInheritance	ObpObjectSecurityInheritance	0		
+Session Manager	PowerSimulateHiberBugcheck	PopSimulateHiberBugcheck	0		
+Session Manager\Kernel	SeAllowAllApplicationAceRemoval	SepAllowAllApplicationAceRemoval	0		
+Session Manager	InitConsoleFlags	InitConsoleFlags	0		
+Session Manager	MultiUsersInSessionSupported	RtlpMultiUsersInSessionSupported	0		
+Session Manager	DisableIFEOCaching	RtlpDisableIFEOCaching	0		
+Session Manager\Kernel	HyperStartDisabled	HvlVpStartDisabled	0		
+Session Manager\Kernel	SeAllowSessionImpersonationCapability	SepAllowSessionImpersonationCap	0		
+Session Manager\Kernel	InterruptSteeringFlags	KiInterruptSteeringFlags	0		
+Session Manager\Kernel	SeTokenSingletonAttributesConfig	SepTokenSingletonAttributesConfig	0		
+Session Manager\Kernel	SeCompatFlags	SeCompatFlags	0		
+Session Manager\Kernel	SeTokenLeakDiag	SeTokenLeakTracking	0		
+Session Manager\Kernel	SeTokenDoesNotTrackSessionObject	SeTokenDoesNotTrackSessionObject	0		
+Session Manager\Kernel	HeteroFavoredCoreFallback	PpmHeteroFavoredCoreFallback	0		
+Session Manager\Kernel	VirtualHeteroHysteresis	PpmPerfQosTransitionHysteresisOverride	4294967295		
+Session Manager\Kernel	RebalanceMinPriority	KiRebalanceMinPriority	1		
+Session Manager\Kernel	SeLpacEnableWatsonReporting	SeLpacEnableWatsonReporting	0		
+Session Manager\Kernel	SeLpacEnableWatsonThrottling	SeLpacEnableWatsonThrottling	1		
+Session Manager\Kernel	EnableWerUserReporting	DbgkEnableWerUserReporting	1		
+Session Manager\Kernel	DeviceOwnerProtectionDowngradeAllowed	SeDeviceOwnerProtectionDowngradeAllowed	0		
+Session Manager\Kernel	CacheAwareScheduling	KiCacheAwareScheduling	47		
+Session Manager\Kernel	HeteroSchedulerOptions	KiHeteroSchedulerOptions	0		
+Session Manager\Kernel	HeteroSchedulerOptionsMask	KiHeteroSchedulerOptionsMask	0		
+Session Manager\Kernel	ForceForegroundBoostDecay	KiSchedulerForegroundBoostDecayPolicy	0		
+Version\Kernel	KVB	KernelVersionBump	0		
+KernelVelocity	KVF_HotPatchSimulation	KvfFeatureStates	0		
+Session Manager\Kernel	ForceBugcheckForDpcWatchdog	KiForceBugcheckForDpcWatchdog	0		
+Session Manager\Kernel	LongDpcRuntimeThreshold	KiLongDpcRuntimeThreshold	100		
+Session Manager\Kernel	LongDpcQueueThreshold	KiLongDpcQueueThreshold	3		
+Session Manager\Kernel	HgsPlusFeedbackUpdateThresholdRuntime	KiHgsPlusConfiguration+0x4+0x4	20		
+Session Manager\Kernel	HgsPlusFeedbackUpdateThresholdNetRuntime	KiHgsPlusConfiguration+0x10+0x10	20		
+Session Manager\Kernel	HgsPlusInvalidFeedbackLimit	KiHgsPlusConfiguration+0x20+0x20	50		
+Session Manager\Kernel	HgsPlusInvalidFeedbackDefaultClass	KiHgsPlusConfiguration+0x24+0x24	0		
+Session Manager\Kernel	HgsPlusInvalidFeedbackDefaultClassSet	KiHgsPlusConfiguration+0x28+0x28	0		
+Session Manager\Kernel	HgsPlusLowerPerfClassFeedbackThreshold	KiHgsPlusConfiguration+0x2c+0x2c	4		
+Session Manager\Kernel	HgsPlusHigherPerfClassFeedbackThreshold	KiHgsPlusConfiguration+0x30+0x30	1		
+Session Manager\Kernel	HgsPlusMinimumScoreDifferenceForSwap	KiHgsPlusConfiguration+0x38+0x38	25		
+Session Manager\Kernel	HgsPlusThreadCreationDefaultClass	KiHgsPlusConfiguration+0x34+0x34	0		
+Session Manager\Kernel	DisablePointerParameterAlignmentValidation	KiDisablePointerParameterAlignmentValidation	0		
+Session Manager\Kernel	IdealNodeRandomized	PspIdealNodeRandomized	1		

@@ -1,16 +1,22 @@
 # Disable Automatic Map Downloads
 
-Disables automatic network traffic on the settings page and prevents automatic downloading or updating of map data, limiting location related data updates.
+Disables automatic network traffic on the settings page and prevents automatic downloading or updating of map data, limiting location related data updates, the option also disables the `MapsBroker` service (offline maps in the 'Maps' app stop working).
 
-`AllowOfflineMapsDownloadOverMeteredConnection` & `EnableOfflineMapsAutoUpdate`:
+`AllowOfflineMapsDownloadOverMeteredConnection`:
 
-| Value |	Description |
+| Value | Description |
 | ---- | ---- |
-| `0`	Disabled | Force disable auto-update over metered connection. |
-| `1`	Enabled | Force enable auto-update over metered connection. |
-| `65535` (Default)	Not configured | User's choice. |
+| `0` | Disabled, force disable auto update over metered connection |
+| `1` | Enabled, force enable auto update over metered connection |
+| `65535` (Default) | Not configured, users choice |
 
-- [privacy/assets/pseudocode | maps.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/maps.c)
+`EnableOfflineMapsAutoUpdate` (MDM side of `AutoDownloadAndUpdateMapData` ([Policy CSP Maps](https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-maps#enableofflinemapsautoupdate)), read in `CMapsOrchModel::GetAutoUpdatePolicy`, see [maps.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/maps.c)):
+
+| Value | Description |
+| ---- | ---- |
+| `0` | Disabled, force off auto update |
+| `1` | Enabled, force on auto update |
+| `65535` (Default) | Not configured, users choice |
 
 ## moshostcore Snippets
 
@@ -61,4 +67,3 @@ if ( v6 < 0 )
 | --- | --- | --- |
 | [Turn off Automatic Download and Update of Map Data](https://noverse.dev/policies?p=WinMaps*TurnOffAutoUpdate) | `HKLM\Software\Policies\Microsoft\Windows\Maps` | `AutoDownloadAndUpdateMapData` |
 | [Turn off unsolicited network traffic on the Offline Maps settings page](https://noverse.dev/policies?p=WinMaps*DisallowUntriggeredNetworkOnSettingsPage) | `HKLM\Software\Policies\Microsoft\Windows\Maps` | `AllowUntriggeredNetworkTrafficOnSettingsPage` |
-

@@ -2,7 +2,16 @@
 
 "The AutoLogger event tracing session records events that occur early in the operating system boot process. Applications and device drivers can use the AutoLogger session to capture traces before the user logs in. Note that some device drivers, such as disk device drivers, are not loaded at the time the AutoLogger session begins."
 
-See your current running ETS via `Performance Monitor > Data Collector Sets > Startup Event Trace Sessions`.
+See the configured startup sessions in `Performance Monitor > Data Collector Sets > Startup Event Trace Sessions`, the running ones under `Event Trace Sessions`.
+
+| Session | Owner |
+| --- | --- |
+| `DiagLog` | Diagnostic Policy Service (`dps.dll`, diagnosticinfrastructure-settings manifest) |
+| `Diagtrack-Listener` | Connected User Experiences and Telemetry (`diagtrack.dll`) |
+| `FilterMgr-Logger` | no 23H2 manifest/binary includes it, but a January 2026 kernel debugger list of running sessions ([ThreatIntelligenceConsumer](https://github.com/preludeorg/ThreatIntelligenceConsumer) shows it |
+| `LwtNetLog` | NDIS lightweight trace, `netsh wlan show wlanreport` reads it (`wlancfg.dll`) |
+| `NtfsLog` | NTFS (fsd manifest) |
+| `ReFSLog` | ReFS (refs-fsd manifest) |
 
 Logs are saved in:
 ```c

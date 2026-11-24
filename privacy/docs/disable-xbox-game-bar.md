@@ -56,19 +56,30 @@ GameDVR is a built-in gameplay capture (Xbox Game Bar) for clips/screenshots, wi
     "SelectedCameraId" // REG_SZ
 ```
 
+`VK*` & `VKM*` are the user defined alternate shortcuts, key & modifier (`AppCaptureAlternateShortcutKeys` in `bcastdvruserservice.dll`).
+
 - [privacy/assets/pseudocode | gamebar-WindowsMediaCaptureIAppCaptureSettings.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/gamebar-WindowsMediaCaptureIAppCaptureSettings.c) (`HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR`)
 - [privacy/assets/pseudocode | gamebar-WindowsMediaCaptureIAppBroadcastGlobalSettings.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/gamebar-WindowsMediaCaptureIAppBroadcastGlobalSettings.c) (`HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\AppBroadcast\\GlobalSettings`)
 - [settings/settings-windows-11.md#gaming-game-bar-game-mode-gaming-shortcuts](https://github.com/MicrosoftDocs/windows-dev-docs/blob/docs/hub/apps/develop/settings/settings-windows-11.md#gaming-game-bar-game-mode-gaming-shortcuts)
 
-### Game Bar Precense Writer
+### Game Bar Presence Writer
 
 > "*Game Bar Presence Writer is a component that is notified when a game's "presence" state (i.e. is a game running in the foreground) changes. This functionality is available in Windows 10 and later operating systems. By default, the existing Game Bar Presence Writer will set a user's Xbox Live presence state for a running game if the Xbox App is installed, the user is signed into their Xbox account, and the user has enabled Xbox Live presence to be set when they run a game on their PC. It is possible for Windows Application developers to override this default behavior with their own implementation.*"
 >
 > — Microsoft, [GameBar PresenceWriter](https://learn.microsoft.com/en-us/windows/win32/devnotes/gamebar-presencewriter)
+
+#### Miscellaneous GameBar UI Values
+
+In `HKCU\Software\Microsoft\GameBar`:
+
+| Value | Meaning |
+| --- | --- |
+| `UseNexusForGameBarEnabled` | "Open Xbox Game Bar using this button on a controller" |
+| `ShowStartupPanel`, `GamePanelStartupTipIndex` | Game Bar startup tips |
+| `GamepadNexusChordEnabled` | Controller shortcut, only read on 25H2 (no 23H2 binary has it) |
 
 ## [Windows Policies](https://noverse.dev/policies)
 
 | Policy | Key Path | Value Name |
 | --- | --- | --- |
 | [Enables or disables Windows Game Recording and Broadcasting](https://noverse.dev/policies?p=GameDVR*AllowGameDVR) | `HKLM\Software\Policies\Microsoft\Windows\GameDVR` | `AllowGameDVR` |
-

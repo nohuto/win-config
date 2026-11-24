@@ -10,4 +10,3 @@ Biometric is used for fingerprint, facial recognition, and other biometric authe
 | [Allow users to log on using biometrics](https://noverse.dev/policies?p=Biometrics*Biometrics_EnableCredProv) | `HKLM\SOFTWARE\Policies\Microsoft\Biometrics\Credential Provider` | `Enabled` |
 | [Allow domain users to log on using biometrics](https://noverse.dev/policies?p=Biometrics*Biometrics_EnableDomainCredProv) | `HKLM\SOFTWARE\Policies\Microsoft\Biometrics\Credential Provider` | `Domain Accounts` |
 | [Configure enhanced anti-spoofing](https://noverse.dev/policies?p=Biometrics*Face_EnhancedAntiSpoofing) | `HKLM\SOFTWARE\Policies\Microsoft\Biometrics\FacialFeatures` | `EnhancedAntiSpoofing` |
-

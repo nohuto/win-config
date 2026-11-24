@@ -1,5 +1,7 @@
 # Microsoft Accounts
 
+Local Security Policy option "Accounts: Block Microsoft accounts" (Security Settings > Local Policies > Security Options, [Accounts: Block Microsoft accounts](https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/security-policy-settings/accounts-block-microsoft-accounts)):
+
 > "*This setting prevents using the Settings app to add a Microsoft account for single sign-on (SSO) authentication for Microsoft services and some background services, or using a Microsoft account for single sign-on to other applications or services.*
 >
 > *There are two options if this setting is enabled:*  
@@ -18,4 +20,3 @@ services.exe	RegSetValue	HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
 // Users can't add or log on with Microsoft accounts
 services.exe	RegSetValue	HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\NoConnectedUser	Type: REG_DWORD, Length: 4, Data: 3
 ```
-

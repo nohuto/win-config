@@ -1,0 +1,37 @@
+File	First key	Last key
+01.tsv	HKCU\AppEvents\EventLabels\DisNumbersSound	HKLM\Software\Microsoft\FuzzyDS\LANG_0401
+02.tsv	HKLM\Software\Microsoft\FuzzyDS\LANG_0401	HKLM\Software\Microsoft\Input\Locales\loc_0411\PosNextWord\E272
+03.tsv	HKLM\Software\Microsoft\Input\Locales\loc_0411\PosNextWord\E277	HKLM\Software\Microsoft\Input\Settings\proc_1\loc_0428\im_1
+04.tsv	HKLM\Software\Microsoft\Input\Settings\proc_1\loc_0428\im_1	HKLM\Software\Microsoft\Internet Explorer\ActiveX Compatibility\{EF28418F-FFB2-11D0-861A-00A0C903A97F}\
+05.tsv	HKLM\Software\Microsoft\Internet Explorer\ActiveX Compatibility\{EFBD14F0-6BFB-11CF-9177-00805F8813FF}\	HKLM\SOFTWARE\Microsoft\MediaPlayer\Battery\Presets\SpidersLastMoment\PostShiftInfo\0\
+06.tsv	HKLM\SOFTWARE\Microsoft\MediaPlayer\Battery\Presets\SpidersLastMoment\PostShiftInfo\0\	HKLM\SOFTWARE\Microsoft\Multimedia\WMPlayer\Extensions\.au\
+07.tsv	HKLM\SOFTWARE\Microsoft\Multimedia\WMPlayer\Extensions\.au\	HKLM\Software\Microsoft\PointOfService\POSPrinter\ESCPOS2\NonStandardCodePages\tcvn-3_1
+08.tsv	HKLM\Software\Microsoft\PointOfService\POSPrinter\ESCPOS2\NonStandardCodePages\tcvn-3_1	HKLM\SOFTWARE\Microsoft\PolicyManager\default\ADMX_MMCSnapins\MMC_PublicKey
+09.tsv	HKLM\SOFTWARE\Microsoft\PolicyManager\default\ADMX_MMCSnapins\MMC_PublicKey	HKLM\SOFTWARE\Microsoft\PolicyManager\default\ADMX_UserExperienceVirtualization\MicrosoftOffice2016PowerPointBackup
+10.tsv	HKLM\SOFTWARE\Microsoft\PolicyManager\default\ADMX_UserExperienceVirtualization\MicrosoftOffice2016PowerPointBackup	HKLM\SOFTWARE\Microsoft\PolicyManager\default\FileExplorer\DisableGraphRecentItems
+11.tsv	HKLM\SOFTWARE\Microsoft\PolicyManager\default\FileExplorer\DisableGraphRecentItems	HKLM\SOFTWARE\Microsoft\PolicyManager\default\InternetExplorer\InternetZoneEnableCrossSiteScriptingFilter
+12.tsv	HKLM\SOFTWARE\Microsoft\PolicyManager\default\InternetExplorer\InternetZoneEnableCrossSiteScriptingFilter	HKLM\SOFTWARE\Microsoft\PolicyManager\default\SystemServices\ConfigureXboxLiveGameSaveServiceStartupMode
+13.tsv	HKLM\SOFTWARE\Microsoft\PolicyManager\default\SystemServices\ConfigureXboxLiveGameSaveServiceStartupMode	HKLM\SOFTWARE\Microsoft\SystemSettings\SettingId\SystemSettings_CapabilityAccess_Microphone_ClassicGlobal\
+14.tsv	HKLM\SOFTWARE\Microsoft\SystemSettings\SettingId\SystemSettings_CapabilityAccess_Microphone_RecentActivityList\	HKLM\SOFTWARE\Microsoft\SystemSettings\SettingId\SystemSettings_Taskbar_MultiMon\
+15.tsv	HKLM\SOFTWARE\Microsoft\SystemSettings\SettingId\SystemSettings_Taskbar_MultiMon\	HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SeCEdit\Reg Values\MACHINE/System/CurrentControlSet/Control/SecurePipeServers/Winreg/AllowedPaths/Machine
+16.tsv	HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SeCEdit\Reg Values\MACHINE/System/CurrentControlSet/Control/SecurePipeServers/Winreg/AllowedPaths/Machine	HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\ActionCenter\Quick Actions\All\SystemSettings_Display_QuickAction_ColorProfile
+17.tsv	HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\ActionCenter\Quick Actions\All\SystemSettings_Display_QuickAction_ColorProfile	HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\shell\Windows.DisconnectNetworkDrive
+18.tsv	HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\shell\Windows.DisconnectNetworkDrive	HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{5c4f28b5-f869-4e84-8e60-f11db97c5cc7}\TopViews\{00000000-0000-0000-0000-000000000000}
+19.tsv	HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{5c4f28b5-f869-4e84-8e60-f11db97c5cc7}\TopViews\{00000000-0000-0000-0000-000000000000}	HKLM\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Lockdown_Zones\4\
+20.tsv	HKLM\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Lockdown_Zones\4\	HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\MMDevices\DefaultDeviceHeuristics\Default\Role_5\Factor_3
+21.tsv	HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\MMDevices\DefaultDeviceHeuristics\Default\Role_5\Factor_3	HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\PnpResources\Registry\HKLM\Software\Motorola\SMSERIAL\CurrentVersion\992\DialInitBB
+22.tsv	HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\PnpResources\Registry\HKLM\Software\Motorola\SMSERIAL\CurrentVersion\992\DialInitCS	HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\XWizards\Components\{A86CA2F1-AF74-4A74-980B-E185D4CA01B0}\Parents\{782FC20A-81CF-43DE-A625-072155BCD30C}\
+23.tsv	HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\XWizards\Components\{A86CA2F1-AF74-4A74-980B-E185D4CA01B0}\Parents\{8C1645B0-9864-465E-BE75-990B030E4B11}\	HKLM\Software\Microsoft\WindowsRuntime\ActivatableClassId\Windows.AI.MachineLearning.LearningModelSession
+24.tsv	HKLM\Software\Microsoft\WindowsRuntime\ActivatableClassId\Windows.AI.MachineLearning.LearningModelSession	HKLM\Software\Microsoft\WindowsRuntime\ActivatableClassId\Windows.Devices.PointOfService.UnifiedPosErrorData
+25.tsv	HKLM\Software\Microsoft\WindowsRuntime\ActivatableClassId\Windows.Devices.PointOfService.UnifiedPosErrorData	HKLM\Software\Microsoft\WindowsRuntime\ActivatableClassId\Windows.Internal.Shell.PlatformExtensions.DesktopCapturePicker.CapturePickerDesktopDataSource
+26.tsv	HKLM\Software\Microsoft\WindowsRuntime\ActivatableClassId\Windows.Internal.Shell.PlatformExtensions.ModalExperienceManagedCredUX	HKLM\Software\Microsoft\WindowsRuntime\ActivatableClassId\Windows.Networking.NetworkOperators.ProvisioningAgent
+27.tsv	HKLM\Software\Microsoft\WindowsRuntime\ActivatableClassId\Windows.Networking.NetworkOperators.ProvisioningAgent	HKLM\Software\Microsoft\WindowsRuntime\ActivatableClassId\Windows.UI.Internal.Input.InputEdgyNotificationSource
+28.tsv	HKLM\Software\Microsoft\WindowsRuntime\ActivatableClassId\Windows.UI.Internal.Input.InputEdgyNotificationSource	HKLM\Software\Microsoft\WindowsRuntime\ActivatableClassId\Windows.UI.Xaml.Controls.TimePickerFlyoutPresenter
+29.tsv	HKLM\Software\Microsoft\WindowsRuntime\ActivatableClassId\Windows.UI.Xaml.Controls.TimePickerFlyoutPresenter	HKLM\Software\Microsoft\WindowsRuntime\ActivatableClassId\WindowsUdk.Foundation.Metadata.ApiInformation
+30.tsv	HKLM\Software\Microsoft\WindowsRuntime\ActivatableClassId\WindowsUdk.Foundation.Metadata.ApiInformation	HKLM\SOFTWARE\ODBC\ODBCINST.INI\Microsoft Excel Driver (*.xls)\
+31.tsv	HKLM\SOFTWARE\ODBC\ODBCINST.INI\Microsoft Excel Driver (*.xls)\	HKLM\SYSTEM\CurrentControlSet\Control\MediaCategories\{915DAEC4-A434-11d2-AC52-00C04F8EFB68}
+32.tsv	HKLM\SYSTEM\CurrentControlSet\Control\MediaCategories\{915DAEC4-A434-11d2-AC52-00C04F8EFB68}	HKLM\SYSTEM\CurrentControlSet\Control\Notifications
+33.tsv	HKLM\SYSTEM\CurrentControlSet\Control\Notifications	HKLM\SYSTEM\CurrentControlSet\Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\b28a6829-c5f7-444e-8f61-10e24e85c532\1
+34.tsv	HKLM\SYSTEM\CurrentControlSet\Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\b28a6829-c5f7-444e-8f61-10e24e85c532\1	HKLM\SYSTEM\CurrentControlSet\Control\WMI\Security\
+35.tsv	HKLM\SYSTEM\CurrentControlSet\Control\WMI\Security\	HKLM\SYSTEM\CurrentControlSet\Services\ServiceModelService 3.0.0.0\Performance
+36.tsv	HKLM\SYSTEM\CurrentControlSet\Services\ServiceModelService 3.0.0.0\Performance	HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\WinTrust\Trust Providers\Software Publishing

@@ -1,6 +1,6 @@
 # Disable Cross-Device Experiences
 
-Disables Cross-Device experiences (allows you to use `Share Across Devices`/`Nearby Sharing` functionalities) & share accross devices. With `Share across devices`, you can continue app experiences on other devices connected to your account (set to `My device only` by default).
+Disables Cross-Device experiences (allows you to use `Share Across Devices`/`Nearby Sharing` functionalities) & share across devices. With `Share across devices`, you can continue app experiences on other devices connected to your account (set to `My device only` by default).
 
 ### SystemSettings Captures
 
@@ -34,6 +34,8 @@ L"BluetoothLastDisabledNearShare",
 L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CDP\\SettingsPage",
 L"WifiLastDisabledNearShare",
 ```
+
+Settings writes these two values when it turns 'Nearby sharing' off as Bluetooth (`BluetoothLastDisabledNearShare`) or Wi-Fi (`WifiLastDisabledNearShare`) were disabled, these seem to only control toasts (I guess).
 
 - [privacy/assets/pseudocode | crossdev-SharedExperiencesSingleton.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/crossdev-SharedExperiencesSingleton.c)
 

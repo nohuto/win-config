@@ -1,6 +1,6 @@
 # Disable Sleep Study
 
-Sleep Study tracks modern sleep states to analyze energy usage and pinpoint battery drain. It disables Sleep Study by making ETL logs read-only, disabling related diagnostics, and turning off the scheduled task.
+Sleep Study tracks modern sleep states to analyze energy usage and pinpoint battery drain, it disables its accounting in the kernel (`SleepStudyDisabled`, `SleepStudyDeviceAccountingLevel`), in WDF (`WdfGlobalSleepStudyDisabled`, `SleepstudyState`) and in the Sleep Study helper library (`SleepstudyAccountingEnabled`), currently disables the three diagnostic channels below and the `\Microsoft\Windows\Power Efficiency Diagnostics\AnalyzeSystem` task.
 
 ```powershell
 wevtutil sl Microsoft-Windows-SleepStudy/Diagnostic /e:false
@@ -12,6 +12,8 @@ svchost.exe	RegSetValue	HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Ch
 wevtutil sl Microsoft-Windows-UserModePowerService/Diagnostic /e:false
 svchost.exe	RegSetValue	HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-UserModePowerService/Diagnostic\Enabled	Type: REG_DWORD, Length: 4, Data: 0
 ```
+
+All three are Analytic channels which come without `enabled` (`type="Analytic"` in `sleepstudy-events`, `kernel-processor-power-events` & `usermodepowerservice` manifests), and an Analytic channel is off unless `enabled` says otherwise ([ChannelType](https://learn.microsoft.com/en-us/windows/win32/wes/eventmanifestschema-channeltype-complextype): "The default is false (logging is disabled).").
 
 - [decompiled-pseudocode | FxLibraryGlobalsQueryRegistrySettings.c](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/Wdf01000/FxLibraryGlobalsQueryRegistrySettings.c)
 - [decompiled-pseudocode | PoFxInitPowerManagement.c](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ntoskrnl/PoFxInitPowerManagement.c)
@@ -25,12 +27,34 @@ svchost.exe	RegSetValue	HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Ch
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power";
     "SleepstudyAccountingEnabled" = 1; // SleepstudyHelperAccountingEnabled 
-    "SleepstudyGlobalBlockerLimit" = 3000; // SleepstudyHelperBlockerGlobalLimit (0x0BB8) 
+    "SleepstudyGlobalBlockerLimit" = 3000; // SleepstudyHelperBlockerGlobalLimit (0x0BB8)
     "SleepstudyLibraryBlockerLimit" = 200; // SleepstudyHelperBlockerLibraryLimit (0xC8) 
 
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power";
     "SleepStudyDeviceAccountingLevel" = 4; // PopSleepStudyDeviceAccountingLevel 
     "SleepStudyDisabled" = 0; // PopSleepStudyDisabled 
+```
+
+`SleepStudyDisabled = 1` causes [`PoFxInitPowerManagement`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ntoskrnl/PoFxInitPowerManagement.c) to skip the *Sleep Study* device accounting group selection, `SleepStudyDeviceAccountingLevel` only seems to matter while Sleep Study is on:
+
+```c
+// PoFxInitPowerManagement (25H2)
+
+if ( !PopSleepStudyDisabled )
+{
+  if ( (PopSleepStudyDeviceAccountingLevel & 1) != 0 )
+  {
+    PopFxAccountingGroup = 1;
+  }
+  else if ( (PopSleepStudyDeviceAccountingLevel & 2) != 0 )
+  {
+    PopFxAccountingGroup = 2;
+  }
+  else if ( (PopSleepStudyDeviceAccountingLevel & 4) != 0 )
+  {
+    PopFxAccountingGroup = 3;
+  }
+}
 ```
 
 ```powershell
@@ -62,10 +86,12 @@ svchost.exe	RegSetValue	HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Ch
 \Registry\Machine\SYSTEM\ControlSet001\Enum\USB\VID_0B05&PID_1939&MI_00\7&40fe908&0&0000\Device Parameters\Wdf : SleepstudyState
 \Registry\Machine\SYSTEM\ControlSet001\Enum\USB\VID_0CF2&PID_A102&MI_00\8&7b0cf2a&0&0000\Device Parameters\Wdf : SleepstudyState
 ```
-```powershell
-\Registry\Machine\SYSTEM\ControlSet001\Services\NDIS\Parameters : EnableNicAutoPowerSaverInSleepStudy
-\Registry\Machine\SYSTEM\ControlSet001\Services\NDIS\SharedState : EnableNicAutoPowerSaverInSleepStudy
-\Registry\Machine\SYSTEM\ControlSet001\Control\Session Manager\Power : SleepStudyBufferSizeInMB
-\Registry\Machine\SYSTEM\ControlSet001\Control\Session Manager\Power : SleepStudyTraceDirectory
-```
 
+The per device `SleepstudyState = 0` (USB devices) does nothing, if `WdfGlobalSleepStudyDisabled = 1`:
+
+```c
+// FxPkgPnp::SleepStudyEvaluateParticipation (25H2)
+
+if ( !this->m_PowerPolicyMachine.m_Owner || FxLibraryGlobals.SleepStudyDisabled == 1 ) // WdfGlobalSleepStudyDisabled
+  goto LABEL_20;
+```

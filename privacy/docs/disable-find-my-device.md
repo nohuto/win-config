@@ -4,6 +4,8 @@
 >
 > *- This setting works for any Windows device, such as a PC, laptop, Surface, or Surface Pen. It needs to be turned on before you can use it.*  
 > *- You can't use it with a work or school account, and it doesn't work for iOS devices, Android devices, or Xbox One consoles.*"
+>
+> — Microsoft, [Find and lock a lost Windows device](https://support.microsoft.com/en-us/accounts-billing/security/find-and-lock-a-lost-windows-device)
 
 ## [Windows Policies](https://noverse.dev/policies)
 

@@ -15,5 +15,5 @@ When settings synchronization is turned on, a user's settings are synced across 
 | [Do not sync desktop personalization](https://noverse.dev/policies?p=SettingSync*DisableDesktopThemeSettingSync) | `HKLM\Software\Policies\Microsoft\Windows\SettingSync` | `DisableDesktopThemeSettingSync`<br>`DisableDesktopThemeSettingSyncUserOverride` |
 | [Do not sync browser settings](https://noverse.dev/policies?p=SettingSync*DisableWebBrowserSettingSync) | `HKLM\Software\Policies\Microsoft\Windows\SettingSync` | `DisableWebBrowserSettingSync`<br>`DisableWebBrowserSettingSyncUserOverride` |
 | [Do not sync on metered connections](https://noverse.dev/policies?p=SettingSync*DisableSyncOnPaidNetwork) | `HKLM\Software\Policies\Microsoft\Windows\SettingSync` | `DisableSyncOnPaidNetwork` |
-| [Do not sync start settings](https://noverse.dev/policies?p=SettingSync*DisableStartLayoutSettingSync) | `HKLM\Software\Policies\Microsoft\Windows\SettingSync` | `DisableStartLayoutSettingSync`<br>`DisableStartLayoutSettingSyncUserOverride` |
-
+| [Do not sync accessibility settings](https://noverse.dev/policies?p=SettingSync*DisableAccessibilitySettingSync) | `HKLM\Software\Policies\Microsoft\Windows\SettingSync` | `DisableAccessibilitySettingSync`<br>`DisableAccessibilitySettingSyncUserOverride` |
+| [Do not sync language preferences settings](https://noverse.dev/policies?p=SettingSync*DisableLanguageSettingSync) | `HKLM\Software\Policies\Microsoft\Windows\SettingSync` | `DisableLanguageSettingSync`<br>`DisableLanguageSettingSyncUserOverride` |

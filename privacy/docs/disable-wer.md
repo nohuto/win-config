@@ -8,7 +8,7 @@
 > *- The actual generation and transmission of the report is performed by the Windows Error Reporting Dll (Wer.dll). The library includes all the functions used internally by the WER engine and also some exported API that the applications can use to interact with Windows Error Reporting (documented at https://docs.microsoft.com/en-us/windows/win32/api/_wer/ ). Note that some WER APIs are also implemented in Kernelbase.dll and Faultrep.dll.*  
 > *- The Windows User Mode Crash Reporting DLL (Faultrep.dll) contains common WER stub code that is used by system modules (Kernel32.dll, WER service, and so on) when a user-mode application crashes or hangs. It includes services for creating a crash signature and reports a hang to the WER service, managing the correct security context for the report creation and transmission (which includes the creation of the WerFault executable under the correct security token).*
 >
-> — Windows Internals, [E7, P2: 'Windows Error Reporting (WER)'](https://github.com/nohuto/Windows-Books/releases/download/7th-Edition/Windows-Internals-E7-P1.pdf)
+> — Windows Internals, [E7, P2: 'Windows Error Reporting (WER)'](https://github.com/nohuto/Windows-Books/releases/download/7th-Edition/Windows-Internals-E7-P2.pdf)
 
 [Windows Error Reporting flow](https://learn.microsoft.com/en-us/windows/win32/wer/using-wer#windows-error-reporting-flow-for-crashes-non-response-and-kernel-faults) for crashes, non-response, and kernel faults:
 1. The problem event occurs.
@@ -21,11 +21,24 @@
 
 [Error-Reporting.txt](https://github.com/nohuto/regkit/blob/main/assets/records/Error-Reporting.txt) shows all read values on boot (`\Registry\Machine\SOFTWARE\Microsoft\WINDOWS\Windows Error Reporting`) / [WER Settings](https://learn.microsoft.com/en-us/windows/win32/wer/wer-settings) for some details.
 
+## Values
+
+| Value | Default | Meaning |
+| --- | --- | --- |
+| `DontShowUI` | `0` | "Prevent display of the user interface for critical errors", [WER Settings](https://learn.microsoft.com/en-us/windows/win32/wer/wer-settings): 0 = UI, 1 = No UI |
+| `DontSendAdditionalData` | `0` | "Do not send additional data" |
+| `DisableArchive` | `0` | No report archive ("Configure Report Archive") |
+| `MaxArchiveCount` | `500` | Archive size limit, policy allows 0-5000 |
+| `Consent\DefaultOverrideBehavior` | `0` | The default consent overrides custom consent settings ("Ignore custom consent settings") |
+| `Consent\NewUserDefaultConsent` | - | Copied as `DefaultConsent` for users that have none (`CSettings::CreatePerUserDefaultConsent`), 0 = always ask |
+| `DisableWerUpload` | `0` | Undocumented WER setting (ID `0x29` in the settings table), the name says report upload off |
+| `DisableEnterpriseAuthProxy` | `0` | Undocumented WER setting (ID `0x2a`), the name says the enterprise authenticated proxy isn't used for uploads |
+| `LiveReportFlushInterval` | `1440` | Undocumented WER setting (ID `0x1c`), interval for flushing live kernel reports |
+
 ## Services/Tasks
 
 | Task | Description | Action Command |
 | --- | --- | --- |
-| `\Microsoft\Windows\ErrorDetails\EnableErrorDetailsUpdate` | - | - |
 | `\Microsoft\Windows\Windows Error Reporting\QueueReporting` | Windows Error Reporting task to process queued reports. | `%windir%\system32\wermgr.exe -upload` |
 
 | Name | Description | Type | Dependencies | Command Line |
@@ -69,7 +82,16 @@ CrashDumpEnabled REG_DWORD 0x7 = Automatic memory dump
 CrashDumpEnabled REG_DWORD 0x1 and FilterPages REG_DWORD 0x1 = Active memory dump
 ```
 
-There're two values named [`CrashDumpEnabled.New`](https://github.com/nohuto/regkit/blob/main/assets/records/CrashControl.txt) & [`CrashDumpEnabled.Old`](https://github.com/nohuto/regkit/blob/main/assets/records/CrashControl.txt), I haven't looked into them yet, see this as note for future reference.
+[`CrashDumpEnabled.New`](https://github.com/nohuto/regkit/blob/main/assets/records/CrashControl.txt) & [`CrashDumpEnabled.Old`](https://github.com/nohuto/regkit/blob/main/assets/records/CrashControl.txt) are temporary values of `WerFault.exe`, when Microsoft requests a full kernel dump for a crash report, `CKernelReport::EnableFullKernelDump` sets `CrashDumpEnabled` to 1 (complete) or 2 (kernel) and keeps the old and the new value there, `CKernelReport::RestoreDumpSettings` puts the old value back later.
+
+```c
+// CKernelReport::EnableFullKernelDump (23H2)
+
+CRegSetting::Initialize(v20, 0LL, L"SYSTEM\\CurrentControlSet\\Control\\CrashControl", L"CrashDumpEnabled.Old", 0LL);
+CRegSetting::Save((CRegSetting *)v20, v7, &v32, 4u, v13); // previous CrashDumpEnabled
+CRegSetting::Initialize(v20, 0LL, L"SYSTEM\\CurrentControlSet\\Control\\CrashControl", L"CrashDumpEnabled.New", 0LL);
+CRegSetting::Save((CRegSetting *)v20, v8, &v34, 4u, v14); // 1 or 2
+```
 
 ```
 \Registry\Machine\SYSTEM\ControlSet001\Control\CrashControl : CrashDumpEnabled.New
@@ -129,7 +151,7 @@ if ( !SeLpacEnableWatsonReporting )
 return DbgkQueueUserExceptionReport();
 ```
 
-WER replaced Dr. Watson, which was included in Windows XP, but it can still be used (see WER flow [above](https://noverse.dev/docs/win-config/privacy/disable-wer/)) "*4. WER sends the report to Microsoft (Watson Server) if the user consented.*".
+WER replaced Dr. Watson (`drwtsn32.exe`, Windows XP), which Windows doesn't include anymore, (see WER flow [above](https://noverse.dev/docs/win-config/privacy/disable-wer/)) "*4. WER sends the report to Microsoft (Watson Server) if the user consented.*".
 
 ### AerMultiErrorDisabled
 
@@ -171,7 +193,7 @@ See [privacy/disable-general-telemetry](https://noverse.dev/docs/win-config/priv
 
 #### Values
 
-| `0` or `1` | Always ask the user whether to send an error report. This is the default value. |
+| `0` or `1` | Always ask the user whether to send an error report. Unattend default, Windows installs `DefaultConsent=4`. |
 | --- | --- |
 | `2` | Ask the user for everything except for basic parameters such as application name, version, and module name that are sent automatically. |
 | `3` | Ask the user for everything except for basic parameters that are likely to be safe, such as application name, version, and module name, and data. Send these items automatically. |
@@ -191,12 +213,9 @@ Disables Windows Error Reporting.
 
 | Policy | Key Path | Value Name |
 | --- | --- | --- |
-| [Do not send a Windows error report when a generic driver is installed on a device](https://noverse.dev/policies?p=DeviceSetup*DeviceInstall_GenericDriverSendToWER) | `HKLM\Software\Policies\Microsoft\Windows\DeviceInstall\Settings` | `DisableSendGenericDriverNotFoundToWER` |
-| [Prevent Windows from sending an error report when a device driver requests additional software during installation](https://noverse.dev/policies?p=DeviceSetup*DeviceInstall_RequestAdditionalSoftwareSendToWER) | `HKLM\Software\Policies\Microsoft\Windows\DeviceInstall\Settings` | `DisableSendRequestAdditionalSoftwareToWER` |
 | [Disable Windows Error Reporting](https://noverse.dev/policies?p=ErrorReporting*WerDisable_2) | `HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting` | `Disabled` |
 | [Disable logging](https://noverse.dev/policies?p=ErrorReporting*WerNoLogging_1) | `HKCU\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting` | `LoggingDisabled` |
 | [Automatically send memory dumps for OS-generated error reports](https://noverse.dev/policies?p=ErrorReporting*WerAutoApproveOSDumps_1) | `HKCU\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting` | `AutoApproveOSDumps` |
 | [Automatically send memory dumps for OS-generated error reports](https://noverse.dev/policies?p=ErrorReporting*WerAutoApproveOSDumps_2) | `HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting` | `AutoApproveOSDumps` |
 | [Enable Device Health Attestation Monitoring and Reporting](https://noverse.dev/policies?p=TPM*OptIntoDSHA_Name) | `HKLM\Software\Policies\Microsoft\DeviceHealthAttestationService` | `EnableDeviceHealthAttestationService` |
 | [Enable Persistent Time Stamp](https://noverse.dev/policies?p=Reliability*EE_EnablePersistentTimeStamp) | `HKLM\Software\Policies\Microsoft\Windows NT\Reliability` | `TimeStampEnabled`<br>`TimeStampInterval` |
-

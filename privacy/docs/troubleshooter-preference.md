@@ -1,21 +1,19 @@
 # Troubleshooter Preference
 
-It's set to `Ask me before running` by default.
+Without a `UserPreference` value `MitigationClient.dll` uses a OneSettings value first, then `Ask me before running` on Insider builds, then an edition default (`Ask me before running` on Home/Pro, `Don't run any` on Enterprise/Education).
 
 | Option | Description |
 | ---- | ---- |
 | Run automatically, don't notify me | Windows will automatically run recommended troubleshooters for problems detected on your device without bothering you. |
 | Run automatically, then notify me | Windows will tell you after recommended troubleshooters have solved a problem so you know what happened. |
-| Ask me before running (default) | We'll let you know when recommended troubleshooting is available. You can review the problem and changes before running the troubleshooters. |
-| Don't run any | Windows will automatically run critical troubleshooters but won't recommend troubleshooting for other problems. You will not get notifications for known problems, and you will need to manually troubleshoot these problems on your device. |
+| Ask me before running (default on Home/Pro) | We'll let you know when recommended troubleshooting is available. You can review the problem and changes before running the troubleshooters. |
+| Don't run any | Turns troubleshooting off completely, critical troubleshooters included. |
 
 | Name | Description | Type | Dependencies | Command Line |
 | --- | --- | --- | --- | --- |
 | `DPS` | The Diagnostic Policy Service enables problem detection, troubleshooting and resolution for Windows components. If this service is stopped, diagnostics will no longer function. | Win32 Share Process (32) | - | C:\Windows\System32\svchost.exe -k LocalServiceNoNetwork -p |
 | `TroubleshootingSvc` | Enables automatic mitigation for known problems by applying recommended troubleshooting. If stopped, your device will not get recommended troubleshooting for problems on your device. | Win32 Share Process (32) | rpcss | C:\Windows\system32\svchost.exe -k netsvcs -p |
 | `diagsvc` | Executes diagnostic actions for troubleshooting support | Win32 Share Process (32) | RpcSs | C:\Windows\System32\svchost.exe -k diagnostics |
-
-These get disabled in the `Don't run any` option.
 
 ### SystemSettings Captures
 

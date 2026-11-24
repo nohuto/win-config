@@ -1,11 +1,10 @@
 # Disable Touch & Tablet
 
 Disable the touch screen feature of your device with:
+
 ```powershell
 Get-PnpDevice -PresentOnly:$false | ? FriendlyName -eq 'HID-compliant touch screen' | % { pnputil /disable-device "$($_.InstanceId)" }
 ```
-
-"Tablet mode makes Windows more touch friendly and is helpful on touch capable devices."
 
 ## Miscellaneous Values
 
@@ -106,12 +105,12 @@ Everything listed below is based on personal findings. Mistakes may exist, some 
 - [peripheral/assets/pseudocode | touch-InitializeInputSettingsGlobals.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/pseudocode/touch-InitializeInputSettingsGlobals.c)
 - [peripheral/assets/pseudocode | touch-IsTouchDisabled.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/pseudocode/touch-IsTouchDisabled.c)
 
-```
+```powershell
 TabletModeActivated
 TabletModeCoverWindow
 TabletModeInputHandler
 ```
-```c
+```powershell
 \Registry\Machine\SOFTWARE\Microsoft\TabletTip\1.7 : EnableDesktopModeAutoInvoke
 \Registry\Machine\SOFTWARE\Microsoft\TabletTip\1.7 : EnableDesktopModePenAutoInvoke
 \Registry\Machine\SOFTWARE\Microsoft\TabletTip\1.7 : LastTipXPositionOnScreen
@@ -121,7 +120,20 @@ TabletModeInputHandler
 \Registry\Machine\SOFTWARE\Microsoft\TabletTip\1.7 : TouchKeyboardTapInvoke
 ```
 
+### Touch Keyboard Values
+
+`HKCU\Software\Microsoft\TabletTip\1.7` includes the touch keyboard toggles of `Time & language > Typing` ([en-US strings of 23H2 Settings app](https://github.com/nohuto/win-config/blob/main/assets/settings-app/23H2/strings.txt)), `SettingsHandlers_Keyboard.dll` reads the on/off toggles in `_TouchKeyboardGetBoolValue`, missing value = on.
+
+| Value | Settings text |
+| --- | --- |
+| `EnableAutoShiftEngage` | '*Capitalize the first letter of each sentence*' |
+| `EnableDoubleTapSpace` | '*Add a period after I double-tap the Spacebar*' |
+| `EnableKeyAudioFeedback` | '*Play key sounds as I type*' |
+| `TouchKeyboardTapInvoke` | '*Show the touch keyboard*' (*Never*, *When no keyboard attached*, *Always*) |
+| `TipbandDesiredVisibility` | touch keyboard icon in the taskbar (`SettingsHandlers_DesktopTaskbar.dll`) |
+
 Windows 7/XP:
+
 ```json
 "HKLM\\SOFTWARE\\Policies\\Microsoft\\TabletTip\\1.7": {
     "DisablePrediction": { "Type": "REG_DWORD", "Data": 1 },
