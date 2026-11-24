@@ -66,7 +66,7 @@ Most apps will work fine with `443` + `TCP`, games often need specific TCP Remot
 After finishing the parts above you might run into scenarios where apps/games won't work as a connection gets blocked. To find out what port/protocol must be added to `$rules`, enable failure logging via:
 
 ```powershell
-auditpol /set /category:System /subcategory:'Filtering Platform Connection' /failure:enable # /failure:disable afterwards
+auditpol /set /subcategory:"Filtering Platform Connection" /failure:enable # /failure:disable afterwards
 ```
 
 Reproduce the same issue, then open `Event Viewer` and go to `Windows Logs > Security`, click on `Filter Current Log` and add event ID [`5157`](https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-5157) (where `<All Event IDs>` is shown). Press `CTRL + F`, and search for the application name.
@@ -115,7 +115,8 @@ Here we can see that we've to allow RemotePort `3724` (outbound, TCP):
 | Exterior Gateway Protocol (EGP) | 8 |
 | Gateway-Gateway Protocol (GGP) | 3 |
 | Host Monitoring Protocol (HMP) | 20 |
-| Internet Group Management Protocol (IGMP) | 88 |
+| Internet Group Management Protocol (IGMP) | 2 |
+| ICMP for IPv6 (ICMPv6) | 58 |
 | MIT Remote Virtual Disk (RVD) | 66 |
 | OSPF Open Shortest Path First | 89 |
 | PARC Universal Packet Protocol (PUP) | 12 |
@@ -180,50 +181,50 @@ $rules = @(
 ```c
 // {profile} = always 'DomainProfile'/'StandardProfile'/'PublicProfile'
 
-// Firewall state - 0 = Off, 1 = On
+// Firewall state - 0 = Off, 1 = On (default)
 HKLM\System\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\{profile}\EnableFirewall	Type: REG_DWORD
 
-// Inbound connections - 0 = Allow, 1 = Block
+// Inbound connections - 0 = Allow, 1 = Block (default)
 // 'Block all connections' - DefaultInboundAction = 1 & DoNotAllowExceptions = 1 (DoNotAllowExceptions gets deleted otherwise)
 HKLM\System\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\{profile}\DefaultInboundAction
 HKLM\System\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\{profile}\DoNotAllowExceptions	
 
-// Outbound connections - 0 = Allow, 1 = Block
+// Outbound connections - 0 = Allow (default), 1 = Block
 HKLM\System\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\{profile}\DefaultOutboundAction	Type: REG_DWORD
 
 // --- Settings ---
 
-// Display a notification - 0 = On, 1 = Off
+// Display a notification - 0 = On (default), 1 = Off
 HKLM\System\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\{profile}\DisableNotifications	Type: REG_DWORD
 
-// Allow unicast response - 0 = On, 1 = Off
+// Allow unicast response - 0 = On (default, value not present), 1 = Off
 HKLM\System\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\{profile}\DisableUnicastResponsesToMulticastBroadcast	Type: REG_DWORD
 
 // --- Logging ---
 
-// Name
+// Name - default %systemroot%\system32\LogFiles\Firewall\pfirewall.log (REG_EXPAND_SZ)
 HKLM\System\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\{profile}\Logging\LogFilePath	Type: REG_SZ
 
-// Size limit (KB) - Data: 4096 = 4,096KB
+// Size limit (KB) - default 4096
 HKLM\System\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\{profile}\Logging\LogFileSize	Type: REG_DWORD
 
-// Log dropped packets - 0 = Off, 1 = On
+// Log dropped packets - 0 = Off (default), 1 = On
 HKLM\System\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\{profile}\Logging\LogDroppedPackets	Type: REG_DWORD
 
-// Log successful connections - 0 = Off, 1 = On 
+// Log successful connections - 0 = Off (default), 1 = On
 HKLM\System\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\{profile}\Logging\LogSuccessfulConnections	Type: REG_DWORD
 ```
 
 ## Firewall Service
 
-Disabling the firewall service (`Disable Services/Driver`) can break:
-- Microsoft Store & UWP apps
-- `winget` / app deployment
-- Windows Sandbox
-- Xbox networking
-- Modern applications can fail to install or update
-- Activation of Windows via phone
-- Application or OS incompatibilities that depend on Windows Firewall
+`Disable Services/Driver` suboption disables `mpssvc` (Windows Defender Firewall), `mpsdrv` (Windows Defender Firewall Authorization Driver) & `BFE` (Base Filtering Engine), MS doesn't support it:
 
-The proper method to disable the Windows Firewall is to disable the Windows Firewall Profiles and leave the service running.
+> "*Stopping the Windows Firewall service isn't supported by Microsoft and can cause problems, including: Start menu can stop working, Modern applications can fail to install or update, Activation of Windows via phone fails, Application or OS incompatibilities that depend on Windows Firewall*
+>
+> *The proper method to disable the Windows Firewall is to disable the Windows Firewall Profiles and leave the service running.*"
+>
+> — Microsoft, [Manage Windows Firewall with the command line](https://learn.microsoft.com/en-us/windows/security/operating-system-security/network-security/windows-firewall/configure-with-command-line)
 
+E.g. package installs (Microsoft Store, UWP updates, winget MSIX packages) would fail with `0x80073D0A`, "The package could not be installed because the Windows Firewall service is not running" (`ERROR_INSTALL_FIREWALL_SERVICE_NOT_RUNNING` in `winerror.h`).
+
+Means rather turn the profiles off.

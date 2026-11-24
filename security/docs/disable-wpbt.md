@@ -31,6 +31,8 @@ WPBT = Windows Platform Binary Table, which is an ACPI firmware table that can p
 The type must be `REG_DWORD` with a length of `4`, and any nonzero would set `SmpDisableWpbtExecution`:
 
 ```c
+// SmpQueryWpbtExecutionPolicy (23H2)
+
 __int64 __fastcall SmpQueryWpbtExecutionPolicy(__int64 a1, int a2, _DWORD *a3, int a4)
 {
   bool v4; // al
@@ -44,7 +46,7 @@ __int64 __fastcall SmpQueryWpbtExecutionPolicy(__int64 a1, int a2, _DWORD *a3, i
 Whenever that is set, `smss.exe` doesn't call `SmpGetPlatformBinary`, and if a WPBT table exists, it reports status `2`.
 
 ```c
-// SmpLoadDataFromRegistry
+// SmpLoadDataFromRegistry (23H2)
 
 if ( SmpHostSmss )
 {
@@ -64,7 +66,7 @@ if ( SmpHostSmss )
 `SmpPlatformBinaryTableExists` reads the ACPI firmware table for `WPBT`.
 
 ```c
-// SmpPlatformBinaryTableExists
+// SmpPlatformBinaryTableExists (23H2)
 
 SystemInformation[0] = 1094930505; // ACPI
 SystemInformation[1] = 1;
@@ -77,7 +79,7 @@ return NtQuerySystemInformation(SystemFirmwareTableInformation, SystemInformatio
 This would only happen if WPBT is allowed, which is the default behavior (`SmpGetPlatformBinary` builds the command around `wpbbin.exe`):
 
 ```c
-// SmpGetPlatformBinary
+// SmpGetPlatformBinary (23H2)
 
 appended = RtlAppendUnicodeToString(Destination, L"wpbbin.exe");
 if ( HIDWORD(Size) )

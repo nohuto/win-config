@@ -1,6 +1,6 @@
 # defaultuser0 Account
 
-defaultuser0 is a temporary Windows setup account.
+defaultuser0 is a temporary Windows setup account, which is *usually* removed.
 
 ### Miscellaneous Notes
 
@@ -9,22 +9,31 @@ If extracting the whole System32 folder recursively using [strings2](https://git
 `defaultuser0` is only used as a "do not elevate" sentinel in the admin promotion path.
 
 ```c
-// WinMainCommon
-if (!HasActiveLocalAdminAccount()) {
-    MakeActiveUserLocalAdmin();
-}
+// WinMainCommon (23H2)
+
+  if ( v264 )
+  {
+    if ( !(unsigned __int8)HasActiveLocalAdminAccount() )
+    {
+      ActiveUserLocalAdmin = MakeActiveUserLocalAdmin();
 ```
 ```c
-// MakeActiveUserLocalAdmin
-DmGetActiveUserSid(&StringSid);
-LookupAccountSidW(..., &name, &domain, ...);
-if (_wcsicmp(name, L"defaultuser0")) {
-    MakeAUserLocalAdmin(name, domain);
-    DmDeleteTask(L"\\Microsoft\\Windows\\EnterpriseMgmt", 0,
-                L"Login Schedule created by enrollment client");
-} else {
-    // defaultuser0: skip elevation
-}
+// MakeActiveUserLocalAdmin (23H2)
+
+        if ( LookupAccountSidW(0LL, Sid, v6, &cchName, v9, &cchReferencedDomainName, &peUse) )
+        {
+          if ( _wcsicmp(v6, L"defaultuser0") ) // any other account name gets promoted
+          {
+            AUserLocalAdmin = MakeAUserLocalAdmin(v6, v9);
+            v1 = AUserLocalAdmin;
+            if ( AUserLocalAdmin >= 0 )
+            {
+              operator delete[](v9);
+              operator delete[](v6);
+              v3 = DmDeleteTask(
+                     L"\\Microsoft\\Windows\\EnterpriseMgmt",
+                     0LL,
+                     L"Login Schedule created by enrollment client");
 ```
 
 DeviceEnroller.exe = MDM/Enterprise enrollment client that runs enrollment and renewal sessions (e.g., `EnrollEngineInitialize`, `InitiateSessionAsync`, `WaitForEnrollment`) here.

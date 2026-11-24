@@ -12,7 +12,7 @@ NET ACCOUNTS
 [/UNIQUEPW:number] [/DOMAIN]
 ```
 
-Congigure the policy yourself via `Computer Configuration > Windows Settings > Security Settings > Account Policies > Password Policy`:
+Configure the policy yourself via `Computer Configuration > Windows Settings > Security Settings > Account Policies > Password Policy`:
 
 ![](https://github.com/nohuto/win-config/blob/main/security/images/passwordage.png?raw=true)
 

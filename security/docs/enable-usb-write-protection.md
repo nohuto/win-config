@@ -1,8 +1,8 @@
 # Enable USB Write Protection
 
-Restricts write access to USB devices (read only). You can also change it with `diskpart`, by selecting the disk with `select disk` and chaning it to read only with `attributes disk set readonly` (revert it with `attributes disk clear readonly`).
+Denies write access to removable disks (USB sticks, SD cards) through the [Removable Disks: Deny write access](https://noverse.dev/policies?p=RemovableStorage*RemovableDisks_DenyWrite_Access_1) policy & `WriteProtect` (reconnect the device afterwards). You can also change it with `diskpart`, by selecting the disk with `select disk` and changing it to read only with `attributes disk set readonly` (revert it with `attributes disk clear readonly`).
 
-Rather leave USB connection error notifications enabled, unless there's a specific reason for it.
+The suboption turns off Settings > Bluetooth & devices > USB > Connection notifications, rather leave it enabled unless there's a specific reason.
 
 ## [Windows Policies](https://noverse.dev/policies)
 

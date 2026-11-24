@@ -2,6 +2,8 @@
 
 Default is configured to LAN. The Group Download mode combined with Group ID, enables administrators to create custom device groups that share content between devices in the group. Download mode dictates which download sources clients are allowed to use when downloading Windows updates in addition to Windows Update servers.
 
+Delivery Optimization keeps its own settings under `HKEY_USERS\S-1-5-20\SOFTWARE\Microsoft\Windows\CurrentVersion\DeliveryOptimization` (`\Config`, `\Settings`, `doclient.dll` `CPersistenceLocation`) and ignores them while the policy is set.
+
 > "*Delivery Optimization is a cloud-managed, peer-to-peer client; and a downloader service that delivers updates to an organization's networked devices. Delivery Optimization allows devices to download updates from alternate sources (such as other peers on the network), in addition to Microsoft servers. Delivery Optimization combines partial bits from local devices, with partial bits from Microsoft servers to update devices in the network environment. The expected result is reduced bandwidth usage, and a faster update process.*"
 >
 > — Microsoft, [Delivery Optimization](https://learn.microsoft.com/en-us/windows/win32/delivery_optimization/delivery-optimization-portal)
@@ -16,10 +18,6 @@ Default is configured to LAN. The Group Download mode combined with Group ID, en
 | Internet | `3` | Enable Internet peer sources for Delivery Optimization. |
 | Simple | `99` | Simple mode disables the use of Delivery Optimization cloud services completely (for offline environments). Delivery Optimization switches to this mode automatically when the Delivery Optimization cloud services are unavailable, unreachable, or when the content file size is less than 50 MB, as the default. In this mode, Delivery Optimization provides a reliable download experience over HTTP from the download's original source or a Microsoft Connected Cache server, with no peer-to-peer caching. |
 | Bypass | `100` | Starting in Windows 11, this option is deprecated. Don't configure Download mode to '100' (Bypass), which can cause some content to fail to download. If you want to disable peer-to-peer functionality, configure DownloadMode to (0). If your device doesn't have internet access, configure Download Mode to (99). When you configure Bypass (100), the download bypasses Delivery Optimization and uses BITS instead. You don't need to configure this option if you're using Configuration Manager. |
-
-### [Set-DODownloadMode](https://learn.microsoft.com/en-us/powershell/module/deliveryoptimization/set-dodownloadmode?view=windowsserver2025-ps)
-
-Microsoft has a cmdlet for it, but seems like they didn't work much on it yet.
 
 ## [Windows Policies](https://noverse.dev/policies)
 

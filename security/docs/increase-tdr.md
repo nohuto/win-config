@@ -1,6 +1,6 @@
 # Increase TDR
 
-Disabling TDR removes a valuable layer of protection, so it is generally recommended that you keep it enabled.
+Turning detection off (`TdrLevel = 0`) removes the recovery, means a hung GPU then freezes the whole system, so rather leave it enabled.
 
 > "*TDR is a feature in Windows that detects when the graphics card takes longer than expected to complete an operation. It then resets the graphics card to prevent the entire system from becoming unresponsive.*
 >

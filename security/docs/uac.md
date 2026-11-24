@@ -2,8 +2,7 @@
 
 Disabling UAC stops the prompts for administrative permissions, allowing programs and processes to run with elevated rights without user confirmation.
 
-> *User Account Control (UAC) is meant to enable users to run with standard user rights as opposed to administrative rights. Without administrative rights, users cannot accidentally (or deliberately) modify system settings, malware can't normally alter system security settings or disable antivirus software, and users can't compromise the sensitive information of other users on shared computers. Running with standard user rights can thus mitigate the impact of malware and protect sensitive data on shared computers.*
-> *UAC runs most apps with standard user rights and uses a filtered admin token for administrators, elevating only when needed. Disabling UAC removes this filtered-token model and disables UAC file/registry virtualization (Luafv.sys).*"
+> *User Account Control (UAC) is meant to enable users to run with standard user rights as opposed to administrative rights. Without administrative rights, users cannot accidentally (or deliberately) modify system settings, malware can't normally alter system security settings or disable antivirus software, and users can't compromise the sensitive information of other users on shared computers. Running with standard user rights can thus mitigate the impact of malware and protect sensitive data on shared computers.*"
 >
 > — Windows Internals, [E7, P1: 'UAC'](https://github.com/nohuto/Windows-Books/releases/download/7th-Edition/Windows-Internals-E7-P1.pdf)
 
@@ -12,7 +11,17 @@ Disabling UAC stops the prompts for administrative permissions, allowing program
 
 ## [Registry Values](https://learn.microsoft.com/en-us/windows/security/application-security/application-control/user-account-control/settings-and-configuration?tabs=reg)
 
-All of them are under `HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System`.
+All of them are under `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System`.
+
+The kernel reads `EnableLUA`, `EnableVirtualization` and `EnableInstallerDetection` once at the end of boot ([`PsBootPhaseComplete`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/PsBootPhaseComplete.c)) into `KUSER_SHARED_DATA`, missing value = enabled. The prompt values (`ConsentPromptBehaviorAdmin`, `ConsentPromptBehaviorUser`, `PromptOnSecureDesktop`) are read by `appinfo.dll` (`AipGetElevationPromptType`, `AiLaunchConsentUI`) on every elevation.
+
+```c
+// PsBootPhaseComplete (23H2)
+
+        if ( v11 < 0 || HIDWORD(KeyValueInformation) || *(_QWORD *)((char *)&KeyValueInformation + 4) != 0x400000004LL ) // missing, not REG_DWORD, non zero
+        {
+          _interlockedbittestandset((volatile signed __int32 *)(MmWriteableSharedUserData + 752), *v10); // SharedDataFlags bit 1 EnableLUA, 2 EnableVirtualization, 3 EnableInstallerDetection
+```
 
 ### FilterAdministratorToken
 
@@ -61,8 +70,8 @@ Detect application installations and prompt for elevation.
 
 | Value | Meaning |
 | --- | --- |
-| `0x00000001` (`Enabled`) | When an app installation package is detected that requires elevation of privilege, the user is prompted to enter an administrative user name and password. If the user enters valid credentials, the operation continues with the applicable privilege (default for home edition only). |
-| `0x00000000` (`Disabled`) | App installation packages aren't detected and prompted for elevation. Enterprises that are running standard user desktops and use delegated installation technologies, such as Microsoft Intune, should disable this policy setting. In this case, installer detection is unnecessary (default). |
+| `0x00000001` (`Enabled`) | When an app installation package is detected that requires elevation of privilege, the user is prompted to enter an administrative user name and password. If the user enters valid credentials, the operation continues with the applicable privilege (default, the `lua-settings` manifest has `1`). |
+| `0x00000000` (`Disabled`) | App installation packages aren't detected and prompted for elevation. Enterprises that are running standard user desktops and use delegated installation technologies, such as Microsoft Intune, should disable this policy setting. In this case, installer detection is unnecessary (enterprise default). |
 
 ### ValidateAdminCodeSignatures
 

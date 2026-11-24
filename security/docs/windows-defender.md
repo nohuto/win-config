@@ -61,11 +61,13 @@ If using [`native.winoffice.txt`](https://github.com/hagezi/dns-blocklists/blob/
 | [Monitor file and program activity on your computer](https://noverse.dev/policies?p=WindowsDefender*RealtimeProtection_DisableOnAccessProtection) | `HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time Protection` | `DisableOnAccessProtection` |
 | [Turn off real-time protection](https://noverse.dev/policies?p=WindowsDefender*DisableRealtimeMonitoring) | `HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time Protection` | `DisableRealtimeMonitoring` |
 | [Turn on process scanning whenever real-time protection is enabled](https://noverse.dev/policies?p=WindowsDefender*RealtimeProtection_DisableScanOnRealtimeEnable) | `HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time Protection` | `DisableScanOnRealtimeEnable` |
+| [Turn on raw volume write notifications](https://noverse.dev/policies?p=WindowsDefender*RealtimeProtection_DisableRawWriteNotification) | `HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time Protection` | `DisableRawWriteNotification` |
 | [Configure Watson events](https://noverse.dev/policies?p=WindowsDefender*Reporting_DisablegenericrePorts) | `HKLM\Software\Policies\Microsoft\Windows Defender\Reporting` | `DisableGenericRePorts` |
 | [Turn off enhanced notifications](https://noverse.dev/policies?p=WindowsDefender*Reporting_DisableEnhancedNotifications) | `HKLM\Software\Policies\Microsoft\Windows Defender\Reporting` | `DisableEnhancedNotifications` |
 | [Turn on e-mail scanning](https://noverse.dev/policies?p=WindowsDefender*Scan_DisableEmailScanning) | `HKLM\Software\Policies\Microsoft\Windows Defender\Scan` | `DisableEmailScanning` |
 | [This settings controls whether Network Protection is allowed to be configured into block or audit mode on Windows Server.](https://noverse.dev/policies?p=WindowsDefender*AllowNetworkProtectionOnWinServer) | `HKLM\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection` | `AllowNetworkProtectionOnWinServer` |
 | [Allow notifications to disable security intelligence based reports to Microsoft MAPS](https://noverse.dev/policies?p=WindowsDefender*SignatureUpdate_SignatureDisableNotification) | `HKLM\Software\Policies\Microsoft\Windows Defender\Signature Updates` | `SignatureDisableNotification` |
+| [Initiate security intelligence update on startup](https://noverse.dev/policies?p=WindowsDefender*SignatureUpdate_DisableUpdateOnStartupWithoutEngine) | `HKLM\Software\Policies\Microsoft\Windows Defender\Signature Updates` | `DisableUpdateOnStartupWithoutEngine` |
 | [Configure the 'Block at First Sight' feature](https://noverse.dev/policies?p=WindowsDefender*DisableBlockAtFirstSeen) | `HKLM\Software\Policies\Microsoft\Windows Defender\Spynet` | `DisableBlockAtFirstSeen` |
 | [Configure local setting override for reporting to Microsoft MAPS](https://noverse.dev/policies?p=WindowsDefender*Spynet_LocalSettingOverrideSpynetReporting) | `HKLM\Software\Policies\Microsoft\Windows Defender\Spynet` | `LocalSettingOverrideSpynetReporting` |
 | [Join Microsoft MAPS](https://noverse.dev/policies?p=WindowsDefender*SpynetReporting) | `HKLM\Software\Policies\Microsoft\Windows Defender\Spynet` | `SpynetReporting` |
@@ -78,6 +80,7 @@ If using [`native.winoffice.txt`](https://github.com/hagezi/dns-blocklists/blob/
 | [Hide non-critical notifications](https://noverse.dev/policies?p=WindowsDefenderSecurityCenter*Notifications_DisableEnhancedNotifications) | `HKLM\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Notifications` | `DisableEnhancedNotifications` |
 | [Configure Windows Defender SmartScreen](https://noverse.dev/policies?p=WindowsExplorer*EnableSmartScreen) | `HKLM\Software\Policies\Microsoft\Windows\System` | `EnableSmartScreen`<br>`ShellSmartScreenLevel` |
 | [Turn off Microsoft Defender Antivirus](https://noverse.dev/policies?p=WindowsDefender*DisableAntiSpywareDefender) | `HKLM\SOFTWARE\Policies\Microsoft\Windows Defender` | `DisableAntiSpyware` |
+| [Turn off routine remediation](https://noverse.dev/policies?p=WindowsDefender*DisableRoutinelyTakingAction) | `HKLM\Software\Policies\Microsoft\Windows Defender` | `DisableRoutinelyTakingAction` |
 
 ## Remove Defender from Image
 

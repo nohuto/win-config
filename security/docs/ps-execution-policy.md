@@ -10,13 +10,13 @@
 >
 > — Microsoft, [about_Execution_Policies](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.5)
 
-### [Execution Policy](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.5)
+### [Execution Policy](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1)
 
 | **Execution Policy**  | **Description** |
 | ---- | ---- |
 | `AllSigned` | All scripts must be signed by a trusted publisher. Prompts for untrusted publishers. |
 | `Bypass` | No prompts or restrictions. Used in apps or environments with their own security. |
-| `Default` | Acts like `RemoteSigned` on Windows. |
+| `Default` | `Restricted` on Windows clients, `RemoteSigned` on servers. |
 | `RemoteSigned` | Scripts run freely unless downloaded from the internet. Internet scripts need a trusted signature or must be unblocked. Local scripts don't require signatures. |
 | `Restricted` | No scripts allowed (only individual commands). Blocks all `.ps1`, `.psm1`, `.ps1xml`, and profile scripts. |
 | `Undefined` | No policy in this scope. If all scopes are undefined, defaults to `Restricted` (clients) or `RemoteSigned` (servers). |

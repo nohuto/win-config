@@ -16,11 +16,13 @@ The relevant 4 bit field uses `0` = default/not configured, `1` = force on, and 
 | --- | --- | --- | --- | --- |
 | DEP | `DEP`, `EmulateAtlThunks` | byte `0`, low 4 bits | `01 00 00 XX` | `02 00 00 XX` |
 | SEHOP | `SEHOP`, `SEHOPTelemetry` | byte `0`, high 4 bits | `10 00 00 XX` | `20 00 00 XX` |
-| Validate heap integrity | `TerminateOnError` | byte `1`, high 4 bits | `00 10 00 XX` | `00 20 00 XX` |
+| Validate heap integrity | `TerminateOnError` | byte `1`, high 4 bits | `00 10 00 XX` | - |
 | Mandatory ASLR | `ForceRelocateImages` | byte `1`, low 4 bits | `00 01 00 XX` | `00 02 00 XX` |
 | Bottom-up ASLR | `BottomUp`, `HighEntropy` | byte `2`, low 4 bits | `00 00 01 XX` | `00 00 02 XX` |
 | High-entropy ASLR | `HighEntropy` suboption of Bottom-up ASLR | byte `2`, high 4 bits | `00 00 10 XX` | `00 00 20 XX` |
-| CFG | `CFG`, `StrictCFG`, `SuppressExports` | byte `5` low 4 bits, byte `9` low 4 bits | `XX XX XX XX XX 01 XX XX XX 01` | `XX XX XX XX XX 02 XX XX XX 02` |
+| CFG | `CFG`, `StrictCFG`, `SuppressExports` | byte `5`, low 4 bits | `XX XX XX XX XX 01` | `XX XX XX XX XX 02` |
+
+Byte `9` low 4 bits is strict CFG (`PROCESS_CREATION_MITIGATION_POLICY2_STRICT_CONTROL_FLOW_GUARD`), the option currently keeps it at `0` (= not configured), as system wide strict CFG would cause every DLL without `/guard:cf` fail to load (`PspApplyMitigationOptions` sets `ControlFlowGuardStrict` on every CFG process).
 
 ## CFG
 
@@ -43,6 +45,8 @@ The relevant 4 bit field uses `0` = default/not configured, `1` = force on, and 
 | --- | --- | --- |
 | DEP: Permanent | Prevents a process from disabling DEP for itself. It mainly applies to x86 and WoW64 processes. | Set through `SetProcessMitigationPolicy`, a process-creation attribute, or `SetProcessDEPPolicy`. |
 | DEP: Disable ATL Thunk Emulation | Prevents legacy ATL thunk code from executing in heap memory, even where compatibility handling would otherwise allow it. | Set through `SetProcessMitigationPolicy`, a process-creation attribute, or `SetProcessDEPPolicy`. |
+
+The system setting only applies to 32-bit (x86) processes, 64-bit processes always run with DEP.
 
 ## Mandatory ASLR
 
@@ -89,6 +93,8 @@ The relevant 4 bit field uses `0` = default/not configured, `1` = force on, and 
 | --- | --- | --- |
 | SEH Overwrite Protection (SEHOP) | Validates structured exception handler chains so overwritten handlers cannot redirect exception dispatch. It mainly applies to 32-bit and WoW64 processes. | Set through SEHOP process creation mitigation flag or [process mitigation options](https://learn.microsoft.com/en-us/windows/security/operating-system-security/device-management/override-mitigation-options-for-app-related-security-policies) |
 
+Same as DEP, only 32-bit (x86) processes, `2` sets `DisableExceptionChainValidation`.
+
 ## Validate Heap Integrity
 
 > "*causing the application to terminate if a heap corruption is detected*"
@@ -98,6 +104,8 @@ The relevant 4 bit field uses `0` = default/not configured, `1` = force on, and 
 | Mitigation | Use case | Enabling mechanism |
 | --- | --- | --- |
 | Heap Terminate On Corruption | Terminates the process on heap corruption instead of allowing a continuable heap exception path. This reduces exploit reliability for heap corruption bugs. | Set through `HeapSetInformation` or the heap terminate process-creation mitigation flag. |
+
+Only `1` has an effect, ntdll enables `HeapEnableTerminationOnCorruption` for every process when the field is `1` ([`LdrpInitializeProcess`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntdll/LdrpInitializeProcess.c)).
 
 ### FTH
 
@@ -176,4 +184,3 @@ UserShadowStack
 UserShadowStackStrictMode
 AuditUserShadowStack
 ```
-

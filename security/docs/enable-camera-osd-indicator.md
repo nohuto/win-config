@@ -6,12 +6,26 @@
 
 ![](https://github.com/nohuto/win-config/blob/main/security/images/cameraosd.png?raw=true)
 
-| Data | Description |
+| Value | Meaning |
 | :---: | --- |
 | 0 | Does not draw an indicator in the UI to show when the camera is on or off. Instead, a physical LED exists to show when video frames are streaming or not streaming. This is the default value. |
 | 1 | Draws an indicator in the UI to show when video frames are streaming or not streaming. |
 
-```
-\Registry\Machine\SOFTWARE\Microsoft\OEM\Device\Capture : NoPhysicalCameraLED
-```
+`ks.sys` (kernel streaming) reads it `KspGetNotification`:
 
+```c
+// KspGetNotification (23H2)
+
+  RtlInitUnicodeString(&DestinationString, L"\\Registry\\Machine\\SOFTWARE\\Microsoft\\OEM\\Device\\Capture");
+  RtlInitUnicodeString(&ValueName, L"NoPhysicalCameraLED");
+```
+```c
+// KspGetNotification (23H2)
+
+        if ( ZwQueryValueKey(KeyHandle, &ValueName, KeyValuePartialInformation, v3, Length, &Length) >= 0
+          && v3[1] == 4 // REG_DWORD
+          && v3[2] == 4 ) // 4 bytes
+        {
+          v2 = v3[3] != 0; // any nonzero value draws indicator
+        }
+```
