@@ -1,4 +1,5 @@
 # Defender Scans
 
-Clears several local Windows Defender parts. The main button removes all of the suboptions. These files are recreated by Defender as new scans, definition updates, and support logging occur.
+Clears several local Windows Defender parts.
 
+Defender protects these folders while it runs, with Defender on (and Tamper Protection on), most files stay locked or access is denied even for SYSTEM.

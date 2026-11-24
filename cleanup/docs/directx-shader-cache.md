@@ -5,12 +5,3 @@ Clears the DirectX cache and NVIDIA caches used for shader compilation. Clearing
 Remember to temporarily set `Shader Cache Size` to `Disabled`, use the option, then return it to `Unlimited` so the driver use the files.
 
 ![](https://github.com/nohuto/win-config/blob/main/nvidia/images/shadercache.png?raw=true)
-
-Paths removed:
-```c
-%LOCALAPPDATA%\D3DSCache
-%LOCALAPPDATA%\NVIDIA\DXCache
-%LOCALAPPDATA%\NVIDIA\GLCache
-%LOCALAPPDATA%\NVIDIA Corporation\NV_Cache
-```
-
