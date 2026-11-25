@@ -4,9 +4,8 @@
 >
 > — Red Hat Documentation, [Receive-Side Scaling](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/6/html/performance_tuning_guide/network-rss)
 
-Task offloading has to be enabled, or RSS won't work (`DisableTaskOffload`).
 
-I may add more details here soon. RSS is enabled by default, so this is currently more of a placeholder containing the official documentation (see links below), disabling the option therefore won't "disable" RSS, it only removes the created values.
+Note that RSS is enabled by default.
 
 ## Registry Values
 
@@ -57,7 +56,7 @@ The maximum processor number of the RSS interface. If `*RssMaxProcNumber` is spe
 Enables the RSS v2 feature which improves the Receive Side Scaling by offering dynamic, per-VPort spreading of queues. It reduces the time to update the indirection table. Note: RSSv2 is only supported by NDIS 6.80 and later versions.
 
 `ValidateRssV2`:  
-Enables strict argument validation for upper layer testing. Set along with the RssV2 key to enable the RSSv2 feature.  
+Enables strict argument validation for upper layer testing, only `mlx5.sys` reads it (range 0-1, default `0`), it's a test switch.
 
 ---
 
@@ -97,3 +96,63 @@ void __fastcall RSS::RssReadRegistryParameters(RSS *this, struct ADAPTER_CONTEXT
 }
 ```
 
+### ndisReadRssKeywords
+
+Some miscellanous notes for now.
+
+NDIS reads the profile & processor keywords itself when the adapter starts ([`ndisReadRssKeywords`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ndis/-ndisReadRssKeywords@@YAXPEAU_NDIS_MINIPORT_BLOCK@@@Z.c)), on 24H2+ the default profile is `6` (Balanced) on CPUs with P & E cores, and *Balanced* ignores the base/max processor keywords.
+
+```c
+// ndisReadRssKeywords (25H2)
+
+v4 = NdisRssProfileNumaStatic;
+*((_DWORD *)&ConfigObject.Header + 1) = 0;
+if ( ndisHeterogeneousCpuSystem )
+  v4 = NdisRssProfileBalanced; // default 6 on P/E core CPUs
+
+NdisReadConfiguration(&Status, &ParameterValue, v6, &MaxRssProcStr, NdisParameterInteger); // *MaxRssProcessors
+if ( !Status )
+  a1->MaxNumRssProcessors = ParameterValue->ParameterData.IntegerData;
+NdisReadConfiguration(&Status, &ParameterValue, v6, &RssProfileStr, NdisParameterInteger); // *RSSProfile
+if ( !Status )
+{
+  IntegerData = ParameterValue->ParameterData.IntegerData;
+  if ( IntegerData )
+  {
+    if ( IntegerData < 7 )
+      v4 = ParameterValue->ParameterData.IntegerData;
+  }
+}
+if ( v4 == NdisRssProfileBalanced ) // base/max processor keywords arent read
+```
+
+```c
+// ndisGetProcessorInfo (25H2)
+
+v11 = ndisRssBaseCpu; // RssBaseCpu
+v12 = 0LL;
+while ( v11 < ndisNumberOfActiveProcessorsAtBoot && (unsigned int)v12 < ndisMaxNumRssCpus )
+{
+  for ( i = 0LL; (unsigned int)i < (unsigned int)v12; i = (unsigned int)(i + 1) )
+  {
+    ProcessorIndexFromNumber = KeGetProcessorIndexFromNumber((PPROCESSOR_NUMBER)ndisRssProcessors + i);
+    if ( ndisCpuInfo[ProcessorIndexFromNumber].SocketId == ndisCpuInfo[v11].SocketId
+      && ndisCpuInfo[ProcessorIndexFromNumber].CoreId == ndisCpuInfo[v11].CoreId )
+    {
+      break; // core already listed
+    }
+  }
+```
+
+```c
+// ndisReadRssKeywords (25H2)
+
+KeGetProcessorNumberFromIndex(ndisRssBaseCpu, &ProcNumber);
+```
+
+```c
+// ndisReadRssKeywords (25H2)
+
+if ( (int)ndisCompareProcNum(ProcNumber, v5) > 0 )
+  v5 = ProcNumber; // base is never below RssBaseCpu
+```

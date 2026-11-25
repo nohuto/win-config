@@ -13,29 +13,24 @@ powercfg /devicequery wake_armed
 
 ## Registry Values
 
-See [network/assets/pseudocode/intel-nic](https://github.com/nohuto/win-config/tree/main/network/assets/pseudocode/intel-nic) for reference.
 
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4D36E972-E325-11CE-BFC1-08002bE10318}\\00XX";
-  "*WakeOnMagicPacket" = 1; // range 0-1
-  "*WakeOnPattern" = 1; // range 0-1
-  "WakeFromS5" = 2; // range 0-65535
-  "WakeOn" = 0; // range 0-4
-  "WakeOnLink" = 0; // range 0-2
+  "*WakeOnMagicPacket" = 1; // REG_SZ, range 0-1 (all drivers)
+  "*WakeOnPattern" = 1; // REG_SZ, range 0-1 (all drivers)
+  "WakeOn" = 0; // REG_SZ, range 0-4, e1i68x64.sys
+  "WakeFromS5" = 2; // REG_SZ, range 0-65535, e1i68x64.sys
+  "WakeOnLink" = 0; // REG_SZ, range 0-2, e1i68x64.sys
+  "WakeOnFastStartup" = 0; // REG_SZ, e1i68x64.sys
+  "EnableWakeOnManagmentOnTCO" = 0; // REG_SZ, range 0-1, e1i68x64.sys
+  "WakeOnMagicPacketFromS5" = 1; // REG_SZ, e2fn.sys
+  "S5WakeOnLan" = ?; // REG_SZ
+  "WakeOnLinkChange" = ?; // REG_SZ
+  "ShutdownWake" = ?; // REG_SZ
+  "WakeUpModeCap" = ?; // REG_SZ
 ```
 
 ### Setup Information
-
-`Disable Wait for Link`:
-```powershell
-; Wait for Link
-HKR, Ndi\Params\WaitAutoNegComplete,            ParamDesc,              0, %WaitAutoNegComplete%
-HKR, Ndi\Params\WaitAutoNegComplete,            default,                0, "2"
-HKR, Ndi\Params\WaitAutoNegComplete\Enum,       "0",                    0, %Off%
-HKR, Ndi\Params\WaitAutoNegComplete\Enum,       "1",                    0, %On%
-HKR, Ndi\Params\WaitAutoNegComplete\Enum,       "2",                    0, %AutoDetect%
-HKR, Ndi\Params\WaitAutoNegComplete,            type,                   0, "enum"
-```
 
 ```c
 HKR, Ndi\Params\*WakeOnMagicPacket,		ParamDesc,	0, 	%MagicPacket%

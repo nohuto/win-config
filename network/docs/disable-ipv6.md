@@ -1,9 +1,8 @@
-# Disable IPv6
+# IPv6 <!-- id: disable-ipv6 -->
 
-`0xFFFFFFFF` disables all IPv6 interfaces, even ones Windows needs. The TCP/IP stack then waits for them to initialize and times out, which adds the `~5s` boot delay. The documentation below was taken from the official support articles.
-
-- Min Value: `0x00` (default value)  
-- Max Value: `0xFF` (IPv6 disabled)
+- `Disable` = `DisabledComponents = 0xFF` & unchecks Internet Protocol Version 6 (`ms_tcpip6`)
+- `Prefer IPv4` = `DisabledComponents = 0x20` & checks `ms_tcpip6`, MS recommends this instead of disabling IPv6
+- `Default` deletes `DisabledComponents` and checks `ms_tcpip6` again
 
 |IPv6 Functionality|Registry value and comments|
 |---|---|

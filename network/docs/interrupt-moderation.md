@@ -6,19 +6,21 @@
 >
 > — Microsoft, [Performance tuning network adapters](https://learn.microsoft.com/en-us/windows-server/networking/technologies/network-subsystem/net-sub-performance-tuning-nics?tabs=powershell#interrupt-moderation)
 
-### Data Range
+> *Disable the Interrupt Moderation setting for network card drivers that require the lowest possible latency. Remember, this configuration can use more CPU time and it represents a tradeoff.*
+>
+> — Microsoft, [Low-latency packet processing](https://learn.microsoft.com/en-us/windows-server/networking/technologies/network-subsystem/net-sub-performance-tuning-nics#low-latency-packet-processing)
 
-The correct data might be the comment data, if so edit it manually.
-```c
-Off: ITR = 0 (no limit)
-Minimal: ITR = 200 // 32
-Low: ITR = 400 // 64
-Medium: ITR = 950 // 125
-High: ITR = 2000 // 250
-Extreme: ITR = 3600 // 500
-Adaptive: ITR = 65535
-```
-ITR = Interrupt Throttle Rate.
+### ITR (Intel)
+
+| Value | Default | Meaning |
+| --- | --- | --- |
+| `0` | | Off |
+| `32` / `200` | | Minimal (I225/I226 / I219 and older) |
+| `64` / `400` | I225/I226 | Low |
+| `125` / `950` | | Medium |
+| `250` / `2000` | | High |
+| `500` / `3600` | | Extreme |
+| `65535` | I219 and older | Adaptive (older drivers only) |
 
 ## Setup Information
 
@@ -62,11 +64,12 @@ HKR, Ndi\Params\*InterruptModeration,                   type,                   
 
 ---
 
-Miscellaneous notes:
-```c
-"RecvIntModCount" = ?; // found it in the "Mellanox ConnectX based IPoIB Adapter (NDIS 6.4)" driver
-"RecvIntModTime" = ?; // ^
-"SendIntModCount" = ?; // ^
-"SendIntModTime" = ?; // ^
-```
+Miscellaneous notes (NVIDIA/Mellanox ConnectX coalescing values):
 
+```c
+"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4D36E972-E325-11CE-BFC1-08002bE10318}\\00XX";
+  "RecvIntModCount" = ?; // range 0-1000, mlx5.sys
+  "RecvIntModTime" = ?; // ipoib6x.sys, mlx4eth63.sys
+  "SendIntModCount" = ?; // range 0-1000, mlx5.sys
+  "SendIntModTime" = ?; // range 0-1000, mlx5.sys
+```

@@ -12,6 +12,8 @@
 >
 > — Microsoft, [NDIS Poll Mode](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/ndis-poll-mode)
 
+This option is for NVIDIA/Mellanox ConnectX adapters (WinOF-2), other drivers don't read these values.
+
 ## MS INF
 
 `*NdisPoll` is a MS INF keyword for enabling/disabling NDIS Poll Mode support:
@@ -27,12 +29,12 @@ HKR, Ndi\params\*NdisPoll\enum,  "1",                  0, "Enabled"
 
 ## [NVIDIA WinOF-2](https://docs.nvidia.com/nvidia-winof-2-documentation-v23-7.pdf)
 
-That guide ([WinOF-2 v23.7](https://docs.nvidia.com/nvidia-winof-2-documentation-v23-7.pdf)) uses the values to register and use NDIS Poll Mode, it depends on your driver version whenever they're accepted (e.g. `mlx5.sys` `2.53.23539` has a range of `0-3` for `RecvCompletionMethod`, `4` would be invalid causing it to fallback to the default (`1`)).
+That guide ([WinOF-2 v23.7](https://docs.nvidia.com/nvidia-winof-2-documentation-v23-7.pdf)) uses these values to register NDIS Poll Mode. Whether a value is accepted depends on the driver version, the inbox `mlx5.sys` 2.53.23539 accepts `0-3` for `RecvCompletionMethod` and only `1` for `SendCompletionMethod`, so `NDIS Poll Mode` needs a newer WinOF-2 driver.
 
 | Side | Value | Default |
 | ---- | ---- | ---- |
 | Receive | `RecvCompletionMethod = 4` | `1` (Adaptive) |
-| Transmit | `SendCompletionMethod = 2` | `1` (Interrupt) |
+| Transmit | `SendCompletionMethod = 2` | `1` (Interrupt) in `mlx5.sys`, `0` (Polling) in `ipoib6x.inf` |
 
 ## [AsyncReceiveIndicate](https://docs.nvidia.com/nvidia-winof-2-documentation-v23-7.pdf) (Packet Burst Handling)
 

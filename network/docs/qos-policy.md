@@ -1,8 +1,12 @@
 # QoS Policy
 
-> "*Policy-based QoS lets Windows identify outgoing network traffic by application, user, computer, IP address, port, or protocol, and then either mark the traffic with a DSCP value for priority handling or limit it with an outbound throttle rate. It's most useful on a managed network where routers, switches, and wireless access points are configured to recognize DSCP markings and give matching traffic higher priority when the network is busy. Without QoS aware network equipment, DSCP marking may have little practical effect beyond the local device, while throttling still works because Windows enforces the send rate locally on outgoing traffic.*"
+> "*The DSCP value provides network traffic classification at the Internet Protocol (IP) level, which routers use to decide traffic queuing behavior.*"
 >
-> — Microsoft, [Policy-based QoS](https://learn.microsoft.com/en-us/windows-server/networking/technologies/qos/qos-policy-top)
+> "*A QoS policy that defines throttling limits determines the rate of outbound network traffic.*"
+>
+> — Microsoft, [Quality of Service (QoS) Policy](https://learn.microsoft.com/en-us/windows-server/networking/technologies/qos/qos-policy-top)
+
+DSCP only helps when routers and switches on the path honor it, throttling works on the PC itself.
 
 ![](https://github.com/nohuto/win-config/blob/main/network/images/qosvalues.png?raw=true)
 
@@ -24,6 +28,36 @@ HKLM\SOFTWARE\Policies\Microsoft\Windows\QoS\Fortnite\Remote IP    Type: REG_SZ,
 HKLM\SOFTWARE\Policies\Microsoft\Windows\QoS\Fortnite\Remote IP Prefix Length    Type: REG_SZ, Length: 4, Data: *
 HKLM\SOFTWARE\Policies\Microsoft\Windows\QoS\Fortnite\DSCP Value    Type: REG_SZ, Length: 6, Data: 46 # High Priority, Expedited Forwarding (EF)
 HKLM\SOFTWARE\Policies\Microsoft\Windows\QoS\Fortnite\Throttle Rate    Type: REG_SZ, Length: 6, Data: -1 # Unspecified throttle rate (none), 'Data' would specify rate in KBps
+```
+
+Without `Do not use NLA` under `HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\QoS`, `tcpip.sys` applies the policy only on domain networks:
+
+```c
+// EQoSCheckNLAUsageOverride (23H2)
+
+  EQoSPolicyUseNLA = 1; // client SKU default
+  RtlInitUnicodeString(&DestinationString, L"\\Registry\\Machine\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\QoS");
+
+    RtlInitUnicodeString(&ValueName, L"Do not use NLA");
+
+    if ( (v0 & 0x80000000) == 0LL && DWORD1(KeyValueInformation) == 1 ) // REG_SZ
+    {
+      v0 = RtlCompareMemory((char *)&KeyValueInformation + 12, L"1", 4uLL); // 1
+      if ( v0 == 4 )
+      {
+        EQoSPolicyUseNLA = 0;
+```
+
+```c
+// EQoSpProcessOnePolicy (23H2)
+
+  v18 = HIDWORD(v35[23]) | 1; // domain profile
+
+    if ( !BYTE3(v35[4]) ) // Version 1.0
+    {
+      v19 = &EQoSpV100SchemaTable;
+      if ( !EQoSPolicyUseNLA ) // "Do not use NLA" = "1"
+        HIDWORD(v35[23]) = v18 | 6; // adds private & public profiles
 ```
 
 ## Live Capture

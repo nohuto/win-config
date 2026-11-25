@@ -37,7 +37,7 @@ NsiSetAllParameters(
     _In_reads_bytes_opt_(ReadWriteBufferSize) PVOID ReadWriteBuffer,
     _In_ ULONG ReadWriteBufferSize
     );
-````
+```
 ```c
 /**
  * The NsiSetAllPersistentParametersWithMask routine writes the persisted (registry-backed) configuration of one NSI object
@@ -96,6 +96,96 @@ See your current congestion provider via:
 
 ```powershell
 Get-NetTCPSetting | Select SettingName, CongestionProvider
+```
+
+## BBR2 & Loopback Large MTU
+
+These are some first notes on the topic and may not be complete yet.
+
+If using BBR2 while having loopback large MTU enabled, TCP over `127.0.0.1` basically stalls, which is why apps like Steam show "no connection", records:
+
+| Provider | Loopback large MTU | 256 MB | 200 round trips |
+|---|---|---|---|
+| CUBIC | enabled | 126 ms | 52 ms |
+| BBR2 | enabled | 22186 ms | 3017 ms |
+| BBR2 | disabled | 1177 ms | 41 ms |
+| CUBIC | disabled | 503 ms | 35 ms |
+
+Loopback large MTU increases the loopback MSS from `1460` to `65495` bytes, BBR2 paces its sends, it calcs the pacing rate in bytes per second as a 64 bit value and stores it as bytes per ms, but the division by 1000 only takes the low 32 bits (`mul ebx`), so a rate above `4,294,967,295` bytes/s (4.29 GB/s) causes a wrap:
+
+```c
+// bbr_set_pacing_rate (23H2 tcpip.sys)
+
+__int64 __fastcall bbr_set_pacing_rate(unsigned int *a1, unsigned int a2, int a3) // a2 = bandwidth, a3 = gain
+{
+  unsigned int *v3; // r11
+  unsigned __int64 v4; // rbx
+  __int64 result; // rax
+
+  v3 = a1;
+  v4 = (980000 * ((a3 * a2 * (unsigned __int64)a1[42]) >> 8)) >> 24; // a1[42] = MSS, v4 = bytes/s (64 bit)
+  if ( v4 <= 1 )
+    LODWORD(v4) = 1;
+  if ( (a1[62] & 0x4000000) == 0 && a1[180] )
+    bbr_init_pacing_rate_from_rtt(a1); // first rate from cwnd / RTT
+  if ( (v3[63] & 0x400000) != 0 || (result = (unsigned int)(274877907 * v4), (unsigned int)v4 / 0x3E8 > v3[128]) )
+  {
+    result = (unsigned int)(274877907 * v4);
+    v3[128] = (unsigned int)v4 / 0x3E8; // low 32 bits / 1000 = pacing rate in bytes per ms
+  }
+  return result;
+}
+```
+
+With a `65495` byte MSS and loopback RTTs ~50 µs, BBR2s rates are way above that limit.
+
+```c
+// TcpPaceSend (23H2 tcpip.sys)
+
+  v12 = *(unsigned int *)(a1 + 512); // pacing rate, bytes per ms
+  if ( *(int *)(a1 + 116) >= 0 )
+  {
+    v17 = 16 * v12;
+    LOBYTE(v14) = v17;
+    v15 = v17;
+  }
+  else
+  {
+    v13 = v12 * (unsigned int)(MicrosecondCount - *(_DWORD *)(a1 + 516)); // rate * µs since last send
+    MicrosecondCount = *(_DWORD *)(a1 + 816);
+    v14 = v13 / 0x3E8;
+    v15 = v14;
+    if ( (MicrosecondCount & 0x20) == 0 )
+    {
+      v16 = 5000;
+      if ( *(_DWORD *)(a1 + 168) < 0x1388u ) // MSS
+        v16 = *(_DWORD *)(a1 + 168);
+      LOBYTE(MicrosecondCount) = 4 * v16;
+      if ( (unsigned int)v14 < 4 * v16 && (unsigned int)v14 < *v6 )
+        v15 = 0;
+    }
+  }
+  v18 = *v6;
+  if ( *v6 > v15 )
+  {
+
+    *v6 = v15; // send only the budget
+    if ( !*(_DWORD *)(a1 + 1208) )
+      LOBYTE(MicrosecondCount) = TcpStartTimerTcbAndTraceInternal(a1, 5, 16, a5, a6, 5); // rest after 16 ms
+  }
+```
+
+`Microsoft-Windows-TCPIP` event 1583 (`Bbr2OnSend`) shows the wrapped values (`bbr_bw` is in bytes per ms):
+
+```c
+// loopback large MTU enabled, MSS 65495
+SRtt=50 CWnd=654950 PacingRate=2697125
+bbr_bw=3852650 mode=2 PacingRate=424529
+PacingRate 2697125, 2765446, 4127050, 3565840, 162333
+
+// loopback large MTU disabled, MSS 1460
+SRtt=47 CWnd=14600 PacingRate=878790
+bbr_bw up to 663636, PacingRate 400988 to 1397953
 ```
 
 ## Unsupported

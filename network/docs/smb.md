@@ -92,6 +92,8 @@ HKLM\System\CurrentControlSet\Services\LanmanServer\Parameters\enablesecuritysig
 
 Specifies the supported SMB encryption ciphers and their preference order, the suboption restricts both client and server to `AES_256_GCM`/`AES_256_CCM`, so the peer must support one of those ciphers.
 
+`CipherSuiteOrder` only exists on W11.
+
 ```powershell
 Set-SmbClientConfiguration -EncryptionCiphers "AES_256_GCM, AES_256_CCM"
 HKLM\System\CurrentControlSet\Services\LanmanWorkstation\Parameters\CipherSuiteOrder	Type: REG_MULTI_SZ, Length: 52, Data: AES_256_GCM, AES_256_CCM, 
@@ -159,9 +161,9 @@ HKLM\System\CurrentControlSet\Services\LanmanServer\Parameters\EnableSMBQUIC	Typ
 
 > https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-over-quic
 
-### [SMB3 Only](https://techcommunity.microsoft.com/blog/filecab/controlling-smb-dialects/860024)
+### [SMB 3.1.1 Only](https://techcommunity.microsoft.com/blog/filecab/controlling-smb-dialects/860024)
 
-By default is it set to `None`, which means that the client can use any supported version. SMB 3.1.1 is the most secure dialect of the protocol.
+By default it's `None`, which means that the client can use any supported version. SMB 3.1.1 is the most secure dialect of the protocol. The minimum is SMB 3.1.1 (`0x311` = 785), so devices that only speak SMB 3.0 or 3.0.2 can't connect either.
 
 `None` = No min/max protocol version  
 `SMB202` = SMB 2.0.2  
@@ -237,10 +239,12 @@ Disable-WindowsOptionalFeature -Online -FeatureName SMBDirect
 
 ### Require NTLMv2 Session Security
 
-"This security setting allows a client to require the negotiation of 128-bit encryption and/or NTLMv2 session security. These values are dependent on the LAN Manager Authentication Level security setting value. The options are:
-
-Require NTLMv2 session security: The connection will fail if NTLMv2 protocol is not negotiated.
-Require 128-bit encryption: The connection will fail if strong encryption (128-bit) is not negotiated."
+> "*This security setting allows a client to require the negotiation of 128-bit encryption and/or NTLMv2 session security. These values are dependent on the LAN Manager Authentication Level security setting value. The options are:*
+>
+> *Require NTLMv2 session security: The connection will fail if NTLMv2 protocol is not negotiated.*  
+> *Require 128-bit encryption: The connection will fail if strong encryption (128-bit) is not negotiated.*"
+>
+> — Microsoft, Local Security Policy explain text (`wsecedit.dll.mui`), [Network security: Minimum session security for NTLM SSP based (including secure RPC) clients](https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/security-policy-settings/network-security-minimum-session-security-for-ntlm-ssp-based-including-secure-rpc-clients)
 
 ```c
 // NTLMv2 Off - 128 Bit Encryption On (default)

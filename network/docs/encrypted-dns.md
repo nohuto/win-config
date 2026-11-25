@@ -3,17 +3,60 @@
 If you're wondering what `Family`/`Malware`/`Extended` etc. behind the provider names mean, see '[Mullvad](https://mullvad.net/en/help/dns-over-https-and-dns-over-tls#specifications)', '[Quad9](https://docs.quad9.net/services/)', '[AdGuard](https://adguard-dns.io/kb/general/dns-providers/)', '[Cloudflare](https://developers.cloudflare.com/1.1.1.1/setup/)' for details.
 
 The DNS server is applied via registry (captured while applying it via the settings):
+
 ```c
 HKLM\System\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\{NetID}\NameServer  Type: REG_SZ, Length: 24, Data: 194.242.2.5
 HKLM\System\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\{NetID}\DohInterfaceSettings\Doh\194.242.2.5\DohTemplate  Type: REG_SZ, Data: https://extended.dns.mullvad.net/dns-query
 HKLM\System\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\{NetID}\DohInterfaceSettings\Doh\194.242.2.5\DohFlags  Type: REG_QWORD, Length: 8, Data: 2
 ```
 
+The `(DoT)` options use DNS over TLS (port 853) instead of HTTPS. W11 25H2 resolves through it, 23H2 `dnsrslvr.dll` has no DoT code.
+
+```c
+HKLM\System\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\{NetID}\DotInterfaceSettings\Dot\9.9.9.9\DotHost  Type: REG_SZ, Data: dns.quad9.net
+HKLM\System\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\{NetID}\DotInterfaceSettings\Dot\9.9.9.9\DotFlags  Type: REG_QWORD, Length: 8, Data: 1
+```
+
+
 `NetID` is saved in your network adapter GUID key (`{4d36e972-e325-11ce-bfc1-08002be10318}`) named `NetCfgInstanceId`.
+
+### Global Values
+
+These are from `netsh dnsclient set global` (25H2), none exists on a clean install:
+
+```c
+"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Dnscache\\Parameters";
+    "EnableAutoDoh" = 1; // REG_DWORD, 0 = DoH forbidden (doh=no), 1 = DoH per interface & server (doh=yes)
+    "EnableDot" = 1; // REG_DWORD, 0 = DoT forbidden (dot=no), 1 = allowed (dot=yes)
+    "EnableDdr" = 1; // REG_DWORD, "Discovery of Designated Resolvers", 0 = off (ddr=no), 1 = on (ddr=yes)
+```
 
 ## [`DNS_DOH_SERVER_SETTINGS`](https://learn.microsoft.com/en-us/windows/win32/api/netioapi/ns-netioapi-dns_doh_server_settings)
 
-This is I guess used for the `DohFlags` value.
+`DohFlags` has the `Flags` of this struct, the Settings app writes `2` (`DNS_DOH_SERVER_SETTINGS_ENABLE`), which is what the options write. `dnsrslvr.dll` reads the two low bits, `1` = take template from Windows built-in list, `2` needs its own template:
+
+```c
+// SanitizeDohSettings (25H2)
+
+  switch ( a2[1] & 3 ) // DohFlags
+  {
+    case 0LL:
+```
+
+```c
+// SanitizeDohSettings (25H2)
+
+    case 1LL:
+      MIDL_user_free((void *)*a2);
+      *a2 = 0LL;
+      DohWellKnownServer = DnsGetDohWellKnownServer(a1, 0LL, v13); // DNS_DOH_SERVER_SETTINGS_ENABLE_AUTO
+```
+
+```c
+// SanitizeDohSettings (25H2)
+
+    case 2LL: // DNS_DOH_SERVER_SETTINGS_ENABLE, own DohTemplate
+```
 
 ```cpp
 typedef struct _DNS_DOH_SERVER_SETTINGS {
@@ -85,7 +128,7 @@ Some additional info about HTTP request methods you may want to know:
 
 ## Note for iOS users
 
-I personally use [AdGuard](https://adguard-dns.io/), since it's possible to add custom blocklists/user rules (and it supports all lists of Hagezi while [NextDNS](https://my.nextdns.io/) only supports the main ones), while [NextDNS](https://my.nextdns.io/) only provides a specific set of blocklists and doesn't allow custom rules (there're also several other reasons why I wouldn't use their private DNS at the moment, e.g.: their TIF isn't public ([and many other ones](https://github.com/nextdns/metadata))), they didn't solve issues which got reported months ago (), they use lists that aren't actively maintained by default (they also don't update [obselete links](https://github.com/nextdns/blocklists/tree/main/blocklists), causing 10 empty blocklists), they don't look into their GitHub issues (e.g. nextdns/blocklists). Use 'Configuration Profile' instead of downloading the app, you can configure the profile using the links below.
+I personally use [AdGuard](https://adguard-dns.io/), since it's possible to add custom blocklists/user rules (and it supports all lists of Hagezi while [NextDNS](https://my.nextdns.io/) only supports the main ones), while [NextDNS](https://my.nextdns.io/) only provides a specific set of blocklists and doesn't allow custom rules (there're also several other reasons why I wouldn't use their private DNS at the moment, e.g.: their TIF isn't public ([and many other ones](https://github.com/nextdns/metadata))), they didn't solve issues which got reported months ago, they use lists that aren't actively maintained by default (they also don't update [obselete links](https://github.com/nextdns/blocklists/tree/main/blocklists), causing 10 empty blocklists), they don't look into their GitHub issues (e.g. nextdns/blocklists). Use 'Configuration Profile' instead of downloading the app, you can configure the profile using the links below.
 
 ## [Blocklist Manager](https://github.com/nohuto/win-config/blob/main/network/assets/scripts/Blocklist-Manger.ps1)
 
@@ -115,7 +158,7 @@ My suggestion is to choose a specific provider instead of using lists from diffe
 
 ### Issues after importing multiple lists
 
-Open `cmd` and paste `del /f /q C:\Windows\System32\drivers\etc\hosts` into it, if it shows that the DNS client used it, flush your DNS cache (`ipconfig /flushdns`). If this didn't help, boot into safemode (`bcdedit /set safeboot minimal`) & remove the hosts file. This may be needed, if importing too many lists.
+Open `cmd` and paste `del /f /q C:\Windows\System32\drivers\etc\hosts` into it, if it shows that the DNS client used it, flush your DNS cache (`ipconfig /flushdns`). If this didn't help, boot into safemode (`bcdedit /set safeboot minimal`) & remove the hosts file, then run `bcdedit /deletevalue {current} safeboot`. This may be needed, if importing too many lists.
 
 The hosts file is empty by default (only comments).
 

@@ -4,7 +4,7 @@
 >
 > — Microsoft, [SR-IOV](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/overview-of-single-root-i-o-virtualization--sr-iov-)
 
-It depends on your adapter/driver if SR-IOV is enabled/disabled by default:
+This only matters on SR-IOV capable server NICs used by a Hyper-V virtual switch.
 
 ## [Registry Values](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/standardized-inf-keywords-for-sr-iov)
 
@@ -16,15 +16,16 @@ See [network/assets/pseudocode/intel-nic](https://github.com/nohuto/win-config/t
     "*SriovPreferred" = 0; // range 0-1
 ```
 
-
 | SubkeyName            | Value       | EnumDesc |
 | --------------------  | ----------- | ---- |
 | `*SRIOV`              | 0           | Disabled |
 |                       | 1 (Default) | Enabled |
-| `*SriovPreferred`     | 0 (Default) | Report RSS/VMQ (per *VmqOrRssPreferrence), do not report SR-IOV |
+| `*SriovPreferred`     | 0 (Default) | Report RSS/VMQ capabilities (per `*RssOrVmqPreference`), don't report SR-IOV |
 |                       | 1           | Report SR-IOV capabilities |
 
 ### Setup Information
+
+Mellanox ConnectX inbox INF (`netmlx5.inf` 2.53.23539.0):
 
 ```powershell
 ; SRIOV Default switch registry keys.

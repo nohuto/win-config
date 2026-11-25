@@ -6,13 +6,13 @@ The [Link Layer Discovery Protocol (LLDP)](https://en.wikipedia.org/wiki/Link_La
 
 ### NetFirewallRule Capture
 
-Disable network discovery (includes LLTDIO, Rspndr, LLTD), by pasting the desired command into `powershell`:
+Disable network discovery (includes LLTDIO, Rspndr, LLTD), the group name `@FirewallAPI.dll,-32752` works on every display language:
 ```powershell
-Set-NetFirewallRule -DisplayGroup "Network Discovery" -Enabled False -Profile Any​ # Domain​, Private, Public​
+Get-NetFirewallRule -Group '@FirewallAPI.dll,-32752' | Disable-NetFirewallRule
 ```
 Get the current states with:
 ```powershell
-Get-NetFirewallRule -DisplayGroup "Network Discovery" | Select-Object Name, Enabled, Profile
+Get-NetFirewallRule -Group '@FirewallAPI.dll,-32752' | Select-Object Name, Enabled, Profile
 ```
 
 ```powershell
@@ -86,21 +86,18 @@ NETDIS-NB_Name-Out-UDP-Active         True        Private
 NETDIS-NB_Name-Out-UDP-NoScope       False         Domain
 ```
 
-```c
-RegistryKey<unsigned char>::Initialize(
-    this + 40,
-    *(ADAPTER_CONTEXT**)this,
-    *(((NDIS_HANDLE*)this) + 1),
-    "DisableLLDP",
-    0,
-    1,
-    0,  // default
-    0,
-    0
-)
-```
+## Services/Drivers
 
-- [network/assets/pseudocode | networkdisc-DataCenterBridgingConfiguration.c](https://github.com/nohuto/win-config/blob/main/network/assets/pseudocode/networkdisc-DataCenterBridgingConfiguration.c)
+| Name | Description |
+| --- | --- |
+| `fdPHost` | The FDPHOST service hosts the Function Discovery (FD) network discovery providers. These FD providers supply network discovery services for the Simple Services Discovery Protocol (SSDP) and Web Services - Discovery (WS-D) protocol. Stopping or disabling the FDPHOST service will disable network discovery for these protocols when using FD. When this service is unavailable, network services using FD and relying on these discovery protocols will be unable to find network devices or resources. |
+| `FDResPub` | Publishes this computer and resources attached to this computer so they can be discovered over the network. If this service is stopped, network resources will no longer be published and they will not be discovered by other computers on the network. |
+| `SSDPSRV` | Discovers networked devices and services that use the SSDP discovery protocol, such as UPnP devices. Also announces SSDP devices and services running on the local computer. If this service is stopped, SSDP-based devices will not be discovered. If this service is disabled, any services that explicitly depend on it will fail to start. |
+| `upnphost` | Allows UPnP devices to be hosted on this computer. If this service is stopped, any hosted UPnP devices will stop functioning and no additional hosted devices can be added. If this service is disabled, any services that explicitly depend on it will fail to start. |
+| `MsLldp` | Microsoft Link-Layer Discovery Protocol Driver |
+| `rspndr` | Link-Layer Topology Discovery Responder |
+| `lltdio` | Link-Layer Topology Discovery Mapper I/O Driver |
+| `lltdsvc` | Creates a Network Map, consisting of PC and device topology (connectivity) information, and metadata describing each PC and device. If this service is disabled, the Network Map will not function properly. |
 
 ## [Windows Policies](https://noverse.dev/policies)
 

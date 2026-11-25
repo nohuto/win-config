@@ -15,13 +15,59 @@ For example:
 
 Once these capabilities are shared, they agree on the highest common speed and prioritize full-duplex over half-duplex.
 
-NDIS is the network "port" driver, and vendor miniport drivers interpret adapter specific settings. `*SpeedDuplex` is a miniport defined advanced property, unsupported values are ignored or treated as auto negotiation by the driver.
+Keep `Auto Negotiation` unless the link doesn't come up.
 
-See [network/assets/pseudocode/intel-nic](https://github.com/nohuto/win-config/tree/main/network/assets/pseudocode/intel-nic) for reference.
+> *Note: The settings at the switch must always match the adapter settings. Adapter performance may suffer, or your adapter might not operate correctly if you configure the adapter differently from your switch. The default setting is for auto-negotiation to be enabled. Only change this setting to match your link partner’s speed and duplex setting if you are having trouble connecting.*
+>
+> — Intel, [Setting Speed and Duplex](https://edc.intel.com/content/www/us/en/design/products/ethernet/adapters-and-devices-user-guide/setting-speed-and-duplex/)
+
+MS defines `0`-`10`, faster/specific speeds are written as the Mbps number (e.g. `2500` = 2.5 Gbps).
+
+| Value | Meaning |
+| --- | --- |
+| `0` | Auto Negotiation |
+| `1` | 10 Mbps Half Duplex |
+| `2` | 10 Mbps Full Duplex |
+| `3` | 100 Mbps Half Duplex |
+| `4` | 100 Mbps Full Duplex |
+| `5` | 1.0 Gbps Half Duplex |
+| `6` | 1.0 Gbps Full Duplex |
+| `7` | 10 Gbps Full Duplex |
+| `8` | 20 Gbps Full Duplex |
+| `9` | 40 Gbps Full Duplex |
+| `10` | 100 Gbps Full Duplex |
+| `2500`, `5000`, ... | Speed in Mbps (1000+) |
 
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4D36E972-E325-11CE-BFC1-08002bE10318}\\00XX";
     "*SpeedDuplex" = 0; // range 0-50000
+```
+
+Theres also a hidden `LinkNegotiationProcess` value (Intel, shown as "Legacy Switch Compatibility Mode"), which seems to be meant for link problems with older switches, `1` = Disabled, `2` = Enabled.
+
+## Disable Wait for Link
+
+This is for Intel only.
+
+> *This setting determines whether the driver waits for auto-negotiation to be successful before reporting the link state. If this feature is off, the driver does not wait for auto-negotiation. If the feature is on, the driver does wait for auto-negotiation.*
+>
+> *If this feature is on and the speed is not set to auto-negotiation, the driver will wait for a short time for link to be established before reporting the link state.*
+>
+> *If the feature is set to Auto Detect, this feature is automatically set to On or Off depending on speed and adapter type when the driver is installed. The setting is:*
+> - *Off for copper Intel gigabit adapters with a speed of “Auto”*
+> - *On for copper Intel gigabit adapters with a forced speed and duplex*
+> - *On for fiber Intel gigabit adapters with a speed of “Auto”*
+>
+> — Intel, [Wait for Link](https://edc.intel.com/content/www/us/en/design/products/ethernet/adapters-and-devices-user-guide/wait-for-link/)
+
+```powershell
+; Wait for Link
+HKR, Ndi\Params\WaitAutoNegComplete,            ParamDesc,              0, %WaitAutoNegComplete%
+HKR, Ndi\Params\WaitAutoNegComplete,            default,                0, "2"
+HKR, Ndi\Params\WaitAutoNegComplete\Enum,       "0",                    0, %Off%
+HKR, Ndi\Params\WaitAutoNegComplete\Enum,       "1",                    0, %On%
+HKR, Ndi\Params\WaitAutoNegComplete\Enum,       "2",                    0, %AutoDetect%
+HKR, Ndi\Params\WaitAutoNegComplete,            type,                   0, "enum"
 ```
 
 ## Setup Information
@@ -48,10 +94,3 @@ SpeedDuplex                     = "Speed & Duplex"
 1000Mb_Full_Duplex              = "1.0 Gbps Full Duplex"
 2500Mb_Full_Duplex              = "2.5 Gbps Full Duplex"
 ```
-
-Note: 2.5 Gbps Full Duplex may be driver specific. The 10/100/1000 enums are typically consistent across drivers. You can get all valid data from:
-```c
-HKLM\SYSTEM\CurrentControlSet\Control\Class\{4d36e972-e325-11ce-bfc1-08002be10318}\00XX\Ndi\Params\*SpeedDuplex
-```
-`00XX` depends on the used adapter.
-

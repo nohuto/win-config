@@ -1,19 +1,21 @@
 # Disable Flow Control
 
-A sending station (computer or network switch) may be transmitting data faster than the other end of the link can accept it. Using flow control, the receiving station can signal the sender requesting suspension of transmissions until the receiver catches up.
 
-> - *For adapters to benefit from this feature, link partners must support flow control frames.*
-> - *On systems running a Microsoft Windows Server operating system, enabling QoS/priority flow control will disable link level flow control.*
-> - *Some devices support Auto Negotiation. Selecting this will cause the device to advertise the value stored in its NVM (usually `Disabled`).*"
+> "*This feature enables adapters to more effectively regulate traffic. Adapters generate flow control frames when their receive queues reach a pre-defined limit. Generating flow control frames signals the transmitter to slow transmission. Adapters respond to flow control frames by pausing packet transmission for the time specified in the flow control frame.*
+>
+> *By enabling adapters to adjust packet transmission, flow control helps prevent dropped packets.*"
 >
 > — Intel, [Flow Control](https://edc.intel.com/content/www/us/en/design/products/ethernet/adapters-and-devices-user-guide/flow-control/)
 
-See [network/assets/pseudocode/intel-nic](https://github.com/nohuto/win-config/tree/main/network/assets/pseudocode/intel-nic) for reference.
+While KD is enabled, NDIS already returns `0` for `*FlowControl` ([`NdisReadConfiguration`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ndis/NdisReadConfiguration.c), [`ndisReadRegistry`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ndis/-ndisReadRegistry@@YAXXZ.c)).
 
-```c
-"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4D36E972-E325-11CE-BFC1-08002bE10318}\\00XX";
-    "*FlowControl" = 4; // range 0-4
-```
+| Value | Default | Meaning |
+| --- | --- | --- |
+| `0` | Server | Tx and Rx disabled |
+| `1` | | Tx enabled |
+| `2` | | Rx enabled |
+| `3` | Client | Rx and Tx enabled |
+| `4` | | Auto negotiation (usually disabled) |
 
 ## Setup Information
 
@@ -27,6 +29,4 @@ HKR, Ndi\Params\*FlowControl\Enum,              "2",                    0, %Flow
 HKR, Ndi\Params\*FlowControl\Enum,              "3",                    0, %FlowControl_Full%
 HKR, Ndi\Params\*FlowControl,                   type,                   0, "enum"
 ```
-
-These 2 examples also show that each adapter/driver have their own defaults.
 

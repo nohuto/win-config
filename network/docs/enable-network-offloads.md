@@ -1,6 +1,18 @@
 # Enable Network Offloads
 
-Since all topics below are well documented by MS, I won't add much details. Click on the title links for more information on each topic. Note that the main option disables PM protocol offloads, all other offload features are used.
+> "*Enable static offloads. For example, enable the UDP Checksums, TCP Checksums, and Send Large Offload (LSO) settings.*"
+>
+> — Microsoft, [Low-latency packet processing](https://learn.microsoft.com/en-us/windows-server/networking/technologies/network-subsystem/net-sub-performance-tuning-nics?tabs=powershell#low-latency-packet-processing)
+
+- [Checksum Offload](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/offloading-checksum-tasks)
+- [Large Send Offload](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/offloading-the-segmentation-of-large-tcp-packets)
+- [UDP Segmentation Offload](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/udp-segmentation-offload-uso-)
+- [Receive Segment Coalescing](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/overview-of-receive-segment-coalescing)
+- [UDP Receive Segment Coalescing Offload](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/udp-rsc-offload)
+- [Encapsulated Packet Task Offload](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/standardized-inf-keywords-for-nvgre-task-offload)
+- [IPsec Offload](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/using-registry-values-to-enable-and-disable-task-offloading)
+- [TCP Connection Offload](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/connection-offload)
+- [PM Protocol Offload](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/standardized-inf-keywords-for-power-management)
 
 ## !ndiskd.netadapter
 
@@ -144,12 +156,11 @@ typedef struct _NDIS_OFFLOAD_PARAMETERS {
 
 See [task offload registry values](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/using-registry-values-to-enable-and-disable-task-offloading), [network device INF keywords](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/standardized-inf-keywords-for-network-devices), [RSC INF keywords](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/standardized-inf-keywords-for-rsc), [URO](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/udp-rsc-offload), [NVGRE task offload keywords](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/standardized-inf-keywords-for-nvgre-task-offload), [connection offload registry values](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/using-registry-values-to-enable-and-disable-connection-offloading), [power management keywords](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/standardized-inf-keywords-for-power-management), [network/assets/pseudocode/intel-nic](https://github.com/nohuto/win-config/tree/main/network/assets/pseudocode/intel-nic).
 
+NDIS reads these keywords itself when the adapter starts ([`ndisReadOffloadRegistry`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ndis/-ndisReadOffloadRegistry@@YAHPEAU_NDIS_MINIPORT_BLOCK@@@Z.c)), `*UdpRsc` only on 24H2 and later.
+
 ```c
 "HKLM\\System\\CurrentControlSet\\Services\\TCPIP\\Parameters";
   "DisableTaskOffload" = 0; // REG_DWORD (bool)
-
-"HKLM\\System\\CurrentControlSet\\Services\\Ipsec";
-  "EnabledOffload" = 1; // REG_DWORD (bool)
 
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4D36E972-E325-11CE-BFC1-08002bE10318}\\00XX";
   "*IPChecksumOffloadIPv4" = 3; // REG_SZ, 0 disabled, 1 Tx, 2 Rx, 3 Tx/Rx
@@ -169,8 +180,6 @@ See [task offload registry values](https://learn.microsoft.com/en-us/windows-har
   "*RscIPv4" = 1; // REG_SZ (bool)
   "*RscIPv6" = 1; // REG_SZ (bool)
   "*UdpRsc" = 1; // REG_SZ (bool)
-  "ForceRscEnabled" = 0; // REG_SZ (bool)
-  "RscMode" = 1; // REG_SZ, range 0-2
 
   "*EncapsulatedPacketTaskOffload" = 1; // REG_SZ (bool)
   "*EncapsulatedPacketTaskOffloadNvgre" = 1; // REG_SZ (bool)
@@ -188,57 +197,20 @@ See [task offload registry values](https://learn.microsoft.com/en-us/windows-har
   "*PMNSOffload" = 1; // REG_SZ (bool)
   "*PMWiFiRekeyOffload" = 1; // REG_SZ (bool)
 
-  "SaOffloadCapacityEnabled" = 0; // REG_SZ (bool)
+  // vendor values, not written by this option, Intel e2f68.sys
+  "ForceRscEnabled" = 0; // REG_SZ (bool)
+  "RscMode" = 1; // REG_SZ, range 0-2
 
+  // vendor values, not written by this option, Mellanox/NVIDIA mlx5.sys, mlx4eth63.sys, ipoib6x.sys
   "LSOSize" = 64000; // range 1024-64000 - "The maximum number of bytes that the TCP/IP stack can pass to an adapter in a single packet."
   "LSOMinSegment" = 2; // range 2-32 - "The minimum number of segments that a large TCP packet must be divisible by, before the transport can offload it to a NIC for segmentation."
   "LSOTcpOptions" = 1; // range 0-1 - "Enables that the miniport driver to segment a large TCP packet whose TCP header contains TCP options."
   "LSOIpOptions" = 1; // range 0-1 - "Enables its NIC to segment a large TCP packet whose IP header contains IP options."
+
+  // no driver reads it, only a CIM property name in NetAdapterCim.dll
+  "SaOffloadCapacityEnabled" = 0; // REG_SZ (bool)
+
+// not read anymore, no binary of Windows 10 22H2, Windows 11 23H2 or 25H2 contains the name
+"HKLM\\System\\CurrentControlSet\\Services\\Ipsec";
+  "EnabledOffload" = 1; // REG_DWORD (bool)
 ```
-
-### [Checksum Offload](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/offloading-checksum-tasks)
-
-Checksums are small integrity values in packet headers. They let the receiver see whether header or payload data changed while the packet was being carried.
-
-With checksum offload enabled, TCP/IP still prepares the packet, but marks the needed checksum work in the [`NET_BUFFER_LIST`](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/net-buffer-list-structure) OOB data so the adapter can finish it. For TCP & UDP, TCP/IP writes the pseudoheader sum first, then the adapter completes the final checksum before sending. If checksum offload is disabled or not supported, TCP/IP completes the checksum work in software before handing the packet to the adapter.
-
-On receive, the adapter can check supported checksums and report whether they passed or failed before handing the packet up to NDIS and TCP/IP. IPv4 has an IP header checksum, while IPv6 doesn't, TCP and UDP checksums still apply to both IPv4 and IPv6 traffic.
-
-### [Large Send Offload](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/offloading-the-segmentation-of-large-tcp-packets)
-
-LSO lets TCP/IP give the adapter one large TCP packet with large send metadata in the [`NET_BUFFER_LIST`](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/net-buffer-list-structure), instead of building every MTU (maximum transmission unit) sized packet in software.
-
-The adapter uses that large packet as a template and creates normal TCP packets that fit the network MTU. It copies or adjusts the headers, keeps non final packets at MSS (maximum segment size) payload size, updates TCP sequence numbers and length fields, and calculates checksums for the generated packets.
-
-### [UDP Segmentation Offload](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/udp-segmentation-offload-uso-)
-
-USO applies the same large packet segmentation model to UDP traffic, it requires the application to opt into large UDP sends with [`UDP_SEND_MSG_SIZE`](https://learn.microsoft.com/en-us/windows/win32/api/ws2tcpip/nf-ws2tcpip-wsasetudpsendmessagesize) or [`WSASetUdpSendMessageSize`](https://learn.microsoft.com/en-us/windows/win32/api/ws2tcpip/nf-ws2tcpip-wsasetudpsendmessagesize).
-
-When USO is used, TCP/IP sends one large UDP packet with segmentation metadata. The adapter uses it as a template and creates normal UDP datagrams. USO is independent from UDP checksum offload (so disabling `*UDPChecksumOffloadIPv4` doesn't disable `*UsoIPv4`).
-
-### [Receive Segment Coalescing](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/overview-of-receive-segment-coalescing)
-
-RSC reduces receive processing for TCP traffic, an RSC capable adapter can combine a valid sequence of TCP segments from the same connection and pass them upward as one larger coalesced unit. This lowers overhead as NDIS & TCP/IP inspect fewer packet indications during high throughput receive traffic.
-
-### [UDP Receive Segment Coalescing Offload](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/udp-rsc-offload)
-
-URO is the UDP receive side coalescing feature introduced in 24H2 & NDIS 6.89. With URO, a NIC can combine UDP datagrams from the same flow into one logically contiguous receive buffer and indicate it to the networking stack as a single large packet (reducing per packet CPU usage).
-
-NDIS can query URO state through [`OID_TCP_OFFLOAD_CURRENT_CONFIG`](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/oid-tcp-offload-current-config) and change it through [`OID_TCP_OFFLOAD_PARAMETERS`](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/oid-tcp-offload-parameters).
-
-### [Encapsulated Packet Task Offload](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/standardized-inf-keywords-for-nvgre-task-offload)
-
-Encapsulated packet task offload is used for overlay traffic such as NVGRE or VXLAN, these packets contain an inner packet wrapped in outer tunnel headers, so the adapter needs to understand both layers before it can offload checksum or segmentation work correctly.
-
-### [IPsec Offload](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/using-registry-values-to-enable-and-disable-task-offloading)
-
-IPsec offload lets the adapter handle supported AH and ESP work instead of doing all IPsec processing in software.
-
-### [TCP Connection Offload](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/connection-offload)
-
-TCP connection offload moves supported TCP connection processing to the adapter for IPv4 or IPv6 connections. It's different from packet task offloads, which only move specific per packet work such as checksum calculation or segmentation.
-
-### [PM Protocol Offload](https://learn.microsoft.com/en-us/windows-hardware/drivers/network/standardized-inf-keywords-for-power-management)
-
-Power management protocol offloads keep selected network presence tasks active while the system sleeps. So for example after the system enters sleep, a NIC can remain in a low power listening state. With `*PMARPOffload`, it can answer ARP requests, with `*PMNSOffload`, it can answer IPv6 neighbor solicitation, with `*PMWiFiRekeyOffload`, a WiFi NIC can handle GTK rekeying for wake on wireless LAN.
-
