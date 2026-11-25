@@ -41,7 +41,7 @@ Hibernation is Windows S4 power state, it writes the resume state to `Hiberfil.s
 
 `PopQueryHiberPersistedRegValue` reads these values from one table, each entry is value name, global & default (high dword of the third qword):
 
-```
+```asm
 00000001`40e07520  00000001`400294e8 ntoskrnl!`string'
 00000001`40e07528  00000001`40fc6100 ntoskrnl!PopHiberEnabledReg
 00000001`40e07530  ffffffff`00000000
@@ -118,10 +118,9 @@ All three values exist as shown below. [`PopReadHiberbootPolicy`](https://github
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power";
     "HiberbootEnabled" = 1; // REG_DWORD (bool)
 
-    // HybridBootAnimationTime records the boot animation duration during fast boot, HiberIoCpuTime is CPU time spent on hibernation I/O during resume, ResumeCompleteTimestamp is the system timestamp when resume from hibernation completed. So all of them are just counters and changing their data won't affect the boot.
-    "HybridBootAnimationTime" = 1601; // REG_DWORD (ms), range 0-0xFFFFFFFF
-    "HiberIoCpuTime" = 0; // REG_DWORD (ms), range 0-0xFFFFFFFF
-    "ResumeCompleteTimestamp" = 0; // REG_QWORD, range 0-0xFFFFFFFFFFFFFFFF
+    "HybridBootAnimationTime" = 1601; // REG_DWORD (ms), range 0-0xFFFFFFFF, records boot animation
+    "HiberIoCpuTime" = 0; // REG_DWORD (ms), range 0-0xFFFFFFFF, CPU time spent on hibernation I/O during resume
+    "ResumeCompleteTimestamp" = 0; // REG_QWORD, range 0-0xFFFFFFFFFFFFFFFF, system timestamp when resume from hibernation completed
 ```
 
 ```c
