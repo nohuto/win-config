@@ -30,22 +30,22 @@ Values below are based on `RegGetValueW`/`SHRegGetDWORD`/`SHRegGetUSDWORDW` xref
   "DefaultAccentColor" = 4292319232; // REG_DWORD, range 0-4294967295
 
 "HKCU\\Control Panel\\Desktop";
-  "AutoColorization" = 0; // REG_DWORD or REG_SZ "0"/"1", range 0-1
+  "AutoColorization" = 0; // REG_DWORD or REG_SZ "0"/"1" (bool)
 
 "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize";
-  "AppsUseLightTheme" = 1; // REG_DWORD or REG_SZ "0"/"1", range 0-1
+  "AppsUseLightTheme" = 1; // REG_DWORD or REG_SZ "0"/"1" (bool)
                            // 0 = dark mode
                            // 1 = light mode
                            // invalid/missing fallback to HKLM UWPAppsUseLightTheme then 1
-  "SystemUsesLightTheme" = ?; // REG_DWORD or REG_SZ "0"/"1", range 0-1
+  "SystemUsesLightTheme" = ?; // REG_DWORD or REG_SZ "0"/"1" (bool)
                              // 0 = dark mode
                              // 1 = light mode
                              // invalid/missing fallback to HKLM SystemUsesLightTheme then IsOS_OS_PERSONAL
   "ColorPrevalence" = 0; // REG_DWORD, range 0-4294967295
 
 "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes";
-  "UWPAppsUseLightTheme" = 1; // REG_DWORD or REG_SZ "0"/"1", range 0-1, fallback for AppsUseLightTheme
-  "SystemUsesLightTheme" = ?; // REG_DWORD or REG_SZ "0"/"1", range 0-1, fallback for HKCU SystemUsesLightTheme
+  "UWPAppsUseLightTheme" = 1; // REG_DWORD or REG_SZ "0"/"1" (bool), fallback for AppsUseLightTheme
+  "SystemUsesLightTheme" = ?; // REG_DWORD or REG_SZ "0"/"1" (bool), fallback for HKCU SystemUsesLightTheme
 
 "HKCU\\Software\\Microsoft\\Accessibility";
   "TextScaleFactor" = 100; // REG_DWORD, range 0-4294967295 (percent)

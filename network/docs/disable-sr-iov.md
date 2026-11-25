@@ -12,8 +12,8 @@ See [network/assets/pseudocode/intel-nic](https://github.com/nohuto/win-config/t
 
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4D36E972-E325-11CE-BFC1-08002bE10318}\\00XX";
-    "*Sriov" = 0; // range 0-1
-    "*SriovPreferred" = 0; // range 0-1
+    "*Sriov" = 0; // bool
+    "*SriovPreferred" = 0; // bool
 ```
 
 | SubkeyName            | Value       | EnumDesc |

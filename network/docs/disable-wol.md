@@ -13,17 +13,16 @@ powercfg /devicequery wake_armed
 
 ## Registry Values
 
-
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4D36E972-E325-11CE-BFC1-08002bE10318}\\00XX";
-  "*WakeOnMagicPacket" = 1; // REG_SZ, range 0-1 (all drivers)
-  "*WakeOnPattern" = 1; // REG_SZ, range 0-1 (all drivers)
-  "WakeOn" = 0; // REG_SZ, range 0-4, e1i68x64.sys
-  "WakeFromS5" = 2; // REG_SZ, range 0-65535, e1i68x64.sys
-  "WakeOnLink" = 0; // REG_SZ, range 0-2, e1i68x64.sys
-  "WakeOnFastStartup" = 0; // REG_SZ, e1i68x64.sys
-  "EnableWakeOnManagmentOnTCO" = 0; // REG_SZ, range 0-1, e1i68x64.sys
-  "WakeOnMagicPacketFromS5" = 1; // REG_SZ, e2fn.sys
+  "*WakeOnMagicPacket" = 1; // REG_SZ (bool)
+  "*WakeOnPattern" = 1; // REG_SZ (bool)
+  "WakeOn" = 0; // REG_SZ, range 0-4
+  "WakeFromS5" = 2; // REG_SZ, range 0-65535
+  "WakeOnLink" = 0; // REG_SZ, range 0-2
+  "WakeOnFastStartup" = 0; // REG_SZ
+  "EnableWakeOnManagmentOnTCO" = 0; // REG_SZ (bool)
+  "WakeOnMagicPacketFromS5" = 1; // REG_SZ
   "S5WakeOnLan" = ?; // REG_SZ
   "WakeOnLinkChange" = ?; // REG_SZ
   "ShutdownWake" = ?; // REG_SZ

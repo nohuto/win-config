@@ -12,7 +12,7 @@ Everything listed below is based on personal findings, mistakes may exist.
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4D36E972-E325-11CE-BFC1-08002bE10318}\\00XX";
     // ndis.sys & standardized keywords
     "PnPCapabilities" = ?; // REG_DWORD, 0x8 = no power management, 0x10 = no wake
-    "*DeviceSleepOnDisconnect" = 0; // range 0-1
+    "*DeviceSleepOnDisconnect" = 0; // bool
     "*EEE" = ?;
     "*IdleRestriction" = 0;
     "*ModernStandbyWoLMagicPacket" = ?;
@@ -20,7 +20,7 @@ Everything listed below is based on personal findings, mistakes may exist.
     "*SelectiveSuspend" = ?;
     "*SSIdleTimeout" = ?; // seconds (no effect while *SelectiveSuspend is 0)
     "*SSIdleTimeoutScreenOff" = ?; // seconds (no effect while *SelectiveSuspend is 0)
-    "*EnableDynamicPowerGating" = 1; // range 0-1
+    "*EnableDynamicPowerGating" = 1; // bool
 
     // e1i68x64.sys, e2f68.sys
     "AutoPowerSaveModeEnabled" = 0;
@@ -28,27 +28,27 @@ Everything listed below is based on personal findings, mistakes may exist.
     "EnableAdvancedDynamicITR" = ?;
     "EnableD0PHYFlexibleSpeed" = ?;
     "EnableD3ColdInS0" = ?;
-    "EnableDisconnectedStandby" = 0; // range 0-1
-    "EnableModernStandby" = 0; // range 0-1
+    "EnableDisconnectedStandby" = 0; // bool
+    "EnableModernStandby" = 0; // bool
     "EnablePHYFlexibleSpeed" = ?;
     "EnablePHYWakeUp" = ?;
-    "EnablePME" = 0; // range 0-1
-    "EnablePowerManagement" = 1; // range 0-1
+    "EnablePME" = 0; // bool
+    "EnablePowerManagement" = 1; // bool
     "EnableSavePowerNow" = ?;
-    "ForceHostExitUlp" = 0; // range 0-1 (1 = "Allow host driver to force exit ULP on ME systems")
-    "I218DisablePLLShut" = 0; // range 0-1
-    "I218DisablePLLShutGiga" = 0; // range 0-1
+    "ForceHostExitUlp" = 0; // bool (1 = "Allow host driver to force exit ULP on ME systems")
+    "I218DisablePLLShut" = 0; // bool
+    "I218DisablePLLShutGiga" = 0; // bool
     "OBFFEnabled" = ?;
     "ReduceSpeedOnPowerDown" = 1;
     "SipsEnabled" = ?;
     "SleepWhileWaiting" = ?;
-    "ULPMode" = 1; // range 0-1
+    "ULPMode" = 1; // bool
 
     // Intel values
-    "DisableIntelRST" = 1; // range 0-1
-    "DMACoalescing" = 0; // range 0-10240
+    "DisableIntelRST" = 1; // bool
+    "DMACoalescing" = 0; // bool0240
     "ForceLtrValue" = 65535; // range 0-65535
-    "I219DisableK1Off" = 0; // range 0-1
+    "I219DisableK1Off" = 0; // bool
 
     // Realtek
     "AdvancedEEE" = ?;

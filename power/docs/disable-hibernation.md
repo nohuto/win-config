@@ -116,7 +116,7 @@ All three values exist as shown below. [`PopReadHiberbootPolicy`](https://github
     "HibernateBootOptimizationEnabled" = 0; // PopHiberBootOptimizationEnabledReg
 
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power";
-    "HiberbootEnabled" = 1; // REG_DWORD, range 0-1
+    "HiberbootEnabled" = 1; // REG_DWORD (bool)
 
     // HybridBootAnimationTime records the boot animation duration during fast boot, HiberIoCpuTime is CPU time spent on hibernation I/O during resume, ResumeCompleteTimestamp is the system timestamp when resume from hibernation completed. So all of them are just counters and changing their data won't affect the boot.
     "HybridBootAnimationTime" = 1601; // REG_DWORD (ms), range 0-0xFFFFFFFF

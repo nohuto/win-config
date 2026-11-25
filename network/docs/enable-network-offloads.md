@@ -204,8 +204,8 @@ NDIS reads these keywords itself when the adapter starts ([`ndisReadOffloadRegis
   // vendor values, not written by this option, Mellanox/NVIDIA mlx5.sys, mlx4eth63.sys, ipoib6x.sys
   "LSOSize" = 64000; // range 1024-64000 - "The maximum number of bytes that the TCP/IP stack can pass to an adapter in a single packet."
   "LSOMinSegment" = 2; // range 2-32 - "The minimum number of segments that a large TCP packet must be divisible by, before the transport can offload it to a NIC for segmentation."
-  "LSOTcpOptions" = 1; // range 0-1 - "Enables that the miniport driver to segment a large TCP packet whose TCP header contains TCP options."
-  "LSOIpOptions" = 1; // range 0-1 - "Enables its NIC to segment a large TCP packet whose IP header contains IP options."
+  "LSOTcpOptions" = 1; // bool - "Enables that the miniport driver to segment a large TCP packet whose TCP header contains TCP options."
+  "LSOIpOptions" = 1; // bool - "Enables its NIC to segment a large TCP packet whose IP header contains IP options."
 
   // no driver reads it, only a CIM property name in NetAdapterCim.dll
   "SaOffloadCapacityEnabled" = 0; // REG_SZ (bool)

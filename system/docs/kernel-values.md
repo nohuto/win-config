@@ -477,11 +477,11 @@ Everything listed below is based on personal findings, mistakes may exist.
     "Win32CalloutWatchdogBugcheckEnabled" = 0; // PopWin32CalloutWatchdogBugcheckEnabled
 
     // PopOpenPowerKey
-    "AwayModeEnabled" = 0; // REG_DWORD, range 0-1
-    "HiberbootEnabled" = 1; // REG_DWORD, range 0-1
+    "AwayModeEnabled" = 0; // REG_DWORD (bool)
+    "HiberbootEnabled" = 1; // REG_DWORD (bool)
     "KernelResumeIoCpuTime" = 0; // REG_DWORD, milliseconds, range 0-4294967295
     "MaxHuffRatio" = 1; // REG_DWORD, range 1-98
-    "MultiPhaseResumeDisabled" = 0; // REG_DWORD, range 0-1
+    "MultiPhaseResumeDisabled" = 0; // REG_DWORD (bool)
     "SystemPowerPolicy" = "<STRUCT 232 BYTES>"; // REG_BINARY
 
     // HybridBootAnimationTime records the boot animation duration during fast boot, HiberIoCpuTime is CPU time spent on hibernation I/O during resume, ResumeCompleteTimestamp is the system timestamp when resume from hibernation completed. So all of them are just counters and changing their data won't affect the boot.
