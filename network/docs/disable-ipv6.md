@@ -1,4 +1,4 @@
-# IPv6 <!-- id: disable-ipv6 -->
+# IPv6
 
 - `Disable` = `DisabledComponents = 0xFF` & unchecks Internet Protocol Version 6 (`ms_tcpip6`)
 - `Prefer IPv4` = `DisabledComponents = 0x20` & checks `ms_tcpip6`, MS recommends this instead of disabling IPv6
