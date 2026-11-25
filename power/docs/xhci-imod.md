@@ -17,11 +17,9 @@ max moderation = IMODI * 250 ns
 remaining moderation wait = IMODC * 250 ns
 ```
 
-Usually, clearing `IP` (interrupt pending) loads `IMODC` from `IMODI`, `IMODC` then counts down which is the "remaining wait" above.
-
 > "*An Interrupter manages events and their notification to the host. The xHCI supports up to 1024 Interrupters. The MaxIntrs field in HCSPARAMS1 determines the Number of Interrupters implemented in the xHC. Each Interrupter consists of an Interrupter Management Register, an Interrupter Moderation Register and an Event Ring. Each Interrupter shall be mapped to a single MSI or MSI-X interrupt vector. An Interrupter shall assert an interrupt if it is enabled and its associated Event Ring contains Event TRBs that require an interrupt.*"
 >
-> Intel, [eXtensible Host Controller Interface for Universal Serial Bus](https://www.intel.com/content/dam/www/public/us/en/documents/technical-specifications/extensible-host-controler-interface-usb-xhci.pdf)
+> — Intel, [eXtensible Host Controller Interface for Universal Serial Bus](https://www.intel.com/content/dam/www/public/us/en/documents/technical-specifications/extensible-host-controler-interface-usb-xhci.pdf)
 
 Whenever `IP` is cleared, hardware loads `IMODC = IMODI` and counts down to zero and stays there until another interrupt reloads it. This causes for example the first event after an idle to be immediate, and an event that arrives while the counter is running to get the IMOD wait time. With the interval of 50 us (Windows default), an event 10 us after the previous interrupt would wait about 40 us, an event 80 us after the previous interrupt wouldn't wait, means:
 
@@ -47,7 +45,7 @@ $ .\xhci_imod --no-write
 | `EHB = 1` | Existing DPC/work item owns the Event Ring, it can process new events without another interrupt |
 | `IE = 0` | Interrupter cannot send an interrupt |
 
-An event below in the figures = Event TRB written to an Event Ring, for a mouse/keyboard, a completed interrupt IN transfer normally creates such an Transfer Event TRB.
+An event below in the figures = Event TRB written to an Event Ring, for a mouse/keyboard, a completed interrupt IN transfer normally creates such a Transfer Event TRB.
 
 ### Interrupt Throttle Flow
 
@@ -77,23 +75,65 @@ An event below in the figures = Event TRB written to an Event Ring, for a mouse/
 
 ## USBXHCI Pseudocode
 
-Not complete yet.
-
 ![](https://github.com/nohuto/win-config/blob/main/power/images/usb-driver-stack.png?raw=true)
 
 [`Interrupter_PrepareInterrupter`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/USBXHCI/Interrupter_PrepareInterrupter.c) gets the register set at `RuntimeBase + 0x20 + 0x20 * InterrupterId`, [`Interrupter_InterruptEnable`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/USBXHCI/Interrupter_InterruptEnable.c) then writes decimal `200` to `IMOD` (low half of `0x000000C8` sets `IMODI = 200`, the high writes `IMODC` to zero) and enables `IMAN.IE`, W10 1507 - W11 26H1 all use `200`.
 
 ```c
-// Interrupter_InterruptEnable
+// Interrupter_InterruptEnable (23H2)
 
-v2 = (_DWORD *)(*(_QWORD *)(a1 + 24) + 4LL);
-XilRegister_WriteUlong(v3, v2, 200); // IMOD = 0x000000C8, 50 us
-Ulong = XilRegister_ReadUlong(v3, v4);
+v2 = (_DWORD *)(*(_QWORD *)(a1 + 24) + 4LL); // a1 + 24 = interrupter register set, + 4 = IMOD
+v3 = *(_QWORD *)(*(_QWORD *)(a1 + 8) + 88LL);
+*(_DWORD *)(a1 + 96) = *(_DWORD *)(a1 + 96) & 0xFFFFFFF9 | 4;
+if ( *(_BYTE *)(v3 + 137) )
+{
+  *v2 = 200;
+  _InterlockedOr(v8, 0);
+}
+else
+{
+  XilRegister_WriteUlong(v3, v2, 200); // IMOD = 0x000000C8, IMODI = 200 (50 us), IMODC = 0
+}
+v4 = *(unsigned int **)(a1 + 24);
+if ( *(_BYTE *)(v3 + 137) )
+  Ulong = *v4;
+else
+  Ulong = XilRegister_ReadUlong(v3, v4); // IMAN
+v6 = *(_DWORD **)(a1 + 24);
 result = Ulong | 2; // IMAN.IE = 1
-return XilRegister_WriteUlong(v3, v6, result);
+if ( !*(_BYTE *)(v3 + 137) )
+  return XilRegister_WriteUlong(v3, v6, result);
 ```
 
-[`Interrupter_CreateInterrupter`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/USBXHCI/Interrupter_CreateInterrupter.c) registers [`Interrupter_WdfEvtInterruptEnable`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/USBXHCI/Interrupter_WdfEvtInterruptEnable.c) as the KMDF interrupt enable callback, which calls it whenever the controller enters D0 (as written in [Enabling and Disabling Interrupts](https://learn.microsoft.com/en-us/windows-hardware/drivers/wdf/enabling-and-disabling-interrupts)).
+[`Interrupter_CreateInterrupter`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/USBXHCI/Interrupter_CreateInterrupter.c) registers [`Interrupter_WdfEvtInterruptEnable`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/USBXHCI/Interrupter_WdfEvtInterruptEnable.c) as the KMDF interrupt enable callback, KMDF calls it every time the controller enters D0, and USBXHCI also calls `Interrupter_InterruptEnable` after a controller reset.
+
+> "*The framework calls the driver's EvtInterruptEnable and EvtDeviceD0EntryPostInterruptsEnabled callback functions each time the device enters its working (D0) state, after the framework has called the driver's EvtDeviceD0Entry callback function.*"
+>
+> — Microsoft, [Enabling and Disabling Interrupts](https://learn.microsoft.com/en-us/windows-hardware/drivers/wdf/enabling-and-disabling-interrupts)
+
+```c
+// Interrupter_InterruptEnable (23H2)
+
+ * Callers:
+ *     Interrupter_WdfEvtInterruptEnable @ 0x1C0013980 (Interrupter_WdfEvtInterruptEnable.c)
+ *     Interrupter_ControllerResetPostReset @ 0x1C003DCC4 (Interrupter_ControllerResetPostReset.c)
+```
+
+USBXHCI lets an idle controller go to D3 after 10sec, unless [`DisableHCS0Idle`](https://noverse.dev/docs/win-config/peripheral/usbflags-values/#registry-values) is set or the platform cant wake it from D1/deeper:
+
+```c
+// Controller_ConfigureS0IdleSettings (25H2)
+
+LOBYTE(v2) = Controller_IsRegKeySetToDisableS0Idle(a1); // DisableHCS0Idle, see below
+if ( !(_BYTE)v2 )
+
+v7 = ((__int64 (__fastcall *)(_QWORD, __int64, int *))v16[5])(v16[1], 1LL, &v17); // GetIdleWakeInfo, v17 = DEVICE_WAKE_DEPTH
+
+if ( v17 > 1 ) // wake from D1/deeper
+{
+  *v9 = 0;
+  LOBYTE(v2) = Controller_UpdateIdleTimeout(a1, 10000LL); // idle timeout 10000 ms
+```
 
 ## Mouse/Keyboard Input
 
@@ -149,13 +189,36 @@ Controller Capabilities
 
 Software Supported Capabilities
 -------------------------------
-    Interrupters: 8 // windows supports all
+    Interrupters: 8 // what USBXHCI set up, 8 on this controller
 
 lkd> !usb3kd.xhci_registers 0xffff85824c5bfe90
 Runtime Registers
 -----------------
     dt USBXHCI!_RUNTIME_REGISTERS 0xffffde81645004c0 // controller register base + RTSOFF
     dt -ba8 USBXHCI!_INTERRUPTER_REGISTER_SET 0xffffde81645004e0 // interrupter 0 starts at runtimeBase + 0x20
+```
+
+USBXHCI doesn't always use every interrupter a controller implements, it sets up the primary interrupter 0 and up to 16 secondary ones, at most one per active processor and limited by the message interrupts (MSI-X) the controller gets, this also means that with a single message only interrupter 0 is used:
+
+```c
+// Interrupter_DetermineSecondaryInterrupterCount (25H2)
+
+ActiveProcessorCount = KeQueryActiveProcessorCountEx(0);
+v5 = *(_QWORD *)(a1 + 8);
+v6 = 0;
+v7 = ActiveProcessorCount;
+if ( (*(_QWORD *)(v5 + 736) & 0x1000LL) == 0 )
+{
+  v8 = (*(_DWORD *)(*(_QWORD *)(a1 + 8) + 1044LL) == 1) + 1;
+  if ( a2 != v8 ) // a2 = message interrupt count
+  {
+    v6 = a2 - v8;
+    if ( (unsigned int)(a2 - v8) > 0x10 )
+      v6 = 16; // at most 16 secondary interrupters
+    if ( v7 <= v6 )
+      v6 = v7; // at most one per active processor
+  }
+}
 ```
 
 ### USBXHCI _IMOD
@@ -247,7 +310,7 @@ USB_ENDPOINT_DESCRIPTOR:
 ```
 
 ```c
-lkd> !usb3kd.xhci_transfertrbs 0xffff85824f96cd10 // // _BULK_STAGE_DATA.TrbRange at 0xffff85824f96ccb0 + 0x60
+lkd> !usb3kd.xhci_transfertrbs 0xffff85824f96cd10 // _BULK_STAGE_DATA.TrbRange at 0xffff85824f96ccb0 + 0x60
     [  0] NORMAL       0x0000000631175d40 CycleBit 1 IOC 0 CH 1 BEI 0 InterrupterTarget 1 TransferLength    13 TDSize  0
     [  1] EVENT_DATA   0x0000000631175d50 CycleBit 1 IOC 1 CH 0 BEI 0 InterrupterTarget 1 Data 0xffff85824f96ccb3 TotalBytes 13
 ```
@@ -270,7 +333,7 @@ lkd> !usb3kd.xhci_transfertrbs 0xffff85824f8c6980 // _BULK_STAGE_DATA.TrbRange a
 
 ## xhci_imod
 
-Download and extract [xhci_imod.zip](https://github.com/nohuto/utils/releases/download/0.1.0/xhci_imod.zip), keeping `xhci_imod.exe` and the signed `inpoutx64.sys` driver (kernel level port access driver) in the same folder. You can also build the executable from [source](https://github.com/nohuto/utils/tree/main/xhci_imod):
+Download and extract [xhci_imod.zip](https://github.com/nohuto/utils/releases/download/0.1.0/xhci_imod.zip), keeping `xhci_imod.exe` and the signed `inpoutx64.sys` driver in the same folder. You can also build the executable from [source](https://github.com/nohuto/utils/tree/main/xhci_imod):
 
 ```powershell
 cmake -S . -B build
@@ -279,20 +342,20 @@ cmake --build build --config Release
 .\build\Release\xhci_imod.exe
 ```
 
-The executable is also capable to read/write physical addresses via `read8`, `read16`, `read32`, `read64`, `write8`, `write16`, `write32`, `write64`, `readblk`, `writeblk`.
+The executable can also read/write physical addresses via `read8`, `read16`, `read32`, `read64`, `write8`, `write16`, `write32`, `write64`, `readblk`, `writeblk`.
 
 | Flag | Description |
 | --- | --- |
 | `--driver PATH` | Override the colocated `inpoutx64.sys` path |
 | `--bdf BB:DD.F` | Hexadecimal xHCI PCI address (BB:DD.F) |
-| `--xhci-index N` | Select Nth xHCI controller |
+| `--xhci-index N` | Select the Nth xHCI controller |
 | `--all` | Go through every PCI xHCI controller |
-| `--interrupter ID` / `-i ID` | Interrupter ID to process (defaults to initialized Event Rings) |
+| `--interrupter ID` / `-i ID` | Interrupter ID to process, can be repeated (defaults to initialized Event Rings) |
 | `--interval VALUE` | IMODI in 250 ns units, 0 disables moderation, range 0-65535 |
 | `--no-write` | Read and output without MMIO writes |
 | `--startup` | Create a highest privilege logon task |
 | `--delete` | Delete the logon task and `%LOCALAPPDATA%\Noverse\IMOD` folder |
-| `--no-exit` | Keep the console open after completion |
+| `--no-exit` | Keep the console open until Ctrl+C |
 | `--verbose` | Show driver and controller details |
 
 Examples:

@@ -25,19 +25,73 @@ Hibernation is Windows S4 power state, it writes the resume state to `Hiberfil.s
 
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power";
-    "AllowHibernate" = 4294967295; // PopAllowHibernateReg, REG_DWORD
+    "AllowHibernate" = 4294967295; // PopAllowHibernateReg, REG_DWORD (persisted table, see below), only 0 disables hibernation
     "EnableMinimalHiberFile" = 0; // PopEnableMinimalHiberFile, REG_DWORD
     "ForceMinimalHiberFile" = 0; // PopForceMinimalHiberFile, REG_DWORD
-    "HibernateChecksummingEnabled" = 1; // PopHiberChecksummingEnabledReg 
-    "HibernateEnabledDefault" = 1; // PopHiberEnabledDefaultReg 
-    "PromoteHibernateToShutdown" = 0; // PopPromoteHibernateToShutdown 
-    "SkipHibernateMemoryMapValidation" = 4294967295; // PopEnableHibernateMemoryMapValidationOverride (4294967295)
-
-    "HibernateEnabled" = 1; // that's the value 'powercfg /hibernate off' would set
+    "HibernateChecksummingEnabled" = 1; // PopHiberChecksummingEnabledReg
+    "HibernateEnabled" = ?; // REG_DWORD, PopHiberEnabledReg (persisted table), missing = HibernateEnabledDefault decides
+    "HibernateEnabledDefault" = 1; // PopHiberEnabledDefaultReg, only used while HibernateEnabled is missing
+    "PromoteHibernateToShutdown" = 0; // PopPromoteHibernateToShutdown
+    "SkipHibernateMemoryMapValidation" = 4294967295; // PopEnableHibernateMemoryMapValidationOverride
 
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\ForceHibernateDisabled";
     "GuardedHost" = 0; // unk_140FC5234, if nonzero, PopHibernateEvaluation treats hibernation as force disabled
     "Policy" = 0; // PopHiberForceDisabledReg, ^
+```
+
+`PopQueryHiberPersistedRegValue` reads these values from one table, each entry is value name, global & default (high dword of the third qword):
+
+```
+00000001`40e07520  00000001`400294e8 ntoskrnl!`string'
+00000001`40e07528  00000001`40fc6100 ntoskrnl!PopHiberEnabledReg
+00000001`40e07530  ffffffff`00000000
+00000001`40e07538  00000001`400294b8 ntoskrnl!`string'
+00000001`40e07540  00000001`40fc6070 ntoskrnl!PopHiberFileSizePercent
+00000001`40e07548  00000064`00000000
+00000001`40e07550  00000001`40029498 ntoskrnl!`string'
+00000001`40e07558  00000001`40fc6190 ntoskrnl!PopHiberFileTypeReg
+00000001`40e07560  ffffffff`00000000
+00000001`40e07568  00000001`40029478 ntoskrnl!`string'
+00000001`40e07570  00000001`40fc6104 ntoskrnl!PopAllowHibernateReg
+00000001`40e07578  ffffffff`00000001
+00000001`400294e8  "HibernateEnabled"
+00000001`400294b8  "HiberFileSizePercent"
+00000001`40029498  "HiberFileType"
+00000001`40029478  "AllowHibernate"
+```
+
+How they decide whether hibernation is available:
+
+```c
+// PopHibernateEvaluation (25H2)
+
+if ( PopHiberEnabledReg == -1 ) // HibernateEnabled missing
+  v4 = (unsigned int)(PopHiberEnabledDefaultReg - 1) > 0xFFFFFFFD; // HibernateEnabledDefault 0 or -1 = disabled
+else
+  v4 = PopHiberEnabledReg == 0;
+v5 = v4;
+if ( !PopAllowHibernateReg ) // AllowHibernate
+  v5 = 1LL;
+if ( a1 )
+{
+  v5 = (unsigned __int8)v5;
+  if ( PopBootFromVHD )
+    v5 = 1LL;
+}
+if ( a2 )
+{
+  v6 = &PopHiberForceDisabledReg; // ForceHibernateDisabled\Policy, then GuardedHost
+  v7 = 2LL;
+  do
+  {
+    v8 = *v6++ == 0;
+    v5 = (unsigned __int8)v5;
+    if ( !v8 )
+      v5 = 1LL;
+    --v7;
+  }
+  while ( v7 );
+}
 ```
 
 ## Disable Hiberboot
@@ -58,9 +112,8 @@ All three values exist as shown below. [`PopReadHiberbootPolicy`](https://github
 
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power";
-    "HiberbootEnabled" = 1; // PopHiberbootEnabledReg 
     "DisableIdleStatesAtBoot" = 0; // PpmIdleDisableStatesAtBoot 
-    "HibernateBootOptimizationEnabled" = 0; // PopHiberBootOptimizationEnabledReg 
+    "HibernateBootOptimizationEnabled" = 0; // PopHiberBootOptimizationEnabledReg
 
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power";
     "HiberbootEnabled" = 1; // REG_DWORD, range 0-1
@@ -79,20 +132,32 @@ __int64 __fastcall PopOpenPowerKey(__int64 a1)
 ```
 
 ```c
-// PopReadHiberbootPolicy.c
-result = PopOpenPowerKey(&KeyHandle);
-if ( result >= 0 )
+// PopReadHiberbootPolicy (25H2)
+
+result = PopReadHiberbootGroupPolicy(v4); // Policies\Microsoft\Windows\System
+if ( result >= 0 && v4[0] ) // only nonzero policy value
 {
-  RtlInitUnicodeString(&DestinationString, L"HiberbootEnabled");
-  if ( ZwQueryValueKey(
-         KeyHandle,
-         &DestinationString,
-         KeyValuePartialInformation,
-         &KeyValueInformation,
-         0x14u,
-         &ResultLength) >= 0 )
-    v1 = BYTE12(KeyValueInformation);
-  result = ZwClose(KeyHandle);
+  v1 = v4[0];
+}
+else
+{
+  result = PopOpenPowerKey((__int64)&KeyHandle); // Control\Session Manager\Power
+  if ( result >= 0 )
+  {
+    RtlInitUnicodeString(&DestinationString, L"HiberbootEnabled");
+    v9 = 0;
+    KeyValueInformation = 0LL;
+    v1 = 0;
+    if ( ZwQueryValueKey(
+           KeyHandle,
+           &DestinationString,
+           KeyValuePartialInformation,
+           &KeyValueInformation,
+           0x14u,
+           &ResultLength) >= 0 )
+      v1 = BYTE12(KeyValueInformation);
+    result = ZwClose(KeyHandle);
+  }
 }
 ```
 
@@ -109,7 +174,7 @@ Hibernation files are used for hybrid sleep, fast startup, and [standard hiberna
 
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power";
-    "HiberFileSizePercent" = 100; // PopHiberFileSizePercent, REG_DWORD, 0-39 keeps the type logic, 40-100 uses the percent directly and PopSetHiberFileSize forces a full file
+    "HiberFileSizePercent" = 0; // PopHiberFileSizePercent, REG_DWORD, 100 when missing, 0-39 keeps the type logic, 40-100 uses the percent directly and PopSetHiberFileSize forces a full file
 
     // DWORD 1 = Reduced, DWORD 2 = Full, only used while HiberFileSizePercent < 40
     "HiberFileType" = 4294967295; // PopHiberFileTypeReg (4294967295)
@@ -158,6 +223,8 @@ HKLM\System\CurrentControlSet\Control\Power\HiberFileType	SUCCESS	Type: REG_DWOR
 Notes on `Disable Idle States At Boot` SUBOPTION, data `-1` (`PpmIdleDisableStatesAtBoot dd 0FFFFFFFFh`) = `0`:
 
 ```cpp
+// PpmInitIdlePolicy (23H2)
+
 if ( PpmIdleDisableStatesAtBoot == -1 )
   PpmIdleDisableStatesAtBoot = 0;
 ```
@@ -166,16 +233,50 @@ if ( PpmIdleDisableStatesAtBoot == -1 )
 `1` = would write disable in `PpmInstallCoordinatedIdleStates`/`PpmInstallPlatformIdleStates`
 
 ```cpp
-if ( PpmIdleDisableStatesAtBoot )
-  *(_DWORD *)(v20 + 80) = 0x80000000;
+// PpmInstallPlatformIdleStates (23H2)
 
+if ( PpmIdleDisableStatesAtBoot )
+  *(_DWORD *)(v18 + 80) = 0x80000000;
 ```
 
 `2` = would do the same as `1` including disable write in `PpmInstallNewIdleStates`
 
 ```cpp
+// PpmInstallNewIdleStates (23H2)
+
 if ( v20 && PpmIdleDisableStatesAtBoot == 2 )
   *(_DWORD *)(v23 + 32) = 0x80000000;
+```
+
+25H2 moved this into `PpmIdleIsStateDisabled` and added `3` (per state bitmask), bits 9-15 disable processor idle states 1-7, bits 16-31 coordinated/platform idle states 0-15:
+
+```c
+// PpmIdleIsStateDisabled (25H2)
+
+v2 = 0;
+if ( !a1 ) // coordinated/platform idle states
+{
+  if ( (_BYTE)PpmIdleDisableStatesAtBoot != 3 )
+    return (unsigned __int8)(PpmIdleDisableStatesAtBoot - 1) <= 1u; // 1 or 2
+  v5 = 15;
+  if ( a2 < 0xF )
+    v5 = a2;
+  v4 = (HIWORD(PpmIdleDisableStatesAtBoot) & (unsigned __int16)(1 << v5)) == 0;
+  return !v4;
+}
+if ( a2 ) // processor idle states 1+, state 0 returns v2 (0)
+{
+  if ( (_BYTE)PpmIdleDisableStatesAtBoot == 3 )
+  {
+    v3 = 7;
+    if ( a2 < 7 )
+      v3 = a2;
+    v4 = (BYTE1(PpmIdleDisableStatesAtBoot) & (unsigned __int8)(1 << v3)) == 0;
+    return !v4;
+  }
+  return (_BYTE)PpmIdleDisableStatesAtBoot == 2;
+}
+return v2;
 ```
 
 ## [Windows Policies](https://noverse.dev/policies)

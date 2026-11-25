@@ -4,7 +4,7 @@ Several values are applied, some have been changed, others are default values. T
 
 ## Registry Values
 
-See [power-symbols](https://github.com/nohuto/win-config/blob/main/power/assets/reference/power/power-symbols.txt) for reference ([disp-sym](https://noverse.dev/docs/windbg-notes/symbols/reading-symbols/#mass-display-symbols)). The list doesn't include all existing values yet, but the listed ones do exist. [assets/power](https://github.com/nohuto/win-config/tree/main/power/assets/pseudocode/power) contains the split pseudocode for several `Session Manager\\Power` values.
+See [power-symbols](https://github.com/nohuto/win-config/blob/main/power/assets/reference/power/power-symbols.txt) for reference ([disp-sym](https://noverse.dev/docs/windbg-notes/symbols/reading-symbols/#mass-display-symbols)).
 
 | Prefix | Component |
 | --- | --- |
@@ -16,171 +16,288 @@ Everything listed below is based on personal findings, mistakes may exist.
 
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power";
-    "ActiveIdleLevel" = 1; // PopFxActiveIdleLevel 
-    "ActiveIdleThreshold" = 5000000; // PopFxActiveIdleThreshold
-    "ActiveIdleTimeout" = 1000; // PopFxActiveIdleTimeout
-    "AllowAudioToEnableExecutionRequiredPowerRequests" = 1; // PopPowerRequestActiveAudioEnablesExecutionRequired 
-    "AllowHibernate" = 4294967295; // PopAllowHibernateReg, REG_DWORD
-    "AllowSystemRequiredPowerRequests" = 1; // PopPowerRequestConvertSystemToExecution 
-    "AlwaysComputeQosHints" = 0; // PpmPerfAlwaysComputeQosEnabled, can be used to cause a condition in PopInitializeHeteroProcessors to be true, see PowerThrottlingOff section
-    "BootHeteroPolicyOverride" = 0; // PpmPerfBootHeteroPolicyOverrideEnabled 
-    "CheckpointSystemSleep" = 0; // PopCheckpointSystemSleepEnabledReg 
-    "CheckpointSystemSleepSimulateFlags" = 0; // PopCheckpointSystemSleepSimulateFlags 
-    "CheckPowerSourceAfterRtcWakeTime" = 30; // PopCheckPowerSourceAfterRtcWakeTime
-    "Class1InitialUnparkCount" = 64; // PpmParkInitialClass1UnParkCount
-    "CoalescingFlushInterval" = 60; // PopCoalescingFlushInterval 
-    "CoalescingTimerInterval" = 1500; // PopCoalescingTimerInterval - Units: seconds (multiplies value by -10,000,000, one second in 100?ns units, so the default corresponds to a 25min cadence)
-    "DeepIoCoalescingEnabled" = 0; // PopDeepIoCoalescingEnabled 
-    "DirectedDripsAction" = 3; // PopDirectedDripsAction 
-    "DirectedDripsDebounceInterval" = 120; // PopDirectedDripsDebounceInterval
-    "DirectedDripsDfxEnforcementPolicy" = 1; // PopDirectedDripsDfxEnforcementPolicy 
-    "DirectedDripsOverride" = 4294967295; // PopDirectedDripsOverride
-    "DirectedDripsSurprisePowerOnTimeout" = 5; // PopDirectedDripsSurprisePowerOnTimeoutSeconds 
-    "DirectedDripsTimeout" = 300; // PopDirectedDripsTimeout
-    "DirectedDripsWaitWakeTimeout" = 5; // PopDirectedDripsWaitWakeTimeoutSeconds 
-    "DirectedFxDefaultTimeout" = 120; // PopFxDirectedFxDefaultTimeout
-    "DisableDisplayBurstOnPowerSourceChange" = 0; // PopDisableDisplayBurstOnPowerSourceChange 
-    "DisableIdleStatesAtBoot" = 0; // PpmIdleDisableStatesAtBoot 
-    "DisableInboxPepGeneratedConstraints" = 4294967295; // PopDisableInboxPepGeneratedConstraintsOverride
-    "DisableVsyncLatencyUpdate" = 0; // PpmDisableVsyncLatencyUpdate 
-    "DozeDeferralChecksToIgnore" = 0; // PopDozeDeferralChecksToIgnore 
-    "DozeDeferralMaxSeconds" = 259200; // PopDozeDeferralMaxSeconds
-    "DripsCallbackInterval" = 35; // PopDripsCallbackInterval 
-    "DripsSwHwDivergenceEnableLiveDump" = 0; // PopDripsSwHwDivergenceEnableLiveDump 
-    "DripsSwHwDivergenceThreshold" = 270; // PopDripsSwHwDivergenceThreshold
-    "DripsWatchdogAction" = 198; // PopDripsWatchdogAction
-    "DripsWatchdogDebounceInterval" = 120; // PopDripsWatchdogDebounceInterval
-    "DripsWatchdogTimeout" = 300; // PopDripsWatchdogTimeout
-    "EnableInputSuppression" = 4294967295; // PopEnableInputSuppressionOverride
-    "EnableMinimalHiberFile" = 0; // PopEnableMinimalHiberFile, REG_DWORD
-    "EnablePowerButtonSuppression" = 4294967295; // PopEnablePowerButtonSuppressionOverride
-    "EnergyEstimationEnabled" = 1; // PopEnergyEstimationEnabled 
-    "EnforceAusterityMode" = 0; // PopEnforceAusterityMode 
-    "EnforceConsoleLockScreenTimeout" = 0; // PopEnforceConsoleLockScreenTimeout 
-    "EnforceDisconnectedStandby" = 0; // PopEnforceDisconnectedStandby 
-    "EventProcessorEnabled" = 1; // PopEventProcessorEnabled 
-    "ExitLatencyCheckEnabled" = 0; // PpmExitLatencyCheckEnabled 
-    "ExperimentalClusterIdleMitigation" = 0; // PpmIdleClusterIdleMitigation 
-    "ForceMinimalHiberFile" = 0; // PopForceMinimalHiberFile, REG_DWORD
-    "FxAccountingTelemetryDisabled" = 0; // PopDiagFxAccountingTelemetryDisabled 
-    "FxRuntimeLogNumberEntries" = 64; // PopFxRuntimeLogNumberEntries - Changing it to 0 will end up with a BSoD
-    "HeteroFavoredCoreRotationTimeoutMs" = 30000; // PpmHeteroFavoredCoreRotationTimeoutMs
-    "HeteroHgsEePerfHintsIndependentEnabled" = 0; // PpmHeteroHgsEePerfHintsIndependentEnabled 
-    "HeteroHgsPlusDisabled" = 0; // PpmHeteroHgsThreadDisabled 
-    "HeteroMultiClassParkingEnabled" = 4294967295; // PpmHeteroMultiClassParkingRegValue
-    "HeteroMultiCoreClassesEnabled" = 4294967295; // PpmHeteroMultiCoreClassesRegValue
-    "HeteroWpsContainmentEnumOverride" = 0; // PpmHeteroWpsContainmentEnumOverride 
-    "HeteroWpsWorkloadProminenceCutoff" = 35; // PpmHeteroWpsWorkloadProminenceCutoff
-    "HiberbootEnabled" = 1; // PopHiberbootEnabledReg 
-    "HiberFileSizePercent" = 100; // PopHiberFileSizePercent, REG_DWORD, 0-39 keeps the type logic, 40-100 uses the percent directly and PopSetHiberFileSize forces a full file
-    "HiberFileType" = 4294967295; // PopHiberFileTypeReg, DWORD 1 = Reduced, DWORD 2 = Full, only used while HiberFileSizePercent < 40
-    "HiberFileTypeDefault" = 4294967295; // PopHiberFileTypeDefaultReg, fallback when HiberFileType is unset
-    "HibernateBootOptimizationEnabled" = 0; // PopHiberBootOptimizationEnabledReg 
-    "HibernateChecksummingEnabled" = 1; // PopHiberChecksummingEnabledReg 
-    "HibernateEnabledDefault" = 1; // PopHiberEnabledDefaultReg, REG_DWORD
-    "HibernateEnabled" = 1; // that's the value 'powercfg /hibernate off' would set
-    "HighPerfDurationBoot" = 90000; // PpmHighPerfDuration
-    "HighPerfDurationCSExit" = ?;
-    "HighPerfDurationSxExit" = ?;
-    "IdleDurationExpirationTimeout" = 4; // PpmIdleDurationExpirationTimeoutMs 
-    "IdleProcessorsRequireQosManagement" = 4294967295; // PpmPerfQosManageIdleProcessors
-    "IdleStateTimeout" = 500; // PopPepIdleStateTimeout
-    "IgnoreCsComplianceCheck" = 0; // PopIgnoreCsComplianceCheck 
-    "IgnoreLidStateForInputSuppression" = 4294967295; // PopLidStateForInputSuppressionOverride
-    "IpiLastClockOwnerDisable" = 0; // PpmIpiLastClockOwnerDisable 
-    "LatencyToleranceDefault" = 100000; // PpmLatencyToleranceLimit
-    "LatencyToleranceFSVP" = 20000;
-    "LatencyToleranceIdleResiliency" = 1500000;
-    "LatencyToleranceParked" = 0; // PpmIdleParkedLatencyLimit 
-    "LatencyToleranceSoftParked" = 0; // PpmIdleSoftParkedLatencyLimit 
-    "LatencyToleranceVSyncEnabled" = 13001;
-    "LidReliabilityState" = 1; // REG_DWORD, range 0-1
-    "ManualDimTimeout" = 0; // PopAdaptiveManualDimTimeout 
-    "MaximumFrequencyOverride" = 0; // PpmFrequencyOverride 
-    "MfBufferingThreshold" = 0; // PpmMfBufferingThreshold 
-    "MfOverridesDisabled" = 1; // PpmMfOverridesDisabled 
-    "MSDisabled" = 0; // PopModernStandbyDisabled 
-    "MultiparkGranularity" = 8; // PpmParkMultiparkGranularity 
-    "PdcIdlePhaseDefaultWatchdogTimeoutSeconds" = 30; // PopPdcIdlePhaseDefaultWatchdogTimeoutSeconds
-    "PdcOneWayEntry" = 0; // PopPowerAggregatorOneWayEntry 
-    "PerfArtificialDomain" = 4294967295; // PpmPerfArtificialDomainSetting
-    "PerfBoostAtGuaranteed" = 0; // PpmPerfBoostAtGuaranteed 
-    "PerfCalculateActualUtilization" = 1; // PpmPerfCalculateActualUtilization 
-    "PerfCheckTimerImplementation" = 0; // PpmCheckTimerImplementation 
-    "PerfIdealAggressiveIncreasePolicyThreshold" = 90; // PpmPerfIdealAggressiveIncreaseThreshold
-    "PerfQueryOnDevicePowerChanges" = 0; // PopFxPerfQueryOnDevicePowerChanges 
-    "PerfSingleStepSize" = 5; // PpmPerfSingleStepSize
-    "PlatformAoAcOverride" = 4294967295; // PopPlatformAoAcOverride
-    "PlatformRoleOverride" = 4294967295; // PopPlatformRoleOverride
-    "PoFxSystemIrpWaitForReportDevicePowered" = 0; // PopPoFxSystemIrpWaitForReportDevicePoweredReg 
-    "PowerActionResumeWatchdogTimeoutDefault" = 300; // PopPowerActionResumingWatchdogTimeoutDefault
-    "PowerActionTransitioningWatchdogTimeoutDefault" = 600; // PopPowerActionTransitioningWatchdogTimeoutDefault
-    "PromoteHibernateToShutdown" = 0; // PopPromoteHibernateToShutdown 
-    "ProximityEscapeMsec" = 0; // TtmpProximityEscapeMsec 
-    "RestrictedStandbyDozeTimeoutSeconds" = 0; // PopPowerAggregatorRestrictedStandbyDozeTimeoutSeconds 
-    "SkipHibernateMemoryMapValidation" = 4294967295; // PopEnableHibernateMemoryMapValidationOverride 
-    "SleepstudyAccountingEnabled" = 1; // SleepstudyHelperAccountingEnabled 
-    "SleepstudyGlobalBlockerLimit" = 3000; // SleepstudyHelperBlockerGlobalLimit
-    "SleepstudyLibraryBlockerLimit" = 200; // SleepstudyHelperBlockerLibraryLimit
-    "SmartUserPresenceAction" = 0; // PopSmartUserPresenceAction 
-    "SmartUserPresenceCheckTimeout" = 10800; // PopSmartUserPresenceCheckTimeout
-    "SmartUserPresenceGracePeriod" = 1800; // PopSmartUserPresenceGracePeriod
-    "SmartUserPresenceWakeOffset" = 300; // PopSmartUserPresenceWakeOffset
-    "StandbyConnectivityGracePeriod" = 0; // PopStandbyConnectivityGracePeriod 
-    "SuppressResumePrompt" = 0; // PopSuppressResumePrompt 
-    "ThermalPollingMode" = 0; // PopThermalPollingMode 
-    "ThermalTelemetryVerbosity" = 1; // PopThermalTelemetryVerbosity 
-    "TimerRebaseThresholdOnDripsExit" = 60; // PopTimerRebaseThresholdRegValue
-    "TtmEnabled" = 0; // TtmpEnabled 
-    "UserBatteryChargeEstimator" = 0; // PopUserBatteryChargingEstimator 
-    "UserBatteryDischargeEstimator" = 0; // PopDisableBatteryDischargeEstimator 
-    "WatchdogWorkOrderTimeout" = 300000; // PopFxWatchdogWorkOrderTimeout
-    "Win32kCalloutWatchdogTimeoutSeconds" = 30; // PopWin32kCalloutWatchdogTimeoutSeconds
+    "ActiveIdleLevel" = 1; // REG_DWORD, PopFxActiveIdleLevel
+    "ActiveIdleThreshold" = 500; // REG_DWORD, PopFxActiveIdleThreshold, ms, PoFxInitPowerManagement multiplies it by 10000
+    "ActiveIdleTimeout" = 1000; // REG_DWORD, PopFxActiveIdleTimeout
+    "AllowAudioToEnableExecutionRequiredPowerRequests" = 1; // REG_DWORD, PopPowerRequestActiveAudioEnablesExecutionRequired
+    "AllowHibernate" = 4294967295; // REG_DWORD, PopAllowHibernateReg, 0 = hibernation not allowed
+    "AllowSystemRequiredPowerRequests" = 1; // REG_DWORD, PopPowerRequestConvertSystemToExecution
+    "AlwaysComputeQosHints" = 0; // REG_DWORD, PpmPerfAlwaysComputeQosEnabled, can be used to cause a condition in PopInitializeHeteroProcessors to be true, see PowerThrottlingOff section
+    "BatteryChargeTrajectoryThresholdPercent" = 1; // REG_DWORD, PopBatteryInitPhaseTwo, 1-10
+    "BatteryInstantaneousPeakPowerThresholdInMW" = 500; // REG_DWORD, PopBatteryInstantaneousPeakPowerThresholdInMW, 25H2
+    "BatteryPresentRateThreshold" = 0; // REG_DWORD, PopBatteryPresentRateThreshold, 25H2
+    "BatterySustainablePeakPowerThresholdInMW" = 500; // REG_DWORD, PopBatterySustainablePeakPowerThresholdInMW, 25H2
+    "BootHeteroPolicyOverride" = 1; // REG_DWORD, PpmPerfBootHeteroPolicyOverrideEnabled, PpmPerfClearBootOverrides clears it after boot
+    "ChargerWeakDetectionThresholdPercent" = 1; // REG_DWORD, PopBatteryInitPhaseTwo, 1-10
+    "CheckpointSystemSleep" = 0; // REG_DWORD, PopCheckpointSystemSleepEnabledReg
+    "CheckpointSystemSleepSimulateFlags" = 0; // REG_DWORD, PopCheckpointSystemSleepSimulateFlags
+    "CheckPowerSourceAfterRtcWakeTime" = 30; // REG_DWORD, PopCheckPowerSourceAfterRtcWakeTime
+    "Class1InitialUnparkCount" = 64; // REG_DWORD, PpmParkInitialClass1UnParkCount
+    "CoalescingFlushInterval" = 60; // REG_DWORD, PopCoalescingFlushInterval
+    "CoalescingTimerInterval" = 1500; // REG_DWORD, PopCoalescingTimerInterval, https://noverse.dev/docs/win-config/power/disable-timer-coalescing/#miscellaneous-values
+    "DeepIoCoalescingEnabled" = 0; // REG_DWORD, PopDeepIoCoalescingEnabled, ^
+    "DirectedDripsDfxEnforcementPolicy" = 1; // REG_DWORD, PopDirectedDripsDfxEnforcementPolicy
+    "DirectedDripsOverride" = 4294967295; // REG_DWORD, PopDirectedDripsOverride
+    "DirectedDripsSurprisePowerOnTimeout" = 5; // REG_DWORD, PopDirectedDripsSurprisePowerOnTimeoutSeconds
+    "DirectedDripsTimeout" = 300; // REG_DWORD, PopDirectedDripsTimeout
+    "DirectedDripsWaitWakeTimeout" = 5; // REG_DWORD, PopDirectedDripsWaitWakeTimeoutSeconds
+    "DirectedFxDefaultTimeout" = 120; // REG_DWORD, PopFxDirectedFxDefaultTimeout
+    "DisableDisplayBurstOnPowerSourceChange" = 0; // REG_DWORD, PopDisableDisplayBurstOnPowerSourceChange
+    "DisableIdleStatesAtBoot" = 0; // REG_DWORD, PpmIdleDisableStatesAtBoot
+    "DisableInboxPepGeneratedConstraints" = 4294967295; // REG_DWORD, PopDisableInboxPepGeneratedConstraintsOverride
+    "DisableVsyncLatencyUpdate" = 0; // REG_DWORD, PpmDisableVsyncLatencyUpdate, 1 = keep LatencyToleranceDefault while VSync is on
+    "DozeDeferralChecksToIgnore" = 0; // REG_DWORD, PopDozeDeferralChecksToIgnore
+    "DozeDeferralMaxSeconds" = 259200; // REG_DWORD, PopDozeDeferralMaxSeconds
+    "DripsCallbackInterval" = 35; // REG_DWORD, PopDripsCallbackInterval
+    "DripsSwHwDivergenceEnableLiveDump" = 0; // REG_DWORD, PopDripsSwHwDivergenceEnableLiveDump
+    "DripsSwHwDivergenceThreshold" = 270; // REG_DWORD, PopDripsSwHwDivergenceThreshold
+    "DripsWatchdogAction" = 198; // REG_DWORD, PopDripsWatchdogAction
+    "DripsWatchdogDebounceInterval" = 120; // REG_DWORD, PopDripsWatchdogDebounceInterval
+    "DripsWatchdogTimeout" = 300; // REG_DWORD, PopDripsWatchdogTimeout
+    "DynamicHintAdjustEnabled" = 1; // REG_DWORD, PpmIdleDynamicHintAdjustEnabled, 25H2
+    "EnableInputSuppression" = 4294967295; // REG_DWORD, PopEnableInputSuppressionOverride
+    "EnableMinimalHiberFile" = 0; // REG_DWORD, PopEnableMinimalHiberFile
+    "EnablePowerButtonSuppression" = 4294967295; // REG_DWORD, PopEnablePowerButtonSuppressionOverride
+    "EnergyEstimationEnabled" = 1; // REG_DWORD, PopEnergyEstimationEnabled
+    "EnforceAusterityMode" = 0; // REG_DWORD, PopEnforceAusterityMode, 25H2
+    "EnforceConsoleLockScreenTimeout" = 0; // REG_DWORD, PopEnforceConsoleLockScreenTimeout
+    "EnforceDisconnectedStandby" = 0; // REG_DWORD, PopEnforceDisconnectedStandby
+    "EventProcessorEnabled" = 1; // REG_DWORD, PopEventProcessorEnabled
+    "ExitLatencyCheckEnabled" = 1; // REG_DWORD, PpmExitLatencyCheckEnabled, PoInitSystem sets 0 when a hypervisor is present
+    "ExperimentalClusterIdleMitigation" = 0; // REG_DWORD, PpmIdleClusterIdleMitigation, 25H2
+    "ForceMinimalHiberFile" = 0; // REG_DWORD, PopForceMinimalHiberFile
+    "FxAccountingTelemetryDisabled" = 0; // REG_DWORD, PopDiagFxAccountingTelemetryDisabled
+    "FxRuntimeLogNumberEntries" = 64; // REG_DWORD, PopFxRuntimeLogNumberEntries, changing it to 0 will end up with a BSoD
+    "HeteroFavoredCoreRotationTimeoutMs" = 30000; // REG_DWORD, PpmHeteroFavoredCoreRotationTimeoutMs
+    "HeterogeneousPpmImplementation" = 1; // REG_DWORD, PpmHeteroImplementationGeneration, 23H2 & W10 22H2, doesnt exist in 25H2
+    "HeteroHgsEePerfHintsIndependentEnabled" = 0; // REG_DWORD, PpmHeteroHgsEePerfHintsIndependentEnabled, 25H2
+    "HeteroHgsPlusDisabled" = 0; // REG_DWORD, PpmHeteroHgsThreadDisabled
+    "HeteroImportantUtilityLowDominanceCutoff" = 40; // REG_DWORD, PpmHeteroImportantUtilityLowDominanceCutoff, 25H2
+    "HeteroMultiClassParkingEnabled" = 4294967295; // REG_DWORD, PpmHeteroMultiClassParkingRegValue
+    "HeteroMultiCoreClassesEnabled" = 4294967295; // REG_DWORD, PpmHeteroMultiCoreClassesRegValue
+    "HeteroWpsContainmentEnumOverride" = 0; // REG_DWORD, PpmHeteroWpsContainmentEnumOverride, 25H2
+    "HeteroWpsWorkloadProminenceCutoff" = 35; // REG_DWORD, PpmHeteroWpsWorkloadProminenceCutoff, 25H2
+    "HiberFileSizePercent" = 0; // REG_DWORD, PopHiberFileSizePercent, https://noverse.dev/docs/win-config/power/disable-hibernation/#reduced-hiberfile
+    "HiberFileType" = 4294967295; // REG_DWORD, PopHiberFileTypeReg, ^
+    "HiberFileTypeDefault" = 4294967295; // REG_DWORD, PopHiberFileTypeDefaultReg, ^
+    "HibernateBootOptimizationEnabled" = 0; // REG_DWORD, PopHiberBootOptimizationEnabledReg
+    "HibernateChecksummingEnabled" = 1; // REG_DWORD, PopHiberChecksummingEnabledReg
+    "HibernateEnabled" = 4294967295; // REG_DWORD, PopHiberEnabledReg, https://noverse.dev/docs/win-config/power/disable-hibernation/#registry-values
+    "HibernateEnabledDefault" = 1; // REG_DWORD, PopHiberEnabledDefaultReg, ^
+    "HighPerfDurationBoot" = 90000; // REG_DWORD, ms, PpmHighPerfDuration[0], how long high performance request stays after boot, 0 = released at once, max 300000
+    "HighPerfDurationCSExit" = 5000; // REG_DWORD, ms, PpmHighPerfDuration[1], same after a Modern Standby exit
+    "HighPerfDurationSxExit" = 90000; // REG_DWORD, ms, PpmHighPerfDuration[2], same after a resume from sleep or hibernate
+    "HighPerfSoftParkLatency" = 1000; // REG_DWORD, PpmHighPerfSoftParkLatencyUs, 25H2
+    "IdleDurationExpirationTimeout" = 4; // REG_DWORD, PpmIdleDurationExpirationTimeoutMs
+    "IdleProcessorsRequireQosManagement" = 4294967295; // REG_DWORD, PpmPerfQosManageIdleProcessors
+    "IdleStateTimeout" = 500; // REG_DWORD, PopPepIdleStateTimeout
+    "IgnoreCsComplianceCheck" = 0; // REG_DWORD, PopIgnoreCsComplianceCheck
+    "IgnoreLidStateForInputSuppression" = 4294967295; // REG_DWORD, PopLidStateForInputSuppressionOverride
+    "IpiLastClockOwnerDisable" = 0; // REG_DWORD, PpmIpiLastClockOwnerDisable
+    "LatencyToleranceDefault" = 100000; // REG_DWORD, 100ns units, PpmLatencyToleranceLimit[0]
+    "LatencyToleranceFSVP" = 20000; // REG_DWORD, 100ns units (2 ms), PpmLatencyToleranceLimit[2]
+    "LatencyToleranceIdleResiliency" = 1500000; // REG_DWORD, 100ns units (150 ms), PpmLatencyToleranceLimit[3]
+    "LatencyToleranceParked" = 0; // REG_DWORD, PpmIdleParkedLatencyLimit, 25H2
+    "LatencyToleranceSoftParked" = 0; // REG_DWORD, PpmIdleSoftParkedLatencyLimit, 25H2
+    "LatencyToleranceVSyncEnabled" = 13001; // REG_DWORD, 100ns units, PpmLatencyToleranceLimit[1]
+    "LidReliabilityState" = 1; // REG_DWORD, PopLidReliabilityInit
+    "ManualDimTimeout" = 0; // REG_DWORD, PopAdaptiveManualDimTimeout
+    "MaximumFrequencyOverride" = 0; // REG_DWORD, PpmFrequencyOverride
+    "MaxUnexpectedInterrupts" = 5; // REG_DWORD, PpmIdleMaxUnexpectedInterrupt, 25H2
+    "MfBufferingThreshold" = 0; // REG_DWORD, PpmMfBufferingThreshold
+    "MSDisabled" = 0; // REG_DWORD, PopModernStandbyDisabled
+    "MultiparkGranularity" = 8; // REG_DWORD, PpmParkMultiparkGranularity
+    "OneSettingPowerButtonBugcheck" = 0; // REG_DWORD
+    "OneSettingPowerButtonLiveDump" = 0; // REG_DWORD
+    "PdcIdlePhaseDefaultWatchdogTimeoutSeconds" = 30; // REG_DWORD, PopPdcIdlePhaseDefaultWatchdogTimeoutSeconds
+    "PdcOneWayEntry" = 0; // REG_DWORD, PopPowerAggregatorOneWayEntry
+    "PerfArtificialDomain" = 4294967295; // REG_DWORD, PpmPerfArtificialDomainSetting
+    "PerfBoostAtGuaranteed" = 0; // REG_DWORD, PpmPerfBoostAtGuaranteed
+    "PerfCalculateActualUtilization" = 1; // REG_DWORD, PpmPerfCalculateActualUtilization
+    "PerfCheckTimerImplementation" = 0; // REG_DWORD, PpmCheckTimerImplementation, 25H2
+    "PerfIdealAggressiveIncreasePolicyThreshold" = 90; // REG_DWORD, PpmPerfIdealAggressiveIncreaseThreshold
+    "PerfQueryOnDevicePowerChanges" = 0; // REG_DWORD, PopFxPerfQueryOnDevicePowerChanges
+    "PerfSingleStepSize" = 5; // REG_DWORD, PpmPerfSingleStepSize
+    "PlatformAoAcOverride" = 4294967295; // REG_DWORD, PopPlatformAoAcOverride
+    "PlatformRoleOverride" = 4294967295; // REG_DWORD, PopPlatformRoleOverride
+    "PoFxSystemIrpWaitForReportDevicePowered" = 0; // REG_DWORD, PopPoFxSystemIrpWaitForReportDevicePoweredReg
+    "PowerActionResumeWatchdogTimeoutDefault" = 300; // REG_DWORD, PopPowerActionResumingWatchdogTimeoutDefault
+    "PowerActionSuspendWatchdogTimeoutDefault" = 600; // REG_DWORD, PopPowerActionTransitioningWatchdogTimeoutDefault
+    "PowerAdapterPeakPowerThresholdInMW" = 500; // REG_DWORD, PopPowerAdapterPeakPowerThresholdInMW, 25H2
+    "PowerButtonBugcheck" = 0; // REG_DWORD, 1 = bug check 0x1C8 when the power button is held 7s
+    "PowerButtonLiveDump" = 0; // REG_DWORD, bit 0 = live dump (0x11C8), bit 1 user pages, bit 2 hypervisor pages, bits 4-7 hold time 2-6s
+    "PpmPerfCheckCountVersion" = 1; // REG_DWORD, PpmPerfCheckCountVersion, 23H2
+    "PreSleepNotificationSeconds" = 300; // REG_DWORD, PopPreSleepNotificationSeconds, 23H2
+    "PromoteHibernateToShutdown" = 0; // REG_DWORD, PopPromoteHibernateToShutdown
+    "ProximityEscapeMsec" = 0; // REG_DWORD, TtmpProximityEscapeMsec
+    "RestrictedStandbyDozeTimeoutSeconds" = 0; // REG_DWORD, PopPowerAggregatorRestrictedStandbyDozeTimeoutSeconds, 25H2
+    "SkipHibernateMemoryMapValidation" = 4294967295; // REG_DWORD, PopEnableHibernateMemoryMapValidationOverride
+    "SleepstudyAccountingEnabled" = 1; // REG_DWORD, SleepstudyHelperAccountingEnabled
+    "SleepstudyGlobalBlockerLimit" = 3000; // REG_DWORD, SleepstudyHelperBlockerGlobalLimit, 25H2
+    "SleepstudyLibraryBlockerLimit" = 200; // REG_DWORD, SleepstudyHelperBlockerLibraryLimit, 25H2
+    "SmartUserPresenceAction" = 0; // REG_DWORD, PopSmartUserPresenceAction
+    "SmartUserPresenceCheckTimeout" = 10800; // REG_DWORD, PopSmartUserPresenceCheckTimeout
+    "SmartUserPresenceGracePeriod" = 1800; // REG_DWORD, PopSmartUserPresenceGracePeriod
+    "SmartUserPresenceWakeOffset" = 300; // REG_DWORD, PopSmartUserPresenceWakeOffset
+    "StandbyConnectivityGracePeriod" = 0; // REG_DWORD, PopStandbyConnectivityGracePeriod
+    "SuppressResumePrompt" = 0; // REG_DWORD, PopSuppressResumePrompt
+    "ThermalPollingMode" = 0; // REG_DWORD, PopThermalPollingMode
+    "ThermalTelemetryVerbosity" = 1; // REG_DWORD, PopThermalTelemetryVerbosity
+    "TimerRebaseThresholdOnDripsExit" = 60; // REG_DWORD, PopTimerRebaseThresholdRegValue
+    "TtmEnabled" = 0; // REG_DWORD, TtmpEnabled
+    "UserBatteryChargeEstimator" = 0; // REG_DWORD, PopUserBatteryChargingEstimator
+    "UserBatteryDischargeEstimator" = 0; // REG_DWORD, PopDisableBatteryDischargeEstimator
+    "WatchdogWorkOrderTimeout" = 300000; // REG_DWORD, PopFxWatchdogWorkOrderTimeout
+    "Win32kCalloutWatchdogTimeoutSeconds" = 30; // REG_DWORD, PopWin32kCalloutWatchdogTimeoutSeconds
 
-    // UmpoRestoreEsOverrideState
-    "EnergySaverState" = 2; // 1 = override state (more power savings) if != 1 no override? (WNF_PO_ENERGY_SAVER_OVERRIDE/WNF_SEB_ENERGY_SAVER_STATE_V2), this value is controlled by System > Power: Always use energy saver (1=on, 2=off)
+    // umpo.dll
+    "EnergySaverState" = 2; // REG_DWORD, UmpoRestoreEsOverrideState, System > Power "Always use energy saver" (1 = on, 2 = off)
+    "SmartPresenceConfidence" = 65; // REG_DWORD, UmpoSmartPresenceInit, max 100
 
-    // InitializePowerWatchdogTimeoutDefaults
-    "PowerWatchdogDrvSetMonitorTimeoutMsec" = 10000;
-    "PowerWatchdogDwmSyncFlushTimeoutMsec" = 30000;
-    "PowerWatchdogPoCalloutTimeoutMsec" = 10000;
-    "PowerWatchdogPowerOnGdiTimeoutMsec" = 30000;
-    "PowerWatchdogRequestQueueTimeoutMsec" = 30000;
+    // umpoext.dll (23H2)
+    "DisableHotKeyWhenConsoleOff" = 0; // REG_DWORD, DimEngineStart, 1 = brightness hotkeys are ignored while display is off
+    "EmiPollingInterval" = 500; // REG_DWORD, ms, UmpoEmiInitializeTracing, energy meter (EMI) ETW polling
+    "EmiTelemetryActivePollingInterval" = 0; // REG_DWORD, ms, UmpoEmiInitializeTelemetryTracing
+    "EmiTelemetryCsPollingInterval" = 0; // REG_DWORD, ms, UmpoEmiInitializeTelemetryTracing
+    "PmiPollingInterval" = 500; // REG_DWORD, ms, UmpoInitializeTracing
 
-    // from procmon boot trace
-    "DisableHotKeyWhenConsoleOff" = ?;
-    "EmiPollingInterval" = ?;
-    "EmiTelemetryActivePollingInterval" = ?;
-    "EmiTelemetryCsPollingInterval" = ?;
-    "LidNotifyReliable" = ?;
+    // LogonController.dll, facecredentialprovider.dll (23H2)
+    "LidNotifyReliable" = 1; // REG_DWORD
+
+    // win32kbase InitializePowerWatchdogTimeouts, bug check 0x19C WIN32K_POWER_WATCHDOG_TIMEOUT when a step takes longer (param 1 in brackets)
+    "PowerWatchdogDrvSetMonitorTimeoutMsec" = 10000; // REG_DWORD (0x50)
+    "PowerWatchdogDwmSyncFlushTimeoutMsec" = 30000; // REG_DWORD (0x40)
+    "PowerWatchdogPoCalloutTimeoutMsec" = 10000; // REG_DWORD (0x20)
+    "PowerWatchdogPowerOnGdiTimeoutMsec" = 30000; // REG_DWORD (0x30)
+    "PowerWatchdogRequestQueueTimeoutMsec" = 30000; // REG_DWORD (0x10)
+
+    // pdc.sys (23H2), Modern Standby only
+    "LidReliabilityThreshold" = 5; // REG_DWORD, use not mapped
+    "PdcActivatorClientPolicyNotificationDebounce" = 0; // REG_DWORD
+    "PdcActivatorClientResponseTimeout" = 0; // REG_DWORD
+    "PdcCriticalActivatorAction" = 5; // REG_DWORD
+    "PdcCriticalActivatorTimeout" = 0; // REG_DWORD
+    "PdcCriticalTransitionTimeout" = 0; // REG_DWORD
+    "PdcCsEntryAction" = 1; // REG_DWORD
+    "PdcCsEntryDamTimeout" = 0; // REG_DWORD
+    "PdcCsEntryLowPowerTimeout" = 300; // REG_DWORD
+    "PdcCsEntryPlmTimeout" = 900; // REG_DWORD
+    "PdcCsEntryResiliencyNotificationTimeout" = 300; // REG_DWORD
+    "PdcCsEntryShellTimeout" = 300; // REG_DWORD
+    "PdcEnforceSystemIdleTimeoutOnConsoleLock" = 0; // REG_DWORD
+    "PdcLockStatsTelemetryPeriod" = 86400; // REG_DWORD
+    "PdcLockWatchdogTimeout" = 30000; // REG_DWORD
+    "PdcReplayLidClose" = 1; // REG_DWORD
+    "PdcWcmTransitionTimeout" = 0; // REG_DWORD
 
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\ForceHibernateDisabled";
-    "GuardedHost" = 0; // if nonzero, PopHibernateEvaluation treats hibernation as force disabled
-    "Policy" = 0; // PopHiberForceDisabledReg, ^
+    "GuardedHost" = 0; // REG_DWORD, PopHiberForceDisabledReg+0x4, nonzero = hibernation disabled (PopHibernateEvaluation)
+    "Policy" = 0; // REG_DWORD, PopHiberForceDisabledReg, same
 
-// Percent<MemoryBucket><Type>, PopCalculateHiberFileSize uses the first matching RAM bucket then uses Full or Reduced percentage (when HiberFileSizePercent < 40)
+// PopCalculateHiberFileSize (25H2) uses these only while HiberFileSizePercent < 40, the first bucket whose RAM limit is at least the installed RAM, then its Reduced (HiberFileType 1) or Full (2) percent, 100 or more is ignored
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\HiberFileBucket";
-    "Percent16GBFull" = 40;
-    "Percent16GBReduced" = 20;
-    "Percent1GBFull" = 40;
-    "Percent1GBReduced" = 20;
-    "Percent2GBFull" = 40;
-    "Percent2GBReduced" = 20;
-    "Percent32GBFull" = 40;
-    "Percent32GBReduced" = 20;
-    "Percent4GBFull" = 40;
-    "Percent4GBReduced" = 20;
-    "Percent8GBFull" = 40;
-    "Percent8GBReduced" = 20;
-    "PercentUnlimitedFull" = 40;
-    "PercentUnlimitedReduced" = 20;
+    "Percent1GBFull" = 40; // REG_DWORD, PopHiberFileBucket+0x10
+    "Percent1GBReduced" = 20; // REG_DWORD, PopHiberFileBucket+0xc
+    "Percent2GBFull" = 40; // REG_DWORD, PopHiberFileBucket+0x28
+    "Percent2GBReduced" = 20; // REG_DWORD, PopHiberFileBucket+0x24
+    "Percent4GBFull" = 40; // REG_DWORD, PopHiberFileBucket+0x40
+    "Percent4GBReduced" = 20; // REG_DWORD, PopHiberFileBucket+0x3c
+    "Percent8GBFull" = 40; // REG_DWORD, PopHiberFileBucket+0x58
+    "Percent8GBReduced" = 20; // REG_DWORD, PopHiberFileBucket+0x54
+    "Percent16GBFull" = 40; // REG_DWORD, PopHiberFileBucket+0x70
+    "Percent16GBReduced" = 20; // REG_DWORD, PopHiberFileBucket+0x6c
+    "Percent32GBFull" = 40; // REG_DWORD, PopHiberFileBucket+0x88
+    "Percent32GBReduced" = 20; // REG_DWORD, PopHiberFileBucket+0x84
+    "PercentUnlimitedFull" = 40; // REG_DWORD, PopHiberFileBucket+0xa0
+    "PercentUnlimitedReduced" = 20; // REG_DWORD, PopHiberFileBucket+0x9c
 
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\ModernSleep";
-    "EnabledActions" = 0; // PopAggressiveStandbyActionsRegValue 
-    "EnableDsNetRefresh" = 0; // PopEnableDsNetRefresh 
+    "EnabledActions" = 0; // REG_DWORD, PopAggressiveStandbyActionsRegValue (used when < 16), setup writes 7 on Modern Standby clients
+    "EnableDsNetRefresh" = 0; // REG_DWORD, PopEnableDsNetRefresh
 
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerThrottling";
-    "PowerThrottlingOff" = 0; // PpmPerfQosGroupPolicyDisable 
+    "DisableUserPresenceQos" = 0; // REG_DWORD, PspDisableWindowInFocusUserIdleQos
+                                  // nonzero keeps focused windows process at High QoS while the user is idle (UserPresenceThrottling feature), 25H2
+    "PowerThrottlingOff" = 0; // REG_DWORD, PpmPerfQosGroupPolicyDisable
+
+"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power";
+    "FlushPolicy" = 0; // REG_DWORD, PopFlushPolicy
+    "IdleScanInterval" = 4294967295; // REG_DWORD, PopIdleScanInterval
+    "SkipTickOverride" = 1; // REG_DWORD, PopSkipTickPolicy
+    "SleepStudyDeviceAccountingLevel" = 4; // REG_DWORD, PopSleepStudyDeviceAccountingLevel
+    "SleepStudyDisabled" = 0; // REG_DWORD, PopSleepStudyDisabled
+    "WatchdogResumeTimeout" = 120; // REG_DWORD, PopWatchdogResumeTimeout
+    "WatchdogSleepTimeout" = 300; // REG_DWORD, PopWatchdogSleepTimeout
+    "Win32CalloutWatchdogBugcheckEnabled" = 0; // REG_DWORD, PopWin32CalloutWatchdogBugcheckEnabled
+```
+
+### DisableUserPresenceQos
+
+With the `UserPresenceThrottling` feature on, the FG process gets PPM policy 9 (`ProcessPpmWindowInFocusUserIdle`) instead of 7 (`ProcessPpmWindowInFocus`) while the user is idle.
+
+Only changes something on CPUs with hybrid cores, on other CPUs every class except *High* already equals *High* (see [PowerThrottlingOff](#powerthrottlingoff)).
+
+```c
+// PspSetProcessPpmPolicy (25H2)
+
+if ( (unsigned int)Feature_UserPresenceThrottling__private_IsEnabledDeviceUsageNoInline()
+  && a2 == 9
+  && PspDisableWindowInFocusUserIdleQos ) // DisableUserPresenceQos
+{
+  a2 = 7;
+}
+return KeSetProcessPpmPolicy(a1, a2);
+```
+
+```c
+// KiComputeThreadQos (25H2)
+
+v3 = KiThreadPolicyToQosMappingTable[*(unsigned __int8 *)(a1 + 958)];
+if ( v3 == 7 ) // KHeteroCpuQosDynamic
+{
+  v4 = (*(_DWORD *)(*(_QWORD *)(a1 + 544) + 136LL) >> 7) & 0xF; // _KPROCESS_PPM_POLICY
+  if ( (unsigned int)Feature_UserPresenceThrottling__private_IsEnabledDeviceUsageNoInline() )
+  {
+    if ( (_DWORD)v4 != 8
+      && (_DWORD)v4 != 9
+      && (KiDynamicHeteroCpuPolicyMask & 1) != 0
+      && (*(_DWORD *)(*(_QWORD *)(a1 + 544) + 136LL) & 0x2000) != 0 )
+    {
+      return 0; // High
+    }
+  }
+
+  v3 = KiProcessPolicyToQosMappingTable[v4];
+```
+
+```cpp
+enum _KPROCESS_PPM_POLICY
+{
+    ProcessPpmDefault=0,
+    ProcessPpmThrottle=1,
+    ProcessPpmSemiThrottle=2,
+    ProcessPpmNoThrottle=3,
+    ProcessPpmWindowMinimized=4,
+    ProcessPpmWindowOccluded=5,
+    ProcessPpmWindowVisible=6,
+    ProcessPpmWindowInFocus=7,
+    ProcessPpmMaximumThrottle=8,
+    MaxProcessPpmPolicy=9
+};
+
+enum _KHETERO_CPU_QOS
+{
+    KHeteroCpuQosDefault=0,
+    KHeteroCpuQosHigh=0,
+    KHeteroCpuQosMedium=1,
+    KHeteroCpuQosLow=2,
+    KHeteroCpuQosMultimedia=3,
+    KHeteroCpuQosDeadline=4,
+    KHeteroCpuQosEco=5,
+    KHeteroCpuQosUtility=6,
+    KHeteroCpuQosDynamic=7,
+    KHeteroCpuQosMax=7
+}; 
 ```
 
 ### PowerThrottlingOff
@@ -209,6 +326,8 @@ The value is read as a bool, so all nonzero data are the same.
 `PowerThrottlingOff` is one of nine `_PPM_PERF_QOS_DISABLE_REASON`, changing it to nonzero would set bit 8 in six of seven QoS classes, consumers of that bitmask only check whenever its `!= 0`, so it doesn't matter which reason is set.
 
 If PPM QoS is disabled via `PpmPerfQosDisableGroupPolicy`, six of seven (excluding *High*) classes follow *High*.
+
+With `PopHeteroSystem` = 0 (no hybrid/favored cores) every class except *High* already has reason 6 (`PpmPerfQosDisableSmtScheduler`), so `PowerThrottlingOff` does nothing here ([`PpmPerfCalculateQosClassPolicies`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/PpmPerfCalculateQosClassPolicies.c#L172-L173)).
 
 `MaxFrequency`, `MaxPerformance`, `MinPerformance`, `PerfAutonomousMode`, `PerfAutonomousWindow`, `PerfBoostMode`, `PerfEnergyPreference`, `PerfLatencyHint`, `LatencyHintEpp` (other ones are scheduling settings) are in `QosPolicies[class]`, built by `PpmPerfCalculateQosClassPolicies`. All of these aren't used whenever PPM QoS (of the class) is unsupported, means that they'll follow the settings of their parent class (which is *High* if all six are unsupported) for them, which are the current power plan settings (`PpmCurrentProfile`). They get parents differently than expected, heres how I understood it:
 
@@ -266,7 +385,7 @@ fffff806`62023538  00000006 00000004 00000003
 #### PopInitializeHeteroProcessors
 
 ```c
-// PopInitializeHeteroProcessors
+// PopInitializeHeteroProcessors (23H2)
 
   v3 = 1;
   v4 = 0; // capability
@@ -295,7 +414,7 @@ LABEL_15:
 Afterwards, `v5` is passed as the second argument into `KeConfigureHeteroProcessors`:
 
 ```c
-// PopInitializeHeteroProcessors
+// PopInitializeHeteroProcessors (23H2)
 
 LOBYTE(v20) = v2;
 v22 = PopConfigureHeteroPolicies(v7, v20);
@@ -309,14 +428,14 @@ if ( (v3 || v7 && v22 || PpmPerfQosSupportedAndAllowed != v5)
 At the end that result is written into `PpmPerfQosSupportedAndAllowed`:
 
 ```c
-// PopInitializeHeteroProcessors
+// PopInitializeHeteroProcessors (23H2)
 
 PpmPerfQosSupportedAndAllowed = v5;
 ```
 
 ##### Reading Globals
 
-Example output of my testing system, here all conditions aren't true, means `v4` and `v5` stay at `0`, means chaning `PowerThrottlingOff` has no impact.
+Example output of my testing system, here all conditions aren't true, means `v4` and `v5` stay at `0`, means changing `PowerThrottlingOff` has no impact.
 
 ```c
 lkd> dd nt!PpmPerfQosDisableReasons L1
@@ -348,10 +467,10 @@ Each PPM performance domain gets an `AllowSchedulerDirectedPerfStates` value fro
 On AMDs `_CPC` for example, [`InitCpcStatesInternal`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/amdppm/InitCpcStatesInternal.c) uses these conditions:
 
 ```c
-// InitCpcStatesInternal
+// InitCpcStatesInternal (23H2)
 
-if ( (*(_DWORD *)(v80 + 280) & 0x400000) != 0 && v83 && v136 && (v84 == 254 || v81 == 1) ) // 0x400000 = IsACountMCountSupported & processor family >= 17
-                                                                                           // v83 = native CPPC handler availaile
+if ( (*(_DWORD *)(v80 + 280) & 0x400000) != 0 && v83 && v136 && (v84 == 254 || v81 == 1) ) // 0x400000 = IsACountMCountSupported & processor family >= 17h (Zen and newer)
+                                                                                           // v83 = native CPPC handler available
                                                                                            // v136 = CPPC handler returned AllowSchedulerDirectedPerfStates = 1
                                                                                            // v84 == 254 || v81 == 1, domain uses HW_ALL/has one processor
 {
@@ -364,6 +483,8 @@ if ( (*(_DWORD *)(v80 + 280) & 0x400000) != 0 && v83 && v136 && (v84 == 254 || v
 ```
 
 ```c
+// InitDriver (23H2)
+
 if ( (unsigned __int8)IsACountMCountSupported() )
 {
   v7 = 0LL;
@@ -376,7 +497,7 @@ if ( (unsigned __int8)IsACountMCountSupported() )
 [`InitDriver`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/amdppm/InitDriver.c) only gives the native CPPC handler when CPUID `Fn8000_0008_EBX[27]` is set (which is CPPC):
 
 ```c
-// InitDriver
+// InitDriver (23H2)
 
 GetCpuIdInfo(0x80000000, &v7);
 if ( (unsigned int)v7 >= 8 )
@@ -420,6 +541,8 @@ INIT:0000000140BA28C8                 align 20h
 This can be used to make the first codition true in the `PopInitializeHeteroProcessors` part shown above.
 
 ```c
+// PopInitializeHeteroProcessors (23H2)
+
 if ( (PpmBackgroundProfile || PpmEntryLevelPerfProfile || PpmMultimediaQosProfile || PpmPerfAlwaysComputeQosEnabled)
 ```
 
@@ -435,7 +558,7 @@ fffff803`35d1eec8  01                                               . // AlwaysC
 
 #### PpmPerfCalculateQosClassPolicies
 
-An "PPM performance domain" has one/more logical processors that share the same performance controls, `Members` here tells its logical processors, `QosPolicies[7]` & `QosDisableReasons[7]` include one entry for each of the *High*, *Medium*, *Low*, *Multimedia*, *Deadline*, *Eco*, *Utility* classes.
+A "PPM performance domain" has one/more logical processors that share the same performance controls, `Members` here tells its logical processors, `QosPolicies[7]` & `QosDisableReasons[7]` include one entry for each of the *High*, *Medium*, *Low*, *Multimedia*, *Deadline*, *Eco*, *Utility* classes.
 
 ```c
 lkd> dq nt!KeActiveProcessors+8 L1
@@ -461,7 +584,7 @@ ffffbd04`acfb39e0  00000082 00000082 00000082
 [`PpmPerfUpdateDomainPolicy`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/PpmPerfUpdateDomainPolicy.c) goes through those domains and calls [`PpmPerfCalculateQosClassPolicies`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/PpmPerfCalculateQosClassPolicies.c) to get their seven `QosPolicies` & `QosDisableReasons` entries:
 
 ```c
-// PpmPerfCalculateQosClassPolicies
+// PpmPerfCalculateQosClassPolicies (23H2)
 
 if ( PpmPerfQosGroupPolicyDisable )
   v16 |= 0x100u; // bit 8
@@ -553,17 +676,37 @@ struct _PROC_PERF_DOMAIN// Size=0x428 (Id=1969)
     unsigned char Apply;// Offset=0x426 Size=0x1
 };
 ```
-
 ## [StorageD3InModernStandby](https://learn.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro#d3-support)
 
 Used in the `Disable D3 in Modern Standby` suboption, the value isn't in the power key, but since the first suboption is already related to ModernStandby, and creating a new option for that would be too much, I'll add it here for now.
-
-```c
-"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Storage";
-    "StorageD3InModernStandby" = 4294967295; // REG_DWORD, 0 = Disable D3 support, 1 = Enable D3 support
-```
 
 > "*When the system is not in use, Windows may opportunistically turn off power to some set of devices to conserve energy. In Modern Standby, the system remains in S0. Even while in S0, all peripheral devices may eventually be powered down due to idle timeouts. This state is defined as "S0 Low Power Idle". Once all devices are in a low-power state, even more of the system infrastructure (e.g. busses, timers, ...) may be powered down. The general rule of thumb is to place the device in the deepest possible D-state when it is idle, even when the system state is S0. Depending on implementation details of the processor complex and platform design, peripheral devices may be required to go to an F-state, D3 Hot, or D3 Cold (power is cut). To mitigate the need for a function driver to manage these implementation details, drivers should go to the deepest appropriate device state in order to maximize battery life.*"
 >
 > — Microsoft, [Power Management for Storage Hardware Devices, D3 Support](https://learn.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro#d3-support)
 
+```c
+"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Storage";
+    "StorageD3InModernStandby" = 4294967295; // REG_DWORD, StorageD3RegistryState, 0 = D3 off, 1 = D3 on
+```
+
+
+```c
+// RaidInitializeAdapter (25H2)
+
+if ( StorageD3AllowedOnCurrentPlatform )
+  StorageD3InModernStandbyEnabled = 1;
+if ( (unsigned __int8)RaidQueryAcpiDsdStorageD3Property(*(PDEVICE_OBJECT *)(a1 + 8)) ) // _DSD StorageD3Enable
+  StorageD3InModernStandbyEnabled = *(_DWORD *)(a1 + 5712) != 0;
+if ( StorageD3RegistryState == 1 ) // StorageD3InModernStandby = 1
+{
+  StorageD3InModernStandbyEnabled = 1;
+}
+else
+{
+  if ( !StorageD3RegistryState ) // StorageD3InModernStandby = 0
+    StorageD3InModernStandbyEnabled = 0;
+  if ( !StorageD3InModernStandbyEnabled )
+    goto LABEL_72;
+}
+*(_BYTE *)(a1 + 112) |= 0x40u; // D3 enabled for adapter
+```

@@ -10,20 +10,72 @@ Everything listed below is based on personal findings, mistakes may exist.
 
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4D36E972-E325-11CE-BFC1-08002bE10318}\\00XX";
+    // ndis.sys & standardized keywords
+    "PnPCapabilities" = ?; // REG_DWORD, 0x8 = no power management, 0x10 = no wake
     "*DeviceSleepOnDisconnect" = 0; // range 0-1
+    "*EEE" = ?;
+    "*IdleRestriction" = 0;
+    "*ModernStandbyWoLMagicPacket" = ?;
+    "*NicAutoPowerSaver" = ?;
+    "*SelectiveSuspend" = ?;
+    "*SSIdleTimeout" = ?; // seconds (no effect while *SelectiveSuspend is 0)
+    "*SSIdleTimeoutScreenOff" = ?; // seconds (no effect while *SelectiveSuspend is 0)
     "*EnableDynamicPowerGating" = 1; // range 0-1
-    "DisableIntelRST" = 1; // range 0-1
-    "DMACoalescing" = 0; // range 0-10240
+
+    // e1i68x64.sys, e2f68.sys
+    "AutoPowerSaveModeEnabled" = 0;
+    "EEELinkAdvertisement" = 1;
+    "EnableAdvancedDynamicITR" = ?;
+    "EnableD0PHYFlexibleSpeed" = ?;
+    "EnableD3ColdInS0" = ?;
     "EnableDisconnectedStandby" = 0; // range 0-1
     "EnableModernStandby" = 0; // range 0-1
+    "EnablePHYFlexibleSpeed" = ?;
+    "EnablePHYWakeUp" = ?;
     "EnablePME" = 0; // range 0-1
     "EnablePowerManagement" = 1; // range 0-1
-    "ForceHostExitUlp" = 0; // range 0-1
-    "ForceLtrValue" = 65535; // range 0-65535
+    "EnableSavePowerNow" = ?;
+    "ForceHostExitUlp" = 0; // range 0-1 (1 = "Allow host driver to force exit ULP on ME systems")
     "I218DisablePLLShut" = 0; // range 0-1
     "I218DisablePLLShutGiga" = 0; // range 0-1
-    "I219DisableK1Off" = 0; // range 0-1
+    "OBFFEnabled" = ?;
+    "ReduceSpeedOnPowerDown" = 1;
+    "SipsEnabled" = ?;
+    "SleepWhileWaiting" = ?;
     "ULPMode" = 1; // range 0-1
+
+    // Intel values
+    "DisableIntelRST" = 1; // range 0-1
+    "DMACoalescing" = 0; // range 0-10240
+    "ForceLtrValue" = 65535; // range 0-65535
+    "I219DisableK1Off" = 0; // range 0-1
+
+    // Realtek
+    "AdvancedEEE" = ?;
+    "ASPM" = ?;
+    "EEEPlus" = ?;
+    "EnableAspm" = ?;
+    "EnableExtraPowerSaving" = ?; // USB drivers
+    "EnableGreenEthernet" = 0;
+    "GigaLite" = ?;
+    "PowerDownPll" = 1;
+    "PowerSavingMode" = ?;
+    "WolShutdownLinkSpeed" = 0; // 0 = 10 Mbps first, 1 = 100 Mbps first, 2 = not speed down
+```
+
+`PnPCapabilities = 24` (no power management + no wake) is same as unchecking "Allow the computer to turn off this device to save power" in Device Manager.
+
+```c
+// ndisMInitializeAdapter (25H2)
+
+PnPCapabilities = a2->PnPCapabilities;
+if ( (PnPCapabilities & 8) == 0 ) // power management allowed
+```
+
+```c
+// ndisUpdatePMCurrentCapabilities (25H2)
+
+if ( (PnPCapabilities & 0x10) == 0 ) // wake allowed
 ```
 
 | SubkeyName | ParamDesc | Default | Minimum | Maximum |

@@ -90,55 +90,73 @@ Looks like a typo from MS (`demon` = `daemon`), which got probably fixed within 
 At [RawInputThread](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kfull/RawInputThread.c) start it does call `InitTimerPowerSaving();` but also directly calls `ConfigureRITDelayableTimers(0);` which isn't the "TimerPowerSave" mode. So [`ConfigureRITDelayableTimers`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kfull/-ConfigureRITDelayableTimers@@YAXW4RitTimerRate@@@Z.c) uses these values as we can see here:
 
 ```c
-// ConfigureRITDelayableTimers
-if ( !a1 ) goto LABEL_4;
-if ( gnRITdaemonTimerId ) {
-    if ( a1 != 1 ) {
-        v2 = InternalSetTimer(
-            0,
-            gnRITdaemonTimerId,
-            gdwRITdaemonTimerPowerSaveElapse,
-            lambda_2bb7a2ff8864d6893c712a9e9ac801fb_::_lambda_invoker_cdecl_,
-            gdwRITdaemonTimerPowerSaveCoalescing,
-            4);
-    } else {
+// ConfigureRITDelayableTimers (23H2)
+
+if ( !a1 )
+  goto LABEL_4;
+if ( gnRITdaemonTimerId )
+{
+  if ( a1 != 1 )
+  {
+    v2 = InternalSetTimer(
+           0,
+           gnRITdaemonTimerId,
+           gdwRITdaemonTimerPowerSaveElapse,
+           (unsigned int)lambda_2bb7a2ff8864d6893c712a9e9ac801fb_::_lambda_invoker_cdecl_,
+           gdwRITdaemonTimerPowerSaveCoalescing,
+           4);
+    goto LABEL_5;
+  }
 LABEL_4:
-        v2 = SetRITTimer(gnRITdaemonTimerId, 1000LL, ..., 0LL);
-    }
+  v2 = SetRITTimer(gnRITdaemonTimerId, 1000LL, lambda_2bb7a2ff8864d6893c712a9e9ac801fb_::_lambda_invoker_cdecl_, 0LL); // a1 = 0 or 1, fixed 1000ms
+LABEL_5:
+  gnRITdaemonTimerId = v2;
 }
 ```
 
 This shows `a1 == 0` & `a1 == 1` don't use the TimerPowerSave values, so any other value uses them, but when does it get anything else than `0`/`1`?
 
 ```c
-// SetTimerCoalescingTolerance
-if ( !(_DWORD)v1 ) {
-    gdwRITdaemonLockState = 0;
-    return ConfigureRITDelayableTimers(1); // goes to LABEL_4
-}
+// SetTimerCoalescingTolerance (23H2)
 
-v7 = 2; // either 2
-v8 = v1 - 2;
-if ( !v8 ) {
+if ( v3 != gServiceSessionId )
+{
+  if ( !(_DWORD)v1 )
+  {
+    gdwRITdaemonLockState = 0;
+    v6 = 1LL;
+    return ConfigureRITDelayableTimers(v6); // 1 goes to LABEL_4
+  }
+  v7 = 2; // either 2
+  v8 = v1 - 2;
+  if ( !v8 )
+  {
     gdwRITdaemonLockState |= 1u;
     if ( (gdwRITdaemonLockState & 2) == 0
       && giScreenSaveTimeOutMs > 0
-      && (gbLockConsoleActive || (*gpsi & 0x200) != 0) ) {
-        v7 = 1; // or 1
+      && (gbLockConsoleActive || (*gpsi & 0x200) != 0) )
+    {
+      v7 = 1; // or 1
     }
-    return ConfigureRITDelayableTimers(v7);
-}
-
-if ( v8 == 1 ) {
-    gdwRITdaemonLockState |= 2u;
-    if ( (gdwRITdaemonLockState & 1) != 0 )
-        return ConfigureRITDelayableTimers(2); // always 2 but only if bit 1 isn't 0
+    goto LABEL_11;
+  }
+  if ( v8 == 1 )
+  {
+    result = gdwRITdaemonLockState | 2u;
+    gdwRITdaemonLockState = result;
+    if ( (result & 1) != 0 ) // always 2 but only if bit 1 isnt 0
+    {
+LABEL_11:
+      v6 = v7;
+      return ConfigureRITDelayableTimers(v6);
+    }
+  }
 }
 ```
 
 Note that only applies to non service sessions (`if ( v3 != gServiceSessionId )`, [SetTimerCoalescingTolerance](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kfull/SetTimerCoalescingTolerance.c)).
 
-So this TimerPowerSave part only applies when [`SetTimerCoalescingTolerance`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kfull/SetTimerCoalescingTolerance.c) returns `ConfigureRITDelayableTimers(2)` which happens through lock/screensaver (`giScreenSaveTimeOutMs`)/session state transitions.
+So this TimerPowerSave part only applies when [`SetTimerCoalescingTolerance`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kfull/SetTimerCoalescingTolerance.c) returns `ConfigureRITDelayableTimers(2)` which happens through lock/screensaver (`giScreenSaveTimeOutMs`)/session state transitions. This means that these values only apply while the console is locked or the screen saver runs, otherwise the RIT daemon timer runs every 1000ms. 
 
 ### Default Data
 
@@ -151,55 +169,71 @@ fffffa1a`ab689210  02932e00 // 43200000
 ```
 
 ```c
-// ConfigureRITDelayableTimers
-v2 = InternalSetTimer(
-        0,
-        gnRITdaemonTimerId,
-        gdwRITdaemonTimerPowerSaveElapse, // a3
-        (unsigned int)lambda_2bb7a2ff8864d6893c712a9e9ac801fb_::_lambda_invoker_cdecl_,
-        gdwRITdaemonTimerPowerSaveCoalescing, // a5
-);
+// ConfigureRITDelayableTimers (23H2)
 
-// InternalSetTimer
+v2 = InternalSetTimer(
+       0,
+       gnRITdaemonTimerId,
+       gdwRITdaemonTimerPowerSaveElapse, // a3
+       (unsigned int)lambda_2bb7a2ff8864d6893c712a9e9ac801fb_::_lambda_invoker_cdecl_,
+       gdwRITdaemonTimerPowerSaveCoalescing, // a5
+       4);
+```
+
+```c
+// InternalSetTimer (23H2)
+
 v10 = 10;
 if ( a3 >= 0xA )
-    v10 = a3;
+  v10 = a3;
 if ( v10 > 0x7FFFFFFF )
-    v10 = 0x7FFFFFFF;
+  v10 = 0x7FFFFFFF;
+
+if ( a5 == -1 || !a5 && v14 && _bittest64((const signed __int64 *)(v14 + 648), 0x23u) ) // RITdemonTimerPowerSaveCoalescing
+  v15 = a6 & 0xFFFFFDFF;
+else
+  v15 = a6 | 0x200;
+
 *(_DWORD *)(v22 + 40) = v10;
 *(_DWORD *)(v22 + 52) = v10;
 
-// RITdemonTimerPowerSaveCoalescing
-if ( a5 == -1 || !a5 && v14 && _bittest64((const signed __int64 *)(v14 + 648), 0x23u) )
-    v15 = a6 & 0xFFFFFDFF;
-else
-    v15 = a6 | 0x200;
 if ( (v15 & 0x200) != 0 )
-    *(_DWORD *)(v22 + 44) = a5;
+  *(_DWORD *)(v22 + 44) = a5;
 
-// false if bit 0x200 cleared
-if ( (v32 & 0x200) != 0 )
+*(_DWORD *)(v22 + 48) = v15 | 8;
+
+v32 = *(_DWORD *)(v22 + 48);
+
+if ( (v32 & 0x200) != 0 ) // false if bit 0x200 cleared
 {
-    v34 = *(_DWORD *)(v22 + 44);
-    v35 = gCurrentTimerCoalescingTolerance;
-    v36 = gCurrentTimerCoalescingTolerance;
-    v37 = *(_DWORD *)(v22 + 52);
+  v34 = *(_DWORD *)(v22 + 44);
+  v35 = gCurrentTimerCoalescingTolerance;
+  v36 = gCurrentTimerCoalescingTolerance;
+  v37 = *(_DWORD *)(v22 + 52);
+  if ( v34 > gCurrentTimerCoalescingTolerance )
+    v36 = *(_DWORD *)(v22 + 44);
+  if ( v37 + v36 >= 0x7FFFFFFF )
+  {
+    v38 = 0x7FFFFFFF;
+  }
+  else
+  {
     if ( v34 > gCurrentTimerCoalescingTolerance )
-        v36 = *(_DWORD *)(v22 + 44);
-    if ( v37 + v36 >= 0x7FFFFFFF )
-    {
-        v38 = 0x7FFFFFFF;
-    }
-    else
-    {
-        if ( v34 > gCurrentTimerCoalescingTolerance )
-            v35 = *(_DWORD *)(v22 + 44);
-        v38 = v37 + v35;
-    }
+      v35 = *(_DWORD *)(v22 + 44);
+    v38 = v37 + v35;
+  }
+  v39 = *(_DWORD *)(*(_QWORD *)(*(_QWORD *)(v22 + 24) + 424LL) + 1056LL);
+  if ( v39 )
+  {
+    v40 = v38 + v39;
+    v38 = 0x7FFFFFFF;
+    if ( v40 < 0x7FFFFFFF )
+      v38 = v40;
+  }
 }
 else
 {
-    v38 = *(_DWORD *)(v22 + 52);
+  v38 = *(_DWORD *)(v22 + 52);
 }
 ```
 
@@ -253,11 +287,10 @@ Evaluate expression: 0 = 00000000`00000000 // not set
 
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power";
-    "CoalescingTimerInterval" = 1500; // PopCoalescingTimerInterval (0x000005DC) - Units: seconds (multiplies value by -10,000,000, one second in 100 ns units, so the default corresponds to a 25min cadence)
-    "DeepIoCoalescingEnabled" = 0; // PopDeepIoCoalescingEnabled 
+    "CoalescingTimerInterval" = 1500; // PopCoalescingTimerInterval, seconds until the I/O coalescing timer expires after coalescing starts, 0 = expires at once
+    "DeepIoCoalescingEnabled" = 0; // PopDeepIoCoalescingEnabled, only read by PdcPoResiliencyClient (Modern Standby)
 ```
 
-The `CoalescingTimerInterval` value exist (takes a default of `1500` dec, `DeepIoCoalescingEnabled` one is set to `0` by default, both are located in `ntoskrnl.exe`), the `RITdemonTimerPowerSave...` & `TimerCoalescing` ones get read.
 
 ## [Windows Internals](https://github.com/nohuto/Windows-Books/releases/download/7th-Edition/Windows-Internals-E7-P2.pdf)
 
