@@ -29,4 +29,4 @@ services.exe	RegSetValue	HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
 | --- | --- | --- |
 | [Display information about previous logons during user logon](https://noverse.dev/policies?p=WinLogon*DisplayLastLogonInfoDescription) | `HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System` | `DisplayLastLogonInfo` |
 | [Remove logon hours expiration warnings](https://noverse.dev/policies?p=WinLogon*LogonHoursNotificationPolicyDescription) | `HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System` | `DontDisplayLogonHoursWarnings` |
-
+| [Block user from showing account details on sign-in](https://noverse.dev/policies?p=Logon*BlockUserFromShowingAccountDetailsOnSignin) | `HKLM\Software\Policies\Microsoft\Windows\System` | `BlockUserFromShowingAccountDetailsOnSignin` |

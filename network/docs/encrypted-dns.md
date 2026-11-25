@@ -156,6 +156,67 @@ You should never use all blocklists, as it slows down your system by a lot (and 
 
 My suggestion is to choose a specific provider instead of using lists from different ones (if they're meant to block the same things). As you might see, I would choose hagezi at the moment. It's also recommended to apply e.g. 'Native Microsoft' seperately (without 'Pro', 'TIF', etc. so it gets written into the hosts file).
 
+### hostsFile_ScreenName Removals
+
+Some MS names can't be blocked through the hosts file, as `dnsapi.dll` drops hosts entries for them while it builds the hosts records (`hostsFile_ScreenName`). These names are from two `NULL` terminated pointer tables in `dnsapi.dll`, `DomainScreenList` & `HostsScreenList`:
+
+```c
+// dnsapi.dll (23H2)
+
+.rdata:00000001800B4450 DomainScreenList dq offset aWindowsupdateM   // "windowsupdate.microsoft.com"
+.rdata:00000001800B4458                  dq offset aWindowsupdateC   // "windowsupdate.com"
+.rdata:00000001800B4460                  dq offset aMicrosoftupdat   // "microsoftupdate.com"
+.rdata:00000001800B4468                  dq offset aDownloadMicros   // "download.microsoft.com"
+.rdata:00000001800B4470                  dq offset aUpdateMicrosof   // "update.microsoft.com"
+.rdata:00000001800B4478                  align 20h                   // 0, end of the list
+
+.rdata:00000001800B4480 HostsScreenList  dq offset aMicrosoftCom     // "microsoft.com"
+.rdata:00000001800B4488                  dq offset aWwwMicrosoftCo   // "www.microsoft.com"
+.rdata:00000001800B4490                  dq offset aSupportMicroso   // "support.microsoft.com"
+.rdata:00000001800B4498                  dq offset aWustatsMicroso   // "wustats.microsoft.com"
+.rdata:00000001800B44A0                  dq offset aDownloadMicros   // "download.microsoft.com"
+.rdata:00000001800B44A8                  dq offset aMicrosoftupdat_0 // "microsoftupdate.microsoft.com"
+.rdata:00000001800B44B0                  dq offset aOfficeMicrosof   // "office.microsoft.com"
+.rdata:00000001800B44B8                  dq offset aMsdnMicrosoftC   // "msdn.microsoft.com"
+.rdata:00000001800B44C0                  dq offset aGoMicrosoftCom   // "go.microsoft.com"
+.rdata:00000001800B44C8                  dq offset aMsnCom           // "msn.com"
+.rdata:00000001800B44D0                  dq offset aWwwMsnCom        // "www.msn.com"
+.rdata:00000001800B44D8                  dq offset aMsdnCom          // "msdn.com"
+.rdata:00000001800B44E0                  dq offset aWwwMsdnCom       // "www.msdn.com"
+.rdata:00000001800B44E8                  dq offset aTechnetMicroso   // "technet.microsoft.com"
+.rdata:00000001800B44F0                  dq offset aTechnetCom       // "technet.com"
+.rdata:00000001800B44F8                  dq offset aWwwTechnetCom    // "www.technet.com"
+.rdata:00000001800B4500                  dq offset aActivationV2Sl   // "activation-v2.sls.microsoft.com"
+.rdata:00000001800B4508                  dq offset aValidationV2Sl   // "validation-v2.sls.microsoft.com"
+.rdata:00000001800B4510                  align 20h                   // 0, end of the list
+```
+
+```c
+// hostsFile_ScreenName (23H2)
+
+v5 = DomainScreenList;
+while ( 1 )
+{
+  ++v5;
+  if ( (unsigned int)Dns_NameCompareEx(v3, lpString2, a3, 1LL) - 1 <= 1 ) // name/any subdomain
+    break;
+  v3 = *v5;
+  if ( !*v5 )
+    goto LABEL_5;
+}
+
+v7 = (const WCHAR **)&HostsScreenList;
+while ( 1 )
+{
+  ++v7;
+  if ( (unsigned int)Dns_NameCompare_W(v6, lpString2) ) // exact name
+    break;
+  v6 = *v7;
+  if ( !*v7 )
+    return 1LL;
+}
+```
+
 ### Issues after importing multiple lists
 
 Open `cmd` and paste `del /f /q C:\Windows\System32\drivers\etc\hosts` into it, if it shows that the DNS client used it, flush your DNS cache (`ipconfig /flushdns`). If this didn't help, boot into safemode (`bcdedit /set safeboot minimal`) & remove the hosts file, then run `bcdedit /deletevalue {current} safeboot`. This may be needed, if importing too many lists.

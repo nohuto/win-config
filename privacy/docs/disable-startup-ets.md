@@ -10,8 +10,12 @@ See the configured startup sessions in `Performance Monitor > Data Collector Set
 | `Diagtrack-Listener` | Connected User Experiences and Telemetry (`diagtrack.dll`) |
 | `FilterMgr-Logger` | no 23H2 manifest/binary includes it, but a January 2026 kernel debugger list of running sessions ([ThreatIntelligenceConsumer](https://github.com/preludeorg/ThreatIntelligenceConsumer) shows it |
 | `LwtNetLog` | NDIS lightweight trace, `netsh wlan show wlanreport` reads it (`wlancfg.dll`) |
+| `NetCore` | Windows Connection Manager self-host trace (wcm-selfhost manifest) with the Network Location Awareness, Network Profile Manager, NetworkConnectivityStatus and SruMon providers, no binary opens `NetCore.etl` |
 | `NtfsLog` | NTFS (fsd manifest) |
+| `RadioMgr` | Radio manager self-host trace (wcm-selfhost manifest), no binary opens `RadioMgr.etl` |
 | `ReFSLog` | ReFS (refs-fsd manifest) |
+| `WdiContextLog` | WDI context logger (diagnosticinfrastructure-settings manifest), the Diagnostic Policy Service (`dps.dll`, `wdi.dll`, kernel `WdipSemGetLoggerIds`) cuts its scenario snapshots from it (`C:\Windows\System32\WDI\{GUID}\{GUID}\snapshot.etl`) |
+| `WiFiSession` | WLAN session trace (wlansvc manifest, 71 providers like WLAN-AutoConfig, NCSI, EapHost, WWAN), `netsh wlan show wlanreport` reads it, `MdmDiagnostics.dll` flushes it (`logman update WiFiSession -fd -ets`) and collects `Wifi.etl` for MDM diagnostic logs |
 
 Logs are saved in:
 ```c
@@ -22,6 +26,44 @@ C:\WINDOWS\system32\Logfiles\WMI
 ```
 
 Removing all autologgers will cause issues, therefore it's not recommended to remove all of them.
+
+## PerfDiag Logger
+
+Kernel reads it ([`PerfDiagpIsTracingAllowed`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/PerfDiagpIsTracingAllowed.c)) before it starts the "PerfDiag Logger" at boot, secondary logon & shutdown (`BootPerfDiagLogger.etl`, `ShutdownPerfDiagLogger.etl`), `diagperf.dll` turns these into the `Diagnostics-Performance` events.
+
+```c
+// PerfDiagpIsTracingAllowed (23H2)
+
+v0 = 1; // tracing allowed
+
+RtlInitUnicodeString(&ValueName, L"DisableDiagnosticTracing");
+Length = 24;
+ObjectAttributes.ObjectName = &DestinationString;
+ObjectAttributes.RootDirectory = 0LL;
+*(_OWORD *)&ObjectAttributes.SecurityDescriptor = 0LL;
+if ( ZwOpenKey(&KeyHandle, 0x20019u, &ObjectAttributes) >= 0
+  && ZwQueryValueKey(KeyHandle, &ValueName, KeyValuePartialInformation, KeyValueInformation, Length, &Length) >= 0
+  && Length >= 0x10
+  && v8 == 4 // REG_DWORD
+  && v9 == 4 )
+{
+  v0 = v10 == 0; // nonzero = tracing off
+}
+```
+
+```c
+// PerfDiagpStartPerfDiagLogger (23H2)
+
+if ( (unsigned int)PerfDiagpIsTracingAllowed() )
+{
+  wcscpy(&xmmword_140C326EC, L"PerfDiag Logger");
+  started = EtwStartAutoLogger(&xmmword_140C326EC);
+}
+else
+{
+  started = -1073741823;
+}
+```
 
 ## [Autologger Value Table](https://github.com/MicrosoftDocs/win32/blob/docs/desktop-src/ETW/configuring-and-starting-an-autologger-session.md)
 

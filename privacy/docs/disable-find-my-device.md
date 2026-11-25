@@ -13,3 +13,34 @@
 | --- | --- | --- |
 | [Turn On/Off Find My Device](https://noverse.dev/policies?p=FindMy*FindMy_AllowFindMyDeviceConfig) | `HKLM\SOFTWARE\Policies\Microsoft\FindMyDevice` | `AllowFindMyDevice` |
 
+## Pen Location
+
+`InputService.dll` starts it for every user and, while a pen is used, writes the device location to `HKCU\Software\Microsoft\Windows NT\CurrentVersion\Windows\Pen\PLOC` `LOC` (every 3min unless `TrackInterval` got changed). It only checks `TrackingEnabled`, which is missing by default (tracking on), only the '*Find my device*' Settings page writes it.
+
+```c
+"HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows\\Pen\\PLOC\\Settings";
+    "TrackingEnabled" = 1; // REG_DWORD
+    "TrackInterval" = 3; // REG_DWORD
+```
+
+```c
+// InputTracker::LoadSettings (23H2)
+
+v2 = 1;
+LOBYTE(v5) = 1; // tracking on when TrackingEnabled is missing
+if ( (int)InputTrackerUtils::GetLocationTrackingEnabled((bool *)&v5) >= 0 )
+  v2 = v5;
+v5 = 0LL;
+*((_BYTE *)this + 64) = v2;
+```
+
+```c
+// InputTracker::OnInputWnf (23H2)
+
+v5 = *((_BYTE *)this + 64) == 0;
+*((_QWORD *)this + 6) = v4;
+*((FILETIME *)this + 13) = v3;
+if ( v5 )
+  return 0LL; // TrackingEnabled = 0, no RecordPenLocation
+```
+

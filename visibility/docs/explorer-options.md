@@ -336,4 +336,5 @@ HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Search\PrimaryProperties
 | [Hide and disable all items on the desktop](https://noverse.dev/policies?p=Desktop*NoDesktop) | `HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer`<br>`HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer` | `NoDesktop` |
 | [Do not keep history of recently opened documents](https://noverse.dev/policies?p=StartMenu*NoRecentDocsHistory) | `HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer`<br>`HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer` | `NoRecentDocsHistory` |
 | [Prohibit access of the Windows Connect Now wizards](https://noverse.dev/policies?p=WindowsConnectNow*WCN_DisableWcnUi_2) | `HKLM\Software\Policies\Microsoft\Windows\WCN\UI` | `DisableWcnUi` |
+| [Turn off account-based insights, recent, favorite, and recommended files in File Explorer](https://noverse.dev/policies?p=Explorer*DisableGraphRecentItems) | `HKLM\Software\Policies\Microsoft\Windows\Explorer` | `DisableGraphRecentItems` |
 
