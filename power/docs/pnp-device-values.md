@@ -233,6 +233,10 @@ wmiprvse.exe	RegSetValue	HKLM\System\CurrentControlSet\Control\Class\{4d36e972-e
 wmiprvse.exe	RegSetValue	HKLM\System\CurrentControlSet\Control\Class\{4d36e972-e325-11ce-bfc1-08002be10318}\0000\PnPCapabilities	Type: REG_DWORD, Length: 4, Data: 24
 ```
 
+## Enable Write Caching
+
+Same as the "Enable write caching on the device" box (disk properties, `Policies`), storport writes `UserWriteCacheSetting` = 1 itself whenever the value is missing ([`sub_1C00633B0`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/storport/sub_1C00633B0.c), 23H2), so this only changes disks where write caching was turned off, see the `Disk` block below.
+
 ## Turn Off Write-Cache Buffer Flushing
 
 Only use this on a PC with a UPS/battery, disk.sys sets `DEV_POWER_PROTECTED`, which causes classpnp to think that the disk has a backup power supply, so flushes and FUA writes are skipped.

@@ -78,7 +78,6 @@ Enables strict argument validation for upper layer testing, only `mlx5.sys` read
 
 ### RssReadRegistryParameters
 
-[`RSS::RssReadRegistryParameters`](https://github.com/nohuto/win-config/blob/main/network/assets/pseudocode/intel-nic/RSS_RssReadRegistryParameters.c) shows miscellaneous values which are related to RSS, see [intelnet6x.c](https://github.com/nohuto/win-config/blob/main/power/assets/pseudocode/intelnet6x.c) for reference:
 ```c
 void __fastcall RSS::RssReadRegistryParameters(RSS *this, struct ADAPTER_CONTEXT *a2, void *a3)
 {

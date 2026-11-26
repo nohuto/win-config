@@ -147,14 +147,16 @@ USB mouse & keyboards normally use interrupt IN endpoints, so a 1000 Hz endpoint
 >
 > — Microsoft, [USB_ENDPOINT_DESCRIPTOR structure](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/usbspec/ns-usbspec-_usb_endpoint_descriptor#members)
 
-So IMOD usually adds no interrupt notification wait in relation to the polling interval here, as the 50 us counter is usually already at zero whenever the next service chance happens, see '[Light Load](https://noverse.dev/docs/win-config/power/xhci-imod/#light-load)' example, therefore I would generally keep IMOD at its default value and move your USB devices onto different xHCI controllers, so they don't get the same `InterrupterTarget` on one controller.
+So IMOD usually adds no interrupt notification wait here, a device only creates an event when it sends a report, and the next report comes at least one polling interval later, when the 50 us counter has long reached zero, see '[Light Load](https://noverse.dev/docs/win-config/power/xhci-imod/#light-load)' example.
 
 | Rate | Polling Interval | Isolated endpoint with 50 us IMOD |
 | --- | --- | --- |
 | 1000 Hz | 1000 us | Counter reached zero ~950 us earlier |
 | 8000 Hz | 125 us | Counter reached zero ~75 us earlier |
 
-But note that another event on the same interrupter could change that, if it caused an interrupt during the previous 50 us, the mouse/keyboard report can wait for the remaining time.
+A report only waits if another event on the same interrupter caused an interrupt during the previous 50 us and the DPC already emptied the event ring (`EHB = 0`), it then waits for the remaining time.
+
+Move your mouse & keyboard onto different xHCI controllers, so they don't share an interrupter with each other/busy devices, instead of disabling IMOD.
 
 ## WinDbg usb3kd
 
