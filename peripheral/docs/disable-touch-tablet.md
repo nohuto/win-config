@@ -2,10 +2,38 @@
 
 Turns off touch keyboard, pen, touchpad gesture and tablet mode settings.
 
-Disable the touch screen feature of your device with:
+## Touch Screen
 
-```powershell
-Get-PnpDevice -PresentOnly:$false | ? FriendlyName -eq 'HID-compliant touch screen' | % { pnputil /disable-device "$($_.InstanceId)" }
+The suboption disables touch screens via `pnputil /disable-device`.
+
+It finds the devices by the HWID `HID_DEVICE_UP:000D_U:0004`, which `input.inf` installs as "HID-compliant touch screen", `0x0D` is `HID_USAGE_PAGE_DIGITIZER`, `0x04` is `HID_USAGE_DIGITIZER_TOUCH_SCREEN`.
+
+`pnputil` writes a single value, `CONFIGFLAG_DISABLED` bit in the devices `ConfigFlags`, example:
+
+```c
+- HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Enum\HID\VID_80EE&PID_0022&Col01\6&2ec961e1&0&0000|"ConfigFlags"=dword:00000000
++ HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Enum\HID\VID_80EE&PID_0022&Col01\6&2ec961e1&0&0000|"ConfigFlags"=dword:00000001
+```
+
+```c
+// hidusage.h
+
+//
+// Usage Pages
+//
+
+#define HID_USAGE_PAGE_DIGITIZER                        ((USAGE) 0x000D)
+
+//
+// Digitizers Page (0x0D)
+//
+
+#define HID_USAGE_DIGITIZER_TOUCH_SCREEN                                      ((USAGE) 0x0004)
+
+
+// regstr.h
+
+#define CONFIGFLAG_DISABLED             0x00000001      // Set if disabled
 ```
 
 ## Miscellaneous Values
