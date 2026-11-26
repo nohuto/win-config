@@ -1,7 +1,5 @@
 # USB Values
 
-For values with "any nonzero" comment, the code treats the DWORD as a boolean, means any nonzero value is equivalent to `1`. Default data is unknown for most values as the driver code only reads the registry and handles fallbacks.
-
 ## Registry Values
 
 ```c
@@ -12,47 +10,43 @@ For values with "any nonzero" comment, the code treats the DWORD as a boolean, m
 
 // HUBREG_OpenQueryAttemptRecoveryFromUsbPowerDrainValue
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\usb\\AutomaticSurpriseRemoval"; // g_UsbAutomaticSurpriseRemovalKeyName (aRegistryMachin_6)
-    "AttemptRecoveryFromUsbPowerDrain" = 0; // REG_DWORD, is used to stop USB devices when your screen is off, obviously only for laptop users
+    "AttemptRecoveryFromUsbPowerDrain" = 1; // REG_DWORD, nonzero = hubs idle in the Modern Standby low power epoch and a device that blocks DRIPS for 30 s is stopped, Settings "USB battery saver"
 
-// HUBREG_QueryUsbHardwareVerifierValue
-"HKLM\\SYSTEM\\CurrentControlSet\\Control\\usb\\HardwareVerifier"; // g_HwVerifierKeyName
-    "<VID><PID><REV>\\usbUpto20|usb2X|usb30\\device" = ?; // REG_DWORD, first query
-    "<VID><PID>\\usbUpto20|usb2X|usb30\\device" = ?; // REG_DWORD, fallback
-    "global\\usbUpto20|usb2X|usb30\\device" = ?; // REG_DWORD, last fallback
+// HUBREG_QueryUsbHardwareVerifierValue (USBHUB3), Controller_PopulateHardwareVerifierFlags (USBXHCI)
+"HKLM\\SYSTEM\\CurrentControlSet\\Control\\usb\\HardwareVerifier\\<id>\\usbUpto20|usb2X|usb30"; // g_HwVerifierKeyName
+    "device" = 0; // 4 bytes
+    "hub" = 0; // 4 bytes
+
+"HKLM\\SYSTEM\\CurrentControlSet\\Control\\usb\\HardwareVerifier\\<vvvvddddrr>\\xHCI10|xHCI96"; // USBXHCI
+    "controller" = 0; // 8 bytes
 
 // HUBREG_QueryGlobalUsbLtmSettings
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\usb\\UsbLtm"; // g_UsbLtmKeyName
-    "UsbLtmEnable" = 0; // REG_DWORD
+    "UsbLtmEnable" = 0; // REG_DWORD, nonzero = USBHUB3 enables LTM (latency tolerance messaging) for devices that support it
 
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\USB";
     "DualRoleFeaturesTestOverride" = ?; // REG_DWORD
     "UcmIsPresent" = ?; // REG_DWORD
 
-// these are taken from the W10 source, they seem to exist on latest builds (they do exist in usbport.sys on 23H2)
+// these are for USB 2.0 (EHCI, OHCI, UHCI controllers)
 
 "HKLM\\SYSTEM\\CurrentControlSet\\Services\\usb";
-    "debuglevel" = 0; // REG_DWORD
-    "debuglogmask" = 0xFFFFFFFE; // REG_DWORD
-    "debuglogenable" = 1; // REG_DWORD (bool)
-    "debugcatc" = 0; // REG_DWORD (bool)
-    "DisableSelectiveSuspend" = 0; // REG_DWORD (bool)
-    "DisableCcDetect" = 0; // REG_DWORD (bool
-    "EnPMDebug" = 0; // REG_DWORD (bool), for debugging power management
-    "ForceHcD3NoWakeArm" = 0 // REG_DWORD (bool)
-    "EnableDCA" = 0 // REG_DWORD (bool), DCA = direct controller access
-    "ForcePortsHighSpeed" = 0; // REG_DWORD (bool), forces ports to stay under EHCI
+    "DisableCcDetect" = 0; // REG_DWORD
+    "DisableSelectiveSuspend" = 0; // REG_DWORD, nonzero = disables selective suspend & usbhub hides the hubs "Allow the computer to turn off this device to save power"
+    "EnableDCA" = 0; // REG_DWORD, DCA = direct controller access
+    "EnPMDebug" = 0; // REG_DWORD, for debugging power management
+    "ForceHcD3NoWakeArm" = 0; // REG_DWORD
+    "ForcePortsHighSpeed" = 0; // REG_DWORD, forces ports to stay under EHCI
 
-// "This class is reserved for USB host controllers and USB hubs", I'll add them here as they're also in usbport.sys and also taken from the W10 source
+// "This class is reserved for USB host controllers and USB hubs", usbport.sys reads these from the controllers driver key
 
-"HKLM\\System\\CurrentControlSet\\Control\\Class\\{36FC9E60-C465-11CF-8056-444553540000}\\<instance>";
-    "HcFlavor" = ? // REG_DWORD
-    "TotalBusBandwidth" = ? // REG_DWORD
-    "HcDisableAllSelectiveSuspend" = 0 (non-IA64), 1 (IA64); // REG_DWORD
+"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{36FC9E60-C465-11CF-8056-444553540000}\\<instance>";
     "CommonBuffer2GBLimit" = 0; // REG_DWORD, when nonzero, forces common buffers below 2GB ("Limit common buffer allocations for the miniport to the physical address range below 2GB.  Only bits 0 through 30 of the physical address can be set.  Bit 31 of the physical address cannot be set.")
-    "ForceHCResetOnResume" = 0; // REG_DWORD, forces controller reset on resume
     "FastResumeEnable" = 0; // REG_DWORD, fast S0 resume
-
-    //HcDisableSelectiveSuspend
+    "ForceHCResetOnResume" = 0; // REG_DWORD, forces controller reset on resume
+    "HcDisableAllSelectiveSuspend" = 0; // REG_DWORD, nonzero = no selective suspend for controller
+    "HcFlavor" = ?; // REG_DWORD
+    "TotalBusBandwidth" = ?; // REG_DWORD
 
 // miscellaneous note for future reference
 "\\Registry\\Machine\\System\\CurrentControlSet\\Control\\Usb\\Ceip" // UsbhUpdateRegSurpriseRemovalCount
@@ -61,23 +55,18 @@ For values with "any nonzero" comment, the code treats the DWORD as a boolean, m
 
 ### RegistryMachin_* Keys
 
-These are from `usbhub.sys`. Looking at xrefs of these names is sometimes a start point when trying to find values within a binary or to see what keys are somewhere used, therefore I'm adding it (note that `aRegistryMachin_*` are IDA generated names so you won't find them in strings, nor will they be the exact same for you unless you disassemble the same binary build version).
+Absolute registry key strings of `usbhub.sys`, `USBHUB3.sys`, `USBXHCI.sys`. Looking at xrefs of these names is sometimes a start point when trying to find values within a binary or to see what keys are somewhere used, therefore I'm adding it (note that `aRegistryMachin_*` are IDA generated names so you won't find them in strings, nor will they be the exact same for you unless you disassemble the same binary build version).
 
 ```c
 // usbhub.sys
-aRegistryMachin_1 = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\USBFN";
-aRegistryMachin_2 = // doesn't exist
-aRegistryMachin_3 = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\usbhub\\uxd_control\\pnp";
-aRegistryMachin_4 = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\usb\\UsbLtm";
-aRegistryMachin_5 = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\usbhub\\uxd_control\\devices";
-aRegistryMachin_6 = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\usb\\AutomaticSurpriseRemoval";
-aRegistryMachin_7 = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\usb\\HardwareVerifier";
-aRegistryMachin_8 = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\usb\\Usb20HardwareLpm";
-aRegistryMachin_9 = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\usbflags";
-aRegistryMachin_10 = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\USBHUB\\hubg";
-aRegistryMachin_11 = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\USB";
-aRegistryMachin_12 = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\usbhub\\uxd_control\\policy";
-aRegistryMachin_13 = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\usb";
+"\\Registry\\Machine\\SYSTEM\\CurrentControlSet\\Control\\USB"
+"\\Registry\\Machine\\SYSTEM\\CurrentControlSet\\Control\\USBFN"
+"\\Registry\\Machine\\SYSTEM\\CurrentControlSet\\Control\\USBFN\\Configurations\\"
+"\\Registry\\Machine\\SYSTEM\\CurrentControlSet\\Control\\USBFN\\Default"
+"\\Registry\\Machine\\System\\CurrentControlSet\\Control\\Usb\\Ceip"
+"\\Registry\\Machine\\System\\CurrentControlSet\\Control\\usbflags"
+"\\registry\\machine\\system\\currentcontrolset\\services\\usbhub\\uxd_control\\devices\\"
+// hubg: built from the driver's registry path (Services\usbhub) + "\\hubg" in UsbhRegDriverEntry
 ```
 
 ```c
@@ -85,6 +74,7 @@ aRegistryMachin_13 = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\usb";
 aRegistryMachin = "\\Registry\\Machine\\SYSTEM\\CurrentControlSet\\Control\\USBFN\\Default"
 aRegistryMachin_0 = "\\Registry\\Machine\\System\\CurrentControlSet\\Control\\Usb\\Ceip"
 aRegistryMachin_1 = "\\Registry\\Machine\\SYSTEM\\CurrentControlSet\\Control\\USBFN"
+"\\Registry\\Machine\\SYSTEM\\CurrentControlSet\\Control\\USBFN\\Configurations\\" // no IDA name in this list
 aRegistryMachin_3 = "\\registry\\machine\\system\\currentcontrolset\\services\\usbhub\\uxd_control\\pnp" // g_UxdGuidSettingsKey
 aRegistryMachin_4 = "\\Registry\\Machine\\System\\CurrentControlSet\\Control\\usb\\UsbLtm" // g_UsbLtmKeyName
 aRegistryMachin_5 = "\\registry\\machine\\system\\currentcontrolset\\services\\usbhub\\uxd_control\\devices" // g_UxdDeviceSettingsKey
@@ -104,13 +94,3 @@ aRegistryMachin = "\\Registry\\Machine\\System\\CurrentControlSet\\Control\\Cras
 aRegistryMachin_0 = "\\Registry\\Machine\\System\\CurrentControlSet\\Control\\usb\\HardwareVerifier" // g_HwVerifierKeyName
 aRegistryMachin_1 = "\\Registry\\Machine\\System\\CurrentControlSet\\Control\\usbflags" // g_usbflagsKeyName
 ```
-
-## Miscellaneous Notes
-
-[`AttemptRecoveryFromUsbPowerDrain`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/USBHUB3/HUBREG_OpenQueryAttemptRecoveryFromUsbPowerDrainValue.c) is used to stop USB devices when your screen is off, obviously only for laptop users.
-
-```
-Stop USB devices when my screen is off to help battery.
-```
-`Bluetooth & devices` > `USB` > `USB battery saver`
-

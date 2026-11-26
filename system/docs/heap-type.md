@@ -50,15 +50,17 @@ typedef struct _RTL_HEAP_PARAMETERS {
 } RTL_HEAP_PARAMETERS, *PRTL_HEAP_PARAMETERS;
 ```
 
+See '[Kernel Values](https://noverse.dev/docs/win-config/system/kernel-values/#registry-values)' for types and ranges.
+
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager";
-    "HeapSegmentReserve" = 1048576; // REG_DWORD, range 65536-16580608, 65536 steps
-    "HeapSegmentCommit" = 8192; // REG_DWORD, range 4096-16580608, 4096 steps
-    "HeapDeCommitFreeBlockThreshold" = 4096; // REG_DWORD, range 0-4294967280, 16 steps
-    "HeapDeCommitTotalFreeThreshold" = 65536; // REG_DWORD, range 0-4294967280, 16 steps
+    "HeapSegmentReserve" = 1048576;
+    "HeapSegmentCommit" = 8192;
+    "HeapDeCommitFreeBlockThreshold" = 4096;
+    "HeapDeCommitTotalFreeThreshold" = 65536;
 
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Segment Heap";
-    "Enabled"; // REG_DWORD, 0 = disable, nonzero = enable (global)
+    "Enabled";
 
 "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\<executable>";
     "FrontEndHeapDebugOptions" = 0; // REG_DWORD, see bitfield below

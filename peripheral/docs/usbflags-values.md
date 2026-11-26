@@ -1,70 +1,37 @@
 # USBFlags Values
 
-Value names in [`HUBREG_QueryUsbflagsValuesForDevice.c`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/USBHUB3/HUBREG_QueryUsbflagsValuesForDevice.c) are mostly UNICODE_STRING globals, the names below are resolved from `dq offset ; "Name"`. The usbflags device key base path is `HKLM\SYSTEM\CurrentControlSet\Control\usbflags` (from `LRegistryMachineSystemCurrentControlSetControlusbflags` in `HUBREG_OpenCreateUsbflagsDeviceKey`).
+The usbflags device key base path is `HKLM\SYSTEM\CurrentControlSet\Control\usbflags` (from `LRegistryMachineSystemCurrentControlSetControlusbflags` in `HUBREG_OpenCreateUsbflagsDeviceKey`).
 
 ## Registry Values
 
 `HUBDSM_QueryingRegistryValuesForDevice` -> `HUBMISC_QueryAndCacheRegistryValuesForDevice` -> `HUBREG_QueryUsbflagsValuesForDevice`
 
-For values with "any nonzero" comment, the code treats the DWORD as a boolean, means any nonzero value is equivalent to `1`. Default data is unknown for most values as the driver code only reads the registry and handles fallbacks.
-
-The value type isn't enforced, so both `REG_DWORD` and `REG_BINARY` should work if they're a 4 byte nonzero value (that's my current assumption). I would personally use `REG_BINARY` instead of `REG_DWORD` for now, as for example `osvc`, `IgnoreHWSerNum`, `ResetOnResume` are `REG_BINARY` ([usb-device-specific-registry-settings.md](https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/usb-device-specific-registry-settings)).
-
-Everything listed below is based on personal findings, mistakes may exist.
 
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\usbflags";
-    "Allow64KLowOrFullSpeedControlTransfers" = ?; // REG_DWORD, only exactly 1 enables
-    "DisableHCS0Idle" = 0; // REG_DWORD
+    "Allow64KLowOrFullSpeedControlTransfers" = 0; // REG_DWORD
+    "DisableHCS0Idle" = 0; // REG_DWORD, nonzero = xHCI controllers skip their idle D3, USBXHCI Controller_IsRegKeySetToDisableS0Idle at controller start
     "GenericCompositeUSBDeviceString" = ?; // REG_SZ
+    "IgnoreHWSerNum<vvvvpppp>" = 0;
     "SetMultiTTBitDuringConfigureEndpoint" = ?; // REG_DWORD
     "TestRunEsmInWorkItem" = 0; // REG_DWORD
 
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\usbflags\\<vvvvpppprrrr>";
-    "IgnoreHWSerNum" = ?; // REG_BINARY, Indicates whether the USB driver stack must ignore the serial number of the device.
-                          // 0x00: The setting is disabled.
-                          // 0x01: Forces the USB driver stack to ignore the serial number of the device. Therefore, the device instance is tied to the port to which the device is attached.
-    "UseWin8DescriptorValidation" = ?;
-    "ResetOnResume" = ?; // REG_BINARY, indicates whether the USB driver stack must reset the device when the port resumes from a sleep cycle.
-                         // 0x0000: The setting is disabled.
-                         // 0x0001: Forces the USB driver stack to reset a device on port resume.
-    "DisableOnSoftRemove" = 1;
-    "RequestConfigDescOnReset" = ?;
-    "DisableRecoveryFromPowerDrain" = ?;
-    "DisableLpm" = ?; // When enabled LPM (link power management) is disabled for the device.
-                      // "A link enters a low power state (consuming less power than the working state) only when the downstream device enters the suspended state through the selective suspend mechanism", "After remaining idle for a certain period of time, link partners progressively enter U1 (standby with fast exit) and then U2 (standby with slower exit)"
-                      // https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/usb-3-0-lpm-mechanism- https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/u1-and-u2-transitions
-    "SkipBOSDescriptorQuery" = ?;
-    "AlternateSettingFilter" = ?; // REG_BINARY
-    "ResetTTOnCancel" = ?; // REG_DWORD
-    "NoClearTTBufferOnCancel" = ?; // REG_DWORD, has priority over ResetTTOnCancel
-    "PowerUpDelay" = ?; // REG_DWORD?
-
-    "osvc" = ?; // REG_BINARY, "Indicates whether the operating system queried the device for Microsoft-defined USB descriptors. If the previously attempted OS descriptor query was successful, the value contains the vendor code from the OS string descriptor."
-                // 0x0000: The device didn't provide a valid response to the Microsoft OS string descriptor request.
-                // 0x01xx: The device provided a valid response to the Microsoft OS string descriptor request, where xx is the bVendorCode contained in the response.
-    "SkipContainerIdQuery" = ?;
-    "MsOs20DescriptorSetInfo" = ?;
-
-    //"DontSkipMsOsDescriptor"
-    //"IgnoreBOSDescriptorValidationFailure"
-    //"SkipSetSel"
-    //"ResetOnResumeInSuperSpeed"
-    //"AllowInvalidPipeHandles"
-    //"DisableUASP"
-    //"SkipSetIsochDelay"
-    //"ResetOnResumeS0"
-    //"DisableHotReset"
-    //"NonFunctional"
-    //"DisableUsb20HardwareLpm"
-    //"DisableRemoteWakeForUsb20HardwareLpm"
-    "DisableSuperSpeed" // "There are certains hubs that we just don't want to support as they are too buggy. We will completely disable SuperSpeed for them."
-    //"IncompatibleWithWindows"
-    //"DisableFastEnumeration"
-    //"AddControllerSuffixedCompatIdToAudioDevices"
-    //"AddMausbSuffixToHardwareId"
-    //"EnablePLDRDuringCyclePort"
-    //"ResetOnErrorInD2Resume"
+    "AlternateSettingFilter" = ?; // REG_BINARY, HUBREG_QueryUsbflagsAlternateSettingFilter
+    "DisableLPM" = 0; // nonzero = no U1/U2 link power states for the device, hubs read it too
+    "DisableOnSoftRemove" = 1; // USBHUB3 sets the flag for every device
+    "DisableRecoveryFromPowerDrain" = 0; // nonzero = Modern Standby DRIPS watchdog doesn't fail the device when it blocks DRIPS for 30 s, only matters while Control\usb\AutomaticSurpriseRemoval "AttemptRecoveryFromUsbPowerDrain" is nonzero
+    "IgnoreHWSerNum" = 0; // REG_BINARY
+    "MsOs20DescriptorSetInfo" = ?; // REG_BINARY
+    "NoClearTTBufferOnCancel" = 0;
+    "osvc" = ?; // REG_BINARY
+    "PowerUpDelay" = ?; // REG_BINARY, first byte x 2 is stored as the devices power up delay
+    "RequestConfigDescOnReset" = 0;
+    "ResetOnResume" = 0; // REG_BINARY, nonzero = reset device when the port resumes from sleep
+    "ResetTTOnCancel" = 0; // hubs only
+    "SkipBOSDescriptorQuery" = 0;
+    "SkipContainerIdQuery" = 0;
+    "UseWin8DescriptorValidation" = 0;
 ```
 
 ### USB_DEVICE_HACKS
@@ -91,6 +58,7 @@ DeviceHackFlags: DisableOnSoftRemove DisableLpm
 The `DisableLpm` DeviceHackFlags exists if the value is set (DisableLPM).
 
 You can see existing `_USB_DEVICE_HACKS` using the dt command:
+
 ```c
 lkd> .load usb3kd
 lkd> dt USBHUB3!_USB_DEVICE_HACKS

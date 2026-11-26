@@ -145,7 +145,7 @@ Based on pseudocode of [`dxgkrnl.sys`](https://github.com/nohuto/decompiled-pseu
     "MiracastDefaultRtspPort" = 7236; // REG_DWORD, 0 = 7236
     "PlatformSupportMiracast" = 0; // REG_DWORD (bool)
                                    // "Miracast enables seamless display of multimedia content - including high-resolution pictures, high-definition video content, live television shows and sports, and other copy-protected premium content - between Wi-Fi devices, even if a Wi-Fi network is not available."
-                                   // https://learn.microsoft.com/en-us/windows-hardware/drivers/display/wireless-displays--miracast-
+                                   // https://learn.micrsoft.com/en-us/windows-hardware/drivers/display/wireless-displays--miracast-
     "SupportMultipleIntegratedDisplays" = 0; // REG_DWORD (bool)
     "SuspendAdapterTimerPeriod" = 500000; // REG_DWORD
 
@@ -159,15 +159,33 @@ Based on pseudocode of [`dxgkrnl.sys`](https://github.com/nohuto/decompiled-pseu
     "RapidHPDThresholdCount" = 5; // REG_DWORD
     "RapidHPDTime" = 1000; // REG_DWORD
 
-    // TdrInit, see https://noverse.dev/docs/win-config/security/increase-tdr/ for descriptions etc.
-    "TdrDdiDelay" = 5; // REG_DWORD, range 1-900
-    "TdrDebugMode" = 2; // REG_DWORD, range 0-3, other = 2
-    "TdrDelay" = 2; // REG_DWORD, range 1-900
-    "TdrDodPresentDelay" = 2; // REG_DWORD, range 1-900
-    "TdrDodVSyncDelay" = 2; // REG_DWORD, range 1-900
+    // TdrInit
     "TdrLevel" = 3; // REG_DWORD, range 0/1/3, other = 3
-    "TdrLimitCount" = 5; // REG_DWORD, range 1-32
+    // "Specifies the initial level of recovery."
+    // 0 (TdrLevelOff) = Detection disabled
+    // 1 (TdrLevelBugcheck) = Bug check on detected timeout, for example, no recovery
+    // 2 (TdrLevelRecoverVGA) = Recover to VGA (not implemented)
+    // 3 (TdrLevelRecover) = Recover on timeout (default value)
+    "TdrDelay" = 2; // REG_DWORD, range 1-900
+    // "Specifies the number of seconds that the GPU can delay the preempt request from the GPU scheduler. TdrDelay is effectively the timeout threshold."
+    "TdrDdiDelay" = 5; // REG_DWORD, range 1-900
+    // "Specifies the number of seconds that the OS allows threads to leave the driver. After the specified time, the OS bug-checks the computer with the code VIDEO_TDR_FAILURE (0x116)."
+    "TdrDebugMode" = 2; // REG_DWORD, range 0-3, other = 2
+    // "Specifies the debugging-related behavior of the TDR process. The default value is TDR_DEBUG_MODE_RECOVER_NO_PROMPT, which indicates not to break into the debugger."
+    // 0 = Break to kernel debugger before the recovery to allow investigation of the timeout.
+    // 1 = Ignore any timeout.
+    // 2 = Recover without breaking into the debugger (default value).
+    // 3 = Recover even if some recovery conditions aren't met (for example, recover on consecutive timeouts).
     "TdrLimitTime" = 60; // REG_DWORD, range 5-3600
+    // "Specifies the default time within which a specific number of TDRs (specified by the TdrLimitCount key) are allowed without crashing the computer."
+    "TdrLimitCount" = 5; // REG_DWORD, range 1-32
+    // "Specifies the default number of TDRs (0x117) that the system allows during the time specified by the TdrLimitTime key without crashing the computer."
+    "TdrTestMode" = 0;
+    // "Reserved. Don't use."
+    "TdrDodPresentDelay" = 2; // REG_DWORD, range 1-900
+    // "Specifies the number of seconds allowed for the kernel-mode display-only driver's (KMDOD) DxgkDdiPresentDisplayOnly function to complete an asynchronous present by reporting progress to pfnPresentDisplayOnlyProgress (which is passed in the DXGKARG_PRESENT_DISPLAYONLY structure)."
+    "TdrDodVSyncDelay" = 2; // REG_DWORD, range 1-900
+    // "Specifies the number of seconds the V-sync watchdog waits for a V-sync signal to be reported before triggering a TDR in a KMDOD."
 
     // DpiMiracastGetForcedMode
     "MiracastForceDisable" = 2; // REG_DWORD

@@ -9,9 +9,11 @@ $ rg -i 'DisableWpbtExecution' strings.txt
 
 WPBT = Windows Platform Binary Table, which is an ACPI firmware table that can provide a boot time executable to run, many vendors like ASUS use that.
 
+See '[Kernel Values](https://noverse.dev/docs/win-config/system/kernel-values/#registry-values)' for type and range.
+
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager";
-    "DisableWpbtExecution" = 0; // REG_DWORD (bool), nonzero disables WPBT execution
+    "DisableWpbtExecution" = 0;
 ```
 
 ```asm

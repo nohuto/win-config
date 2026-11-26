@@ -111,9 +111,11 @@ Note that `Dbgk` prefix = *Debugging Framework for user mode*.
 >
 > — Windows Internals, [E7, P1: 'Peering into undocumented interfaces'](https://github.com/nohuto/Windows-Books/releases/download/7th-Edition/Windows-Internals-E7-P1.pdf)
 
+See '[Kernel Values](https://noverse.dev/docs/win-config/system/kernel-values/#registry-values)' for type and range.
+
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Kernel";
-  "EnableWerUserReporting" = 1; // DbgkEnableWerUserReporting, REG_DWORD, range 0 = disabled, any nonzero 32 bit data = enabled
+  "EnableWerUserReporting" = 1;
 ```
 
 Used in [DbgkQueueUserExceptionReport](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/DbgkQueueUserExceptionReport.c):
@@ -135,9 +137,11 @@ Note that this is dependent on `EnableWerUserReporting`, means if the value abov
 | --- | --- |
 | `Se` | Security Reference Monitor |
 
+See '[Kernel Values](https://noverse.dev/docs/win-config/system/kernel-values/#registry-values)' for type and range.
+
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Kernel";
-  "SeLpacEnableWatsonReporting" = 0; // SeLpacEnableWatsonReporting, REG_DWORD, 0 disables, nonzero enables
+  "SeLpacEnableWatsonReporting" = 0;
 ```
 
 Used in [SepLogLpacAccessFailure](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/SepLogLpacAccessFailure.c):

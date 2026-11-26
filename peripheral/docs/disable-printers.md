@@ -64,7 +64,7 @@ dir Registry::HKEY_CLASSES_ROOT -Recurse -ea SilentlyContinue | ? { $_.Name -lik
 Get-Printer
 ```
 
-[Remove](https://learn.microsoft.com/en-us/powershell/module/printmanagement/remove-printer?view=windowsserver2025-ps) a specific printer using it's name:
+[Remove](https://learn.microsoft.com/en-us/powershell/module/printmanagement/remove-printer?view=windowsserver2025-ps) a specific printer using its name:
 ```powershell
 Remove-Printer -Name "Printer Name"
 ```

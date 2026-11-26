@@ -1,5 +1,7 @@
 # Disable Touch & Tablet
 
+Turns off touch keyboard, pen, touchpad gesture and tablet mode settings.
+
 Disable the touch screen feature of your device with:
 
 ```powershell
@@ -8,11 +10,11 @@ Get-PnpDevice -PresentOnly:$false | ? FriendlyName -eq 'HID-compliant touch scre
 
 ## Miscellaneous Values
 
-Everything listed below is based on personal findings. Mistakes may exist, some parts are speculations. See links below for reference.
+See links below for reference.
 
 ```c
-"HKLM\\SOFTWARE\\Policies\\Microsoft\\TabletPC";
-  "TurnOffTouchInput" // REG_DWORD
+"HKLM\\SOFTWARE\\Policies\\Microsoft\\TabletPC"; // TabSvc IsTouchDisabled
+    "TurnOffTouchInput" = 0; // REG_DWORD, 1 = TabSvc reports no digitizer
 
 "HKCU\\Software\\Microsoft\\Wisp\\Touch";
     "PanningDisabled" = 0;
@@ -28,15 +30,18 @@ Everything listed below is based on personal findings. Mistakes may exist, some 
     "Mobile_Inertia_Enabled" = 0;
     "Minimum_Velocity" = 0;
     "Thumb_Flick_Enabled" = 1;
+    "Left_Edgy_Enabled" = 1; // REG_DWORD, W11
+    "Right_Edgy_Enabled" = 1; // REG_DWORD, W11
+    "DualPressAndHold_Enabled" = 1; // REG_DWORD, W11 25H2
 
-"HKCU\\Software\\Microsoft\\Wisp\\MultiTouch";
-    "MultiTouchEnabled" = 1;
+"HKCU\\Software\\Microsoft\\Wisp\\MultiTouch"; // win32kbase LoadPointerDeviceTouchSettings
+    "MultiTouchEnabled" = 1; // REG_DWORD
 
 "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\PrecisionTouchPad";
-    "AAPThreshold" = 2; // range 0–4
-    "CursorSpeed" = 10; // range 1–20
-    "FeedbackIntensity" = 50; // range 0–100 (%)
-    "ClickForceSensitivity" = 50; // range 0–100 (%)
+    "AAPThreshold" = 2; // range 0-4
+    "CursorSpeed" = 10; // range 1-20
+    "FeedbackIntensity" = 50; // range 0-100 (%)
+    "ClickForceSensitivity" = 50; // range 0-100 (%)
     "LeaveOnWithMouse" = 1; // 0 = disable touchpad when mouse present, 1 = leave enabled
     "FeedbackEnabled" = 1; // 0 = no haptics, 1 = haptics on
     "TapsEnabled" = 1; // bool
@@ -50,9 +55,14 @@ Everything listed below is based on personal findings. Mistakes may exist, some 
     "RightClickZoneWidth" = 0;
     "RightClickZoneHeight" = 0;
 
+"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\PrecisionTouchPad"; // win32kbase PopulatePTPProperties
+    "AAPDisabled" = 0; // REG_DWORD, W10
+
 "HKCU\\Software\\Microsoft\\Wisp\\Pen\\SysEventParameters";
     "Splash" = 50;
-    "DblDist" = 50;
+    "DblDist" = 50; // REG_DWORD
+    "LeftEdgyEnabled" = 1; // REG_DWORD, 25H2
+    "RightEdgyEnabled" = 1; // REG_DWORD, 25H2
     "DblTime" = 300;
     "TapTime" = 100;
     "WaitTime" = 300;
@@ -75,7 +85,7 @@ Everything listed below is based on personal findings. Mistakes may exist, some 
     "STCDefaultMigrationCompleted" = 0;
 
 "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ImmersiveShell";
-    "TabletMode" = 0; // 0 = desktop mode, 1 = tablet mode?
+    "TabletMode" = 0; // REG_DWORD (bool), 0 = desktop mode, 1 = tablet mode (W10), nonzero suppresses DWM ColorPrevalence caption color
     "ExitedTabletModeWhileCSMActive" = 0;
     "TabletModeActivated" = 0;
 
@@ -97,28 +107,33 @@ Everything listed below is based on personal findings. Mistakes may exist, some 
     "Down" = { 0x441A7051435776E6, 0xF7C82D37F0853D9B };
     "DownLeft" = { 0x47F38E42CEFA51BC, 0xEBDFECA56A8CB1AC };
 
-// ?
-"HKCU\Software\Microsoft\Touchpad\TouchpadDesiredVisibility","Length: 16"
+"HKCU\\Software\\Microsoft\\Touchpad"; // SettingsHandlers_DesktopTaskbar
+    "TouchpadDesiredVisibility" = 0; // REG_DWORD, virtual touchpad icon in the taskbar
+
+"HKCU\\Software\\Microsoft\\Input\\Settings"; // SettingsHandlers_Keyboard
+    "IsVoiceTypingKeyEnabled" = ?; // REG_DWORD, "Show the voice typing mic button" (touch keyboard)
+
+"HKCU\\Software\\Microsoft\\TabletTip\\1.7"; // SettingsHandlers_nt, twinui.pcshell, W11
+    "IsKeyBackgroundEnabled" = ?; // REG_DWORD, "Key background" (touch keyboard theme)
+    "UserKeyboardScalingFactor" = ?; // REG_DWORD, "Keyboard size" (touch keyboard)
+
+"HKCU\\Control Panel\\Cursors"; // win32kbase
+    "ContactVisualization" = 1; // REG_DWORD, "Touch indicator"
+    "GestureVisualization" = 31; // REG_DWORD
+
+"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ImmersiveShell"; // twinui, W10 tablet mode
+    "SignInMode" = ?; // REG_DWORD, "When I sign in"
+    "ConvertibleSlateModePromptPreference" = ?; // REG_DWORD, "When this device automatically switches tablet mode on or off"
+
+"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"; // twinui, Taskbar
+    "TaskbarAutoHideInTabletMode" = 0; // REG_DWORD, "Automatically hide the taskbar" in tablet mode
+    "TaskbarAppsVisibleInTabletMode" = ?; // REG_DWORD, "Hide app icons on the taskbar" in tablet mode
 ```
 
 - [peripheral/assets/pseudocode | touch-twinui.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/pseudocode/touch-twinui.c)
 - [peripheral/assets/pseudocode | touch-InitializeInputSettingsGlobals.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/pseudocode/touch-InitializeInputSettingsGlobals.c)
 - [peripheral/assets/pseudocode | touch-IsTouchDisabled.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/pseudocode/touch-IsTouchDisabled.c)
 
-```powershell
-TabletModeActivated
-TabletModeCoverWindow
-TabletModeInputHandler
-```
-```powershell
-\Registry\Machine\SOFTWARE\Microsoft\TabletTip\1.7 : EnableDesktopModeAutoInvoke
-\Registry\Machine\SOFTWARE\Microsoft\TabletTip\1.7 : EnableDesktopModePenAutoInvoke
-\Registry\Machine\SOFTWARE\Microsoft\TabletTip\1.7 : LastTipXPositionOnScreen
-\Registry\Machine\SOFTWARE\Microsoft\TabletTip\1.7 : TipbandDesiredVisibility
-\Registry\Machine\SOFTWARE\Microsoft\TabletTip\1.7 : TipbandDesiredVisibilityTabletMode
-\Registry\Machine\SOFTWARE\Microsoft\TabletTip\1.7 : TipPinnedToMonitor
-\Registry\Machine\SOFTWARE\Microsoft\TabletTip\1.7 : TouchKeyboardTapInvoke
-```
 
 ### Touch Keyboard Values
 
@@ -132,7 +147,25 @@ TabletModeInputHandler
 | `TouchKeyboardTapInvoke` | '*Show the touch keyboard*' (*Never*, *When no keyboard attached*, *Always*) |
 | `TipbandDesiredVisibility` | touch keyboard icon in the taskbar (`SettingsHandlers_DesktopTaskbar.dll`) |
 
-Windows 7/XP:
+#### TurnOffTouchInput
+
+Read by `TabSvc.dll` only (`IsTouchDisabled`), with it TabSvc skips `GetSystemMetrics(SM_DIGITIZER)` & `GetSystemMetrics(SM_MAXIMUMTOUCHES)`, so the touch keyboard and handwriting service see no touch hardware:
+
+```c
+// TabletHardwareQuery (TabSvc, 23H2)
+
+SystemMetrics = 0;
+v5 = 0;
+if ( !byte_18003DE1C ) // IsTouchDisabled() result
+{
+  SystemMetrics = GetSystemMetrics(94); // SM_DIGITIZER
+  v5 = GetSystemMetrics(95); // SM_MAXIMUMTOUCHES
+}
+```
+
+#### Vista/W7
+
+Miscellaneous old values:
 
 ```json
 "HKLM\\SOFTWARE\\Policies\\Microsoft\\TabletTip\\1.7": {

@@ -11,17 +11,16 @@ The titles below tell what binary I've the values from.
 ```c
 "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Audio";
   // AERTMemoryInitOnce
-  "SkipRTHeap" = 1; // REG_DWORD (bool), 0 = RT (realtime) heap, nonzero = normal C++ heap (for AERTAllocate & AERTFree)
+  "SkipRTHeap" = 0; // REG_DWORD (bool), 0 = RT (realtime) heap, nonzero = normal C++ heap (for AERTAllocate & AERTFree)
 
   // CEndpointInstance::CreateStreamEndpointInstance
   "SuppressBridgeTargetGlitchLogging" = 0; // REG_DWORD (bool)
 
   // CAudioPump::IsTimerRequired
-  "DisablePumpBackupTimer" = ?; // REG_DWORD (bool)
+  "DisablePumpBackupTimer" = 0; // REG_DWORD (bool)
 
-  // _lambda_10c7c3905643286e055343d22ac897fe_::operator()
-  "AudioDgWatchDogTimerInMs" = 0; // REG_DWORD, range 0-4294967295 ms, the read value gets overwritten with 0 and I didn't see any other points where the edited value could be used (?)
-  "UseNewStreamManagementCodePath" = 1; // REG_DWORD (bool)
+  // _lambda_10c7ce318882e0e942d95a651b89d589_::operator()
+  "UseNewStreamManagementCodePath" = 1; // REG_DWORD (bool), 23H2
 
   // InitializeCpuManager
   "CpuManagementThresholdHns" = 50000; // REG_DWORD, range 0-4294967295 (100 ns units) means default = 5 ms
@@ -79,10 +78,25 @@ The titles below tell what binary I've the values from.
 
   // CEndpointCharacteristics::DiscoverProcessingModeCharacteristics
   "ProbeForMinimumPeriod" = 0; // REG_DWORD (bool), nonzero probes when OEM period data is missing
-  "MaxCapturePeriodicityInMs" = 0; // REG_DWORD, 0-4294967295 ms (seems unused)
+  "MaxCapturePeriodicityInMs" = 0; // REG_DWORD, ms, W10 only (W11 reads & discards it)
 
   // CAudioSrv::Initialize
-  "UseNewStreamManagementCodePath" = 1; // REG_DWORD (bool)
+  "UseNewStreamManagementCodePath" = 1; // REG_DWORD (bool), 23H2
+
+  // CAudioSrv::Initialize (24H2+)
+  "PerformStrictConnectorMatchOnMatchFormat" = 0; // REG_DWORD (bool)
+  "DisableSpatialOnLowLatency" = 0; // REG_DWORD (bool)
+  "UseSoftwareLoopbackOnMatchFormat" = 0; // REG_DWORD (bool)
+  "TimeoutRevertAudioPumpFormatAndPeriodInMs" = 10000; // REG_DWORD, ms
+
+  // CBluetoothAudioEndpointResourceManagerProvider (24H2+)
+  "MaxBluetoothDevices" = 100; // REG_DWORD
+
+  // GetSpatialRendererSelectionMode (24H2+)
+  "OverrideHmdMode" = ?; // REG_DWORD, range 0-3, missing or >3 = endpoint mode
+
+  // CMulticastSessionManager::RuntimeClassInitialize (25H2)
+  "EnableDummyMulticastProvider" = 0; // REG_DWORD (bool)
 
   // CAudioSrv::EndInitialization
   "EnableCaptureMonitor" = 1; // REG_DWORD (bool), 0 disables stream/capture monitor
@@ -109,20 +123,21 @@ The titles below tell what binary I've the values from.
   // CAudioSrv::VAD_AudiosrvServiceStart
   "AudioHealthMonitorLimit" = 5; // REG_DWORD, 0-4294967295 (hangs), 0 disables monitor, if hang amount is positive it terminates AudioSrv
   "AudioSrvWatchDogTimerInMs" = 40000; // REG_DWORD, 0-4294967295 ms
-  "RenderStreamVolumeTaperPower" = ?; // REG_SZ
-  "UnrestrictedPerProcessLoopback" = 0xFFFFFFFF; // REG_DWORD (bool)
+  "RenderStreamVolumeTaperPower" = ""; // REG_SZ, decimal number (-96-0 dB)
+  "UnrestrictedPerProcessLoopback" = 0; // REG_DWORD (bool)
 
   // MyServiceInitialization
   "DevApiIsRunningInVM" = 0; // REG_DWORD (bool)
 
   // BlockSpatialAudioRegistryGates
   "DisableSpatialAudioGlobal" = 0; // REG_DWORD (bool)
-  "DisableSpatialAudioPerEndpoint" = 1; // REG_DWORD (bool), nonzero = PKEY_Endpoint_SpatialNotAllowed
+  "DisableSpatialAudioPerEndpoint" = 1; // REG_DWORD (bool), nonzero = PKEY_Endpoint_SpatialNotAllowed, 23H2 only
   "DisableSpatialAudioVssFeature" = 0; // REG_DWORD (bool)
   "SpatialAudioHrtfOnByDefault" = 0; // REG_DWORD (bool)
 
   // IsSpatialComboEndpointDeterminationDisabled
-  "DisableSpatialOnComboEndpoints" = 1; // REG_DWORD (bool)
+  "DisableSpatialOnComboEndpoints" = 0; // REG_DWORD (bool), missing = 1, 23H2 only
+                                        // "Prevents evaluation of combo audio endpoints and processing filters for Spatial enablement on PC speakers"
 
 "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Audio\\Policy\\Spatial";
   // AtmosCheck::GetSpatialAudioLicenseGracePeriodInMs

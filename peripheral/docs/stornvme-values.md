@@ -1,18 +1,21 @@
 # StorNVMe Values
 
-This option serves as a general values overview for the `stornvme` key. Several values are applied, some have been changed, others are default values. The applied data is sometimes pure speculation.
+
+This is currently just a list of values, more about the topic itself may be added soon.
 
 ## Registry Values
 
-Most values are read via `ReadMultiSzRegistryValueAndCompareId` using the device id match string `VEN_vvvv&DEV_dddd&REV_rr`, so I currently assume that their type is REG_MULTI_SZ. Several values are set to 0 which sometimes also means "ignore" for example. Note that the information in this list is based on `stornvme.sys` only (if value has comment).
+`stornvme.sys` reads the values below with `ReadMultiSzRegistryValueAndCompareId`, which asks storport for a `REG_MULTI_SZ` from `Services\stornvme\Parameters\Device`, each string of the value is `<device> <number>`:
 
-[Database-engine/database-file-operations](https://learn.microsoft.com/en-us/troubleshoot/sql/database-engine/database-file-operations/troubleshoot-os-4kb-disk-sector-size?tabs=registry-editor#resolution-steps-for-disk-sector-size-errors-in-sql-server) validates that `ForcedPhysicalSectorSizeInBytes` is a Multi-String value, which confirms a part of my assumption, but I'm still not 100% sure about the rest. Feel free to correct me.
+```
+HKR, "Parameters\Device", "IoStripeAlignment", %REG_MULTI_SZ_APPEND%, "VEN_8086&DEV_0953&REV_?? 128"
+```
 
-See [GetRegistrySettings23H2.c](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/stornvme/GetRegistrySettings.c), [GetRegistrySettings24H2.c](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-24H2/stornvme/GetRegistrySettings.c), [stornvmeGetDynamicRegistrySettings26H1.c](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-26H1/stornvme/GetDynamicRegistrySettings.c), and [GetRegistrySettingsForSpecificKey26H1.c](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-26H1/stornvme/GetRegistrySettingsForSpecificKey.c) for details.
+[MS SQL Server sector size fix](https://learn.microsoft.com/en-us/troubleshoot/sql/database-engine/database-file-operations/troubleshoot-os-4kb-disk-sector-size?tabs=registry-editor#resolution-steps-for-disk-sector-size-errors-in-sql-server) uses e.g. `* 4095` for `ForcedPhysicalSectorSizeInBytes`, which matches every controller.
 
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Services\\stornvme\\Parameters\\Device";
-    "MaxTransferSize" = 0; // REG_MULTI_SZ, range 1-2048
+    "MaxTransferSize" = 0; // REG_MULTI_SZ, KB, clamped to 2048, 0 ignored
     "IoQueueDepth" = 0; // REG_MULTI_SZ
     "IoSubmissionQueueCount" = 0; // REG_MULTI_SZ
     "IoCompletionQueueCount" = 0; // REG_MULTI_SZ
@@ -24,11 +27,11 @@ See [GetRegistrySettings23H2.c](https://github.com/nohuto/decompiled-pseudocode/
     "DeallocateMaxLbaCount" = 0; // REG_MULTI_SZ
     "DisableDeallocate" = 0; // REG_MULTI_SZ
     "ControllerBasicInit" = 0; // REG_MULTI_SZ
-    "AsyncEventMask" = ?; // REG_MULTI_SZ
-    "IdlePowerMode" = 0; // REG_MULTI_SZ, applied only if value < 6
+    "AsyncEventMask" = 1823; // REG_MULTI_SZ
+    "IdlePowerMode" = 0; // REG_MULTI_SZ, 2 & 5 = runtime D3 cold allowed, 3 = APST only, 4 = no idle power setup
     "DiagnosticFlags" = 0; // REG_MULTI_SZ, bit 1 (0x2) forces LogSize default to 0x100000 bytes
-    "LogSize" = 0; // REG_MULTI_SZ, 0 ignored (unless DiagnosticFlags set)
-    "IoStripeAlignment" = 0; // REG_MULTI_SZ
+    "LogSize" = 0; // REG_MULTI_SZ, KB, 0 ignored (unless DiagnosticFlags set)
+    "IoStripeAlignment" = 0; // REG_MULTI_SZ, KB
     "MedPowerFxIdleTimeout" = 4294967295; // REG_MULTI_SZ
     "LowestPowerFxIdleTimeout" = 50; // REG_MULTI_SZ
     "MedPowerD3IdleTimeout" = 3000; // REG_MULTI_SZ
@@ -69,7 +72,7 @@ See [GetRegistrySettings23H2.c](https://github.com/nohuto/decompiled-pseudocode/
     "DisableActivateFWWithoutReset" = 0; // REG_MULTI_SZ
 
     // present in 24H2 path (not present in 23H2 path)
-    "DisableDSTThrottle" = ?; // REG_MULTI_SZ
+    "DisableDSTThrottle" = 0; // REG_MULTI_SZ
     "DisableF0TimestampSync" = 0; // REG_MULTI_SZ
     "DisableForwardedIO" = 0; // REG_MULTI_SZ
     "EnableIntelTSESplitIOWorkaround" = 0; // REG_MULTI_SZ
@@ -77,8 +80,10 @@ See [GetRegistrySettings23H2.c](https://github.com/nohuto/decompiled-pseudocode/
     "SupportZeroActiveNamespace" = 0; // REG_MULTI_SZ
     "WeightedRoundRobinEnabled" = 0; // REG_MULTI_SZ
 
+    "HostIdentifier" = ?; // REG_BINARY
+
+    // storport reads these for every storport miniport
     "DriverParameter" = ?;
-    "HostIdentifier" = ?;
     "LinkTimeout" = ?;
     "MaximumLogicalUnit" = ?;
     "MaximumUCXAddress" = ?;
@@ -87,15 +92,14 @@ See [GetRegistrySettings23H2.c](https://github.com/nohuto/decompiled-pseudocode/
     "UncachedExtAlignment" = ?;
 
 "HKLM\\SYSTEM\\CurrentControlSet\\Services\\stornvme\\Parameters";
-    "StorageSupportedFeatures" = 1; // "Support ByPassIO"
+    "BusType" = 17; // REG_DWORD
+    "BusyPauseTimeInMs" = ?; // REG_DWORD
+    "BusyRetryCount" = ?; // REG_DWORD
+    "DmaRemappingCompatible" = 2; // REG_DWORD, https://github.com/nohuto/win-config/blob/main/security/desc.md#opt-out-dma-remapping
+    "IoLatencyCap" = ?; // REG_DWORD
+    "IoTimeoutValue" = 10; // REG_DWORD, 1-65535 (sec)
+    "PnpAsyncNewDevices" = ?; // REG_DWORD
+    "StorageSupportedFeatures" = 1; // REG_DWORD, "Support ByPass IO"
                                     // "BypassIO is an optimized I/O path for reading from files. The goal of this path is to reduce the CPU overhead of doing reads, which helps to meet the I/O demands of loading and running next-generation games on Windows. BypassIO is a part of the infrastructure to support DirectStorage on Windows, and is available starting in Windows 11."
                                     // https://learn.microsoft.com/en-us/windows-hardware/drivers/storage/bypassio
-    "DmaRemappingCompatible" = 2; // https://github.com/nohuto/win-config/blob/main/security/desc.md#opt-out-dma-remapping
-    "BusType" = ?; // bustype 0x11 is value of BusTypeNVMe
-    "BusyPauseTimeInMs" = ?;
-    "BusyRetryCount" = ?;
-    "IoLatencyCap" = ?;
-    "IoTimeoutValue" = 10;
-    "PnpAsyncNewDevices" = ?;
 ```
-

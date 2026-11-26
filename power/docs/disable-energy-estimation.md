@@ -2,11 +2,13 @@
 
 Energy estimation accounts for estimated power usage, components report modeled energy costs, which are tracked per process and used for battery and standby telemetry.
 
+See '[Power Values](https://noverse.dev/docs/win-config/power/power-values/#registry-values)' for types and readers.
+
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power";
-    "UserBatteryDischargeEstimator" = 0; // PopDisableBatteryDischargeEstimator, 0 = the kernel publishes WNF_PO_DISCHARGE_ESTIMATE (battery time left), the item writes the default
-    "UserBatteryChargeEstimator" = 0; // PopUserBatteryChargingEstimator, 0 = the kernel publishes WNF_PO_CHARGE_ESTIMATE (time until full), the item writes the default
-    "EnergyEstimationEnabled" = 1; // PopEnergyEstimationEnabled, https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/PoEnergyEstimationEnabled.c
+    "UserBatteryDischargeEstimator" = 0;
+    "UserBatteryChargeEstimator" = 0;
+    "EnergyEstimationEnabled" = 1;
 ```
 
 `EnergyEstimationDisabled` was the name before W10 1709 (`PopEnergyEstimationDisabled` in 1507 & 1607), current builds only read `EnergyEstimationEnabled`.

@@ -24,15 +24,17 @@ All three are Analytic channels which come without `enabled` (`type="Analytic"` 
 | --- | --- |
 | `Pop` | Power Manager |
 
+See '[Power Values](https://noverse.dev/docs/win-config/power/power-values/#registry-values)' for types and readers.
+
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power";
-    "SleepstudyAccountingEnabled" = 1; // SleepstudyHelperAccountingEnabled 
-    "SleepstudyGlobalBlockerLimit" = 3000; // SleepstudyHelperBlockerGlobalLimit (0x0BB8)
-    "SleepstudyLibraryBlockerLimit" = 200; // SleepstudyHelperBlockerLibraryLimit (0xC8) 
+    "SleepstudyAccountingEnabled" = 1;
+    "SleepstudyGlobalBlockerLimit" = 3000;
+    "SleepstudyLibraryBlockerLimit" = 200;
 
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power";
-    "SleepStudyDeviceAccountingLevel" = 4; // PopSleepStudyDeviceAccountingLevel 
-    "SleepStudyDisabled" = 0; // PopSleepStudyDisabled 
+    "SleepStudyDeviceAccountingLevel" = 4;
+    "SleepStudyDisabled" = 0;
 ```
 
 `SleepStudyDisabled = 1` causes [`PoFxInitPowerManagement`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ntoskrnl/PoFxInitPowerManagement.c) to skip the *Sleep Study* device accounting group selection, `SleepStudyDeviceAccountingLevel` only seems to matter while Sleep Study is on:

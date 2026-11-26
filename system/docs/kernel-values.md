@@ -210,7 +210,7 @@ Everything listed below is based on personal findings, mistakes may exist.
     "EnableTickAccumulationFromAccountingPeriods" = 0; // KiEnableTickAccumulationFromAccountingPeriods, controls how CPU time used by threads etc. get counted?
                                                        // >= 2 = disabled (adds CPU time when clock ticks happen)
                                                        // 0/1/missing = enabled (measure time between accounting points)
-    "EnableWerUserReporting" = 1; // DbgkEnableWerUserReporting, https://noverse.dev/docs/win-config/privacy/disable-wer/#enableweruserreporting
+    "EnableWerUserReporting" = 1; // REG_DWORD, DbgkEnableWerUserReporting, 0 = disabled, nonzero = enabled, https://noverse.dev/docs/win-config/privacy/disable-wer/#enableweruserreporting
     "ForceBugcheckForDpcWatchdog" = 0; // KiForceBugcheckForDpcWatchdog
     "ForceForegroundBoostDecay" = 0; // KiSchedulerForegroundBoostDecayPolicy, https://noverse.dev/docs/win-config/system/priority-separation/#forceforegroundboostdecay
     "ForceIdleGracePeriod" = 5; // KiForceIdleGracePeriodInSec
@@ -261,7 +261,7 @@ Everything listed below is based on personal findings, mistakes may exist.
     "SeAllowAllApplicationAceRemoval" = 0; // SepAllowAllApplicationAceRemoval
     "SeAllowSessionImpersonationCapability" = 0; // SepAllowSessionImpersonationCap
     "SeCompatFlags" = 0; // SeCompatFlags
-    "SeLpacEnableWatsonReporting" = 0; // SeLpacEnableWatsonReporting, https://noverse.dev/docs/win-config/privacy/disable-wer/#selpacenablewatsonreporting
+    "SeLpacEnableWatsonReporting" = 0; // REG_DWORD, SeLpacEnableWatsonReporting, 0 disables, nonzero enables, https://noverse.dev/docs/win-config/privacy/disable-wer/#selpacenablewatsonreporting
     "SeLpacEnableWatsonThrottling" = 1; // SeLpacEnableWatsonThrottling
     "SerializeTimerExpiration" = 1; // KiSerializeTimerExpiration, https://noverse.dev/docs/win-config/system/timer-expiration/#serializetimerexpiration
     "SeTokenDoesNotTrackSessionObject" = 0; // SeTokenDoesNotTrackSessionObject
@@ -327,7 +327,7 @@ Everything listed below is based on personal findings, mistakes may exist.
     "TempFileDirectory" = ?;
     "ExcludeFromKnownDlls" = ?; // REG_MULTI_SZ
     "BackgroundLoadKnownDlls" = 0;
-    "DisableWpbtExecution" = 0; // REG_DWORD (bool), https://noverse.dev/docs/win-config/security/disable-wpbt/
+    "DisableWpbtExecution" = 0; // REG_DWORD (bool), nonzero disables WPBT execution, https://noverse.dev/docs/win-config/security/disable-wpbt/
     "RaiseExceptionOnPossibleDeadlock" = ?;
     "ResourcePolicies" = ?;
     "SafeDllSearchMode" = ?; // https://learn.microsoft.com/en-us/windows/win32/dlls/dynamic-link-library-search-order#standard-search-order-for-unpackaged-apps
@@ -467,14 +467,15 @@ Everything listed below is based on personal findings, mistakes may exist.
     "TickcountRolloverDelay" = ; // ?
 
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power";
-    "FlushPolicy" = 0; // PopFlushPolicy
-    "IdleScanInterval" = 30; // PopIdleScanInterval
-    "SkipTickOverride" = 1; // PopSkipTickPolicy
-    "SleepStudyDeviceAccountingLevel" = 4; // PopSleepStudyDeviceAccountingLevel
-    "SleepStudyDisabled" = 0; // PopSleepStudyDisabled
-    "WatchdogResumeTimeout" = 120; // PopWatchdogResumeTimeout
-    "WatchdogSleepTimeout" = 300; // PopWatchdogSleepTimeout
-    "Win32CalloutWatchdogBugcheckEnabled" = 0; // PopWin32CalloutWatchdogBugcheckEnabled
+    // in Power Values: https://noverse.dev/docs/win-config/power/power-values/#registry-values
+    "FlushPolicy" = 0;
+    "IdleScanInterval" = 30;
+    "SkipTickOverride" = 1;
+    "SleepStudyDeviceAccountingLevel" = 4;
+    "SleepStudyDisabled" = 0;
+    "WatchdogResumeTimeout" = 120;
+    "WatchdogSleepTimeout" = 300;
+    "Win32CalloutWatchdogBugcheckEnabled" = 0;
 
     // PopOpenPowerKey
     "AwayModeEnabled" = 0; // REG_DWORD (bool)
@@ -487,7 +488,7 @@ Everything listed below is based on personal findings, mistakes may exist.
     // HybridBootAnimationTime records the boot animation duration during fast boot, HiberIoCpuTime is CPU time spent on hibernation I/O during resume, ResumeCompleteTimestamp is the system timestamp when resume from hibernation completed. So all of them are just counters and changing their data won't affect the boot.
     "HybridBootAnimationTime" = 1601; // REG_DWORD (ms), range 0-0xFFFFFFFF
     "HiberIoCpuTime" = 0; // REG_DWORD (ms), range 0-0xFFFFFFFF
-    "ResumeCompleteTimestamp" = 0; // REG_QWORD, range 0-0xFFFFFFFFFFFFFFFF
+    "ResumeCompleteTimestamp" = 0; // REG_QWORD, range 0-0xFFFFFFFFFFFFFFFF, system timestamp when resume from hibernation completed
 
     // PpmInitIllegalThrottleLogging
     "ProcessorThrottleLogInterval" = 10000; // REG_DWORD, milliseconds, range 0-10000 (values >10000 are clamped to 10000)

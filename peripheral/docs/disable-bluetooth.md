@@ -1,6 +1,6 @@
 # Disable Bluetooth
 
-Polic CSP - [Connectivity](https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-connectivity#allowbluetooth) & [Bluetooth](https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-bluetooth#allowprepairing).
+Policy CSP - [Connectivity](https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-connectivity#allowbluetooth) & [Bluetooth](https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-bluetooth#allowprepairing).
 
 ### AllowBluetooth
 
@@ -63,6 +63,6 @@ Specifies whether to allow specific bundled Bluetooth peripherals to automatical
 | `BTHUSB` | Bluetooth Radio USB Driver | Kernel Driver (1) | - | \SystemRoot\System32\drivers\BTHUSB.sys |
 | `DeviceAssociationBrokerSvc` | Enables apps to pair devices | Win32 Share Process, User Service (96) | RpcSs | C:\Windows\system32\svchost.exe -k DevicesFlow -p |
 | `DeviceAssociationService` | Enables pairing between the system and wired or wireless devices. | Win32 Share Process (32) | - | C:\Windows\system32\svchost.exe -k LocalSystemNetworkRestricted -p |
+| `HidBth` | Microsoft Bluetooth HID Miniport | Kernel Driver (1) | - | \SystemRoot\System32\drivers\hidbth.sys |
 | `Microsoft_Bluetooth_AvrcpTransport` | Microsoft Bluetooth Avrcp Transport Driver | Kernel Driver (1) | - | \SystemRoot\System32\drivers\Microsoft.Bluetooth.AvrcpTransport.sys |
 | `RFCOMM` | Bluetooth Device (RFCOMM Protocol TDI) | Kernel Driver (1) | - | \SystemRoot\System32\drivers\rfcomm.sys |
-

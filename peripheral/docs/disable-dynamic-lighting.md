@@ -4,15 +4,16 @@
 >
 > — Microsoft, [Dynamic Lighting devices](https://learn.microsoft.com/en-us/windows-hardware/design/component-guidelines/dynamic-lighting-devices)
 
-| Value | Type | Values | Ranges | Notes |
-| --- | --- | --- | --- | --- |
-| `AmbientLightingEnabled` | REG_DWORD | `0 = off`, `1 = on` | `0–1` | Main toggle for Dynamic Lighting |
-| `UseSystemAccentColor` | REG_DWORD | `0 = use custom Color/Color2`, `1 = match Windows accent` | `0–1` | When `1`, `Color` is ignored |
-| `Color` | REG_DWORD | `COLORREF (RGB)` | `0x00000000–0x00FFFFFF`    | Format `0x00BBGGRR`. Used when `UseSystemAccentColor = 0` |
-| `Color2` | REG_DWORD | `COLORREF (RGB)` | `0x00000000–0x00FFFFFF`    | Secondary color for some effects. |
-| `EffectType` | REG_DWORD | `0 = Solid`, `1 = Breathing`, `2 = Rainbow`, `4 = Wave`, `5 = Wheel`, `6 = Gradient` | `discrete enum` | Defines animation |
-| `Speed` | REG_DWORD | `integer` | `1–10` | Higher = faster. |
-| `EffectMode` | REG_DWORD | Rainbow: `0 = Forward`, `1 = Reverse`, Wave: `0 = Right`, `1 = Left`, `2 = Down`, `3 = Up`, Wheel: `0 = Clockwise`, `1 = Counterclockwise`, Gradient: `0 = Horizontal`, `1 = Vertical`, `2 = Outward` | `discrete enum per effect` | Depends on `EffectType`. |
-| `Brightness` | REG_DWORD | `integer (%)` | `0–100` | - |
-| `ControlledByForegroundApp` | REG_DWORD | `0 = ignore apps`, `1 = apps can take control` | `0–1` | - |
-
+```c
+"HKCU\\Software\\Microsoft\\Lighting";
+  // InputService.dll, SettingsHandlers_Lighting.dll
+  "AmbientLightingEnabled" = 1; // REG_DWORD (bool), Dynamic Lighting on/off
+  "UseSystemAccentColor" = 1; // REG_DWORD (bool), 1 = match the Windows accent color
+  "Color" = ?; // REG_DWORD, COLORREF 0x00BBGGRR, used when UseSystemAccentColor = 0
+  "Color2" = ?; // REG_DWORD, COLORREF, second color of some effects
+  "EffectType" = 0; // REG_DWORD, 0 = solid, 1 = breathing, 2 = rainbow, 4 = wave, 5 = wheel, 6 = gradient
+  "EffectMode" = 0; // REG_DWORD, direction per effect, rainbow 0 forward, 1 reverse, wave 0 right, 1 left, 2 down, 3 up, wheel 0 clockwise, 1 counterclockwise, gradient 0 horizontal, 1 vertical, 2 outward
+  "Speed" = 7; // REG_DWORD, range 1-10
+  "Brightness" = 100; // REG_DWORD, range 0-100 (%)
+  "ControlledByForegroundApp" = 0; // REG_DWORD (bool), 1 = apps can take control
+```

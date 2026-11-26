@@ -20,7 +20,7 @@ Everything listed below is based on personal findings, mistakes may exist.
     "ActiveIdleThreshold" = 500; // REG_DWORD, PopFxActiveIdleThreshold, ms, PoFxInitPowerManagement multiplies it by 10000
     "ActiveIdleTimeout" = 1000; // REG_DWORD, PopFxActiveIdleTimeout
     "AllowAudioToEnableExecutionRequiredPowerRequests" = 1; // REG_DWORD, PopPowerRequestActiveAudioEnablesExecutionRequired
-    "AllowHibernate" = 4294967295; // REG_DWORD, PopAllowHibernateReg, 0 = hibernation not allowed
+    "AllowHibernate" = 4294967295; // REG_DWORD, PopAllowHibernateReg (https://noverse.dev/docs/win-config/power/disable-hibernation/#registry-values), only 0 = hibernation not allowed
     "AllowSystemRequiredPowerRequests" = 1; // REG_DWORD, PopPowerRequestConvertSystemToExecution
     "AlwaysComputeQosHints" = 0; // REG_DWORD, PpmPerfAlwaysComputeQosEnabled, can be used to cause a condition in PopInitializeHeteroProcessors to be true, see PowerThrottlingOff section
     "BatteryChargeTrajectoryThresholdPercent" = 1; // REG_DWORD, PopBatteryInitPhaseTwo, 1-10
@@ -34,8 +34,8 @@ Everything listed below is based on personal findings, mistakes may exist.
     "CheckPowerSourceAfterRtcWakeTime" = 30; // REG_DWORD, PopCheckPowerSourceAfterRtcWakeTime
     "Class1InitialUnparkCount" = 64; // REG_DWORD, PpmParkInitialClass1UnParkCount
     "CoalescingFlushInterval" = 60; // REG_DWORD, PopCoalescingFlushInterval
-    "CoalescingTimerInterval" = 1500; // REG_DWORD, PopCoalescingTimerInterval, https://noverse.dev/docs/win-config/power/disable-timer-coalescing/#miscellaneous-values
-    "DeepIoCoalescingEnabled" = 0; // REG_DWORD, PopDeepIoCoalescingEnabled, ^
+    "CoalescingTimerInterval" = 1500; // REG_DWORD, PopCoalescingTimerInterval, seconds until the I/O coalescing timer expires after coalescing starts, 0 = expires at once, https://noverse.dev/docs/win-config/power/disable-timer-coalescing/#miscellaneous-values
+    "DeepIoCoalescingEnabled" = 0; // REG_DWORD, PopDeepIoCoalescingEnabled, only read by PdcPoResiliencyClient (Modern Standby), ^
     "DirectedDripsDfxEnforcementPolicy" = 1; // REG_DWORD, PopDirectedDripsDfxEnforcementPolicy
     "DirectedDripsOverride" = 4294967295; // REG_DWORD, PopDirectedDripsOverride
     "DirectedDripsSurprisePowerOnTimeout" = 5; // REG_DWORD, PopDirectedDripsSurprisePowerOnTimeoutSeconds
@@ -77,13 +77,13 @@ Everything listed below is based on personal findings, mistakes may exist.
     "HeteroMultiCoreClassesEnabled" = 4294967295; // REG_DWORD, PpmHeteroMultiCoreClassesRegValue
     "HeteroWpsContainmentEnumOverride" = 0; // REG_DWORD, PpmHeteroWpsContainmentEnumOverride, 25H2
     "HeteroWpsWorkloadProminenceCutoff" = 35; // REG_DWORD, PpmHeteroWpsWorkloadProminenceCutoff, 25H2
-    "HiberFileSizePercent" = 0; // REG_DWORD, PopHiberFileSizePercent, https://noverse.dev/docs/win-config/power/disable-hibernation/#reduced-hiberfile
-    "HiberFileType" = 4294967295; // REG_DWORD, PopHiberFileTypeReg, ^
-    "HiberFileTypeDefault" = 4294967295; // REG_DWORD, PopHiberFileTypeDefaultReg, ^
+    "HiberFileSizePercent" = 0; // REG_DWORD, PopHiberFileSizePercent, 100 when missing, 0-39 keeps the type logic, 40-100 uses the percent directly and PopSetHiberFileSize forces a full file, https://noverse.dev/docs/win-config/power/disable-hibernation/#reduced-hiberfile
+    "HiberFileType" = 4294967295; // REG_DWORD, PopHiberFileTypeReg, 1 = Reduced, 2 = Full, only used while HiberFileSizePercent < 40, ^
+    "HiberFileTypeDefault" = 4294967295; // REG_DWORD, PopHiberFileTypeDefaultReg, fallback when HiberFileType is unset, ^
     "HibernateBootOptimizationEnabled" = 0; // REG_DWORD, PopHiberBootOptimizationEnabledReg
     "HibernateChecksummingEnabled" = 1; // REG_DWORD, PopHiberChecksummingEnabledReg
-    "HibernateEnabled" = 4294967295; // REG_DWORD, PopHiberEnabledReg, https://noverse.dev/docs/win-config/power/disable-hibernation/#registry-values
-    "HibernateEnabledDefault" = 1; // REG_DWORD, PopHiberEnabledDefaultReg, ^
+    "HibernateEnabled" = 4294967295; // REG_DWORD, PopHiberEnabledReg, missing = HibernateEnabledDefault decides, https://noverse.dev/docs/win-config/power/disable-hibernation/#registry-values
+    "HibernateEnabledDefault" = 1; // REG_DWORD, PopHiberEnabledDefaultReg, only used while HibernateEnabled is missing, ^
     "HighPerfDurationBoot" = 90000; // REG_DWORD, ms, PpmHighPerfDuration[0], how long high performance request stays after boot, 0 = released at once, max 300000
     "HighPerfDurationCSExit" = 5000; // REG_DWORD, ms, PpmHighPerfDuration[1], same after a Modern Standby exit
     "HighPerfDurationSxExit" = 90000; // REG_DWORD, ms, PpmHighPerfDuration[2], same after a resume from sleep or hibernate
@@ -145,8 +145,8 @@ Everything listed below is based on personal findings, mistakes may exist.
     "ThermalTelemetryVerbosity" = 1; // REG_DWORD, PopThermalTelemetryVerbosity
     "TimerRebaseThresholdOnDripsExit" = 60; // REG_DWORD, PopTimerRebaseThresholdRegValue
     "TtmEnabled" = 0; // REG_DWORD, TtmpEnabled
-    "UserBatteryChargeEstimator" = 0; // REG_DWORD, PopUserBatteryChargingEstimator
-    "UserBatteryDischargeEstimator" = 0; // REG_DWORD, PopDisableBatteryDischargeEstimator
+    "UserBatteryChargeEstimator" = 0; // REG_DWORD, PopUserBatteryChargingEstimator, 0 = kernel publishes WNF_PO_CHARGE_ESTIMATE (time until full)
+    "UserBatteryDischargeEstimator" = 0; // REG_DWORD, PopDisableBatteryDischargeEstimator, 0 = kernel publishes WNF_PO_DISCHARGE_ESTIMATE (battery time left)
     "WatchdogWorkOrderTimeout" = 300000; // REG_DWORD, PopFxWatchdogWorkOrderTimeout
     "Win32kCalloutWatchdogTimeoutSeconds" = 30; // REG_DWORD, PopWin32kCalloutWatchdogTimeoutSeconds
 
@@ -222,7 +222,7 @@ Everything listed below is based on personal findings, mistakes may exist.
 
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power";
     "FlushPolicy" = 0; // REG_DWORD, PopFlushPolicy
-    "IdleScanInterval" = 4294967295; // REG_DWORD, PopIdleScanInterval
+    "IdleScanInterval" = 30; // REG_DWORD, PopIdleScanInterval, above 300 = 300
     "SkipTickOverride" = 1; // REG_DWORD, PopSkipTickPolicy
     "SleepStudyDeviceAccountingLevel" = 4; // REG_DWORD, PopSleepStudyDeviceAccountingLevel
     "SleepStudyDisabled" = 0; // REG_DWORD, PopSleepStudyDisabled

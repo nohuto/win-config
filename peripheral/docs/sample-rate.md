@@ -2,11 +2,10 @@
 
 The values below are related to Default Format, see [property-sets](https://winsps-kb.readthedocs.io/en/latest/sources/property-sets/) for a list of more names.
 
-The main option lists sample rates that are supported on both active endpoints, if you want to change them individually use the suboptions which list supported sample rates for render/capture endpoints.
 
 WinConfig applies it via `IPolicyConfig::SetDeviceFormat` (call behind sound dialogs default format list).
 
-Microsoft documents endpoint properties as values that clients can read but "*shouldn't set*". The supported way to inspect/validate formats is Core Audio / WASAPI, especially [`IAudioClient::GetMixFormat`](https://learn.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getmixformat) and [`IAudioClient::IsFormatSupported`](https://learn.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-isformatsupported). Editing the registry can leave the UI, AudioEndpointBuilder, the audio engine, the driver, and APO/effects state out of sync (e.g., what happened to me while working on the doc: using the same for example `16` (`10 00`) multiplier for all even tho 2 of them use `32` (`20 00`) the playback device won't output audio, but will show the changes in the windows UI).
+"*Clients can read these properties, but should not set them.*" ([Audio Endpoint Properties](https://learn.microsoft.com/en-us/windows/win32/coreaudio/audio-endpoint-properties)). The supported way to inspect/validate formats is Core Audio / WASAPI, especially [`IAudioClient::GetMixFormat`](https://learn.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getmixformat) and [`IAudioClient::IsFormatSupported`](https://learn.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-isformatsupported). Editing the registry can leave the UI, AudioEndpointBuilder, the audio engine, the driver, and APO/effects state out of sync (e.g., what happened to me while working on the doc: using the same for example `16` (`10 00`) multiplier for all even tho 2 of them use `32` (`20 00`) the playback device won't output audio, but will show the changes in the windows UI).
 
 The structure is `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\MMDevices\Audio\{Render\|Capture}\{Endpoint}`.
 
@@ -22,10 +21,10 @@ These are the values which include the single 48 byte `WAVEFORMATEXTENSIBLE` par
 | Value name | Meaning |
 | --- | --- |
 | `{f19f064d-082c-4e27-bc73-6882a1bb8e4c},0` | [`PKEY_AudioEngine_DeviceFormat`](https://learn.microsoft.com/en-us/windows/win32/coreaudio/pkey-audioengine-deviceformat) - "*The PKEY_AudioEngine_DeviceFormat property specifies the device format, which is the format that the user has selected for the stream that flows between the audio engine and the audio endpoint device when the device operates in shared mode. This format might not be the best default format for an exclusive-mode application to use.*" |
-| `{e4870e26-3cc5-4cd2-ba46-ca0a9a70ed04},0` | PID 0 value under the same GUID as [`PKEY_AudioEngine_OEMFormat`](https://learn.microsoft.com/en-us/windows-hardware/drivers/audio/pkey-audioengine-oemformat). |
-| `{3d6e1656-2e50-4c4c-8d85-d0acae3c6c68},3` | - |
-| `{624f56de-fd24-473e-814a-de40aacaed16},3` | - |
-| `{3d6e1656-2e50-4c4c-8d85-d0acae3c6c68},2` | - |
+| `{e4870e26-3cc5-4cd2-ba46-ca0a9a70ed04},0` | `PKEY_AudioEngine_MixFormat` (same GUID as [`PKEY_AudioEngine_OEMFormat`](https://learn.microsoft.com/en-us/windows-hardware/drivers/audio/pkey-audioengine-oemformat) pid 3) |
+| `{3d6e1656-2e50-4c4c-8d85-d0acae3c6c68},3` | `PKEY_AudioEngine_SignalProcessingMode_Specific_MixFormat` |
+| `{624f56de-fd24-473e-814a-de40aacaed16},3` | `PKEY_AudioEngine_SignalProcessingMode_Specific_DevicePipeFormat` |
+| `{3d6e1656-2e50-4c4c-8d85-d0acae3c6c68},2` | `PKEY_AudioEngine_SignalProcessingMode_Specific_MixFormat` |
 
 ## Binary Data
 

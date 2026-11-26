@@ -4,7 +4,7 @@ AutoRun is a mechanism that uses an `autorun.inf` file on removable media (like 
 
 AutoPlay is a feature that detects the type of content on newly inserted media or connected devices and then offers actions such as "Open folder, Play media, Import photos". It can read some information from `autorun.inf`, but it doesn't automatically run programs without user confirmation.
 
-Disabling `ShellHWDetection` causes CmdPal to not start directly after boot for whatever reason, which is why I added a suboption to enable the service.
+Disabling `ShellHWDetection` causes CmdPal to not start directly after boot, so its a separate suboption.
 
 Example `autorun.inf` content:
 ```c
@@ -78,5 +78,5 @@ HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHa
 | [Set the default behavior for AutoRun](https://noverse.dev/policies?p=AutoPlay*NoAutorun) | `HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer`<br>`HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer` | `NoAutorun` |
 | [Turn off Autoplay](https://noverse.dev/policies?p=AutoPlay*Autorun) | `HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer`<br>`HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer` | `NoDriveTypeAutoRun` |
 | [Disallow Autoplay for non-volume devices](https://noverse.dev/policies?p=AutoPlay*NoAutoplayfornonVolume) | `HKLM\Software\Policies\Microsoft\Windows\Explorer`<br>`HKCU\Software\Policies\Microsoft\Windows\Explorer` | `NoAutoplayfornonVolume` |
-| [Prevent AutoPlay from remembering user choices.](https://noverse.dev/policies?p=AutoPlay*DontSetAutoplayCheckbox) | `HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer`<br>`HKCU\SOFTWARE\Policies\Microsoft\Windows\Explorer` | `DontSetAutoplayCheckbox` |
+| [Prevent AutoPlay from remembering user choices.](https://noverse.dev/policies?p=AutoPlay*DontSetAutoplayCheckbox) | `HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer`<br>`HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer` | `DontSetAutoplayCheckbox` |
 

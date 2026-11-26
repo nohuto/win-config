@@ -23,20 +23,22 @@ Hibernation is Windows S4 power state, it writes the resume state to `Hiberfil.s
 
 ## Registry Values
 
+See '[Power Values](https://noverse.dev/docs/win-config/power/power-values/#registry-values)' for types and readers.
+
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power";
-    "AllowHibernate" = 4294967295; // PopAllowHibernateReg, REG_DWORD (persisted table, see below), only 0 disables hibernation
-    "EnableMinimalHiberFile" = 0; // PopEnableMinimalHiberFile, REG_DWORD
-    "ForceMinimalHiberFile" = 0; // PopForceMinimalHiberFile, REG_DWORD
-    "HibernateChecksummingEnabled" = 1; // PopHiberChecksummingEnabledReg
-    "HibernateEnabled" = ?; // REG_DWORD, PopHiberEnabledReg (persisted table), missing = HibernateEnabledDefault decides
-    "HibernateEnabledDefault" = 1; // PopHiberEnabledDefaultReg, only used while HibernateEnabled is missing
-    "PromoteHibernateToShutdown" = 0; // PopPromoteHibernateToShutdown
-    "SkipHibernateMemoryMapValidation" = 4294967295; // PopEnableHibernateMemoryMapValidationOverride
+    "AllowHibernate" = 4294967295;
+    "EnableMinimalHiberFile" = 0;
+    "ForceMinimalHiberFile" = 0;
+    "HibernateChecksummingEnabled" = 1;
+    "HibernateEnabled" = 4294967295;
+    "HibernateEnabledDefault" = 1;
+    "PromoteHibernateToShutdown" = 0;
+    "SkipHibernateMemoryMapValidation" = 4294967295;
 
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\ForceHibernateDisabled";
-    "GuardedHost" = 0; // unk_140FC5234, if nonzero, PopHibernateEvaluation treats hibernation as force disabled
-    "Policy" = 0; // PopHiberForceDisabledReg, ^
+    "GuardedHost" = 0;
+    "Policy" = 0;
 ```
 
 `PopQueryHiberPersistedRegValue` reads these values from one table, each entry is value name, global & default (high dword of the third qword):
@@ -110,17 +112,19 @@ Boot Manager uses the `resume`, `resumeobject`, `hiberboot`, `filepath`, `filede
 
 All three values exist as shown below. [`PopReadHiberbootPolicy`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/PopReadHiberbootPolicy.c) checks [`PopReadHiberbootGroupPolicy`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/ntoskrnl/PopReadHiberbootGroupPolicy.c) (`\\Registry\\Machine\\Software\\Policies\\Microsoft\\Windows\\System`) before the setting under `Control\\Session Manager\\Power`, but only a nonzero policy value would be preferred.
 
+See '[Power Values](https://noverse.dev/docs/win-config/power/power-values/#registry-values)' and '[Kernel Values](https://noverse.dev/docs/win-config/system/kernel-values/#registry-values)' for types and readers.
+
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power";
-    "DisableIdleStatesAtBoot" = 0; // PpmIdleDisableStatesAtBoot 
-    "HibernateBootOptimizationEnabled" = 0; // PopHiberBootOptimizationEnabledReg
+    "DisableIdleStatesAtBoot" = 0;
+    "HibernateBootOptimizationEnabled" = 0;
 
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power";
-    "HiberbootEnabled" = 1; // REG_DWORD (bool)
+    "HiberbootEnabled" = 1;
 
-    "HybridBootAnimationTime" = 1601; // REG_DWORD (ms), range 0-0xFFFFFFFF, records boot animation
-    "HiberIoCpuTime" = 0; // REG_DWORD (ms), range 0-0xFFFFFFFF, CPU time spent on hibernation I/O during resume
-    "ResumeCompleteTimestamp" = 0; // REG_QWORD, range 0-0xFFFFFFFFFFFFFFFF, system timestamp when resume from hibernation completed
+    "HybridBootAnimationTime" = 1601;
+    "HiberIoCpuTime" = 0;
+    "ResumeCompleteTimestamp" = 0;
 ```
 
 ```c
@@ -171,15 +175,14 @@ Hibernation files are used for hybrid sleep, fast startup, and [standard hiberna
 
 ### Registry Values
 
+See '[Power Values](https://noverse.dev/docs/win-config/power/power-values/#registry-values)' for types and readers.
+
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power";
-    "HiberFileSizePercent" = 0; // PopHiberFileSizePercent, REG_DWORD, 100 when missing, 0-39 keeps the type logic, 40-100 uses the percent directly and PopSetHiberFileSize forces a full file
+    "HiberFileSizePercent" = 0;
+    "HiberFileType" = 4294967295;
+    "HiberFileTypeDefault" = 4294967295;
 
-    // DWORD 1 = Reduced, DWORD 2 = Full, only used while HiberFileSizePercent < 40
-    "HiberFileType" = 4294967295; // PopHiberFileTypeReg (4294967295)
-    "HiberFileTypeDefault" = 4294967295; // PopHiberFileTypeDefaultReg (4294967295), fallback when HiberFileType is unset
-
-// Percent<MemoryBucket><Type>, PopCalculateHiberFileSize uses the first matching RAM bucket then uses Full or Reduced percentage (when HiberFileSizePercent < 40)
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\HiberFileBucket";
     "Percent16GBFull" = 40;
     "Percent16GBReduced" = 20;

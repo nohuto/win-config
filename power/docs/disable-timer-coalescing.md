@@ -285,10 +285,12 @@ Evaluate expression: 0 = 00000000`00000000 // not set
 | --- | --- |
 | `Pop` | Power Manager |
 
+See '[Power Values](https://noverse.dev/docs/win-config/power/power-values/#registry-values)' for types and readers.
+
 ```c
 "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power";
-    "CoalescingTimerInterval" = 1500; // PopCoalescingTimerInterval, seconds until the I/O coalescing timer expires after coalescing starts, 0 = expires at once
-    "DeepIoCoalescingEnabled" = 0; // PopDeepIoCoalescingEnabled, only read by PdcPoResiliencyClient (Modern Standby)
+    "CoalescingTimerInterval" = 1500;
+    "DeepIoCoalescingEnabled" = 0;
 ```
 
 

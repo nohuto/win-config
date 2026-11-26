@@ -10,9 +10,6 @@ Values below are based on `RegGetValueW`/`SHRegGetDWORD`/`SHRegGetUSDWORDW` xref
   "PersonalColors_Accent" = ?; // REG_SZ, #RRGGBB
   "NoChangingStartMenuBackground" = 0; // REG_DWORD (bool)
 
-"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ImmersiveShell";
-  "TabletMode" = 0; // REG_DWORD (bool), nonzero suppresses DWM ColorPrevalence caption color
-
 "HKCU\\Software\\Microsoft\\Windows\\DWM";
   // _NCWNDMET::GetCaptionColor
   "ColorPrevalence" = 0; // REG_DWORD, range 0-5

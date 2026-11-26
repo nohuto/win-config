@@ -12,19 +12,16 @@
 
 ## Registry Value
 
-See '[Audio Values](https://noverse.dev/docs/win-config/peripheral/audio-values/)' for other related values.
+See '[Audio Values](https://noverse.dev/docs/win-config/peripheral/audio-values/#registry-values)' for what the value does and other related values.
 
 ```c
 "HKCU\\Software\\Microsoft\\Multimedia\\Audio";
-  // LoadUserSettings
-  "UserDuckingPreference" = 1; // REG_DWORD, range 0-3, >3 = 1
-                               // 0 = -96 dB
-                               // 1 = -18 dB
-                               // 2 = -6 dB
-                               // 3 = 0 dB
+  "UserDuckingPreference" = 1;
 ```
 
 ```c
+// CDuckingManager::GetdBFromUserPreference (AudioSrvPolicyManager.dll, 23H2)
+
 float __fastcall CDuckingManager::GetdBFromUserPreference(int a1)
 {
   int v1; // ecx
@@ -43,6 +40,7 @@ float __fastcall CDuckingManager::GetdBFromUserPreference(int a1)
 Fun fact: the `Reduce the volume of other sounds by 80%` audio ducking option isn't accurate at all (it's ~87%).
 
 - [LoadUserSettings](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/AudioSrvPolicyManager/-LoadUserSettings@@YAXPEAVTSSession@@PEAUHKEY__@@@Z.c)
+- [CDuckingManager::GetdBFromUserPreference](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/AudioSrvPolicyManager/-GetdBFromUserPreference@CDuckingManager@@CAMW4__MIDL___MIDL_itf_audiopolicyp_0000_0000_0001@@@Z.c)
 
 ### MMSYS Capture
 

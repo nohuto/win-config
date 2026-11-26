@@ -69,7 +69,7 @@ Each line shows the value the reader uses when the entry is missing (`?` where I
     "OvercurrentDetected" = 0; // REG_DWORD (bool)
     "PolledDevice" = ?; // REG_DWORD (bool)
     "PowerUpIdleDeviceOnSystemWake" = ?; // REG_DWORD (bool)
-    "RemoteWakeEnabled" = ?; // REG_DWORD (bool)
+    "RemoteWakeEnabled" = ?; // REG_DWORD (bool), written by "Allow this device to wake the computer"
     "ResetPortEnabled" = 0; // REG_DWORD (bool)
     "RetainWWIrpWhenDeviceAbsent" = 0; // REG_DWORD (bool)
     "RevisionId" = ?; // REG_DWORD
@@ -79,7 +79,7 @@ Each line shows the value the reader uses when the entry is missing (`?` where I
     "SelectiveSuspendTimeout" = 5000; // REG_DWORD, ms, used only while SelectiveSuspendEnabled & SelectiveSuspendOn = 1
     "SelSuspCancelBehavior" = 0; // REG_DWORD (bool)
     "SessionSecurityEnabled" = ?; // REG_DWORD (bool)
-    "SuppressInputInCS" = 0; // REG_DWORD (bool), 1 also disables WakeScreenOnInputSupport
+    "SuppressInputInCS" = 0; // REG_DWORD (bool), nonzero also disables WakeScreenOnInputSupport
     "SymbolicName" = ?; // REG_SZ
     "SystemInputSuppressionEnabled" = ?; // REG_DWORD (bool)
     "SystemWakeEnabled" = 0; // REG_DWORD (bool)
@@ -92,9 +92,10 @@ Each line shows the value the reader uses when the entry is missing (`?` where I
     "UseStrictBiosHandoff" = ?; // REG_DWORD (bool)
     "VendorRevision" = ?; // REG_DWORD
     "VhfMode" = 0; // REG_DWORD, 0-2
+    "WaitWakeEnabled" = ?; // REG_DWORD (bool), written by "Allow this device to wake the computer"
     "WakeScreenOnInputSupport" = 0; // REG_DWORD (bool)
-    "WakeScreenOnInputTimeout" = 1000; // REG_DWORD
-    "WakeSystemOnConnect" = 0; // REG_DWORD (bool)
+    "WakeScreenOnInputTimeout" = 1000; // REG_DWORD, read only when WakeScreenOnInputSupport is nonzero
+    "WakeSystemOnConnect" = 0; // REG_DWORD (bool), hubs only
     "WinRtInterfaceRestrictionLevel" = 255; // REG_DWORD (bool)
     "WinusbIsochUsed" = 0; // REG_DWORD (bool)
     "WinUsbPowerPolicyOwnershipDisabled" = 0; // REG_DWORD (bool)
