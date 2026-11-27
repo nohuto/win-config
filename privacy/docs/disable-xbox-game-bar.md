@@ -68,6 +68,53 @@ GameDVR is a built-in gameplay capture (Xbox Game Bar) for clips/screenshots, wi
 >
 > — Microsoft, [GameBar PresenceWriter](https://learn.microsoft.com/en-us/windows/win32/devnotes/gamebar-presencewriter)
 
+#### ActivationType
+
+[ActivationType](https://learn.microsoft.com/en-us/windows/win32/api/activationregistration/ne-activationregistration-activationtype) is used to set how a WinRT class is activated:
+
+```c
+typedef enum ActivationType {
+  ActivationType_InProcess,    // 0, DLL loaded into calling process
+  ActivationType_OutOfProcess, // 1, exe running in a separate process
+  ActivationType_RemoteProcess // 2, remote process activation
+} ;
+```
+
+```c
+//
+// https://github.com/nohuto/win-config/blob/main/assets/sxs-registry/23H2/25.tsv#L1222
+//
+
+// default ActivationType = 1
+HKLM\Software\Microsoft\WindowsRuntime\ActivatableClassId\Windows.Gaming.GameBar.PresenceServer.Internal.PresenceWriter	ActivationType	REG_DWORD	0x00000001	amd64_microsoft-gaming-ga..rnal-presencewriter
+
+//
+// https://github.com/nohuto/win-config/blob/main/assets/sxs-registry/23H2/30.tsv#L2685
+//
+
+// default ExePath = $(runtime.system32)\GameBarPresenceWriter.exe
+HKLM\Software\Microsoft\WindowsRuntime\Server\Windows.Gaming.GameBar.Internal.PresenceWriterServer	ExePath	REG_SZ	$(runtime.system32)\GameBarPresenceWriter.exe	amd64_microsoft-gaming-ga..rnal-presencewriter
+```
+
+With `ActivationType = 0`, `combase.dll` uses the in process kind and fails in `CWinRTActivationStoreCatalog::CActivatableClassPropertiesHelper::GetThreadingModel` with `0x80070002` as `Threading` is missing, before getting into the DLL path check.
+
+```c
+// CWinRTActivationStoreCatalog::CRuntimeClassInfo::FinalConstruct
+
+if ( this->_activationType )
+  goto LABEL_29; // nonzero activation types skip threading check
+ThreadingModel = CWinRTActivationStoreCatalog::CActivatableClassPropertiesHelper::GetThreadingModel(
+                   &activatableClassHelper,
+                   &this->_threadingModel);
+```
+
+```c
+// CWinRTActivationStoreCatalog::CActivatableClassPropertiesHelper::GetThreadingModel
+
+if ( !this->_machineProperties.Threading.Present )
+  return (unsigned int)-2147024894; // 0x80070002, HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND)
+```
+
 #### Miscellaneous GameBar UI Values
 
 In `HKCU\Software\Microsoft\GameBar`:
