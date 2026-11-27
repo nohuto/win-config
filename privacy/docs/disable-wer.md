@@ -59,13 +59,14 @@ Disables the Reliability policy that periodically writes the current system time
 > "*This policy setting allows the system to detect the time of unexpected shutdowns by writing the current time to disk on a schedule controlled by the Timestamp Interval. If you enable this policy setting, you are able to specify how often the Persistent System Timestamp is refreshed and subsequently written to the disk. You can specify the Timestamp Interval in seconds. If you disable this policy setting, the Persistent System Timestamp is turned off and the timing of unexpected shutdowns is not recorded. If you do not configure this policy setting, the Persistent System Timestamp is refreshed according the default, which is every 60 seconds beginning with Windows Server 2003. Note: This feature might interfere with power configuration settings that turn off hard disks after a period of inactivity. These power settings may be accessed in the Power Options Control Panel.*"
 
 ```c
+// OsEventsTimestampInterval (wevtsvc.dll)
+
 if ( !RegQueryValueExW(hKey[0], "TimeStampEnabled", 0LL, 0LL, (LPBYTE)&Data, &cbData) )
 if ( !RegQueryValueExW(hKey[0], "TimeStampInterval", 0LL, 0LL, (LPBYTE)&v4, &cbData) && v4 <= 0x15180 ) // 86400 seconds = 24h?
 ```
 
 `TimeStampInterval` under `HKLM\Software\Policies\Microsoft\Windows NT\Reliability` is in seconds, the value under `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Reliability` is read as minutes and multiplied by 60.
 
-- [privacy/assets/pseudocode | timestamp-OsEventsTimestampInterval.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/timestamp-OsEventsTimestampInterval.c)
 
 ### Crash Dumps
 
@@ -98,7 +99,7 @@ CRegSetting::Save((CRegSetting *)v20, v8, &v34, 4u, v14); // 1 or 2
 \Registry\Machine\SYSTEM\ControlSet001\Control\CrashControl : CrashDumpEnabled.Old
 ```
 
-- [privacy/assets/pseudocode | crashdmp.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/crashdmp.c)
+- `ReadRegistrySettings` in `crashdmp.sys`
 - [decompiled-pseudocode | SecureDump_PrepareForInit.c](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/ntoskrnl/SecureDump_PrepareForInit.c)
 
 ## Miscellaneous Notes

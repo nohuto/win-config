@@ -10,7 +10,7 @@ Disables automatic network traffic on the settings page and prevents automatic d
 | `1` | Enabled, force enable auto update over metered connection |
 | `65535` (Default) | Not configured, users choice |
 
-`EnableOfflineMapsAutoUpdate` (MDM side of `AutoDownloadAndUpdateMapData` ([Policy CSP Maps](https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-maps#enableofflinemapsautoupdate)), read in `CMapsOrchModel::GetAutoUpdatePolicy`, see [maps.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/maps.c)):
+`EnableOfflineMapsAutoUpdate` (MDM side of `AutoDownloadAndUpdateMapData` ([Policy CSP Maps](https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-maps#enableofflinemapsautoupdate)), read in `CMapsOrchModel::GetAutoUpdatePolicy` (`SettingsHandlers_Maps.dll`)):
 
 | Value | Description |
 | ---- | ---- |

@@ -4,8 +4,10 @@ GameDVR is a built-in gameplay capture (Xbox Game Bar) for clips/screenshots, wi
 
 ### WindowsMediaCapture Values
 
+`VK*` & `VKM*` are the user defined alternate shortcuts, key & modifier (`AppCaptureAlternateShortcutKeys` in `bcastdvruserservice.dll`, two mentioned functions are also in there).
+
 ```c
-"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR";
+"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR"; // Windows::Media::Capture::AppCaptureSettings::ApplySettings
     "AudioEncodingBitrate" // REG_DWORD
     "AudioCaptureEnabled" // REG_DWORD, bool
     "CustomVideoEncodingBitrate" // REG_DWORD
@@ -43,7 +45,7 @@ GameDVR is a built-in gameplay capture (Xbox Game Bar) for clips/screenshots, wi
     "SystemAudioGain" // REG_QWORD, clamped to 0.0-2.0
     "MicrophoneGain" // REG_QWORD, clamped to 0.0-2.0
 
-"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\AppBroadcast\\GlobalSettings";
+"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\AppBroadcast\\GlobalSettings"; // Windows::Media::Capture::AppBroadcastGlobalSettings::ApplySettings
     "AudioCaptureEnabled" // REG_DWORD, bool
     "MicrophoneCaptureEnabledByDefault" // REG_DWORD, bool
     "EchoCancellationEnabled" // REG_DWORD, bool
@@ -56,10 +58,6 @@ GameDVR is a built-in gameplay capture (Xbox Game Bar) for clips/screenshots, wi
     "SelectedCameraId" // REG_SZ
 ```
 
-`VK*` & `VKM*` are the user defined alternate shortcuts, key & modifier (`AppCaptureAlternateShortcutKeys` in `bcastdvruserservice.dll`).
-
-- [privacy/assets/pseudocode | gamebar-WindowsMediaCaptureIAppCaptureSettings.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/gamebar-WindowsMediaCaptureIAppCaptureSettings.c) (`HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR`)
-- [privacy/assets/pseudocode | gamebar-WindowsMediaCaptureIAppBroadcastGlobalSettings.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/gamebar-WindowsMediaCaptureIAppBroadcastGlobalSettings.c) (`HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\AppBroadcast\\GlobalSettings`)
 - [settings/settings-windows-11.md#gaming-game-bar-game-mode-gaming-shortcuts](https://github.com/MicrosoftDocs/windows-dev-docs/blob/docs/hub/apps/develop/settings/settings-windows-11.md#gaming-game-bar-game-mode-gaming-shortcuts)
 
 ### Game Bar Presence Writer

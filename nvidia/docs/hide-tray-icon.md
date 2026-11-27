@@ -29,7 +29,5 @@ Hides the icon from the context menu (2nd one is probably related to optimus, fi
 
 Only the first value gets used.
 
-- [nvidia/assets/pseudocode | HideManufacturer.c](https://github.com/nohuto/win-config/blob/main/nvidia/assets/pseudocode/trayicon-HideManufacturer.c)
 - [nvidia/assets/reference | notes.cpp](https://github.com/nohuto/win-config/blob/main/nvidia/assets/reference/trayicon-notes.cpp)
-- [nvidia/assets/pseudocode | nvcpl.c](https://github.com/nohuto/win-config/blob/main/nvidia/assets/pseudocode/trayicon-nvcpl.c)
 

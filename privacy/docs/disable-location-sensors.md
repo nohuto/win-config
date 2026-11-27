@@ -13,7 +13,6 @@ Blocks apps/system from using hardware sensors such as ambient light, orientatio
 "svchost.exe","RegSetValue","HKCU\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location\ShowGlobalPrompts","Type: REG_DWORD, Length: 4, Data: 1" #24H2+
 ```
 
-- [privacy/assets/pseudocode | locationaccess-LocationApi.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/locationaccess-LocationApi.c)
 
 > "*This policy setting turns off the sensor feature for this computer. If you enable this policy setting, the sensor feature is turned off, and all programs on this computer can't use the sensor feature.*"
 

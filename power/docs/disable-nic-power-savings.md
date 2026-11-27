@@ -4,7 +4,7 @@ You can get a lot of information about data ranges and more from `.inf` files, s
 
 ## [Registry Value](https://github.com/nohuto/regkit/blob/main/assets/records/NIC-Intel.txt) Overview
 
-See [network/assets/pseudocode/intel-nic](https://github.com/nohuto/win-config/tree/main/network/assets/pseudocode/intel-nic) for reference.
+Intel drivers read most of them in `POWER::PwrReadRegistryParameters`, `LINK::LinkReadRegistryParameters` (`e1i68x64.sys`) and in `Power::ReadRegistryParameters` (`e2f68.sys`).
 
 Everything listed below is based on personal findings, mistakes may exist.
 
@@ -52,7 +52,7 @@ Everything listed below is based on personal findings, mistakes may exist.
 
     // Realtek
     "AdvancedEEE" = ?;
-    "ASPM" = ?;
+    "ASPM" = ?; // RtAdapterCheckSetupAspmAndClkReq
     "EEEPlus" = ?;
     "EnableAspm" = ?;
     "EnableExtraPowerSaving" = ?; // USB drivers

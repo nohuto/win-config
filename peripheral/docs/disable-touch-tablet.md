@@ -159,7 +159,7 @@ See links below for reference.
 ```
 
 - [peripheral/assets/pseudocode | touch-twinui.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/pseudocode/touch-twinui.c)
-- [peripheral/assets/pseudocode | touch-InitializeInputSettingsGlobals.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/pseudocode/touch-InitializeInputSettingsGlobals.c)
+- [decompiled-pseudocode | InitializeInputSettingsGlobals](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/win32kbase/-InitializeInputSettingsGlobals@@YAJXZ.c)
 - [peripheral/assets/pseudocode | touch-IsTouchDisabled.c](https://github.com/nohuto/win-config/blob/main/peripheral/assets/pseudocode/touch-IsTouchDisabled.c)
 
 

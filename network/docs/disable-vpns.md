@@ -45,7 +45,6 @@ or `WIN + I` > Network & Internet > VPN > Remove
         g_donotUseRoaming = 0; // VPN while roaming allowed
 ```
 
-- [network/assets/pseudocode | vpn-NlmGetCostedNetworkSettings.c](https://github.com/nohuto/win-config/blob/main/network/assets/pseudocode/vpn-NlmGetCostedNetworkSettings.c)
 
 ## Services/Drivers
 

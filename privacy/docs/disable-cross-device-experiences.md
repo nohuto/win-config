@@ -28,6 +28,8 @@ HKCU\Software\Microsoft\Windows\CurrentVersion\CDP\EnableRemoteLaunchToast  Type
 `RomeSdkChannelUserAuthzPolicy` (`CDP\SettingsPage`) is only used for "My device only"/"Everyone nearby" (it's still getting changed to `0` in this option).
 
 ```c
+// SystemSettings::SharedExperiences::SharedExperiencesSingleton::LoadUserSettings (SettingsHandlers_SharedExperiences_Rome.dll)
+
 L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CDP\\SettingsPage",
 L"BluetoothLastDisabledNearShare",
 
@@ -37,7 +39,6 @@ L"WifiLastDisabledNearShare",
 
 Settings writes these two values when it turns 'Nearby sharing' off as Bluetooth (`BluetoothLastDisabledNearShare`) or Wi-Fi (`WifiLastDisabledNearShare`) were disabled, these seem to only control toasts (I guess).
 
-- [privacy/assets/pseudocode | crossdev-SharedExperiencesSingleton.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/crossdev-SharedExperiencesSingleton.c)
 
 ## [Windows Policies](https://noverse.dev/policies)
 

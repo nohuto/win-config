@@ -4,7 +4,7 @@ Disables all kind of suggestions, in start, text suggestions (multilingual...), 
 
 ### SubscribedContent IDs
 
-Since the `SubscribedContent-*` values aren't documented literally anywhere I've tried to get some information to see which exist and what they do. You can find information on them in `ContentDeliveryManager.Utilities.dll`, see [contentdelivery.c](https://github.com/nohuto/win-config/blob/main/privacy/assets/pseudocode/contentdelivery.c) for asm snippets that include these information.
+Since the `SubscribedContent-*` values aren't documented literally anywhere I've tried to get some information to see which exist and what they do. You can find information on them in `ContentDeliveryManager.Utilities.dll`, see [ContentDeliveryManager-SubscriptionIds.asm](https://github.com/nohuto/win-config/blob/main/privacy/assets/disassembly/ContentDeliveryManager-SubscriptionIds.asm) for asm snippets that include these ID strings.
 
 | Feature | IDs | Practical meaning |
 |---|---|---|
