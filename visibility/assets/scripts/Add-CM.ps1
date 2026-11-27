@@ -12,7 +12,7 @@ if ($repoLocal -and (Test-Path -LiteralPath $repoLocal) -and ((Resolve-Path -Lit
     Copy-Item -LiteralPath $local -Destination $gen -Force
 } else {
     try {
-        Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nohuto/win-config/refs/heads/main/misc/assets/scripts/HashGen.ps1" -OutFile $gen -UseBasicParsing
+        Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nohuto/win-config/refs/heads/main/visibility/assets/scripts/HashGen.ps1" -OutFile $gen -UseBasicParsing
     } catch {
         throw "Failed to download hashGen.ps1: $($_.Exception.Message)"
     }

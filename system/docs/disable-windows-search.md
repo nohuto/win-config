@@ -1,6 +1,6 @@
 # Disable Windows Search
 
-Windows search provides content indexing, property caching, and search results for files, e-mail, and other content. Instead of using the explorer/windows start menu to search for a file/folder/app, use [`Everything`](https://www.voidtools.com/downloads/) for searching for files/folders and [SAB](https://www.startallback.com/) ([manual SAB activation](https://noverse.dev/docs/win-config/misc/startallback-config/#sab-activation)) as start menu. Note that enabling this option breaks the start menu, and apps like e.g. CmdPal (PowerToys) do need the `WSearch` service for the `File Search` extension to work.
+Windows search provides content indexing, property caching, and search results for files, e-mail, and other content. Instead of using the explorer/windows start menu to search for a file/folder/app, use [`Everything`](https://www.voidtools.com/downloads/) for searching for files/folders and [SAB](https://www.startallback.com/) ([manual activation](https://noverse.dev/docs/win-config/misc/startallback-config/#sab-activation)) as start menu. Note that enabling this option breaks the start menu, and apps like e.g. CmdPal (PowerToys) do need the `WSearch` service for the `File Search` extension to work.
 
 ### Search Indexing
 

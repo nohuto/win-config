@@ -1,4 +1,4 @@
-#    Hash Generator - https://github.com/nohuto/win-config/blob/main/misc/assets/scripts/HashGen.ps1
+#    Hash Generator - https://github.com/nohuto/win-config/blob/main/visibility/assets/scripts/HashGen.ps1
 #    Copyright (C) 2026 Noverse, Nohuto
 #
 #    This program is proprietary software: you may not copy, redistribute, or modify
