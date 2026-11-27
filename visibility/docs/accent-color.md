@@ -1,10 +1,7 @@
 # Accent Color
 
-This set's the accent color globally and if `AccentColor` (`HKEY_CURRENT_USER\Software\Noverse`) isn't set via the tool settings yet, this will also directly impact the WinConfig colors.
 
-`Show Accent Color on Start and Taskbar` only works if using dark theme.
-
-Something I noticed while creating the option is that procmon doesn't show the actual used binary data:
+Something I noticed while creating the option is that procmon doesn't show the actual used binary data (shows first 16 bytes only):
 ```c
 // Procmon
 59657CFF4A5468FF3F4859FF353C4AFF // 16
@@ -47,7 +44,7 @@ HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\SystemProtectedUserData\S-1-5-21-
 
 ## Prevent Color/Theme Changes
 
-Prevents changing color/appearance, desktop background, desktop icons, start background, themes. It also stops themes from changing mouse pointers and desktop icons.
+Prevents changing color and appearance, desktop background, desktop icons, lock screen image, mouse pointers, the *Start* background and themes. It also stops themes from changing mouse pointers and desktop icons.
 
 Use the suboptions to prevent/allow specific parts.
 

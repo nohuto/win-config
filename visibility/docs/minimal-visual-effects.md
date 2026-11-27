@@ -26,9 +26,15 @@ Anything written as "- *text*" behind the linked name equals the source where th
 | 16 | `0x00010000` | [Hide pointer while typing](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kfull/NtUserHideCursorNoCapture.c) - *Mouse Properties* |
 | 17 | `0x00020000` | [Flat menus (untested)](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kfull/xxxDrawMenuBarUnderlines.c) |
 | 18 | `0x00040000` | [Show shadows under windows](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kfull/ShouldHaveShadow.c) - *Performance Options* |
-| 31 | `0x80000000` | [Master UI effects (untested)](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kfull/xxxSystemParametersInfoWorker.c) - "When enabled, all user interface effects (combo box animation, cursor shadow, gradient captions, hot tracking, list box smooth scrolling, menu animation, menu underlines, selection fade, tool tip animation) are enabled." |
-| 33 | `0x00000002` in high dword | Animate controls and elements inside windows |
-| 39 | `0x00000080` in high dword | [Suppress/apply global input-settings updates on focus/delegation changes (untested)](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kfull/EditionKeyboardInputDelegationChanged.c) |
+| 19 | `0x00080000` | SPI_GETBLOCKSENDINPUTRESETS |
+| 31 | `0x80000000` | [Master UI effects](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kfull/xxxSystemParametersInfoWorker.c) - "When enabled, all user interface effects (combo box animation, cursor shadow, gradient captions, hot tracking, list box smooth scrolling, menu animation, menu underlines, selection fade, tool tip animation) are enabled." |
+| 32 | `0x00000001` in high dword | SPI_GETDISABLEOVERLAPPEDCONTENT |
+| 33 | `0x00000002` in high dword | Animate controls and elements inside windows (SPI_GETCLIENTAREAANIMATION) |
+| 36 | `0x00000010` in high dword | ClearType (SPI_GETCLEARTYPE) |
+| 37 | `0x00000020` in high dword | SPI_GETSPEECHRECOGNITION |
+| 38 | `0x00000040` in high dword | Caret browsing (SPI_GETCARETBROWSING) |
+| 39 | `0x00000080` in high dword | [SPI_GETTHREADLOCALINPUTSETTINGS](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kfull/EditionKeyboardInputDelegationChanged.c) |
+| 40 | `0x00000100` in high dword | SPI_GETSYSTEMLANGUAGEBAR |
 | 41 | `0x00000200` in high dword | [Pen button yield / pen quick-launch hotkey (untested)](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/win32kfull/-NotifyISMPenButtonYieldSettingChange@@YAXXZ.c) |
 
 ### Font Smoothing

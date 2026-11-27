@@ -48,8 +48,9 @@ Example data:
 - `01` = value (`true`)
 
 `CF 28 DC 4C` = field 40 (targetColorTemperature)
-- `CF 28` = type (BT_INT16) + field 40
-- `DC 4C` = value (`4910` since it uses BT_INT16)
+- `CF` = type 15 (`BT_INT16`)
+- `28` = 40
+- `DC 4C` = zigzag varint 9820 = 4910
 
 | Field | Name | Type | Description | Value |
 | --- | --- | --- | --- | --- |
@@ -58,8 +59,8 @@ Example data:
 | 20 | `manualScheduleBlueLightReductionOnTime` | ScheduleTime | The start time of blue light reduction for a user manually setting their schedule. |  `18:00` |
 | 30 | `manualScheduleBlueLightReductionOffTime` | ScheduleTime | The end time of blue light reduction for a user manually setting their schedule. | `05:00` |
 | 40 | `targetColorTemperature` | int16 | The target color temperature (in Kelvin) for blue light reduction. | `4910` Kelvin |
-| 50 | `sunriseTime` | ScheduleTime | The scheduled sunrise time for blue light reduction. | empty |
-| 60 | `sunsetTime` | ScheduleTime | The scheduled sunset time for blue light reduction. | empty |
+| 50 | `sunsetTime` | ScheduleTime | The scheduled sunset time for blue light reduction. | empty |
+| 60 | `sunriseTime` | ScheduleTime | The scheduled sunrise time for blue light reduction. | empty |
 | 70 | `previewColorTemperatureChanges` | bool | Specifies whether blue light reduction color temperature changes should be previewed. | not present |
 | 80 | `darkMode` | bool | Specifies whether app mode should change when blue light reduction is turned on or off. | not present |
 
@@ -77,12 +78,12 @@ Example data:
 | --- | --- | --- | --- | --- |
 | 0 | `state` | ActiveState | The current state of blue light reduction. | `0` = `BlueLightReductionOn`, `1` = `BlueLightReductionOff` |
 | 10 | `source` | ChangeSource |  Where the change came from, user change or scheduled change. | not present (`0` = `Schedule`, `1` = `User`) |
-| 20 | `timestampUTC` | int64 | The time the change in active state was applied. | `2026-06-13T20:53:08.666224Z` (decodes as [`FILETIME`](https://learn.microsoft.com/windows/win32/sysinfo/file-times)) |
+| 20 | `timestampUTC` | uint64 | The time the change in active state was applied. | `2026-06-13T20:53:08.666224Z` (decodes as [`FILETIME`](https://learn.microsoft.com/windows/win32/sysinfo/file-times)) |
 | 30 | `isSupported` | bool | Whether or not current configuration supports blue light reduction. | not present |
 
 ## SystemSettings Captures
 
-Procmon doesn't show the entire data, therefore this isn't accurate (and sometimes useless, e.g. the 'Strength' capture).
+Procmon shows the first 16 bytes only (CloudStore header & write time).
 
 ```c
 // System > Display : Night light

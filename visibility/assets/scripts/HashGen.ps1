@@ -14,7 +14,7 @@
 
 param(
     [string]$nvstringin,
-    [ValidateSet('All','MD5','SHA1','SHA256','SHA384','SHA512','MACTripleDES','RIPEMD160')]
+    [ValidateSet('All','MD5','SHA1','SHA256','SHA384','SHA512','RIPEMD160')]
     [string]$algorithm = 'All'
 )
 
@@ -55,7 +55,6 @@ function createhash {
         'SHA256' { return [System.Security.Cryptography.SHA256]::Create() }
         'SHA384' { return [System.Security.Cryptography.SHA384]::Create() }
         'SHA512' { return [System.Security.Cryptography.SHA512]::Create() }
-        'MACTRIPLEDES' { return [System.Security.Cryptography.MACTripleDES]::Create() }
         'RIPEMD160' { return [System.Security.Cryptography.RIPEMD160]::Create() }
         default { throw "Unsupported algorithm $name" }
     }
@@ -102,7 +101,7 @@ if (!($nvin)) {
     return
 }
 
-$algorithms = @('MD5','SHA1','SHA256','SHA384','SHA512','MACTripleDES','RIPEMD160')
+$algorithms = @('MD5','SHA1','SHA256','SHA384','SHA512','RIPEMD160')
 $algos = if ($algorithm -ieq 'All') { $algorithms } else { @($algorithm.ToUpperInvariant()) }
 $lines = New-Object System.Collections.Generic.List[string]
 

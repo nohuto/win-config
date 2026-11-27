@@ -235,7 +235,7 @@ It's recommended to change the pointer speed via `Bluetooth & devices > Mouse`, 
     "DoubleClickSpeed" = "500"; // REG_SZ, ms between two clicks
     "DoubleClickWidth" = "4"; // REG_SZ
     "MouseHoverHeight" = "4"; // REG_SZ, pixels
-    "MouseHoverTime" = "400"; // REG_SZ, ms
+    "MouseHoverTime" = "400"; // https://noverse.dev/docs/win-config/visibility/mouse-hover-time/
     "MouseHoverWidth" = "4"; // REG_SZ, pixels
     "MouseSensitivity" = "10"; // REG_SZ, 1-20, pointer speed
     "MouseSpeed" = "1"; // REG_SZ, 0 = Enhance pointer precision off, other = on

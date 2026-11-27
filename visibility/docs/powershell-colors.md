@@ -1,8 +1,8 @@
 # PowerShell Colors
 
-If you use Windows Terminal, this option will have no effect.
+The option only is shown when `Windows Console Host` is the default terminal.
 
-- `ScreenColors`, located in `HKCU\Console\%WINDIR%_System32_WindowsPowerShell_v1.0_powershell.exe`  
+- `ScreenColors`, located in `HKCU\Console\%SystemRoot%_System32_WindowsPowerShell_v1.0_powershell.exe`
   - `0-3` bit = `Foreground color`  
   - `4-7` bit = `Background color`
 
@@ -37,7 +37,7 @@ If you've set a custom foreground/background color, they won't override the colo
 Write-Host "Noverse"
 ```
 
-`Noverse` will have use foreground & background color of `ScreenColors`
+`Noverse` uses the foreground and background color of `ScreenColors`
 
 ```powershell
 Write-Host "Noverse" -ForegroundColor Blue
@@ -49,5 +49,5 @@ Write-Host "Noverse" -ForegroundColor Blue
 [console]::BackgroundColor = 'Black'
 ```
 
-If it doesn't get changed within the code, it'll use the background color set by `ScreenColor`.
+If it doesn't get changed within the code, it'll use the background color set by `ScreenColors`.
 

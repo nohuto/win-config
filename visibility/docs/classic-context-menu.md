@@ -1,13 +1,13 @@
 # Classic Context Menu
 
-Use it on W11, unless you like the new menu. This works via causing COM to not load the DLL for the `{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}` CLSID by making [ImprocServer32](https://learn.microsoft.com/en-us/windows/win32/com/inprocserver32) empty.
+Use it on W11, unless you like the new menu. This works via causing COM to not load the DLL for the `{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}` CLSID by making [InprocServer32](https://learn.microsoft.com/en-us/windows/win32/com/inprocserver32) empty.
 
 ```powershell
 [HKEY_CLASSES_ROOT\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}]
 @="File Explorer Context Menu"
 
-[HKEY_CLASSES_ROOT\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InProcServer32]
-@="C:\\Windows\\System32\\Windows.UI.FileExplorer.dll" // enabling would caus it to be empty
+[HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32]
+@="C:\\Windows\\System32\\Windows.UI.FileExplorer.dll" // empty value here
 ```
 
 ### Default
@@ -20,7 +20,9 @@ Use it on W11, unless you like the new menu. This works via causing COM to not l
 
 ## 'New' Context Menu
 
-Instead of creating a `.txt` file, then renaming it to e.g. `.bat` / `.ps1`, you can add these options to the 'new' context menu. This may also change the `Type` shown in the explorer (only `.bat` is affected of the three).
+Instead of creating a `.txt` file, then renaming it to e.g. `.bat` / `.ps1`, you can add these options to the 'new' context menu.
+
+This can also change the `Type` explorer shows, e.g. for `.bat`:
 
 
 ![](https://github.com/nohuto/win-config/blob/main/visibility/images/newcontext1.png?raw=true)
@@ -38,14 +40,11 @@ Instead of creating a `.txt` file, then renaming it to e.g. `.bat` / `.ps1`, you
 
 ### Algorithms
 
-`Get-FileHash -Algorithm` accepts (the script uses the built in .NET hash implementations `System.Security.Cryptography`):
-
 - [`MD5`](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.md5?view=net-9.0) (`128` Bits)
 - [`SHA1`](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.sha1?view=net-9.0) (`160` Bits)
 - [`SHA256`](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.sha256?view=net-9.0) (`256` Bits)
 - [`SHA384`](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.sha384?view=net-9.0) (`384` Bits)
 - [`SHA512`](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.sha512?view=net-9.0) (`512` Bits)
-- [`MACTripleDES`](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.mactripledes?view=net-9.0)
 - [`RIPEMD160`](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.ripemd160?view=net-9.0)
 
 ### Hash Examples
@@ -100,12 +99,12 @@ SHA512("")
 
 If using win-config, then the toggle automates the (un)installation.
 
-- [`HashGen.ps1`](https://github.com/nohuto/win-config/blob/main/visibility/assets/scripts/HashGen.ps1) accepts an optional `-Algorithm` parameter (`All`, `MD5`, `SHA1`, `SHA256`, `SHA384`, `SHA512`, `MACTripleDES`, `RIPEMD160`). By default it runs every available algorithm, but you can target a specific hash when invoking it manually. 
-- [`Add-CM.ps1`](https://github.com/nohuto/win-config/blob/main/visibility/assets/scripts/Add-CM.ps1) will add a `Hashes` cascaded option to the context menu of any file/folder (if selecting a folder all files within the folder and every subfolder will get used). `HashGen.ps1` gets used from your `Downloads` folder if present, otherwise `Add-CM.ps1` automatically downloads the latest copy from GitHub. `Add-CM.ps1` copies `HashGen.ps1` into `%LOCALAPPDATA%\Noverse` and adds a *Hashes* entry for files and folders.
+- [`HashGen.ps1`](https://github.com/nohuto/win-config/blob/main/visibility/assets/scripts/HashGen.ps1) accepts an optional `-Algorithm` parameter (`All`, `MD5`, `SHA1`, `SHA256`, `SHA384`, `SHA512`, `RIPEMD160`). By default it runs every available algorithm, but you can target a specific hash when invoking it manually. 
+- [`Add-CM.ps1`](https://github.com/nohuto/win-config/blob/main/visibility/assets/scripts/Add-CM.ps1) will add a `Hashes` cascaded option to the context menu of any file/folder (if selecting a folder all files within the folder and every subfolder will get used).
 
 ### Uninstallation
 
-Remove the content menu entry and `hashGen` with:
+Remove the context menu entry and `hashGen` with:
 ```powershell
 Remove-Item -LiteralPath "HKCU:\Software\Classes\*\shell\Hashes" -Recurse -Force
 Remove-Item -LiteralPath "HKCU:\Software\Classes\Directory\shell\Hashes" -Recurse -Force

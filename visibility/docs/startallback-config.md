@@ -117,3 +117,81 @@ All values `StartAllBack` reads that are located in `HKCU\Software\StartIsBack` 
 "HKCU\Software\StartIsBack\NoDarkRun","Length: 16"
 "HKCU\Software\StartIsBack\JumpListBorder","Length: 16"
 ```
+
+## Manual Activation
+
+**This is for educational purposes only.**
+
+Disassemble `StartAllBackX64.dll`, jump to `StartAllBackX64_102` > Edit > Patch program > Change byte
+
+From:
+
+```asm
+mov [rsp+8], rbx
+push rbp
+push rsi
+push rdi
+lea rbp, [rsp-90h]
+```
+`48 89 5C 24 08 55 56 57 48 8D AC 24 70 FF FF FF`
+
+To:
+
+```asm
+mov dword ptr [ecx], 1
+mov eax, 1
+ret
+nop
+```
+`67 C7 01 01 00 00 00 B8 01 00 00 00 C3 90 90 90`
+
+Edit > Patch program > Apply patches to input file.
+
+This causes skipping `ActivationData` and returning result `1`:
+
+```c
+// before
+__int64 StartAllBackX64_102()
+{
+  __int64 result; // rax
+  unsigned int v1; // ebx
+  HKEY v2; // rdi
+  BYTE Data[128]; // [rsp+30h] [rbp-D0h] BYREF
+  CHAR String1[112]; // [rsp+B0h] [rbp-50h] BYREF
+  CHAR Buf2[128]; // [rsp+120h] [rbp+20h] BYREF
+  DWORD cbData; // [rsp+1B8h] [rbp+B8h] BYREF
+  HKEY hKey; // [rsp+1C0h] [rbp+C0h] BYREF
+
+  result = StartAllBackX64_103(Buf2);
+  v1 = 0;
+  v2 = (HKEY)result;
+  if ( result )
+  {
+    memset(Data, 0, sizeof(Data));
+    cbData = 128;
+    RegOpenKeyExA(v2, "Software\\StartIsBack\\License", 0, 0x101u, &hKey);
+    lstrcpyA(String1, "ActivationData");
+    if ( RegQueryValueExA(hKey, String1, 0LL, 0LL, Data, &cbData) )
+    {
+      RegCloseKey(hKey);
+    }
+    else
+    {
+      RegCloseKey(hKey);
+      return (unsigned __int8)sub_180001E8C(Data, Buf2);
+    }
+    return v1;
+  }
+  return result;
+}
+
+// after
+__int64 __fastcall StartAllBackX64_102(_DWORD *a1)
+{
+  __int64 result; // rax
+
+  result = 1LL;
+  *a1 = 1;
+  return result;
+}
+```

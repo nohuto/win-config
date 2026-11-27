@@ -1,6 +1,22 @@
 # Hide Lock Screen
 
-Disables the lock screen (skips the lock screen and go directly to the login screen). See content below for details on the suboptions.
+Disables the lock screen, causing locking/starting to go straight to the sign-in screen:
+
+```c
+// IsLockScreenDisabled (winlogon.exe, 25H2)
+
+v12 = 0;
+if ( !CMachine::RegQueryDWORD(
+        v8,
+        L"Software\\Policies\\Microsoft\\Windows\\Personalization",
+        L"NoLockScreen",
+        0,
+        &v12)
+  && v12 )
+{
+  return 1LL; // no lock screen
+}
+```
 
 Add a custom text to the sign in screen via:
 
@@ -86,11 +102,11 @@ HKCU\Software\Microsoft\Windows\CurrentVersion\Lock Screen\SlideshowDuration	Typ
 HKCU\Software\Microsoft\Windows\CurrentVersion\Lock Screen\SlideshowDuration	Type: REG_DWORD, Length: 4, Data: 1800000
 
 // Get fun facts, tips, tricks, and more on your lock screen (for Picture/Slideshow)
-// Enabled
+// Disabled
 HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\RotatingLockScreenOverlayEnabled	Type: REG_DWORD, Length: 4, Data: 0
 HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\Creative\S-{ID}\RotatingLockScreenOverlayEnabled	Type: REG_DWORD, Length: 4, Data: 0
 HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\SubscribedContent-338387Enabled	Type: REG_DWORD, Length: 4, Data: 0
-// Disabled
+// Enabled
 HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\RotatingLockScreenOverlayEnabled	Type: REG_DWORD, Length: 4, Data: 1
 HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\Creative\S-{ID}\RotatingLockScreenOverlayEnabled	Type: REG_DWORD, Length: 4, Data: 1
 HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\SubscribedContent-338387Enabled	Type: REG_DWORD, Length: 4, Data: 1
@@ -108,4 +124,3 @@ HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\Subscripti
 | [Prevent enabling lock screen camera](https://noverse.dev/policies?p=ControlPanelDisplay*CPL_Personalization_NoLockScreenCamera) | `HKLM\Software\Policies\Microsoft\Windows\Personalization` | `NoLockScreenCamera` |
 | [Force a specific default lock screen and logon image](https://noverse.dev/policies?p=ControlPanelDisplay*CPL_Personalization_ForceDefaultLockScreen) | `HKLM\Software\Policies\Microsoft\Windows\Personalization` | `LockScreenImage`<br>`LockScreenOverlaysDisabled` |
 | [Show clear logon background](https://noverse.dev/policies?p=Logon*DisableAcrylicBackgroundOnLogon) | `HKLM\Software\Policies\Microsoft\Windows\System` | `DisableAcrylicBackgroundOnLogon` |
-

@@ -3,19 +3,12 @@ $ErrorActionPreference = "Stop"
 $nvfolder = Join-Path $env:LOCALAPPDATA "Noverse"
 $gen = Join-Path $nvfolder "hashGen.ps1"
 $repoLocal = if ($PSScriptRoot) { Join-Path $PSScriptRoot "hashGen.ps1" } else { $null }
-$local = Join-Path $home "Downloads\hashGen.ps1"
 if (!(Test-Path -LiteralPath $nvfolder)) { New-Item -ItemType Directory -Path $nvfolder -Force | Out-Null }
 
 if ($repoLocal -and (Test-Path -LiteralPath $repoLocal) -and ((Resolve-Path -LiteralPath $repoLocal).ProviderPath -ne $gen)) {
     Copy-Item -LiteralPath $repoLocal -Destination $gen -Force
-} elseif (Test-Path -LiteralPath $local) {
-    Copy-Item -LiteralPath $local -Destination $gen -Force
-} else {
-    try {
-        Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nohuto/win-config/refs/heads/main/visibility/assets/scripts/HashGen.ps1" -OutFile $gen -UseBasicParsing
-    } catch {
-        throw "Failed to download hashGen.ps1: $($_.Exception.Message)"
-    }
+} elseif (!(Test-Path -LiteralPath $gen)) {
+    throw "hashGen.ps1 not found next to Add-CM.ps1 or in $nvfolder"
 }
 
 $extended = "hashGen.ContextMenu"
@@ -40,7 +33,6 @@ foreach ($entry in @(
         @{Key='SHA256'; Label='SHA256'; Argument='SHA256'},
         @{Key='SHA384'; Label='SHA384'; Argument='SHA384'},
         @{Key='SHA512'; Label='SHA512'; Argument='SHA512'},
-        @{Key='MACTripleDES'; Label='MACTripleDES'; Argument='MACTripleDES'},
         @{Key='RIPEMD160'; Label='RIPEMD160'; Argument='RIPEMD160'}
     )) {
     $entryPath = Join-Path $shell $entry.Key

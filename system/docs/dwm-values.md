@@ -181,42 +181,9 @@ Everything listed below is based on personal findings, mistakes may exist.
     "SDRBoostPercentOverride" = 0; // REG_DWORD
     "ShaderLinkingGPUBlacklist" = ?; // REG_SZ
 
-    // dwm CSettingsManager preferences
-    "AnimationsShiftKey" = 0; // REG_DWORD, nonzero sets bit (preference bit 0x2)
-    "DisableLockingMemory" = 0; // REG_DWORD, nonzero sets bit (preference bit 0x40)
-    "ModeChangeCurtainUseDebugColor" = 0; // REG_DWORD, nonzero sets bit (preference bit 0x80)
-    "UseDPIScaling" = 1; // REG_DWORD, nonzero (default) sets bit (preference bit 0x1)
-
-    // animation/colorization policy related
-    "DefaultColorizationColorState" = 0; // REG_DWORD, nonzero sets bit (policy bit 0x4)
-                                         // "This policy setting controls the default color for window frames when the user does not specify a color. If you enable this policy setting and specify a default color, this color is used in glass window frames, if the user does not specify a color. If you disable or do not configure this policy setting, the default internal color is used, if the user does not specify a color. Note: This policy setting can be used in conjunction with the "Prevent color changes of window frames" setting, to enforce a specific color for window frames that cannot be changed by users."
-                                         // https://noverse.dev/policies?p=DWM*DwmDefaultColorizationColor_2
-    "DisallowAnimations" = 0; // REG_DWORD, nonzero sets bit (policy bit 0x1) which disables DWM window animations (also causes DWM reject live preview / Aero Peek)
-                              // https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/uDWM/-SetWindowAnimation@CDesktopManager@@SAX_N@Z.c
-                              // https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/uDWM/-IsLivePreviewAllowed@CDesktopManager@@SA_NXZ.c
-                              // "This policy setting controls the appearance of window animations such as those found when restoring, minimizing, and maximizing windows. If you enable this policy setting, window animations are turned off. If you disable or do not configure this policy setting, window animations are turned on. Changing this policy setting requires a logoff for it to be applied.
-                              // https://noverse.dev/policies?p=DWM*DwmDisallowAnimations_2
+    // uDWM CDesktopManager::Initialize
     "ForceDisableModeChangeAnimation" = 0; // REG_DWORD (bool), nonzero disables display mode change animations (duplicate/extend/disconnect style monitor change visuals)
                                            // https://blogs.windows.com/windows-insider/2024/06/13/releasing-windows-11-builds-22621-3807-and-22631-3807-to-the-release-preview-channel/
-    "DisallowColorizationColorChanges" = 0; // REG_DWORD nonzero sets bit (policy bit 0x2) which blocks DWM colorization parameter changes
-                                            // This policy setting controls the ability to change the color of window frames. If you enable this policy setting, you prevent users from changing the default window frame color. If you disable or do not configure this policy setting, you allow users to change the default window frame color. Note: This policy setting can be used in conjunction with the "Specify a default color for window frames" policy setting, to enforce a specific color for window frames that cannot be changed by users."
-                                            // https://noverse.dev/policies?p=DWM*DwmDisallowColorizationColorChanges_1
-
-    // uDWM colorization
-    "AccentColor" = ?; // REG_DWORD, only read when ColorPrevalence is nonzero
-    "AccentColorInactive" = ?; // REG_DWORD, only read when ColorPrevalence is nonzero
-    "ColorPrevalence" = ?; // REG_DWORD, nonzero enables reading AccentColor/AccentColorInactive
-    "ColorizationAfterglow" = 0; // REG_DWORD
-    "ColorizationAfterglowBalance" = 0; // REG_DWORD
-    "ColorizationBlurBalance" = 73; // REG_DWORD
-    "ColorizationColor" = 0xFF409EFE; // REG_DWORD
-    "ColorizationColorBalance" = 27; // REG_DWORD
-    "ColorizationGlassAttribute" = 0; // REG_DWORD
-    "DefaultColorizationColorAlpha" = 0; // REG_DWORD (used when DefaultColorizationColorState)
-    "DefaultColorizationColorBlue" = 0; // REG_DWORD ^
-    "DefaultColorizationColorGreen" = 0; // REG_DWORD ^
-    "DefaultColorizationColorRed" = 0; // REG_DWORD ^
-    "EnableWindowColorization" = 1; // REG_DWORD
 
     // uDWM compositor
     "DisableHologramCompositor" = 0; // REG_DWORD, nonzero skips holographic driver watcher registration, which seems to be used for special monitors that are ignored by DWM
@@ -263,6 +230,44 @@ Everything listed below is based on personal findings, mistakes may exist.
     "OneCoreNoBootDWM" = ?; // REG_DWORD
     "OneCoreNoDWMRawGameController" = 0; // REG_DWORD (bool)
     "TouchHoverReportThrottleTimeInMs" = 100; // REG_DWORD (ms), no clamp?
+
+"HKCU\\SOFTWARE\\Microsoft\\Windows\\DWM";
+    // dwm CSettingsManager preferences
+    "AnimationsShiftKey" = 0; // REG_DWORD, nonzero sets bit (preference bit 0x2)
+    "DisableLockingMemory" = 0; // REG_DWORD, nonzero sets bit (preference bit 0x40)
+    "ModeChangeCurtainUseDebugColor" = 0; // REG_DWORD, nonzero sets bit (preference bit 0x80)
+    "UseDPIScaling" = 1; // REG_DWORD, nonzero (default) sets bit (preference bit 0x1)
+
+    // uDWM colorization
+    "AccentColor" = ?; // REG_DWORD, only read when ColorPrevalence is nonzero
+    "AccentColorInactive" = ?; // REG_DWORD, only read when ColorPrevalence is nonzero
+    "ColorPrevalence" = 0; // REG_DWORD, nonzero = accent color on title bars & window borders (uDWM then reads AccentColor/AccentColorInactive)
+    "ColorizationAfterglow" = 0; // REG_DWORD
+    "ColorizationAfterglowBalance" = 0; // REG_DWORD
+    "ColorizationBlurBalance" = 73; // REG_DWORD
+    "ColorizationColor" = 0xFF409EFE; // REG_DWORD
+    "ColorizationColorBalance" = 27; // REG_DWORD
+    "ColorizationGlassAttribute" = 0; // REG_DWORD
+    "EnableAeroPeek" = 1; // REG_DWORD
+    "EnableWindowColorization" = 1; // REG_DWORD
+
+"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DWM";
+    // dwm CSettingsManager, HKLM only read when HKCU (above) value is missing
+    "DefaultColorizationColorAlpha" = 0; // REG_DWORD (used when DefaultColorizationColorState)
+    "DefaultColorizationColorBlue" = 0; // REG_DWORD ^
+    "DefaultColorizationColorGreen" = 0; // REG_DWORD ^
+    "DefaultColorizationColorRed" = 0; // REG_DWORD ^
+    "DefaultColorizationColorState" = 0; // REG_DWORD, nonzero sets bit (policy bit 0x4)
+                                         // "This policy setting controls the default color for window frames when the user does not specify a color. If you enable this policy setting and specify a default color, this color is used in glass window frames, if the user does not specify a color. If you disable or do not configure this policy setting, the default internal color is used, if the user does not specify a color. Note: This policy setting can be used in conjunction with the "Prevent color changes of window frames" setting, to enforce a specific color for window frames that cannot be changed by users."
+                                         // https://noverse.dev/policies?p=DWM*DwmDefaultColorizationColor_2
+    "DisallowAnimations" = 0; // REG_DWORD, nonzero sets bit (policy bit 0x1) which disables DWM window animations (also causes DWM reject live preview / Aero Peek)
+                              // https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/uDWM/-SetWindowAnimation@CDesktopManager@@SAX_N@Z.c
+                              // https://github.com/nohuto/decompiled-pseudocode/blob/main/11-23H2/uDWM/-IsLivePreviewAllowed@CDesktopManager@@SA_NXZ.c
+                              // "This policy setting controls the appearance of window animations such as those found when restoring, minimizing, and maximizing windows. If you enable this policy setting, window animations are turned off. If you disable or do not configure this policy setting, window animations are turned on. Changing this policy setting requires a logoff for it to be applied.
+                              // https://noverse.dev/policies?p=DWM*DwmDisallowAnimations_2
+    "DisallowColorizationColorChanges" = 0; // REG_DWORD nonzero sets bit (policy bit 0x2) which blocks DWM colorization parameter changes
+                                            // This policy setting controls the ability to change the color of window frames. If you enable this policy setting, you prevent users from changing the default window frame color. If you disable or do not configure this policy setting, you allow users to change the default window frame color. Note: This policy setting can be used in conjunction with the "Specify a default color for window frames" policy setting, to enforce a specific color for window frames that cannot be changed by users."
+                                            // https://noverse.dev/policies?p=DWM*DwmDisallowColorizationColorChanges_1
 
 "HKLM\\SOFTWARE\\Microsoft\\Windows\\Dwm\\Scene";
     // dwmcore

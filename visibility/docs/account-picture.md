@@ -1,12 +1,6 @@
 # Account Picture
 
-Changes the user account picture via:
-
-```
-C:\ProgramData\Microsoft\Default Account Pictures
-```
-
-## Suboption
+Copies the chosen PNG/BMP to `C:\ProgramData\Microsoft\User Account Pictures\*` and `user.bmp` (backup in `%ProgramData%\Noverse\AccountPictures`, which can be applied (reverted) via the suboption).
 
 ### Global Account Picture
 

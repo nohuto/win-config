@@ -1,6 +1,8 @@
 # Desktop Wallpaper
 
-This is a collection of some wallpapers that I've found over time. Added for people who may never have spent time changing their background, or for anyone else. Head over to [visibility/desc.md#desktop-wallpaper](https://github.com/nohuto/win-config/blob/main/visibility/desc.md#desktop-wallpaper), if you want to see the wallpapers in a seperate window.
+This is a collection of some wallpapers that I've found over time. Added for people who may never have spent time changing their background, or for anyone else.
+
+Note that the policy which is used to apply it locks the background, `Windows Default` would revert that.
 
 ### Asia
 
@@ -212,28 +214,44 @@ This is a collection of some wallpapers that I've found over time. Added for peo
 
 ## JPEG Reduction
 
-Windows reduces the quality of JPEG images you set as the desktop background to `85%` by default, you can set it to `100%` via the suboption.
+`shell32` reencodes an image when you set it as desktop background (`TranscodeImage`), PNG stays a lossless PNG, every other format is saved as JPEG with the quality from `JPEGImportQuality` (this option has wallpapers in PNG format so this won't do anything for them).
 
 ### [TranscodeImage](https://github.com/nohuto/win-config/blob/main/system/assets/pseudocode/jpeg-TranscodeImage.c)
 
 ```c
-if ( (int)SHRegGetDWORD(
-            HKEY_CURRENT_USER,
-            L"Control Panel\\Desktop",
-            L"JPEGImportQuality",
-            (unsigned int *)&v38) < 0 )
+// TranscodeImage (shell32)
+
+if ( ((int (__fastcall *)(struct IWICBitmapDecoder *, __int128 *))v48->lpVtbl->GetContainerFormat)(v48, &v64) >= 0
+  && (unsigned __int8)_(&v64, &GUID_ContainerFormatPng) )
 {
-  v17 = FLOAT_85_0;
+  v10 = 1; // PNG source
 }
-else
+
+v29 = &GUID_ContainerFormatPng;
+if ( !v10 )
+  v29 = &GUID_ContainerFormatJpeg; // every other source is saved as JPEG
+
+v30 = *(float *)&dword_180735394; // 0 until first read, then cached quality
+if ( *(float *)&dword_180735394 == 0.0 )
 {
-  v17 = fmaxf((float)(int)v38, 60.0);
-  if ( v17 > 100.0 )
-    v17 = FLOAT_100_0;
+  LODWORD(ppIDst) = 0;
+  if ( (int)SHRegGetDWORD(
+              HKEY_CURRENT_USER,
+              L"Control Panel\\Desktop",
+              L"JPEGImportQuality",
+              (unsigned int *)&ppIDst) < 0 )
+  {
+    v30 = FLOAT_85_0;
+  }
+  else
+  {
+    v30 = fmaxf((float)(int)ppIDst, 60.0);
+    if ( v30 > 100.0 )
+      v30 = FLOAT_100_0;
+  }
+  dword_180735394 = LODWORD(v30);
 }
 ```
-
-Default value is `85` -> `85%` (gets used if value isn't present), clamp range is `60-100`, if set above `100` it gets clamped to `100`, if set below `60`, it gets clamped to `60`.
 
 ## [Windows Policies](https://noverse.dev/policies)
 

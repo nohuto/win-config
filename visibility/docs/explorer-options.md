@@ -1,6 +1,6 @@
 # Explorer Options
 
-It changes every setting which is shown in the `Folder Options` window, and more explorer related things. Some are personal preference, see suboptions below for customization, and configurations that aren't made in the main option.
+It sets most checkboxes of the `Folder Options` *General* and *View* tabs and a few other explorer values.
 
 ![](https://github.com/nohuto/win-config/blob/main/visibility/images/explorer.png?raw=true)
 
@@ -44,24 +44,41 @@ typedef struct {
 } SHELLSTATEA, *LPSHELLSTATEA;
 ```
 
-Whenever the same settings are available in `ShellState`, but also have their own value in `Explorer\Advanced`, the state in `Advanced` seems to be used, changing a setting via e.g. explorer causes both values to get edited:
+`windows.storage` builds the shell state from `ShellState` first, then lets every `Explorer\Advanced` value that exists overwrite its bit (`CachedShellState::_GetAdvancedSettings`):
+
+```c
+// CachedShellState::_UpdateSettings (windows.storage)
+
+  v2 = CachedShellState::_Upgrade(this);
+  if ( v2 )
+    v2 = IsProcessAnExplorer();
+  CachedShellState::_Restrict(this);
+  CachedShellState::_GetAdvancedSettings(this); // Advanced > ShellState
+
+// CachedShellState::_GetAdvancedSettings (windows.storage)
+
+    if ( !SHQueryValueExW(v2, L"IconsOnly", 0LL, 0LL, &pvData, &pcbData) )
+      *(_DWORD *)(*((_QWORD *)this + 1) + 32LL) = *(_DWORD *)(*((_QWORD *)this + 1) + 32LL) & 0xFFFFFFEF | (16 * (pvData & 1)); // secondary bit 4
+```
+
+Changing a setting in explorer writes both:
 
 ```powershell
 ShellState	REG_BINARY	24 00 00 00 3e 20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 13 00 00 00 00 00 00 00 52 00 00 00			36 # IconsOnly = 1
 ShellState	REG_BINARY	24 00 00 00 3e 20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 13 00 00 00 00 00 00 00 42 00 00 00			36 # IconsOnly = 0
 ```
 
-Means whenever modifying the value manually, the related value in `Explorer\Advanced` must also be changed.
+Means whenever modifying the value manually ([regkit](https://github.com/nohuto/regkit/blob/main/assets/bitfields/ShellState.regkit-bitfield.jsonc) supports that), the related value in `Explorer\Advanced` must also be changed/not exist.
 
 | Offset | Size | Field | Meaning |
 | --- | --- | --- | --- |
-| `0x00` | 4 | `dwSize` | Value size |
+| `0x00` | 4 | `dwSize` | Value size, must equal the data length (`0x24`) |
 | `0x04` | 4 | Primary flags | Bits `0-16` below, bits `17-31` padding |
 | `0x08` | 4 | `dwWin95Unused` | Unused |
 | `0x0C` | 4 | `uWin95Unused` | Unused |
 | `0x10` | 4 | `lParamSort` | Sort column |
 | `0x14` | 4 | `iSortDirection` | `1` ascending, `-1` descending |
-| `0x18` | 4 | `version` | Unused |
+| `0x18` | 4 | `version` | Structure version, `0x13` (19) on W11 |
 | `0x1C` | 4 | `uNotUsed` | Unused |
 | `0x20` | 4 | Secondary flags | Bits `0-6` below, bits `7-15` fSpareFlags & bits `16-31` padding |
 
@@ -71,16 +88,16 @@ All members within the primary & secondary flags are bools.
 
 | Bit | Member | Meaning | `Explorer\Advanced` Value |
 | --- | --- | --- | --- |
-| 0 | `fShowAllObjects` | Show hidden objects | `Hidden` (if `= 1`) |
+| 0 | `fShowAllObjects` | Show hidden objects | `Hidden` = `1` |
 | 1 | `fShowExtensions` | Show file extensions | `HideFileExt` (inverted) |
 | 2 | `fNoConfirmRecycle` | Skip recycle bin confirmation | - |
-| 3 | `fShowSysFiles` | Show system files | `Hidden` (if `> 1`) |
+| 3 | `fShowSysFiles` | Show system files | `Hidden` = `2` (`0` counts as `2`) |
 | 4 | `fShowCompColor` | Color compressed/encrypted files | `ShowCompColor` |
 | 5 | `fDoubleClickInWebView` | Require double click to open | - |
 | 6 | `fDesktopHTML` | Use active desktop | - |
 | 7 | `fWin95Classic` | Enforce Windows 95 Shell behavior & restrictions | - |
 | 8 | `fDontPrettyPath` | Prevent paths from being converted to lowercase | `DontPrettyPath` |
-| 9 | `fShowAttribCol` | Unused | `ShowAttribCol` |
+| 9 | `fShowAttribCol` | Unused | - |
 | 10 | `fMapNetDrvBtn` | Show the map network drive button | `MapNetDrvBtn` |
 | 11 | `fShowInfoTip` | Show item popup descriptions | `ShowInfoTip` |
 | 12 | `fHideIcons` | Hide desktop icons | `HideIcons` |
@@ -123,7 +140,7 @@ HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState\Settings	Ty
 // Click items as follows
 // Single-click to open an item (point to select)
 HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellState Type: REG_BINARY, Length: 36, Data: 24 00 00 00 1E 20 00 00 00 00 00 00 00 00 00 00
-// Double-click to open an item (singe-click to select)
+// Double-click to open an item (single-click to select)
 HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellState Type: REG_BINARY, Length: 36, Data: 24 00 00 00 3E 20 00 00 00 00 00 00 00 00 00 00
 
 // Privacy
@@ -173,7 +190,7 @@ HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\FolderContentsI
 // Disabled
 HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\FolderContentsInfoTip	Type: REG_DWORD, Length: 4, Data: 0
 
-// Dispay the full path in the title bar
+// Display the full path in the title bar
 // Enabled
 HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState\FullPath	Type: REG_DWORD, Length: 4, Data: 1
 // Disabled
@@ -182,7 +199,7 @@ HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState\FullPath	Ty
 // Hidden files and folders
 // Don't show hidden files, folders, or drives
 HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Hidden	Type: REG_DWORD, Length: 4, Data: 2
-// SHow hidden files, folders, and drives
+// Show hidden files, folders, and drives
 HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Hidden	Type: REG_DWORD, Length: 4, Data: 1
 
 // Hide empty drives
@@ -209,7 +226,7 @@ HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\ShowSuperHidden
 // Disabled
 HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\ShowSuperHidden	Type: REG_DWORD, Length: 4, Data: 1
 
-// Launch folder windows in a seperate process
+// Launch folder windows in a separate process
 // Enabled
 HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\SeparateProcess	Type: REG_DWORD, Length: 4, Data: 1
 // Disabled
@@ -316,7 +333,7 @@ HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Search\Preferences\Syste
 // Disabled
 HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Search\Preferences\SystemFolders Type: REG_DWORD, Length: 4, Data: 0
 
-// Include compress files (ZIP, CAB...)
+// Include compressed files (ZIP, CAB...)
 // Enabled
 HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Search\Preferences\ArchivedFiles Type: REG_DWORD, Length: 4, Data: 1
 // Disabled
@@ -340,13 +357,13 @@ HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Search\PrimaryProperties
 
 ## Explorer Blur
 
-Installs [ExplorerBlurMica](https://github.com/Maplespe/ExplorerBlurMica), which adds a background blur/acrylic/mica effect to the explorer:
+Installs [ExplorerBlurMica](https://github.com/Maplespe/ExplorerBlurMica), which adds a background blur/acrylic/mica effect to the explorer, reverting unregisters the DLL, terminates the explorer processes that still hold it and deletes the folder:
 
 ![](https://github.com/nohuto/win-config/blob/main/visibility/images/explorerblur.png?raw=true)
 
 ### Configuration
 
-Open `%LOCALAPPDATA%\Noverse\ExplorerBlur\Release` - `config.ini`:
+Open `%LOCALAPPDATA%\Noverse\ExplorerBlur\Release\config.ini`.
 
 ```ini
 [config]

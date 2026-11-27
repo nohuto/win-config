@@ -11,8 +11,7 @@ Values below are based on `RegGetValueW`/`SHRegGetDWORD`/`SHRegGetUSDWORDW` xref
   "NoChangingStartMenuBackground" = 0; // REG_DWORD (bool)
 
 "HKCU\\Software\\Microsoft\\Windows\\DWM";
-  // _NCWNDMET::GetCaptionColor
-  "ColorPrevalence" = 0; // REG_DWORD, range 0-5
+  "ColorPrevalence" = 0;
 
 "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Accent";
   "StartColorMenu" = 4288563712; // REG_DWORD, range 0-4294967295, fallback to ColorSet_Version3, then DefaultStartColor
@@ -34,15 +33,15 @@ Values below are based on `RegGetValueW`/`SHRegGetDWORD`/`SHRegGetUSDWORDW` xref
                            // 0 = dark mode
                            // 1 = light mode
                            // invalid/missing fallback to HKLM UWPAppsUseLightTheme then 1
-  "SystemUsesLightTheme" = ?; // REG_DWORD or REG_SZ "0"/"1" (bool)
+  "SystemUsesLightTheme" = 1; // REG_DWORD or REG_SZ "0"/"1" (bool)
                              // 0 = dark mode
                              // 1 = light mode
                              // invalid/missing fallback to HKLM SystemUsesLightTheme then IsOS_OS_PERSONAL
-  "ColorPrevalence" = 0; // REG_DWORD, range 0-4294967295
+  "ColorPrevalence" = 0; // REG_DWORD, nonzero = accent color on Start and taskbar (Taskbar.dll GetSystemThemeStyle, also in light mode)
 
 "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes";
-  "UWPAppsUseLightTheme" = 1; // REG_DWORD or REG_SZ "0"/"1" (bool), fallback for AppsUseLightTheme
-  "SystemUsesLightTheme" = ?; // REG_DWORD or REG_SZ "0"/"1" (bool), fallback for HKCU SystemUsesLightTheme
+  "UWPAppsUseLightTheme" = ?; // REG_DWORD or REG_SZ "0"/"1" (bool), not present by default (reads as 1), fallback for AppsUseLightTheme, theme of new accounts
+  "SystemUsesLightTheme" = ?; // REG_DWORD or REG_SZ "0"/"1" (bool), not present by default, fallback for HKCU SystemUsesLightTheme, theme of new accounts
 
 "HKCU\\Software\\Microsoft\\Accessibility";
   "TextScaleFactor" = 100; // REG_DWORD, range 0-4294967295 (percent)

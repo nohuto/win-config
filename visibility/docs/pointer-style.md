@@ -1,10 +1,12 @@
 # Pointer Style
 
-Windows has four main pointer style modes in `SystemSettings Accessibility > Mouse pointer and touch`: `White`, `Black`, `Inverted`, and `Custom color`. The first three are controlled by `CursorType`, custom colors switch `CursorType` to `6` and store the selected color in `CursorColor`. That color is stored as a Win32 [`COLORREF`](https://learn.microsoft.com/en-us/windows/win32/gdi/colorref), so the DWORD uses the `0x00bbggrr` layout instead of a plain RGB hex string. Standard styles point to system cursor files under `%SystemRoot%\cursors\...`, while custom colors point to generated per user cursor files under `%LOCALAPPDATA%\Microsoft\Windows\Cursors\*_eoa.cur`.
+Windows has four main pointer styles in `Settings > Accessibility > Mouse pointer and touch`: `White`, `Black`, `Inverted` and `Custom color`. Settings stores the style in `CursorType` (`0` White, `1` Black, `2` Inverted, `6` Custom color) and copies the matching system scheme (`Windows Aero`, `Windows Black`, `Windows Inverted` in `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Control Panel\Cursors\Schemes`) to `HKCU\Control Panel\Cursors`, then reloads the cursors with `SPI_SETCURSORS`. 
+
+Custom colors store the color in `CursorColor` as a Win32 [`COLORREF`](https://learn.microsoft.com/en-us/windows/win32/gdi/colorref) (`0x00bbggrr`, missing = `0xFFBF`) and point to per user cursor files under `%LOCALAPPDATA%\Microsoft\Windows\Cursors\*_eoa.cur`.
 
 ### Installing Custom Cursors
 
-If you want a full custom cursor pack instead of Windows built in white, black, inverted, or recolored accessibility cursors, you can install one from diffrenrent sources such as [vsthemes.org](https://vsthemes.org/en/cursors/).
+If you want a full custom cursor pack instead of Windows built in white, black, inverted, or recolored accessibility cursors, you can install one from different sources such as [vsthemes.org](https://vsthemes.org/en/cursors/).
 
 1. Download and extract the pack
 2. Copy the pack files into `%SystemRoot%\Cursors\<Pack Name>` if you want to keep them in the standard system cursor location
@@ -51,7 +53,7 @@ HKCU\Control Panel\Cursors\UpArrow	Type: REG_EXPAND_SZ
 HKCU\Control Panel\Cursors\Hand		Type: REG_EXPAND_SZ
 HKCU\Control Panel\Cursors\Scheme Source	Type: REG_DWORD
 
-// Custom colored styles use generated peruser cursor files
+// Custom colored styles use generated per user cursor files
 HKCU\Control Panel\Cursors\Arrow // %LOCALAPPDATA%\Microsoft\Windows\Cursors\arrow_eoa.cur
 HKCU\Control Panel\Cursors\AppStarting // %LOCALAPPDATA%\Microsoft\Windows\Cursors\busy_eoa.cur
 HKCU\Control Panel\Cursors\Crosshair // %LOCALAPPDATA%\Microsoft\Windows\Cursors\cross_eoa.cur
@@ -72,12 +74,12 @@ HKCU\Control Panel\Cursors\Wait // %LOCALAPPDATA%\Microsoft\Windows\Cursors\wait
 HKCU\Control Panel\Cursors\CursorBaseSize	Type: REG_DWORD
 
 // Used custom color DWORDs (these are the predefined ones from SystemSettings)
-HKCU\Software\Microsoft\Accessibility\CursorColor = 16711871	// Pink (0x00FF00BF)
+HKCU\Software\Microsoft\Accessibility\CursorColor = 16711871	// Purple (0x00FF00BF)
 HKCU\Software\Microsoft\Accessibility\CursorColor = 65471		// Lime (0x0000FFBF)
 HKCU\Software\Microsoft\Accessibility\CursorColor = 64250		// Yellow (0x0000FAFA)
 HKCU\Software\Microsoft\Accessibility\CursorColor = 49151		// Gold (0x0000BFFF)
 HKCU\Software\Microsoft\Accessibility\CursorColor = 12517631	// Pink (0x00BF00FF)
-HKCU\Software\Microsoft\Accessibility\CursorColor = 16760576	// Turquise (0x00FFBF00)
+HKCU\Software\Microsoft\Accessibility\CursorColor = 16760576	// Turquoise (0x00FFBF00)
 HKCU\Software\Microsoft\Accessibility\CursorColor = 12582656	// Green (0x00BFFF00)
 ```
 

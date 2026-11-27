@@ -4,12 +4,8 @@ W11 uses `Segoe UI` by default. You can change it via registry edits, the select
 
 Either select a installed font with the command shown below or install new fonts via e.g. [nerdfonts](https://www.nerdfonts.com/font-downloads).
 
-Applying a new font needs a restart or logout, reverting doesn't.
-```powershell
-shutdown -l # logout
-```
-
 List all available font families on your system with the `Open` option, or via `Personalization > Fonts`:
+
 ```powershell
 Add-Type -AssemblyName System.Drawing;[System.Drawing.FontFamily]::Families | % {$_.Name}
 ```
@@ -72,7 +68,7 @@ Revert the changes:
 
 | Option | Description |
 | --- | --- |
-| Hide fonts based on language settings | "Windows can hide fonts that are not designed for your input language settings. If you choose this option, only fonts that are designed for your language settings will be listed in your programs. |
+| Hide fonts based on language settings | "Windows can hide fonts that are not designed for your input language settings. If you choose this option, only fonts that are designed for your language settings will be listed in your programs." |
 | Allow fonts to be installed using a shortcut | To save space on your computer, you can choose to install a shortcut to a font file instead of the file itself. If the font file becomes unavailable, you might not be able to use the font. |
 
 ## Notes on System Text Size
@@ -80,6 +76,8 @@ Revert the changes:
 Edit text sizes via [`TextScaleFactor`](https://learn.microsoft.com/en-us/uwp/api/windows.ui.viewmanagement.uisettings.textscalefactor?view=winrt-26100#windows-ui-viewmanagement-uisettings-textscalefactor), valid ranges are `100-225` (DWORD).
 
 ```c
+// anonymous_namespace_::TextScaleDialogTemplate (shell32.dll)
+
   v10 = 0;
   if ( (int)SHRegGetDWORD(HKEY_CURRENT_USER, L"Software\\Microsoft\\Accessibility", L"TextScaleFactor", &v10) < 0
     || (v6 = v10, v10 - 101 > 0x7C) ) // valid range: [101, 225] -> v10 - 101 > 124  -> v10 > 225

@@ -3,6 +3,16 @@
 - `MouseHoverTime` controls how long the mouse must stay still over something before Windows treats it as a hover.
 - `MenuShowDelay` controls the menu hover delay, mainly how long shell menus wait before opening a submenu while the pointer is on a menu entry.
 
+win32k reads both at sign-in ([`xxxUpdatePerUserSystemParameters`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/win32kfull/xxxUpdatePerUserSystemParameters.c)), `MenuShowDelay` defaults to 400 ms, a missing `MouseHoverTime` takes the `MenuShowDelay` value and values below 10 ms become 10. The option only writes the registry, so sign out and in after changing it.
+
+```c
+"HKCU\\Control Panel\\Mouse";
+    "MouseHoverTime" = "400"; // REG_SZ, ms, < 10 = 10
+
+"HKCU\\Control Panel\\Desktop";
+    "MenuShowDelay" = "400"; // REG_SZ, ms
+```
+
 ### msd_test
 
 Small app to test how much time it took to open a popup menu, works by moving the pointer onto a submenu item, then measuring from the menus `WM_MOUSEMOVE` in `WH_MSGFILTER` to the submenus `WM_INITMENUPOPUP`, via `QueryPerformanceCounter`.
@@ -56,13 +66,15 @@ delay=400ms source=arg tries=50/50 avg=401.97ms
 > "*Retrieves the time, in milliseconds, that the system waits before displaying a shortcut menu when the mouse cursor is over a submenu item. The pvParam parameter must point to a DWORD variable that receives the time of the delay.*"
 
 ```c
+// CMenuToolbarBase::_SetTimer (shell32, 25H2)
+
 if ( SystemParametersInfoW(0x6Au, 0, &g_lMenuPopupTimeout, 0) ) // 0x6A = SPI_GETMENUSHOWDELAY
   goto LABEL_5;
 v4 = g_lMenuPopupTimeout;
 if ( g_lMenuPopupTimeout != -1 )
   goto LABEL_6;
 g_lMenuPopupTimeout = 4 * GetDoubleClickTime() / 5; // fallback (depends on DoubleClickSpeed)
-if ( SHRegGetStringEx(HKEY_CURRENT_USER, L"Control Panel\\Desktop", L"MenuShowDelay", 2u, pszSrc, 6u) < 0 ) // 2u = REG_SZ
+if ( (int)SHRegGetStringEx(HKEY_CURRENT_USER, L"Control Panel\\Desktop", L"MenuShowDelay", 2, pszSrc, 6u) < 0 ) // 2 = REG_SZ
 {
 LABEL_5:
   v4 = g_lMenuPopupTimeout;
@@ -77,6 +89,8 @@ else
 It first uses [`SystemParametersInfoW(SPI_GETMENUSHOWDELAY)`](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-systemparametersinfoa), so the registry value is normally used through the API. If that API fails and no cached value exists, it falls back to `4 * GetDoubleClickTime() / 5`, means the fallback depends on the current double click speed (`HKCU\Control Panel\Mouse\DoubleClickSpeed`). By default it's set to `500 ms` = fallback becomes `400 ms`.
 
 ```c
+// CMenuToolbarBase::_SetTimer (shell32, 25H2)
+
 if ( (_DWORD)v2 == 32771 )
   goto LABEL_19;
 if ( (_DWORD)v2 != 32776 )

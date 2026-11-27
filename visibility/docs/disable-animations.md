@@ -1,6 +1,6 @@
 # Disable Animations
 
-Minimize, maximize, taskbar animations / first sign-in animations etc.
+Disables window animations (also disables Aero Peek), minimize/maximize animation, taskbar animations and the first sign-in animation of new accounts.
 
 First sign-in animation:
 

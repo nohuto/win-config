@@ -95,7 +95,7 @@ HKR, "Parameters\Device", "IoStripeAlignment", %REG_MULTI_SZ_APPEND%, "VEN_8086&
     "BusType" = 17; // REG_DWORD
     "BusyPauseTimeInMs" = ?; // REG_DWORD
     "BusyRetryCount" = ?; // REG_DWORD
-    "DmaRemappingCompatible" = 2; // REG_DWORD, https://github.com/nohuto/win-config/blob/main/security/desc.md#opt-out-dma-remapping
+    "DmaRemappingCompatible" = 2; // REG_DWORD, https://noverse.dev/docs/win-config/security/dma-remapping/
     "IoLatencyCap" = ?; // REG_DWORD
     "IoTimeoutValue" = 10; // REG_DWORD, 1-65535 (sec)
     "PnpAsyncNewDevices" = ?; // REG_DWORD
