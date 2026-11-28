@@ -54,7 +54,7 @@ That start usually picks a windows corner style (style apps set (`CWindowList::S
 
 ### [GetRadiusFromCornerStyle](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/uDWM/-GetRadiusFromCornerStyle@CTopLevelWindow@@AEAAMXZ.c)
 
-After the patch `GetEffectiveCornerStyle` returns `0` for every window, its callers are [`GetRadiusFromCornerStyle`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/uDWM/-GetRadiusFromCornerStyle@CTopLevelWindow@@AEAAMXZ.c) & [`GetShadowStyle`](https://github.com/nohuto/pseudocode/blob/main/11-25H2/uDWM/-GetRadiusFromCornerStyle@CTopLevelWindow@@AEAAMXZ.c):
+After the patch `GetEffectiveCornerStyle` returns `0` for every window, its callers are [`GetRadiusFromCornerStyle`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/uDWM/-GetRadiusFromCornerStyle@CTopLevelWindow@@AEAAMXZ.c) & [`GetShadowStyle`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/uDWM/-GetShadowStyle@CTopLevelWindow@@AEAA-AW4ShadowStyle@CWindowBorder@@XZ.c):
 
 ```c
 /*
@@ -80,7 +80,20 @@ float __fastcall CTopLevelWindow::GetRadiusFromCornerStyle(CTopLevelWindow *this
   if ( !v4 )
     return FLOAT_4_0; // 3 = small rounded
   if ( v4 == 1 )
-    return FLOAT_8_0; // 0 & 1 = square
+    return FLOAT_8_0; // 4 = rounded (8 px)
   return v2; // every other style = square
 }
 ```
+
+## Custom Radius
+
+It comes from two float constants in `GetRadiusFromCornerStyle`, `8.0` for the styles `2` & `4`, `4.0` for the small style `3`. They're DIPs, [`GetDpiAdjustedFloatCornerRadius`](https://github.com/nohuto/decompiled-pseudocode/blob/main/11-25H2/uDWM/-GetDpiAdjustedFloatCornerRadius@CTopLevelWindow@@QEAAMXZ.c) multiplies them by the `windows DPI/96`, both are loaded with a RIP relative `movss`:
+
+```c
+// CTopLevelWindow::GetRadiusFromCornerStyle (uDWM, 25H2)
+
+2ac36  f3 0f 10 35 aa f5 0d 00        movss   xmm6, cs:__real@41000000 // 8.0, styles 2 & 4
+2ac40  f3 0f 10 35 f8 f5 0d 00        movss   xmm6, cs:__real@40800000 // 4.0, style 3
+```
+
+Patching that would keep `GetEffectiveCornerStyle` as it is and only changes the last 4 bytes of these instructions, the offset to the constant, so they load a float the patch wrote into an unused part of `uDWM.dll` (e.g. the zero filled rest of the last `.text` page).
