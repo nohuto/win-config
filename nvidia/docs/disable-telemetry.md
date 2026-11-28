@@ -1,16 +1,6 @@
 # Disable Telemetry
 
-Installing a [debloated driver](https://noverse.dev/docs/win-config/nvidia/debloated-driver/) is the first step, the option removes several files & preventing the system from sending telemetry data.
-
-```json
-"HKLM\\SOFTWARE\\NVIDIA Corporation\\Global\\FTS": {
-  "EnableRID44231": { "Type": "REG_DWORD", "Data": 0 },
-  "EnableRID64640": { "Type": "REG_DWORD", "Data": 0 },
-  "EnableRID66610": { "Type": "REG_DWORD", "Data": 0 }
-},
-```
-
-These three values are often applied in reference to "NVIDIA Telemetry", but since these seem to be outdated (they don't exist - test it yourself via [strings2-tui](https://github.com/nohuto/strings2-tui)) they won't get applied.
+Installing a [debloated driver](https://noverse.dev/docs/win-config/nvidia/debloated-driver/) is the first step, the option sets the control panels telemetry preference to opted out.
 
 Miscellaneous code snippets for `OptInOrOutPreference` & `SendTelemetryData`:
 

@@ -15,7 +15,6 @@
 $nv = "Authored by Noxi-Hu - (C) 2026 Noverse"
 $ErrorActionPreference = "SilentlyContinue"
 $ProgressPreference = "SilentlyContinue"
-iwr 'https://github.com/nohuto/nohuto/releases/download/Logo/nvbanner.ps1' -o "$env:temp\nvbanner.ps1";. $env:temp\nvbanner.ps1
 [console]::Title = "Noverse NVIDIA Tool"
 [console]::BackgroundColor = "Black"
 clear
@@ -30,22 +29,8 @@ function log{
     Write-Host -ForegroundColor $SequenceColor " $Sequence"
 }
 
-bannerred
-echo ""
-echo ""
-Write-Host "                               This script is provided by NOVERSE." -ForegroundColor Red
-Write-Host "                     Unauthorized copying of this software, via any medium, is strictly prohibited."
-Write-Host "                                           Proprietary and confidential."
-echo ""
-echo ""
-echo ""
-Write-Host "                                      Press any key to " -NoNewLine
-Write-Host "continue" -ForegroundColor Green -NoNewLine
-Write-Host " with the script..."
-[console]::ReadKey($true) | Out-Null
-
 function nvmain {
-    bannercyan
+    clear
     Write-Host " Start at " -NoNewline
     write-Host "1" -ForegroundColor Red -NoNewline
     Write-Host ". The first option includes a DDU driver uninstallation part." -NoNewline 
@@ -75,14 +60,14 @@ function nvmain {
 }
 
 function nvquit {
-    bannercyan
+    clear
     log "[/]" "Exiting" -HighlightColor Yellow
     sleep 1
     exit
 }
 
 function nvdriver {
-    bannercyan
+    clear
     if (-Not (Test-Path "C:\Program Files\7-Zip\7z.exe")) {write-Host " Download and install 7-Zip, then run the option again" -ForegroundColor Red;Start-Process "https://www.7-zip.org/download.html"; sleep 5; nvmain}
     Start-Process "https://www.techpowerup.com/download/nvidia-geforce-graphics-drivers/"
     Write-Host " Download your " -NoNewline
@@ -99,7 +84,7 @@ function nvdriver {
     if ([string]::IsNullOrWhiteSpace($driverp)) {
         $driverp = Get-ChildItem "$env:USERPROFILE\Downloads" -Filter *.exe -Recurse | Where-Object { $_.Name -match "notebook-win10|desktop-win10" } | ForEach-Object { $_.FullName }
     }
-    bannercyan
+    clear
     log "[+]" "Continuing with" "$driverp" -SequenceColor Blue -HighlightColor Green
     for ($i = 1; $i -le 50; $i++) {
         $time = " [{0:HH:mm:ss}]" -f (Get-Date)
@@ -153,7 +138,7 @@ function nvdriver {
     log "[+]" "Finished all preperations" -HighlightColor Green
     sleep 2
 
-    bannercyan
+    clear
     Write-Host " Do you want to " -NoNewline
     Write-Host "uninstall" -NoNewline -ForegroundColor red
     Write-Host " your current driver with DDU?" -NoNewline
@@ -161,7 +146,7 @@ function nvdriver {
     Write-Host " >> " -NoNewline -ForegroundColor Blue
     $choice = Read-Host 
     if ($choice -match "y") {
-        bannercyan
+        clear
         log "[+]" "Installing DDU & adding settings"
         Invoke-WebRequest -Uri "https://github.com/nohuto/Files/releases/download/driver/NV-DDU.zip" -OutFile "$env:USERPROFILE\Desktop\NV-DDU.zip" -UseBasicParsing
         Expand-Archive -Path "$env:USERPROFILE\Desktop\NV-DDU.zip" -DestinationPath "$env:USERPROFILE\Desktop\NV-DDU" -Force
@@ -182,12 +167,12 @@ function nvdriver {
 }
 
 function nvinstall {
-    bannercyan
+    clear
     Write-Host " Installing " -NoNewline
     Write-Host "debloated driver" -NoNewline -ForegroundColor Blue
     Write-Host ", click through it yourself"
     Start-Process -FilePath "$env:USERPROFILE\Desktop\NV-Driver\setup.exe" -Wait
-    bannercyan
+    clear
     Write-Host " Restart your PC, " -NoNewline
     Write-Host "then" -NoNewline -ForegroundColor Green
     Write-Host " continue with the further trimming, tweaks etc."

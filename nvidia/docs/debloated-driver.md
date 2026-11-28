@@ -9,14 +9,13 @@ Complete [NVIDIA driver preparation tool](https://github.com/nohuto/win-config/b
 
 ### Driver Debloat Option
 
-- Opens [www.techpowerup.com | nvidia-drivers](https://www.techpowerup.com/download/nvidia-geforce-graphics-drivers/)
-- Removes all non-essential folders except `Display.Driver`, `NVI2`, `setup.cfg`, and `setup.exe`
-- Cleans up `.xml` and `.cfg` files by removing telemetry, EULA, and web-link entries
-- Miscellaenous theme configurations
+- Needs 7Z (`C:\Program Files\7-Zip\7z.exe`)
+- Opens [www.techpowerup.com | nvidia-drivers](https://www.techpowerup.com/download/nvidia-geforce-graphics-drivers/), asks for the driver path (leave it blank for the `desktop-win10`/`notebook-win10` installer in `Downloads`), extracts it to `Desktop\NV-Driver`
+- Removes everything except `Display.Driver`, `NVI2`, `setup.cfg`, `setup.exe`
 
 ### Optional DDU Cleanup
 
-Downloads [`NV-DDU.zip`](https://github.com/nohuto/files/releases/download/driver/NV-DDU.zip) and [`NV-DDU.ps1`](https://github.com/nohuto/files/releases/download/driver/NV-DDU.ps1), enables Safe Boot, and reboots.
+Downloads [`NV-DDU.zip`](https://github.com/nohuto/files/releases/download/driver/NV-DDU.zip) and [`NV-DDU.ps1`](https://github.com/nohuto/files/releases/download/driver/NV-DDU.ps1) to the desktop, enables Safe Boot, and reboots.
 
 ### Driver Installation
 

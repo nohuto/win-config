@@ -1,6 +1,6 @@
 # Disable Scheduled Tasks
 
-Disables NVIDIA scheduled tasks recusively. All 3 tasks no longer seem to be created, I'll leave this option for now.
+Disables NVIDIA telemetry tasks recursively, note that the old NVIDIA telemetry container created them, means that these don't exist on newer drivers.
 
 - `NvTmRep.exe` = NVIDIA crash and telemetry reporter
 - `NvTmMon` = Sends data on logon, then in a 1H interval

@@ -1,7 +1,7 @@
 # NVCPL Settings
 
-`Minimal` = Uses the configurations while turning off features like G-SYNC, Antialiasing, Sharpening, Ambient Occlusion, NIS, Ansel etc.  
-`Compatible` = Uses the same configurations but keeps those features enabled/app-controlled
+- `Minimal` = Uses the configurations while turning off features like G-SYNC, Antialiasing, Sharpening, Ambient Occlusion, NIS, Ansel etc.  
+- `Compatible` = Uses the same configurations but keeps those features enabled/app-controlled
 
 The sections below include details of how the nvcpl sets the changes and more, a lot of it is for informational purposes only.
 
@@ -33,14 +33,14 @@ void    CAppSettingsBasic::mapApiRes()
 
 ### Manage 3D settings
 
-Note that many settings like '*Triple buffering*', '*OpenGL Rendering GPU*', '*Threaded optimization*', '*Vulkan/OpenGL present method*' etc. are used OpenGL/old DX games only, and e.g. '*Virtual Reality pre-rendered frames*' for VR applications.
+Settings like '*Triple buffering*', '*OpenGL Rendering GPU*', '*Threaded optimization*' and '*Vulkan/OpenGL present method*' only apply to OpenGL and Vulkan, '*Virtual Reality pre-rendered frames*' only to VR applications.
 
 I've created a folder [nv_params](https://github.com/nohuto/win-config/tree/main/nvidia/assets/reference/nv_params) that includes NVIDIA driver parameter references for D3D, OpenGL, display, DRS, GFE, nView, ShadowPlay, stereo components. See [d3d](https://github.com/nohuto/win-config/tree/main/nvidia/assets/reference/nv_params/d3d), [d3dogl](https://github.com/nohuto/win-config/tree/main/nvidia/assets/reference/nv_params/d3dogl), [opengl](https://github.com/nohuto/win-config/tree/main/nvidia/assets/reference/nv_params/opengl), [other](https://github.com/nohuto/win-config/tree/main/nvidia/assets/reference/nv_params/other) for source files and more details.
 
 - [`parameters.txt`](https://github.com/nohuto/win-config/blob/main/nvidia/assets/reference/nv_params/parameters.txt) - all parameters exposed by [`d3dreg.exe`](https://github.com/nohuto/win-config/blob/main/nvidia/assets/reference/nv_params/d3dreg.exe)
 - [`dump_parameters.py`](https://github.com/nohuto/win-config/blob/main/nvidia/assets/reference/nv_params/dump_parameters.py) - recreates the catalog (parameters.txt)
 
-Examples (which proof the mentioned settings above), you might not find the param names by searching for the option names in here, if so look through the `*.def` files in the folders which will show a `*_STRING` for it (remove `_STRING` when searching in parameters):
+Examples below prove the settings above, if a search for the option name finds nothing, look through the `*.def` files, they show a `*_STRING` define for it (remove `_STRING` when searching `parameters.txt`):
 
 ```powershell
 $ rg -i 'Virtual Reality pre-rendered frames' 'C:\Users\nohuto\Desktop\win\win-config\nvidia\assets\reference\nv_params'
@@ -116,7 +116,7 @@ Note that NVIDIA PhysX is used by some old titles like *Borderlands 2* (2012)/*A
 
 "NVIDIA PhysX is a powerful physics engine that can utilize GPU acceleration to provide amazing real-time physics effects. PhysX GPU acceleration is available on GeForce 8 series and later GPUs. In order to enable PhysX GPU acceleration, all the GPUs in your system must be PhysX-capable."
 
-I'm unsure how the `physxGpuId` gets set, but it's not the same for everyone .It gets read in the NVAPI key and is a `REG_BINARY` type. If `CPU` is selected, it zeros itself (`00 00 00 00`), if `Auto` (supported)/`GPU` it changes the ID. `nvapi.h` includes some notes.
+`physxGpuId` (`REG_BINARY`) includes the RM ID of the GPU that runs PhysX, built from its PCI location as `(domain << 16) | (bus << 8) | device` ([gpu.c](https://github.com/NVIDIA/open-gpu-kernel-modules/blob/620.73.04/src/nvidia/src/kernel/gpu/gpu.c#L303-L315)).
 
 `Auto-select`:
 
@@ -158,16 +158,10 @@ Location (the ID may differ):
 HKCU\Software\NVIDIA Corporation\Global\NVTweak\Devices\1364265386-0\Color
 ```
 
-- `3538946`, `3538947`, `3538948` seem to handle the brightness (`100 Dec` = `50%`, `80 Dec` = `0%`, `120 Dec` = `100%`). 
-- `3538949`, `3538950`, `3538951` handle the contrast, same value range as the brightness. 
-- `3538952`, `3538953`, `3538954` handles the gamma value (`30-180 Dec`, `100 Dec = 1.00`). 
-- `3538970` `1` = `Override to reference mode - Off`, `2` = `Override to reference mode - On`
-
-[`NvCplGammaSet`](https://github.com/pbatard/nvBrightness/blob/8f4a183532f1048375608fc70ad03c38652fc140/src/nvDisplay.cpp#L293) is also located in the key, but seems to be at `1` all of the time (`DesktopColor.cpp`). If set to non zero, it uses the saved parameters (values from registry), if its `0` it'll use the default values?
-
-```powershell
-\Registry\Machine\SYSTEM\ControlSet001\Services\nvlddmkm\State\DisplayDatabase\MONITOR : SaturationRegistryKey
-```
+- `3538946`, `3538947`, `3538948` = brightness (red, green, blue), `100` = 50%, `80` = 0%, `120` = 100%
+- `3538949`, `3538950`, `3538951` = contrast (red, green, blue), same range
+- `3538952`, `3538953`, `3538954` = gamma (red, green, blue), `30` to `180`, `100` = 1.00
+- `3538970` = 'Override to reference mode', `1` = off, `2` = on
 
 Controls the `Digital vibrance`, decimal value = percentage. `MONITOR` depends on your monitor.
 
@@ -177,7 +171,7 @@ Controls the `Digital vibrance`, decimal value = percentage. `MONITOR` depends o
 \Registry\Machine\SYSTEM\ControlSet001\Services\nvlddmkm\State\DisplayDatabase\MONITOR : HueRegistryKey
 ```
 
-`HueRegistryKey` controls the `Hue` options, it is a `REG_BINARY` type ([`displayDB.cpp`](https://github.com/nohuto/win-config/blob/main/nvidia/assets/reference/color-displayDB.cpp)):
+`HueRegistryKey` (procmon shows only the first 16 bytes, the value has 20) controls the `Hue` options, it is a `REG_BINARY` type ([`displayDB.cpp`](https://github.com/nohuto/win-config/blob/main/nvidia/assets/reference/color-displayDB.cpp)):
 
 ```c
 // 0°
@@ -188,14 +182,6 @@ HKLM\System\CurrentControlSet\Services\nvlddmkm\State\DisplayDatabase\MSI3CB0122
 HKLM\System\CurrentControlSet\Services\nvlddmkm\State\DisplayDatabase\MSI3CB01222_2E_07E4_FF\HueRegistryKey    Type: REG_BINARY, Length: 20, Data: DB 01 00 00 14 00 00 00 0E 27 00 00 52 FF FF FF
 ```
 
-The calculation works via `cosHue_x10K` (cosinus), `sinHue_x10K` (sinus) and a checksum. `0°`:
-
-```powershell
-cos(0) = 1
-1 * 10000 = 10000 = 0x00002710 hex
-sin(0) = 0  = 0x00000000 hex
-= last 2 bytes
-```
 
 - [nvidia/assets/reference | color-displayDB.cpp](https://github.com/nohuto/win-config/blob/main/nvidia/assets/reference/color-displayDB.cpp)
 - [nvidia/assets/reference | color-DesktopColors.cpp](https://github.com/nohuto/win-config/blob/main/nvidia/assets/reference/color-DesktopColors.cpp)
@@ -323,7 +309,7 @@ Seems to work via `NVCPLAPI_SETTING_HDCP_GET_STATUS_INFO`/`NVCPLAPI_SETTING_HDCP
 >
 > — NVIDIA Control Panel Help, [HDCP Status](https://www.nvidia.com/content/Control-Panel-Help/vLatest/en-us/mergedProjects/Display/HDCP_Status.htm)
 
-Whether your display supports HDCP you can practically make it unsupported using the value (can be edited using [bitmask-calc](https://github.com/nohuto/bitmask-calc)) shown below, causing:
+`RMHdcpKeyglobZero` = 1 forces the drivers HDCP key glob to zero, means the control panel shows HDCP as not supported even on a display that supports it.
 
 ![](https://github.com/nohuto/win-config/blob/main/nvidia/images/hdcp-supported.png?raw=true)
 ![](https://github.com/nohuto/win-config/blob/main/nvidia/images/hdcp-unsupported.png?raw=true)
@@ -394,8 +380,6 @@ Whenever you use your native resolution use `No scaling`, the two options below 
 },
 ```
 
-Changing it via NVCPL:
-
 ```powershell
 NVDisplay.Container.exe    RegSetValue    HKLM\System\CurrentControlSet\Services\nvlddmkm\Global\NVTweak\RmProfilingAdminOnly    Type: REG_DWORD, Length: 4, Data: 1
 NVDisplay.Container.exe    RegSetValue    HKLM\System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000\RmProfilingAdminOnly    Type: REG_DWORD, Length: 4, Data: 1
@@ -407,6 +391,8 @@ NVDisplay.Container.exe    RegSetValue    HKLM\System\CurrentControlSet\Control\
 ![](https://github.com/nohuto/win-config/blob/main/nvidia/images/nvcpl5.png?raw=true)
 
 ## Video
+
+`nvlddmkm.sys` builds these value names from parts (`_User`, `_SUB%d`, `_DFP%d`, `_VAL`/`_XEN`/`_XALG`/`_DAT` + feature name), so you won't find a full name with a strings search.
 
 ### Adjust video color settings
 
@@ -483,7 +469,7 @@ _User_SUB0_DFP1_XEN_Cadence    Type: REG_DWORD, Length: 4, Data: 2147483649
 
 Miscellaneous notes:
 
-`_User_SUB0_DFP1_VAL_Edge_Enhance`, `_User_SUB0_DFP1_VAL_Edge_Enhance`, `_User_SUB0_DFP1_XEN_Edge_Enhance`? = `Edge enhancment` (`Adjust video image settings` - `0`):
+`_User_SUB0_DFP1_VAL_Edge_Enhance`, `_User_SUB0_DFP1_XALG_Edge_Enhance`, `_User_SUB0_DFP1_XEN_Edge_Enhance` = 'Edge enhancement' (`Adjust video image settings`, `0`):
 
 ```powershell
 NVDisplay.Container.exe    RegSetValue    HKLM\System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000\_User_SUB0_DFP1_VAL_Edge_Enhance    Type: REG_DWORD, Length: 4, Data: 0
@@ -491,16 +477,7 @@ NVDisplay.Container.exe    RegSetValue    HKLM\System\CurrentControlSet\Control\
 NVDisplay.Container.exe    RegSetValue    HKLM\System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000\_User_SUB0_DFP1_XEN_Edge_Enhance    Type: REG_DWORD, Length: 4, Data: 2147483649
 ```
 
-`ScalingConfig` = `Scaling Mode`, `Perform Scaling on`, `Override the scaling mode...` (includes all settings?)
-
-Dynamic range `Full`:
-
-```powershell
-NVDisplay.Container.exe    RegSetValue    HKLM\System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000\_User_SUB0_DFP1_XALG_Color_Range    Type: REG_BINARY, Length: 8, Data: 00 00 00 00 00 00 00 00
-NVDisplay.Container.exe    RegSetValue    HKLM\System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000\_User_SUB0_DFP1_XEN_Color_Range    Type: REG_DWORD, Length: 4, Data: 2147483649
-```
-
-Dynamic range `Limited`:
+Dynamic range `Limited` (`Full` is the capture under 'Adjust video color settings'):
 
 ```powershell
 NVDisplay.Container.exe    RegSetValue    HKLM\System\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000\_User_SUB0_DFP1_XALG_Color_Range    Type: REG_BINARY, Length: 8, Data: 01 00 00 00 00 00 00 00

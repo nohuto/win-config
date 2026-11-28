@@ -1,6 +1,6 @@
 # NvAPI CLI
 
-This will download the app to your downloads folder, read full documentation for each group [here](https://github.com/nohuto/nvapi-cli).
+The button copies the app to your `Downloads` folder and opens a PowerShell window there with `nvapi-cli help`. Read the full documentation of each group [here](https://github.com/nohuto/nvapi-cli).
 
 CLI wrapper around NVIDIA's NVAPI for querying and controlling GPU, display, and driver features on Windows. NVAPI is NVIDIA's proprietary driver API that exposes GPU and display capabilities beyond the standard OS interfaces. It's hardware and driver dependent, many functions are supported only on specific GPUs, drivers, or product lines. Expect `NVAPI_NOT_SUPPORTED` for unsupported features.
 
@@ -12,7 +12,7 @@ Use the tool with caution when applying control APIs, I'm not responsible for an
 
 ## Usage
 
-Since showing all options by default would make it very confusing, it's splitted into groups. Use `nvapi-cli info` to print the NVAPI interface version and driver branch details.
+Since showing all options by default would make it very confusing, it's split into groups. Use `nvapi-cli info` to print the NVAPI interface version and driver branch details.
 
 ```powershell
 Usage:

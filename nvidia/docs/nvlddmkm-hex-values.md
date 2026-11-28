@@ -2,9 +2,52 @@
 
 I'd suggest you don't change this option and just use it for information only.
 
-The `\Registry\Machine\SYSTEM\ControlSet001\Services\nvlddmkm\State` hive is the driver's persistent state store, not the DRS/NVAPI profile database. In tree it is used for driver owned data like the `State\DisplayDatabase` subtree and other persisted blobs (for example HDCP SRM and TDR timing records), accessed via `NvDriverRegKeyPersistentState`. This information is based on `nvlRegistry.h`, `RegistryKeys.cpp`, `displayDb.h`, `displayMgr.cpp`, `nvlTdr.cpp` (ignore it if you don't know what I mean by file names) if I understood the references correctly. Adding the values to the key doesn't affect the state in NVPI.
+```c
+// dd 0x140e9ac40 (nvlddmkm.sys, 621.01)
 
-Values read under `\Registry\Machine\SYSTEM\ControlSet001\Services\nvlddmkm\State`, see [nvlddmkm.txt](https://github.com/nohuto/regkit/blob/main/assets/records/nvlddmkm.txt). These are the only hex ID style values which got read on boot (may differ for you if different driver) and I doubt that these have any affect, this is for documentation reasons only.
+00000001`40e9ac40  112493bd 00000001 11aa9e99 00000000
+00000001`40e9ac50  11e91a61 00000003 11ae435c 00000000
+00000001`40e9ac60  11333333 00000000 11d9dc84 002b6143
+00000001`40e9ac70  118ad143 00000000 11c776e0 00000044
+00000001`40e9ac80  11301a5a 00000008 11112255 00000003
+00000001`40e9ac90  1194f158 00000001 11424d6a 02000000
+00000001`40e9aca0  117cd1d5 00000000 1191e8ab 00000000
+00000001`40e9acb0  11fbdf11 00000001 11112256 00000033
+00000001`40e9acc0  01abac23 00000000
+```
+
+```c
+// 0x1418daa80 (nvlddmkm.sys, 621.01)
+
+00000001`418dab7e 4c8d35bb005cff  lea     r14,[nvlddmkm+0xe9ac40 (00000001`40e9ac40)] // table above
+00000001`418dab8e c783a000000011000000 mov dword ptr [rbx+0A0h],11h // 17 entries
+00000001`418dabc9 488d1550430d00  lea     rdx,[nvlddmkm!nvDumpConfig+0x7c3918 (00000001`419aef20)] // L"0x%08x"
+00000001`418dac23 41b801000000    mov     r8d,1 // DriverRegKeyPersistentState
+00000001`418dac29 e862020800      call    nvlddmkm!nvDumpConfig+0x76f888 (00000001`4195ae90) // read the value
+00000001`418dac39 8b44390c        mov     eax,dword ptr [rcx+rdi+0Ch] // read failed, use table default
+00000001`418dac3d 89443904        mov     dword ptr [rcx+rdi+4],eax
+```
+
+```c
+"HKLM\\SYSTEM\\CurrentControlSet\\Services\\nvlddmkm\\State";
+    "0x01abac23" = 0; // REG_DWORD (?)
+    "0x11112255" = 3; // REG_DWORD, WKS_SCANOUT_COMPOSITION_CONTROL
+    "0x11112256" = 0x33; // REG_DWORD, WKS_POST_PROCESSING_ENGINE_CONTROL
+    "0x112493bd" = 1; // REG_DWORD, WKS_STEREO_DONGLE_SUPPORT
+    "0x11301a5a" = 8; // REG_DWORD (?)
+    "0x11333333" = 0; // REG_DWORD, WKS_STEREO_SWAP_MODE
+    "0x11424d6a" = 0x2000000; // REG_DWORD (?)
+    "0x117cd1d5" = 0; // REG_DWORD (?)
+    "0x118ad143" = 0; // REG_DWORD (?)
+    "0x1191e8ab" = 0; // REG_DWORD (?)
+    "0x1194f158" = 1; // REG_DWORD, VRR_MODE
+    "0x11aa9e99" = 0; // REG_DWORD, WKS_STEREO_SUPPORT
+    "0x11ae435c" = 0; // REG_DWORD, WKS_API_STEREO_EYES_EXCHANGE
+    "0x11c776e0" = 0x44; // REG_DWORD (?)
+    "0x11d9dc84" = 0x2b6143; // REG_DWORD, WKS_FEATURE_SUPPORT_CONTROL
+    "0x11e91a61" = 3; // REG_DWORD, WKS_API_STEREO_MODE
+    "0x11fbdf11" = 1; // REG_DWORD, WKS_4PLUSGPUS_RESTRICT_SOURCES_IN_EXTENDEDVIEW
+```
 
 ## 0x11112255 (WKS_SCANOUT_COMPOSITION_CONTROL)
 
@@ -28,7 +71,9 @@ WKS_SCANOUT_COMPOSITION_CONTROL_DEFAULT                        0x00000003
 
 ## 0x11112256 (WKS_POST_PROCESSING_ENGINE_CONTROL)
 
-NV private interface to adjust the behavior of the post processing engine (`D3DOGL_WksPostProcessingEngineControl`). Type = `REG_DWORD` (SettingDWORD), attribute = ATTRIBUTE_BITFIELDS.
+NV private interface to adjust the behavior of the post processing engine (`D3DOGL_WksPostProcessingEngineControl`). Type = `REG_DWORD` (SettingDWORD), attribute = ATTRIBUTE_BITFIELDS. 
+
+NVCP/DRS calls it "Overlay Indicator".
 
 ```c
 0x00000000 // No specific adjustments for the post processing engine are selected
@@ -92,7 +137,7 @@ WKS_STEREO_DONGLE_SUPPORT_DEFAULT                              WKS_STEREO_DONGLE
 
 ## 0x11333333 (WKS_STEREO_SWAP_MODE)
 
-`D3DOGL_33333333`? Type = `REG_DWORD` (SettingDWORD), attribute = ATTRIBUTE_SAMPLES.
+"Stereo - swap mode" in NVIDIAs [NvApiDriverSettings.h](https://github.com/NVIDIA/nvapi/blob/a08f45f737bb142b070f1e23c58466ecbc82e398/NvApiDriverSettings.h#L133), type = `REG_DWORD` (SettingDWORD), attribute = ATTRIBUTE_SAMPLES.
 
 ```c
 0x0 // Application Control (default)
@@ -116,7 +161,7 @@ WKS_STEREO_SWAP_MODE_DEFAULT                                   WKS_STEREO_SWAP_M
 
 ## 0x1194f158 (VRR_MODE)
 
-`D3DOGL_73314098`? Type = `REG_DWORD` (SettingDWORD), attribute = ATTRIBUTE_SAMPLES.
+"Enable G-SYNC globally" in [NvApiDriverSettings.h](https://github.com/NVIDIA/nvapi/blob/a08f45f737bb142b070f1e23c58466ecbc82e398/NvApiDriverSettings.h#L125), type = `REG_DWORD` (SettingDWORD), attribute = ATTRIBUTE_SAMPLES.
 
 ```c
 0x0 // Disable G-Sync
@@ -178,7 +223,7 @@ NV private interface to enable/disable workstation features (`D3DOGL_Workstation
 0x00000004 // Enables HDMI stereo by overriding any suitable display mode to stereo
 0x00000008 // Enables stereo just on HDMI displays (requires HDMI_STEREO)
 0x00000020 // Use ANY_FRAME instead of PAIR_FLIP flipping mode on Kepler when tearfree or swapgroup is enabled
-0x00000040 // Allow split stereo present blits to avoid tearing on the right//eye
+0x00000040 // Allow split stereo present blits to avoid tearing on the right-eye
 0x00000080 // If bit is set, don't allow scanout from 10bpc buffer (create no dwm/gdi 10bpc primary buffer)
 0x00000100 // If bit is set win8 stereo modes are exported with their real refreshrate (and not refreshrate/2)
 0x00000200 // If bit is set vipn blanking is forced for all vidpnownership changes (per default this is done for resource preallocation only).
@@ -187,7 +232,7 @@ NV private interface to enable/disable workstation features (`D3DOGL_Workstation
 0x00001000 // If bit is set sw emulated color space conversion operations and bloating will be performed on primaries allocated by dwm only.
 0x00002000 // If bit is set, don't allow DFlip for DWM stereo swapchain on WDDM2.3
 0x00004000 // If bit is set, display driver does not export MS stereo modes on internal (laptop) panels
-0x00008000 // If bit is set, DXGK_MONITORLINKINFO_CAPABILITIES::HighColorSpace is exported for 10bpc capable (non//HDR) displays on Quadro (which allows FP16 desktops on RS4+).
+0x00008000 // If bit is set, DXGK_MONITORLINKINFO_CAPABILITIES::HighColorSpace is exported for 10bpc capable (non-HDR) displays on Quadro (which allows FP16 desktops on RS4+).
 0x00010000 // If bit is set, the usage of kmd's private context channel is disallowed for all applications besides dwm.
 0x00020000 // If bit is set, the usage of kmd's private context channel is disallowed for the dwm process.
 0x00040000 // If bit is set a swapgroup will control the flip of all heads (including dwm owned heads). Fallback option until verified that this is fixed and no longer needed.
@@ -231,7 +276,7 @@ WKS_FEATURE_SUPPORT_CONTROL_DEFAULT                            0x00086143
 Display mode to use when stereo is enabled (`D3DOGL_APIStereoMode`). Type = `REG_DWORD` (SettingDWORD), attribute = ATTRIBUTE_SAMPLES.
 
 ```c
-0 // Active stereo mode frame interleaved shutter glasses via DDC adapter shutter glasses // ELSA Revelator (default)
+0 // Active stereo mode frame interleaved shutter glasses via DDC adapter shutter glasses (ELSA Revelator) (DRS default)
 1 // Passive stereo mode vertical interlaced
 2 // Passive stereo mode clone mode
 3 // Active stereo mode frame interleaved shutter glasses via 3-pin mini-DIN auto
@@ -255,7 +300,7 @@ Display mode to use when stereo is enabled (`D3DOGL_APIStereoMode`). Type = `REG
 21 // Active stereo mode frame interleaved (GPIO connected OEM emitter)
 22 // Active stereo mode frame interleaved via DisplayPort inband MSA signal
 0xffffffff // Select hardware default based on capabilities
-3 // Default for Quadro: NV17_SHUTTER_GLASSES_AUTO
+3 // Default for Quadro: NV17_SHUTTER_GLASSES_AUTO (nvlddmkm.sys 621.01 uses it when the value is missing)
 ```
 ```c
 WKS_API_STEREO_MODE_STRING                                     "APIStereoMode"
@@ -310,5 +355,5 @@ WKS_4PLUSGPUS_RESTRICT_SOURCES_IN_EXTENDEDVIEW_SOURCE_FOUR     0x4
 WKS_4PLUSGPUS_RESTRICT_SOURCES_IN_EXTENDEDVIEW_DEFAULT         WKS_4PLUSGPUS_RESTRICT_SOURCES_IN_EXTENDEDVIEW_SOURCE_ONE
 ```
 
-I didn't find any details for `0x11c776e0`, `0x01abac23`, `0x11301a5a`, `0x11424d6a`, `0x117cd1d5`, `0x118ad143`, `0x1191e8ab`.
+`0x01abac23`, `0x11301a5a`, `0x11424d6a`, `0x117cd1d5`, `0x118ad143`, `0x1191e8ab`, `0x11c776e0` are also in the same nvlddmkm table, but none of my dumps, nor NVIDIAs public `NvApiDriverSettings.h` has them.
 
